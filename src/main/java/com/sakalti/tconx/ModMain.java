@@ -7,7 +7,7 @@ import com.sakalti.tconx.material.hachilite.ModMaterials;
 import com.sakalti.tconx.enchant.ModEnchantments;
 import com.sakalti.tconx.registry.ModMirzo;
 
-@Mod("tconx")
+@Mod("sakalti")
 public class ModMain {
 
     public ModMain() {
