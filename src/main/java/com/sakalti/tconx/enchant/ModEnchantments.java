@@ -31,7 +31,7 @@ public class ModEnchantments {
     // ヌズワトダメ増加
     public static class NuzwatDamageEnchantment extends Enchantment {
         public NuzwatDamageEnchantment() {
-            super(EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+            super(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
         }
         public boolean canApply(ItemStack stack) {
             return stack.getItem() instanceof NuzwatItem;
@@ -41,7 +41,7 @@ public class ModEnchantments {
     // ヌズワトアンデット特効
     public static class NuzwatUndeadBaneEnchantment extends Enchantment {
         public NuzwatUndeadBaneEnchantment() {
-            super(EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+            super(Enchantment.Rarity.RARE, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
         }
         public boolean canApply(ItemStack stack) {
             return stack.getItem() instanceof NuzwatItem;
