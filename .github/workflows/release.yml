@@ -6,7 +6,7 @@ on:
     branches:
       - main
     tags:
-      - 'v1.0'  # タグが push されたときにも実行
+      - 'v1.1'  # タグが push されたときにも実行
 
 jobs:
   build:
@@ -37,7 +37,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: Release!
-          tag_name: v1.0
+          tag_name: v1.1
           files: build/libs/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
