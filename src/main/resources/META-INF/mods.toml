@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[47,)" # Forge 1.19.2 = 43.x
+loaderVersion="[47,)"
 license="MIT"
 
 [[mods]]
@@ -8,5 +8,20 @@ version="1.0.0"
 displayName="TConX"
 authors="お方"
 description='''
-TConXはテスト用MODです。Forge 1.19.2対応。
+TConXはテスト用MODです。Forge 1.20.1対応。
 '''
+displayURL="https://github.com/maikuran/Tconx"
+
+[[dependencies.sakalti]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.sakalti]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1]"
+ordering="NONE"
+side="BOTH"
