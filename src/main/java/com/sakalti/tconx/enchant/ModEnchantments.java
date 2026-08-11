@@ -6,7 +6,6 @@ import com.sakalti.tconx.enchant.HemorrhageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.enchantment.Rarity;
 import com.sakalti.tconx.items.NuzwatItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -23,16 +22,16 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> NUZWAT_UNDEAD_BANE =
         ENCHANTMENTS.register("nuzwat_undead_bane", NuzwatUndeadBaneEnchantment::new);
     public static final RegistryObject<Enchantment> HEMORRHAGE =
-        ENCHANTMENTS.register("mirzo_hemorrhage", () -> new HemorrhageEnchantment(Rarity.UNCOMMON));
+        ENCHANTMENTS.register("mirzo_hemorrhage", HemorrhageEnchantment::new);
 
     public static final RegistryObject<Enchantment> PIERCE_THRUST =
-        ENCHANTMENTS.register("mirzo_pierce_thrust", () -> new PierceThrustEnchantment(Rarity.UNCOMMON));
+        ENCHANTMENTS.register("mirzo_pierce_thrust", PierceThrustEnchantment::new);
 
 
     // ヌズワトダメ増加
     public static class NuzwatDamageEnchantment extends Enchantment {
         public NuzwatDamageEnchantment() {
-            super(Rarity.UNCOMMON, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+            super(EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
         }
         public boolean canApply(ItemStack stack) {
             return stack.getItem() instanceof NuzwatItem;
@@ -42,7 +41,7 @@ public class ModEnchantments {
     // ヌズワトアンデット特効
     public static class NuzwatUndeadBaneEnchantment extends Enchantment {
         public NuzwatUndeadBaneEnchantment() {
-            super(Rarity.UNCOMMON, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+            super(EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
         }
         public boolean canApply(ItemStack stack) {
             return stack.getItem() instanceof NuzwatItem;

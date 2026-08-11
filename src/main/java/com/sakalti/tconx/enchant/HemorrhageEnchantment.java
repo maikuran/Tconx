@@ -6,8 +6,8 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
 public class HemorrhageEnchantment extends Enchantment {
 
-    public HemorrhageEnchantment(Rarity rarity) {
-        super(rarity, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+    public HemorrhageEnchantment() {
+        super(EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     public int getMaxLevel() {
