@@ -46,10 +46,10 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.4.5'
-    compileOnly fg.deobf("curse.maven:mantle-74924:6642332")
+    compileOnly fg.deobf("curse.maven:mantle-74924:7563777")
 
     // 正しい CurseForge 依存関係指定（slug-projectId: fileId）
-    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:6266282")
+    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:7449219")
 }
 
 jar {
