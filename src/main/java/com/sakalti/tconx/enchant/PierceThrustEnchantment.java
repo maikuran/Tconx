@@ -7,7 +7,7 @@ import net.minecraft.world.item.enchantment.EnchantmentCategory;
 public class PierceThrustEnchantment extends Enchantment {
 
     public PierceThrustEnchantment() {
-        super(EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
+        super(Enchantment.Rarity.COMMON, EnchantmentCategory.WEAPON, new EquipmentSlot[]{EquipmentSlot.MAINHAND});
     }
 
     public int getMaxLevel() {
