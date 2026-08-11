@@ -3,6 +3,14 @@ plugins {
     id 'java'
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDir 'src/main/resources'  // これが必要
+        }
+    }
+}
+
 // pluginsブロックの後に書く必要がある
 
 group = 'com.sakalti.tconx'
