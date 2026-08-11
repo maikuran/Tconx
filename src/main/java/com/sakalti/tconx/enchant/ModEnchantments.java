@@ -22,10 +22,10 @@ public class ModEnchantments {
     public static final RegistryObject<Enchantment> NUZWAT_UNDEAD_BANE =
         ENCHANTMENTS.register("nuzwat_undead_bane", NuzwatUndeadBaneEnchantment::new);
     public static final RegistryObject<Enchantment> HEMORRHAGE =
-        ENCHANTMENTS.register("mirzo_hemorrhage", HemorrhageEnchantment::new);
+        ENCHANTMENTS.register("mirzo_hemorrhage", () -> new HemorrhageEnchantment(Rarity.UNCOMMON));
 
     public static final RegistryObject<Enchantment> PIERCE_THRUST =
-        ENCHANTMENTS.register("mirzo_pierce_thrust", PierceThrustEnchantment::new);
+        ENCHANTMENTS.register("mirzo_pierce_thrust", () -> new PierceThrustEnchantment(Rarity.UNCOMMON));
 
 
     // ヌズワトダメ増加
