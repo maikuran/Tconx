@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[45)" # Forge 1.19.2 = 43.x
+loaderVersion="[47)" # Forge 1.19.2 = 43.x
 license="MIT"
 
 [[mods]]
