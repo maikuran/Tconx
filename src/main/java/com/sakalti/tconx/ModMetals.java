@@ -123,7 +123,7 @@ public class ModMetals {
 
         private static void onRegisterModels(ModelEvent.RegisterAdditional event) {
             for (String name : autoRegisterItemModels) {
-                event.register(new ResourceLocation(MODID, "item/" + name));
+                event.register(ResourceLocation.fromNamespaceAndPath(MODID, "item/" + name));
             }
         }
     }
