@@ -40,4 +40,4 @@ jobs:
           tag_name: v1.2
           files: build/libs/*.jar
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
