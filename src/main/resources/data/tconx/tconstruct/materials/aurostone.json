@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#00ee00",
   "fluid": "tconx:molten_aurostone",
-  "translationKey": "material.tconx.aurostone"
+  "translationKey": "material.tconx.aurostone",
   "traits": [
     {
       "name": "tconx:auro_vision",
