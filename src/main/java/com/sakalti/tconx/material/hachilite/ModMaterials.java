@@ -2,7 +2,11 @@ package com.sakalti.tconx.material.hachilite;
 
 import slimeknights.tconstruct.library.materials.definition.MaterialId;
 
-public class ModMaterials {
+public final class ModMaterials {
+
+    private ModMaterials() {
+        // インスタンス化禁止
+    }
 
     public static final MaterialId HACHILITE_ID =
             new MaterialId("tconx:hachilite");
@@ -51,17 +55,4 @@ public class ModMaterials {
 
     public static final MaterialId MARULITE_ID =
             new MaterialId("tconx:marulite");
-
-    /**
-     * Material IDs are defined here.
-     *
-     * Tinkers' Construct materials are loaded from JSON data files:
-     * resources/data/tconx/tconstruct/materials/
-     *
-     * Do not access MaterialRegistry during mod construction.
-     */
-    public static void registerMaterials() {
-        // Materials are loaded by Tinkers' Construct from JSON.
-        // Do not call MaterialRegistry.getMaterial() here.
-    }
 }
