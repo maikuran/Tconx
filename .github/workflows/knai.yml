@@ -1,16 +1,12 @@
-name: Rename Tconx to sakalti
+name: Replace Tconx with sakalti
 
 on:
   push:
     branches:
       - main
-  workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
-  rename:
+  replace:
     runs-on: ubuntu-latest
 
     steps:
@@ -20,21 +16,43 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Replace Tconx in file contents
+      - name: Replace Tconx path strings
         run: |
-          python3 <<'PY'
-          from pathlib import Path
+          find . -type f \
+            -not -path './.git/*' \
+            -not -path './.github/workflows/*' \
+            -print0 |
+          xargs -0 sed -i 's/Tconx/sakalti/g'
 
-          root = Path(".")
+      - name: Move Java directories
+        run: |
+          if [ -d "src/main/java/com/sakalti/tconx" ]; then
+            mkdir -p src/main/java/com/sakalti/sakalti
+            cp -a src/main/java/com/sakalti/tconx/. src/main/java/com/sakalti/sakalti/
+            rm -rf src/main/java/com/sakalti/tconx
+          fi
 
-          for path in root.rglob("*"):
-              if not path.is_file():
-                  continue
+      - name: Replace package paths
+        run: |
+          find src -type f -print0 2>/dev/null |
+          xargs -0 -r sed -i \
+            -e 's/com\.sakalti\.tconx/com.sakalti.sakalti/g' \
+            -e 's/com\/sakalti\/tconx/com\/sakalti\/sakalti/g'
 
-              if ".git" in path.parts:
-                  continue
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-              try:
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+
+          git commit -m "Rename Tconx paths to sakalti"
+          git push origin HEAD:main              try:
                   data = path.read_bytes()
               except Exception:
                   continue
