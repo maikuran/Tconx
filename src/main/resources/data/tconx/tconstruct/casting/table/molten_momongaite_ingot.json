@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_momongaite",
+    "name": "sakalti:molten_momongaite",
     "amount": 144
   },
-  "result": "tconx:momongaite_ingot",
+  "result": "sakalti:momongaite_ingot",
   "cooling_time": 57
 }

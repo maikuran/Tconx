@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/ioxium_block"
+    "all": "sakalti:block/ioxium_block"
   }
 }

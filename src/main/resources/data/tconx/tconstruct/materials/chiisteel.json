@@ -4,11 +4,11 @@
   "sortOrder": 5,
   "hidden": false,
   "color": "#f8dac4",
-  "fluid": "tconx:molten_chiisteel",
-  "translationKey": "material.tconx.chiisteel",
+  "fluid": "sakalti:molten_chiisteel",
+  "translationKey": "material.sakalti.chiisteel",
   "traits": [
     {
-      "name": "tconx:weak_burn",
+      "name": "sakalti:weak_burn",
       "level": 1
     }
   ]

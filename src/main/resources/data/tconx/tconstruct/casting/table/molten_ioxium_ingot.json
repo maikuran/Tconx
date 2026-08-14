@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_ioxium",
+    "name": "sakalti:molten_ioxium",
     "amount": 144
   },
-  "result": "tconx:ioxium_ingot",
+  "result": "sakalti:ioxium_ingot",
   "cooling_time": 57
 }

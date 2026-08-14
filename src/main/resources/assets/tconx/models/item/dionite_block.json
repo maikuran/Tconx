@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tconx:item/dionite_block"
+    "layer0": "sakalti:item/dionite_block"
   }
 }

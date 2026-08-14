@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_molten_ouswari",
+    "name": "sakalti:molten_molten_ouswari",
     "amount": 144
   },
-  "result": "tconx:molten_ouswari_ingot",
+  "result": "sakalti:molten_ouswari_ingot",
   "cooling_time": 57
 }

@@ -9,7 +9,7 @@
   },
   "display": {
     "color": "#00FFDD",
-    "translation_key": "fluid.tconx.molten_tiberite"
+    "translation_key": "fluid.sakalti.molten_tiberite"
   },
   "tag": "tconstruct:molten_metals"
 }

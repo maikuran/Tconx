@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_hacilite",
+    "name": "sakalti:molten_hacilite",
     "amount": 144
   },
-  "result": "tconx:hacilite_ingot",
+  "result": "sakalti:hacilite_ingot",
   "cooling_time": 57
 }

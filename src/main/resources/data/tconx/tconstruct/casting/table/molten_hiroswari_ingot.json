@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_hiroswari",
+    "name": "sakalti:molten_hiroswari",
     "amount": 144
   },
-  "result": "tconx:hiroswari_ingot",
+  "result": "sakalti:hiroswari_ingot",
   "cooling_time": 57
 }

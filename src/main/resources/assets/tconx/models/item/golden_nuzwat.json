@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tconx:item/golden_nuzwat"
+    "layer0": "sakalti:item/golden_nuzwat"
   }
 }

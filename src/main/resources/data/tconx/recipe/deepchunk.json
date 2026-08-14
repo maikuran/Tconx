@@ -7,7 +7,7 @@
   ],
   "key": {
     "C": {
-      "item": "tconx:hachilite_ore"
+      "item": "sakalti:hachilite_ore"
     },
     "G": {
       "item": "minecraft:iron"
@@ -17,6 +17,6 @@
     }
   },
   "result": {
-    "item": "tconx:deepchunk"
+    "item": "sakalti:deepchunk"
   }
 }

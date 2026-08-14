@@ -4,11 +4,11 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#8200ff",
-  "fluid": "tconx:molten_tiberite",
-  "translationKey": "material.tconx.tiberite"
+  "fluid": "sakalti:molten_tiberite",
+  "translationKey": "material.sakalti.tiberite"
   "traits": [
     {
-      "name": "tconx:laser_prism",
+      "name": "sakalti:laser_prism",
       "level": 1
     }
   ]

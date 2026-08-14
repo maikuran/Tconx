@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/ioxium_block"
+      "model": "sakalti:block/ioxium_block"
     }
   }
 }

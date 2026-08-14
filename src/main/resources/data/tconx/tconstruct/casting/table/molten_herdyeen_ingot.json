@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_herdyeen",
+    "name": "sakalti:molten_herdyeen",
     "amount": 144
   },
-  "result": "tconx:herdyeen_ingot",
+  "result": "sakalti:herdyeen_ingot",
   "cooling_time": 57
 }

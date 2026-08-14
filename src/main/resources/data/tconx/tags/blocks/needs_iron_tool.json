@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "tconx:hachilite_ore",
-    "tconx:hachilite_block",
-    "tconx:herdyeen_block"
+    "sakalti:hachilite_ore",
+    "sakalti:hachilite_block",
+    "sakalti:herdyeen_block"
   ]
 }

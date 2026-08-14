@@ -6,12 +6,12 @@
       "amount": 20
     },
     {
-      "name": "tconx:molten_igniz",
+      "name": "sakalti:molten_igniz",
       "amount": 10
     }
   ],
   "result": {
-    "fluid": "tconx:molten_ioxium",
+    "fluid": "sakalti:molten_ioxium",
     "amount": 9
   },
   "temperature": 1100

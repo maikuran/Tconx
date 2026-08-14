@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "tconx:item/netherite_nuzwat"
+    "layer0": "sakalti:item/netherite_nuzwat"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/kanilite_ore"
+    "all": "sakalti:block/kanilite_ore"
   }
 }

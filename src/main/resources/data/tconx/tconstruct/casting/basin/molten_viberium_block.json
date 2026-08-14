@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_basin",
   "fluid": {
-    "name": "tconx:molten_viberium",
+    "name": "sakalti:molten_viberium",
     "amount": 1296
   },
-  "result": "tconx:viberium_block",
+  "result": "sakalti:viberium_block",
   "cooling_time": 150
 }

@@ -6,12 +6,12 @@
       "amount": 100
     },
     {
-      "name": "tconx:molten_diamond",
+      "name": "sakalti:molten_diamond",
       "amount": 50
     }
   ],
   "result": {
-    "fluid": "tconx:molten_herdyeen",
+    "fluid": "sakalti:molten_herdyeen",
     "amount": 50
   },
   "temperature": 900

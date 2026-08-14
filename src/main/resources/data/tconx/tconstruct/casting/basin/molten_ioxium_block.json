@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_basin",
   "fluid": {
-    "name": "tconx:molten_ioxium",
+    "name": "sakalti:molten_ioxium",
     "amount": 1296
   },
-  "result": "tconx:ioxium_block",
+  "result": "sakalti:ioxium_block",
   "cooling_time": 150
 }

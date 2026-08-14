@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/dilonite_block"
+      "model": "sakalti:block/dilonite_block"
     }
   }
 }

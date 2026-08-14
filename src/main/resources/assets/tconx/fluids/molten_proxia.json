@@ -9,7 +9,7 @@
   },
   "display": {
     "color": "#593B67",
-    "translation_key": "fluid.tconx.molten_proxia"
+    "translation_key": "fluid.sakalti.molten_proxia"
   },
   "tag": "tconstruct:molten_metals"
 }

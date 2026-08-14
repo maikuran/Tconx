@@ -6,12 +6,12 @@
       "amount": 100
     },
     {
-      "name": "tconx:molten_ioxium",
+      "name": "sakalti:molten_ioxium",
       "amount": 20
     }
   ],
   "result": {
-    "fluid": "tconx:molten_ouswari",
+    "fluid": "sakalti:molten_ouswari",
     "amount": 50
   },
   "temperature": 1550

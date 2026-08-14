@@ -1,4 +1,4 @@
-package com.sakalti.tconx;
+package com.sakalti.sakalti;
 
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;

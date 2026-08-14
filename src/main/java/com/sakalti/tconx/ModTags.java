@@ -1,4 +1,4 @@
-package com.sakalti.tconx;
+package com.sakalti.sakalti;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;

@@ -4,11 +4,11 @@
   "sortOrder": 4,
   "hidden": false,
   "color": "#9cd307",
-  "fluid": "tconx:molten_ioxium",
-  "translationKey": "material.tconx.ioxium"
+  "fluid": "sakalti:molten_ioxium",
+  "translationKey": "material.sakalti.ioxium"
   "traits": [
     {
-      "name": "tconx:long_spark",
+      "name": "sakalti:long_spark",
       "level": 1
     }
   ]

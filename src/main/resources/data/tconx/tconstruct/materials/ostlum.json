@@ -4,11 +4,11 @@
   "sortOrder": 7,
   "hidden": false,
   "color": "#66ff99",
-  "fluid": "tconx:molten_ostlum",
-  "translationKey": "material.tconx.ostlum"
+  "fluid": "sakalti:molten_ostlum",
+  "translationKey": "material.sakalti.ostlum"
   "traits": [
     {
-      "name": "tconx:glacial_bind",
+      "name": "sakalti:glacial_bind",
       "level": 3
     }
   ]

@@ -5,7 +5,7 @@
       {
         "target": "minecraft:stone_ore_replaceables",
         "state": {
-          "Name": "tconx:igniz_ore"
+          "Name": "sakalti:igniz_ore"
         }
       }
     ],

@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/marulite_block"
+      "model": "sakalti:block/marulite_block"
     }
   }
 }

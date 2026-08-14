@@ -4,7 +4,7 @@ from PIL import Image
 
 MATERIAL_NAME = "hachilite"
 MATERIAL_JP_NAME = "ハチライト"
-MOD_ID = "tconx"
+MOD_ID = "sakalti"
 COLOR_HEX = 0x4FC3F7  # 水色
 
 BASE_PATH = Path(".")

@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_uri",
+    "name": "sakalti:molten_uri",
     "amount": 144
   },
-  "result": "tconx:uri_ingot",
+  "result": "sakalti:uri_ingot",
   "cooling_time": 57
 }

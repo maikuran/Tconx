@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/dilonite_block"
+    "all": "sakalti:block/dilonite_block"
   }
 }

@@ -6,12 +6,12 @@
       "amount": 100
     },
     {
-      "name": "tconx:molten_igniz",
+      "name": "sakalti:molten_igniz",
       "amount": 50
     }
   ],
   "result": {
-    "fluid": "tconx:molten_hiroswari",
+    "fluid": "sakalti:molten_hiroswari",
     "amount": 40
 
   },

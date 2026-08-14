@@ -1,7 +1,7 @@
 import os
 import json
 
-base_dir = 'src/main/resources/assets/tconx'
+base_dir = 'src/main/resources/assets/sakalti'
 texture_dir = os.path.join(base_dir, 'textures', 'block')
 blockstates_dir = os.path.join(base_dir, 'blockstates')
 models_block_dir = os.path.join(base_dir, 'models', 'block')
@@ -19,7 +19,7 @@ for tex in texture_files:
     # blockstates
     blockstate = {
         "variants": {
-            "": { "model": f"tconx:block/{name}" }
+            "": { "model": f"sakalti:block/{name}" }
         }
     }
     with open(os.path.join(blockstates_dir, f"{name}.json"), 'w', encoding='utf-8') as f:
@@ -29,7 +29,7 @@ for tex in texture_files:
     block_model = {
         "parent": "minecraft:block/cube_all",
         "textures": {
-            "all": f"tconx:block/{name}"
+            "all": f"sakalti:block/{name}"
         }
     }
     with open(os.path.join(models_block_dir, f"{name}.json"), 'w', encoding='utf-8') as f:
@@ -39,7 +39,7 @@ for tex in texture_files:
     item_model = {
         "parent": "item/generated",
         "textures": {
-            "layer0": f"tconx:item/{name}"
+            "layer0": f"sakalti:item/{name}"
         }
     }
     with open(os.path.join(models_item_dir, f"{name}.json"), 'w', encoding='utf-8') as f:

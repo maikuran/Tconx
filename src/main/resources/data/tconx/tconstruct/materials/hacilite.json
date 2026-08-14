@@ -4,11 +4,11 @@
   "sortOrder": 3,
   "hidden": false,
   "color": "#56d8e8",
-  "fluid": "tconx:molten_hacilite",
-  "translationKey": "material.tconx.hacilite"
+  "fluid": "sakalti:molten_hacilite",
+  "translationKey": "material.sakalti.hacilite"
   "traits": [
     {
-      "name": "tconx:glacial_bind",
+      "name": "sakalti:glacial_bind",
       "level": 1
     }
   ]

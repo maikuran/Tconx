@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_kerium",
+    "name": "sakalti:molten_kerium",
     "amount": 144
   },
-  "result": "tconx:kerium_ingot",
+  "result": "sakalti:kerium_ingot",
   "cooling_time": 57
 }

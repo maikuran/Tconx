@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_igniz",
+    "name": "sakalti:molten_igniz",
     "amount": 144
   },
-  "result": "tconx:igniz_ingot",
+  "result": "sakalti:igniz_ingot",
   "cooling_time": 57
 }

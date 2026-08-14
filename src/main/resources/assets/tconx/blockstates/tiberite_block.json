@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/tiberite_block"
+      "model": "sakalti:block/tiberite_block"
     }
   }
 }

@@ -4,11 +4,11 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#66ffff",
-  "fluid": "tconx:molten_herdyeen",
-  "translationKey": "material.tconx.herdyeen"
+  "fluid": "sakalti:molten_herdyeen",
+  "translationKey": "material.sakalti.herdyeen"
   "traits": [
     {
-      "name": "tconx:ice_bind",
+      "name": "sakalti:ice_bind",
       "level": 1
     }
   ]

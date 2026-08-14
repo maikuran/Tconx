@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_basin",
   "fluid": {
-    "name": "tconx:molten_momongaite",
+    "name": "sakalti:molten_momongaite",
     "amount": 1296
   },
-  "result": "tconx:momongaite_block",
+  "result": "sakalti:momongaite_block",
   "cooling_time": 150
 }

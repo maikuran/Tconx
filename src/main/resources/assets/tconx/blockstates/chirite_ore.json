@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/chirite_ore"
+      "model": "sakalti:block/chirite_ore"
     }
   }
 }

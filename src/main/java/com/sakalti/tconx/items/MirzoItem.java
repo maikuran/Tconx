@@ -1,6 +1,6 @@
-package com.sakalti.tconx.items;
+package com.sakalti.sakalti.items;
 
-import com.sakalti.tconx.enchant.ModEnchantments;
+import com.sakalti.sakalti.enchant.ModEnchantments;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -138,8 +138,8 @@ public class MirzoItem extends Item {
         String ns = key.getNamespace();
         String path = key.getPath();
 
-        // tconx:mirzo_* 専用エンチャント
-        if (ns.equals("tconx") && path.startsWith("mirzo_")) return true;
+        // sakalti:mirzo_* 専用エンチャント
+        if (ns.equals("sakalti") && path.startsWith("mirzo_")) return true;
 
         // バニラ攻撃系・ユーティリティ系
         if (ns.equals("minecraft")) {

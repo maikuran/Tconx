@@ -4,11 +4,11 @@
   "sortOrder": 4,
   "hidden": false,
   "color": "#ff66ff",
-  "fluid": "tconx:molten_kanilite",
-  "translationKey": "material.tconx.kanilite"
+  "fluid": "sakalti:molten_kanilite",
+  "translationKey": "material.sakalti.kanilite"
   "traits": [
     {
-      "name": "tconx:super_magnet",
+      "name": "sakalti:super_magnet",
       "level": 1
     }
   ]

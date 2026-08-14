@@ -5,7 +5,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tconx:hachilite_ore_item"
+          "name": "sakalti:hachilite_ore_item"
         }
       ],
       "conditions": [
@@ -29,7 +29,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "tconx:hachilite_raw"
+          "name": "sakalti:hachilite_raw"
         }
       ],
       "conditions": [

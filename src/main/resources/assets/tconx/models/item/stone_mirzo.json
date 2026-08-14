@@ -1,7 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "tconx:item/stone_mirzo"
+    "layer0": "sakalti:item/stone_mirzo"
   },
   "display": {
     "thirdperson_righthand": {

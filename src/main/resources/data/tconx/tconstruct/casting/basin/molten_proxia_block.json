@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_basin",
   "fluid": {
-    "name": "tconx:molten_proxia",
+    "name": "sakalti:molten_proxia",
     "amount": 1296
   },
-  "result": "tconx:proxia_block",
+  "result": "sakalti:proxia_block",
   "cooling_time": 150
 }

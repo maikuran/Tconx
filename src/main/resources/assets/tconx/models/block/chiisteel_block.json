@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/chiisteel_block"
+    "all": "sakalti:block/chiisteel_block"
   }
 }

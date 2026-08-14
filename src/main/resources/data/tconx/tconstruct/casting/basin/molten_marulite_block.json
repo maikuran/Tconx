@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_basin",
   "fluid": {
-    "name": "tconx:molten_marulite",
+    "name": "sakalti:molten_marulite",
     "amount": 1296
   },
-  "result": "tconx:marulite_block",
+  "result": "sakalti:marulite_block",
   "cooling_time": 150
 }

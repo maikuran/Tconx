@@ -1,7 +1,7 @@
-package com.sakalti.tconx;
+package com.sakalti.sakalti;
 
-import com.sakalti.tconx.enchant.ModEnchantments;
-import com.sakalti.tconx.modifier.TconxModifiers;
+import com.sakalti.sakalti.enchant.ModEnchantments;
+import com.sakalti.sakalti.modifier.TconxModifiers;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;

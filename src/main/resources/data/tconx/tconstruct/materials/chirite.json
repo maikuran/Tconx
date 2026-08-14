@@ -4,11 +4,11 @@
   "sortOrder": 5,
   "hidden": false,
   "color": "#dddd00",
-  "fluid": "tconx:molten_chirite",
-  "translationKey": "material.tconx.chirite",
+  "fluid": "sakalti:molten_chirite",
+  "translationKey": "material.sakalti.chirite",
   "traits": [
     {
-      "name": "tconx:light_touch",
+      "name": "sakalti:light_touch",
       "level": 1
     }
   ]

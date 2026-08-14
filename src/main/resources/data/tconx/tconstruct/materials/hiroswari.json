@@ -4,11 +4,11 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#b90e3b",
-  "fluid": "tconx:molten_hiroswari",
-  "translationKey": "material.tconx.hiroswari"
+  "fluid": "sakalti:molten_hiroswari",
+  "translationKey": "material.sakalti.hiroswari"
   "traits": [
     {
-      "name": "tconx:berserk",
+      "name": "sakalti:berserk",
       "level": 1
     }
   ]

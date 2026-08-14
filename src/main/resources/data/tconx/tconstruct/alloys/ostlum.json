@@ -6,12 +6,12 @@
       "amount": 100
     },
     {
-      "name": "tconx:molten_emerald",
+      "name": "sakalti:molten_emerald",
       "amount": 50
     }
   ],
   "result": {
-    "fluid": "tconx:molten_ostlum",
+    "fluid": "sakalti:molten_ostlum",
     "amount": 15
   },
   "temperature": 1550

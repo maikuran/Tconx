@@ -12,9 +12,9 @@ const materials = [
 ];
 
 // ディレクトリ設定
-const javaItemDir = path.join(__dirname, "src/main/java/com/sakalti/tconx/items");
-const javaRegistryDir = path.join(__dirname, "src/main/java/com/sakalti/tconx/registry");
-const recipeDir = path.join(__dirname, "src/main/resources/data/tconx/recipes");
+const javaItemDir = path.join(__dirname, "src/main/java/com/sakalti/sakalti/items");
+const javaRegistryDir = path.join(__dirname, "src/main/java/com/sakalti/sakalti/registry");
+const recipeDir = path.join(__dirname, "src/main/resources/data/sakalti/recipes");
 
 // ディレクトリ作成
 fs.mkdirSync(javaItemDir, { recursive: true });
@@ -22,7 +22,7 @@ fs.mkdirSync(javaRegistryDir, { recursive: true });
 fs.mkdirSync(recipeDir, { recursive: true });
 
 // 1️⃣ NuzwatItem.java
-const nuzwatItemContent = `package com.tconx.items;
+const nuzwatItemContent = `package com.sakalti.items;
 
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -63,9 +63,9 @@ fs.writeFileSync(path.join(javaItemDir, "NuzwatItem.java"), nuzwatItemContent);
 console.log("NuzwatItem.java を生成しました");
 
 // 2️⃣ ModNuzwats.java
-let javaRegistryContent = `package com.tconx.registry;
+let javaRegistryContent = `package com.sakalti.registry;
 
-import com.tconx.items.NuzwatItem;
+import com.sakalti.items.NuzwatItem;
 import net.minecraft.world.item.*;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -73,7 +73,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public class ModNuzwats {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "tconx");
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "sakalti");
 `;
 
 materials.forEach(mat => {
@@ -97,7 +97,7 @@ materials.forEach(mat => {
             B: { item: "minecraft:stick" },
             C: { item: "minecraft:amethyst_shard" }
         },
-        result: { item: `tconx:${mat.name}_nuzwat` }
+        result: { item: `sakalti:${mat.name}_nuzwat` }
     };
     fs.writeFileSync(path.join(recipeDir, `${mat.name}_nuzwat.json`), JSON.stringify(recipe, null, 4));
     console.log(`${mat.name}_nuzwat.json を生成しました`);

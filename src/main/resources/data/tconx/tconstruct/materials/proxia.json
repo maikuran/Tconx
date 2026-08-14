@@ -4,11 +4,11 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#593b67",
-  "fluid": "tconx:molten_proxia",
-  "translationKey": "material.tconx.proxia"
+  "fluid": "sakalti:molten_proxia",
+  "translationKey": "material.sakalti.proxia"
   "traits": [
     {
-      "name": "tconx:fieldy",
+      "name": "sakalti:fieldy",
       "level": 1
     }
   ]

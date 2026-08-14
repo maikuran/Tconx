@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/chirite_ore"
+    "all": "sakalti:block/chirite_ore"
   }
 }

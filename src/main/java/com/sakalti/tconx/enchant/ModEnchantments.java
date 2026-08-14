@@ -1,12 +1,12 @@
-package com.sakalti.tconx.enchant;
+package com.sakalti.sakalti.enchant;
 
 import net.minecraft.world.item.ItemStack;
-import com.sakalti.tconx.enchant.PierceThrustEnchantment;
-import com.sakalti.tconx.enchant.HemorrhageEnchantment;
+import com.sakalti.sakalti.enchant.PierceThrustEnchantment;
+import com.sakalti.sakalti.enchant.HemorrhageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.entity.EquipmentSlot;
-import com.sakalti.tconx.items.NuzwatItem;
+import com.sakalti.sakalti.items.NuzwatItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -14,7 +14,7 @@ import net.minecraftforge.registries.RegistryObject;
 // エンチャント登録
 public class ModEnchantments {
     public static final DeferredRegister<Enchantment> ENCHANTMENTS =
-        DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, "tconx");
+        DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, "sakalti");
 
     public static final RegistryObject<Enchantment> NUZWAT_DAMAGE =
         ENCHANTMENTS.register("nuzwat_damage", NuzwatDamageEnchantment::new);

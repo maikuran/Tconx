@@ -1,10 +1,10 @@
 {
   "type": "tconstruct:melting",
   "ingredient": {
-    "item": "tconx:raw_momongaite"
+    "item": "sakalti:raw_momongaite"
   },
   "result": {
-    "fluid": "tconx:molten_momongaite",
+    "fluid": "sakalti:molten_momongaite",
     "amount": 10
   },
   "temperature": 1200,

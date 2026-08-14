@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/deepsteel_block"
+    "all": "sakalti:block/deepsteel_block"
   }
 }

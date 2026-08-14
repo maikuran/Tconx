@@ -10,12 +10,12 @@
       "amount": 10
     },
     {
-      "name": "tconx:molten_emerald",
+      "name": "sakalti:molten_emerald",
       "amount": 100
     }
   ],
   "result": {
-    "fluid": "tconx:molten_aurostone",
+    "fluid": "sakalti:molten_aurostone",
     "amount": 50
   },
   "temperature": 1610

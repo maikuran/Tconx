@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/proxia_block"
+    "all": "sakalti:block/proxia_block"
   }
 }

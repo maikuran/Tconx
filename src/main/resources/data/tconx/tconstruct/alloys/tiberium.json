@@ -10,12 +10,12 @@
       "amount": 30
     },
     {
-      "name": "tconx:molten_diamond",
+      "name": "sakalti:molten_diamond",
       "amount": 30
     }
   ],
   "result": {
-    "fluid": "tconx:molten_tiberium",
+    "fluid": "sakalti:molten_tiberium",
     "amount": 30
   },
   "temperature": 1300

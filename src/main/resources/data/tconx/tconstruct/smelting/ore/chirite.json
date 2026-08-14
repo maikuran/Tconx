@@ -1,10 +1,10 @@
 {
   "type": "tconstruct:melting",
   "ingredient": {
-    "item": "tconx:raw_chirite"
+    "item": "sakalti:raw_chirite"
   },
   "result": {
-    "fluid": "tconx:molten_hachirite",
+    "fluid": "sakalti:molten_hachirite",
     "amount": 10
   },
   "temperature": 1200,

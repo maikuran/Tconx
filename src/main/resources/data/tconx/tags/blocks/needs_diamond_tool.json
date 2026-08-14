@@ -1,8 +1,8 @@
 {
   "replace": false,
   "values": [
-    "tconx:ostlum_block",
-    "tconx:kanilite_ore",
-    "tconx:kanilite_block"
+    "sakalti:ostlum_block",
+    "sakalti:kanilite_ore",
+    "sakalti:kanilite_block"
   ]
 }

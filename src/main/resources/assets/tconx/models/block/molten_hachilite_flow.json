@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/block",
   "textures": {
-    "layer0": "tconx:block/molten_hachilite_flow"
+    "layer0": "sakalti:block/molten_hachilite_flow"
   }
 }

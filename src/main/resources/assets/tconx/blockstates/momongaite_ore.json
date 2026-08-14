@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/momongaite_ore"
+      "model": "sakalti:block/momongaite_ore"
     }
   }
 }

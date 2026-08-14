@@ -2,16 +2,16 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "name": "tconx:molten_viberium",
+      "name": "sakalti:molten_viberium",
       "amount": 80
     },
     {
-      "name": "tconx:molten_kerium",
+      "name": "sakalti:molten_kerium",
       "amount": 40
     }
   ],
   "result": {
-    "fluid": "tconx:molten_urium",
+    "fluid": "sakalti:molten_urium",
     "amount": 120
   },
   "temperature": 1600

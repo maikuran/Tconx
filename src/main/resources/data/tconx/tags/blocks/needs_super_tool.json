@@ -1,12 +1,12 @@
 {
   "replace": false,
   "values": [
-    "tconx:igniz_ore",
-    "tconx:igniz_block",
-    "tconx:chirite_ore",
-    "tconx:chirite_block",
-    "tconx:chiisteel_block",
-    "tconx:dilonite_block",
-    "tconx:tiberite_block"
+    "sakalti:igniz_ore",
+    "sakalti:igniz_block",
+    "sakalti:chirite_ore",
+    "sakalti:chirite_block",
+    "sakalti:chiisteel_block",
+    "sakalti:dilonite_block",
+    "sakalti:tiberite_block"
   ]
 }

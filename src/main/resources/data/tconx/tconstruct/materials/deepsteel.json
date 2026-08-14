@@ -4,11 +4,11 @@
   "sortOrder": 5,
   "hidden": false,
   "color": "#234156",
-  "fluid": "tconx:molten_deepsteel",
-  "translationKey": "material.tconx.deepsteel"
+  "fluid": "sakalti:molten_deepsteel",
+  "translationKey": "material.sakalti.deepsteel"
   "traits": [
     {
-      "name": "tconx:heavy_stone",
+      "name": "sakalti:heavy_stone",
       "level": 1
     }
   ]

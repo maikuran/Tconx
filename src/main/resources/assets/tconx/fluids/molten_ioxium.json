@@ -9,7 +9,7 @@
   },
   "display": {
     "color": "#9CD307",
-    "translation_key": "fluid.tconx.molten_ioxium"
+    "translation_key": "fluid.sakalti.molten_ioxium"
   },
   "tag": "tconstruct:molten_metals"
 }

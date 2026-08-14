@@ -16,7 +16,7 @@
       "durability": 1184,
       "melee_attack": 9.5,
       "mining_speed": 9.5,
-      "mining_tier": "tconx:super"
+      "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
       "accuracy": -0.1,

@@ -5,7 +5,7 @@
       {
         "target": "minecraft:stone_ore_replaceables",
         "state": {
-          "Name": "tconx:momongaite_ore"
+          "Name": "sakalti:momongaite_ore"
         }
       }
     ],

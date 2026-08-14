@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/kanilite_block"
+      "model": "sakalti:block/kanilite_block"
     }
   }
 }

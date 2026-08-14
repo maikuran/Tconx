@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_viberium",
+    "name": "sakalti:molten_viberium",
     "amount": 144
   },
-  "result": "tconx:viberium_ingot",
+  "result": "sakalti:viberium_ingot",
   "cooling_time": 57
 }

@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_basin",
   "fluid": {
-    "name": "tconx:molten_chirite",
+    "name": "sakalti:molten_chirite",
     "amount": 1296
   },
-  "result": "tconx:chirite_block",
+  "result": "sakalti:chirite_block",
   "cooling_time": 150
 }

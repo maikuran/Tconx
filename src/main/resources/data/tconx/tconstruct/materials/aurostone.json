@@ -4,11 +4,11 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#00ee00",
-  "fluid": "tconx:molten_aurostone",
-  "translationKey": "material.tconx.aurostone",
+  "fluid": "sakalti:molten_aurostone",
+  "translationKey": "material.sakalti.aurostone",
   "traits": [
     {
-      "name": "tconx:auro_vision",
+      "name": "sakalti:auro_vision",
       "level": 1
     }
   ]

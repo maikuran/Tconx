@@ -1,4 +1,4 @@
-package com.sakalti.tconx.enchant;
+package com.sakalti.sakalti.enchant;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;

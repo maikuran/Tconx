@@ -9,7 +9,7 @@
   },
   "display": {
     "color": "#F8DAC4",
-    "translation_key": "fluid.tconx.molten_chiisteel"
+    "translation_key": "fluid.sakalti.molten_chiisteel"
   },
   "tag": "tconstruct:molten_metals"
 }

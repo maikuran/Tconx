@@ -1,6 +1,6 @@
-package com.sakalti.tconx.registry;
+package com.sakalti.sakalti.registry;
 
-import com.sakalti.tconx.items.MirzoItem;
+import com.sakalti.sakalti.items.MirzoItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.registries.DeferredRegister;
@@ -13,7 +13,7 @@ public class ModMirzo {
 
     // アイテム登録用のDeferredRegister
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, "tconx");
+            DeferredRegister.create(ForgeRegistries.ITEMS, "sakalti");
 
     // ミルゾ各種
     public static final RegistryObject<Item> WOODEN_MIRZO =

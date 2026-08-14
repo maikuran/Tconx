@@ -4,11 +4,11 @@
   "sortOrder": 5,
   "hidden": false,
   "color": "#996699",
-  "fluid": "tconx:molten_momongaite",
-  "translationKey": "material.tconx.momongaite"
+  "fluid": "sakalti:molten_momongaite",
+  "translationKey": "material.sakalti.momongaite"
   "traits": [
     {
-      "name": "tconx:poisonous_bind",
+      "name": "sakalti:poisonous_bind",
       "level": 1
     }
   ]

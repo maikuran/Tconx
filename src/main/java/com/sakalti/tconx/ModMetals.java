@@ -1,4 +1,4 @@
-package com.sakalti.tconx;
+package com.sakalti.sakalti;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 public final class ModMetals {
 
-    public static final String MODID = "tconx";
+    public static final String MODID = "sakalti";
 
     public static final DeferredRegister<Block> BLOCKS =
             DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);

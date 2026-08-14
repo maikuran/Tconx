@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/herdyeen_block"
+      "model": "sakalti:block/herdyeen_block"
     }
   }
 }

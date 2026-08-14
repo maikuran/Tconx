@@ -11,8 +11,8 @@ sourceSets {
     }
 }
 
-group = 'com.sakalti.tconx'
-archivesBaseName = 'tconx'
+group = 'com.sakalti.sakalti'
+archivesBaseName = 'sakalti'
 version = '1.0.0'
 
 java {
@@ -61,7 +61,7 @@ dependencies {
 jar {
     manifest {
         attributes(
-            'Specification-Title': 'tconx',
+            'Specification-Title': 'sakalti',
             'Specification-Vendor': 'sakalti',
             'Specification-Version': '1.0.0',
             'Implementation-Title': project.name,

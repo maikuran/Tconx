@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/hachilite_ore"
+      "model": "sakalti:block/hachilite_ore"
     }
   }
 }

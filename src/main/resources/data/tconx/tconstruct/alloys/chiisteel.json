@@ -11,7 +11,7 @@
     }
   ],
   "result": {
-    "fluid": "tconx:molten_chiisteel",
+    "fluid": "sakalti:molten_chiisteel",
     "amount": 30
   },
   "temperature": 1499

@@ -9,7 +9,7 @@
   },
   "display": {
     "color": "#FFAA00",
-    "translation_key": "fluid.tconx.molten_dilonite"
+    "translation_key": "fluid.sakalti.molten_dilonite"
   },
   "tag": "tconstruct:molten_metals"
 }

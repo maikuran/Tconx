@@ -10,12 +10,12 @@
       "amount": 40
     },
     {
-      "name": "tconx:molten_cobalt",
+      "name": "sakalti:molten_cobalt",
       "amount": 100
     }
   ],
   "result": {
-    "fluid": "tconx:molten_marulite",
+    "fluid": "sakalti:molten_marulite",
     "amount": 50
   },
   "temperature": 1260

@@ -1,6 +1,6 @@
-package com.sakalti.tconx.registry;
+package com.sakalti.sakalti.registry;
 
-import com.sakalti.tconx.items.NuzwatItem;
+import com.sakalti.sakalti.items.NuzwatItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.registries.DeferredRegister;
@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 
 public class ModNuzwats {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "tconx");
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, "sakalti");
 
     public static final RegistryObject<Item> WOODEN_NUZWAT = ITEMS.register("wooden_nuzwat",
             () -> new NuzwatItem(Tiers.WOOD, -2.1f, 3.5f, new Item.Properties()));

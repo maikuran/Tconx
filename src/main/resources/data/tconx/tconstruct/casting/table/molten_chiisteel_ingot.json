@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "tconx:molten_chiisteel",
+    "name": "sakalti:molten_chiisteel",
     "amount": 144
   },
-  "result": "tconx:chiisteel_ingot",
+  "result": "sakalti:chiisteel_ingot",
   "cooling_time": 57
 }

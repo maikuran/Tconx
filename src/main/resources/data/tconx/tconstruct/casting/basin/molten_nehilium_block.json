@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_basin",
   "fluid": {
-    "name": "tconx:molten_nehilium",
+    "name": "sakalti:molten_nehilium",
     "amount": 1296
   },
-  "result": "tconx:nehilium_block",
+  "result": "sakalti:nehilium_block",
   "cooling_time": 150
 }

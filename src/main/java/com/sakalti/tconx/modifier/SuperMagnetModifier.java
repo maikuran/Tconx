@@ -1,4 +1,4 @@
-package com.sakalti.tconx.modifier;
+package com.sakalti.sakalti.modifier;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;

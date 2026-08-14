@@ -1,7 +1,7 @@
 {
   "parent": "item/handheld",
   "textures": {
-    "layer0": "tconx:item/netherrite_mirzo"
+    "layer0": "sakalti:item/netherrite_mirzo"
   },
   "display": {
     "thirdperson_righthand": {

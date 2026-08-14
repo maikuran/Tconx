@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/deepsteel_block"
+      "model": "sakalti:block/deepsteel_block"
     }
   }
 }

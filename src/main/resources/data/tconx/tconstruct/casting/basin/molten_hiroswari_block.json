@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:casting_basin",
   "fluid": {
-    "name": "tconx:molten_hiroswari",
+    "name": "sakalti:molten_hiroswari",
     "amount": 1296
   },
-  "result": "tconx:hiroswari_block",
+  "result": "sakalti:hiroswari_block",
   "cooling_time": 150
 }

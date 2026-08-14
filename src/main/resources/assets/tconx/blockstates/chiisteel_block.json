@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/chiisteel_block"
+      "model": "sakalti:block/chiisteel_block"
     }
   }
 }

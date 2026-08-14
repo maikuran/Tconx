@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/aurostone_block"
+      "model": "sakalti:block/aurostone_block"
     }
   }
 }

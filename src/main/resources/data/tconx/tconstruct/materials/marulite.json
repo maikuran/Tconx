@@ -4,11 +4,11 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#dccdc2",
-  "fluid": "tconx:molten_marulite",
-  "translationKey": "material.tconx.marulite"
+  "fluid": "sakalti:molten_marulite",
+  "translationKey": "material.sakalti.marulite"
   "traits": [
     {
-      "name": "tconx:jumpy",
+      "name": "sakalti:jumpy",
       "level": 1
     }
   ]

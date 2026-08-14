@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/igniz_ore"
+    "all": "sakalti:block/igniz_ore"
   }
 }

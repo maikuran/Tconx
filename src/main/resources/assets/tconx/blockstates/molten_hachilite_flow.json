@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "tconx:block/molten_hachilite_flow"
+      "model": "sakalti:block/molten_hachilite_flow"
     }
   }
 }

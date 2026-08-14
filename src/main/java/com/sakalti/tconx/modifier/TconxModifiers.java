@@ -1,9 +1,9 @@
-package com.sakalti.tconx.modifier;
+package com.sakalti.sakalti.modifier;
 
 import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
 
-import static com.sakalti.tconx.ModMain.MODID;
+import static com.sakalti.sakalti.ModMain.MODID;
 
 public final class TconxModifiers {
 

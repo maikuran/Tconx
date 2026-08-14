@@ -9,7 +9,7 @@
   },
   "display": {
     "color": "#66FF99",
-    "translation_key": "fluid.tconx.molten_ostlum"
+    "translation_key": "fluid.sakalti.molten_ostlum"
   },
   "tag": "tconstruct:molten_metals"
 }
