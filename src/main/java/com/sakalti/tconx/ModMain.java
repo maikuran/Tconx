@@ -5,8 +5,7 @@ import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import com.sakalti.tconx.material.hachilite.ModMaterials;
 import com.sakalti.tconx.enchant.ModEnchantments;
-import com.sakalti.tconx.registry.ModMirzo;
-import com.sakalti.tconx.registry.ModMetals;
+import com.sakalti.tconx.ModMetals;
 
 @Mod("sakalti")
 public class ModMain {
