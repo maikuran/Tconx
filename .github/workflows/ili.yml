@@ -1,4 +1,4 @@
-name: Replace TConx
+name: Replace TConx with sakalti
 
 on:
   push:
@@ -8,7 +8,6 @@ on:
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
   replace:
@@ -17,57 +16,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
-      - name: Replace TConx with sakalti in all files
-        shell: bash
+      - name: Replace TConx with sakalti
         run: |
-          python3 <<'PY'
-          from pathlib import Path
-
-          root = Path(".")
-
-          skip_dirs = {
-              ".git",
-              ".gradle",
-              "build",
-              ".idea"
-          }
-
-          replacements = {
-              "TConx": "sakalti",
-              "tconx": "sakalti"
-          }
-
-          for path in root.rglob("*"):
-              if not path.is_file():
-                  continue
-
-              if any(part in skip_dirs for part in path.parts):
-                  continue
-
-              try:
-                  data = path.read_bytes()
-                  text = data.decode("utf-8")
-              except (UnicodeDecodeError, OSError):
-                  continue
-
-              original = text
-
-              for old, new in replacements.items():
-                  text = text.replace(old, new)
-
-              if text != original:
-                  path.write_text(text, encoding="utf-8")
-                  print(f"modified: {path}")
-          PY
-
-      - name: Show changes
-        run: |
-          git status --short
-          git diff --stat
-          git diff -- . ':!.git'
+          find . -type f \
+            ! -path './.git/*' \
+            ! -path './.github/workflows/*' \
+            -exec sed -i 's/TConx/sakalti/g' {} +
 
       - name: Commit and push
         run: |
@@ -77,8 +32,9 @@ jobs:
           git add -A
 
           if git diff --cached --quiet; then
-            echo "No changes."
+            echo "変更なし"
             exit 0
           fi
+
           git commit -m "Replace TConx with sakalti"
           git push origin HEAD:main
