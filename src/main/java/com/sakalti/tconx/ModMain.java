@@ -1,18 +1,27 @@
 package com.sakalti.tconx;
 
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import com.sakalti.tconx.enchant.ModEnchantments;
-import com.sakalti.tconx.ModMetals;
 
-@Mod("sakalti")
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+
+@Mod(ModMain.MODID)
 public class ModMain {
 
+    public static final String MODID = "sakalti";
+
     public ModMain() {
-        IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
-        ModEnchantments.ENCHANTMENTS.register(bus); 
-        ModMetals.BLOCKS.register(bus);      // ← 追加
-        ModMetals.ITEMS.register(bus);       // ←
+        IEventBus modEventBus =
+                FMLJavaModLoadingContext.get().getModEventBus();
+
+        // エンチャント登録
+        ModEnchantments.ENCHANTMENTS.register(modEventBus);
+
+        // ブロック登録
+        ModMetals.BLOCKS.register(modEventBus);
+
+        // アイテム登録
+        ModMetals.ITEMS.register(modEventBus);
     }
 }
