@@ -26,7 +26,6 @@ jobs:
 
           ROOT = Path("src/main/resources")
           ASSETS = ROOT / "assets" / "tconx"
-
           BLOCKSTATES = ASSETS / "blockstates"
           BLOCK_MODELS = ASSETS / "models" / "block"
           ITEM_MODELS = ASSETS / "models" / "item"
@@ -35,16 +34,9 @@ jobs:
           BLOCK_MODELS.mkdir(parents=True, exist_ok=True)
           ITEM_MODELS.mkdir(parents=True, exist_ok=True)
 
-          # --------------------------------------------------
-          # export*.json を完全削除
-          # --------------------------------------------------
           for path in BLOCKSTATES.glob("export*.json"):
-              print(f"DELETE: {path}")
               path.unlink()
 
-          # --------------------------------------------------
-          # ModMetals.java から登録内容を取得
-          # --------------------------------------------------
           source = Path("src/main/java/com/sakalti/tconx/ModMetals.java").read_text(
               encoding="utf-8"
           )
@@ -61,29 +53,8 @@ jobs:
 
           block_names = [name for name, _ in blocks]
 
-          print("BLOCKS:")
-          for name, strength in blocks:
-              print(f"  {name} ({strength})")
-
-          print("ITEMS:")
-          for name in simple_items:
-              print(f"  {name}")
-
-          # --------------------------------------------------
-          # blockstates
-          #
-          # 例:
-          # {
-          #   "variants": {
-          #     "": {
-          #       "model": "tconx:block/hachilite_ore"
-          #     }
-          #   }
-          # }
-          # --------------------------------------------------
           for name in block_names:
               path = BLOCKSTATES / f"{name}.json"
-
               data = {
                   "variants": {
                       "": {
@@ -91,83 +62,46 @@ jobs:
                       }
                   }
               }
-
               path.write_text(
                   json.dumps(data, ensure_ascii=False, indent=2) + "\n",
                   encoding="utf-8"
               )
 
-              print(f"WRITE: {path}")
-
-          # --------------------------------------------------
-          # block model
-          #
-          # cube_all なので block テクスチャを6面に使用
-          # --------------------------------------------------
           for name in block_names:
               path = BLOCK_MODELS / f"{name}.json"
-
               data = {
                   "parent": "minecraft:block/cube_all",
                   "textures": {
                       "all": f"tconx:block/{name}"
                   }
               }
-
               path.write_text(
                   json.dumps(data, ensure_ascii=False, indent=2) + "\n",
                   encoding="utf-8"
               )
 
-              print(f"WRITE: {path}")
-
-          # --------------------------------------------------
-          # block item model
-          #
-          # ブロックアイテムは item テクスチャを直接参照せず、
-          # block model を親にする。
-          #
-          # これが hachilite_ore のようなブロックアイテムで
-          # 重要な修正。
-          # --------------------------------------------------
           for name in block_names:
               path = ITEM_MODELS / f"{name}.json"
-
               data = {
                   "parent": f"tconx:block/{name}"
               }
-
               path.write_text(
                   json.dumps(data, ensure_ascii=False, indent=2) + "\n",
                   encoding="utf-8"
               )
 
-              print(f"WRITE BLOCK ITEM: {path}")
-
-          # --------------------------------------------------
-          # 通常アイテム
-          #
-          # registerSimpleItem() で登録されているものだけ
-          # item/generated を使用。
-          # --------------------------------------------------
           for name in simple_items:
               path = ITEM_MODELS / f"{name}.json"
-
               data = {
                   "parent": "minecraft:item/generated",
                   "textures": {
                       "layer0": f"tconx:item/{name}"
                   }
               }
-
               path.write_text(
                   json.dumps(data, ensure_ascii=False, indent=2) + "\n",
                   encoding="utf-8"
               )
-
-              print(f"WRITE ITEM: {path}")
-
-          print("JSON repair completed.")
 
       - name: Show changes
         run: |
@@ -180,14 +114,12 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           git add src/main/resources/assets/tconx/blockstates
           git add src/main/resources/assets/tconx/models
-
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
-
           git commit -m "fix: repair block and item JSON models"
           git push
+
