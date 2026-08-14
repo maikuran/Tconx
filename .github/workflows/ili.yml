@@ -1,4 +1,4 @@
-name: Replace TConx with sakalti
+name: Replace sakalti with sakalti
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Replace TConx with sakalti
+      - name: Replace sakalti with sakalti
         run: |
           python3 - <<'PY'
           import os
@@ -52,11 +52,11 @@ jobs:
                       with open(path, "rb") as f:
                           data = f.read()
 
-                      if b"TConx" not in data:
+                      if b"sakalti" not in data:
                           continue
 
                       new_data = data.replace(
-                          b"TConx",
+                          b"sakalti",
                           b"sakalti"
                       )
 
@@ -83,7 +83,7 @@ jobs:
           fi
 
           git add -A
-          git commit -m "Replace TConx with sakalti"
+          git commit -m "Replace sakalti with sakalti"
 
       - name: Push changes
         run: |
