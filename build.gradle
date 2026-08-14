@@ -55,7 +55,7 @@ dependencies {
     compileOnly fg.deobf("curse.maven:mantle-74924:7563777")
     
     // Tinkers' Construct を最新版に更新
-    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:7581138")
+    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:7449219")
 }
 
 jar {
