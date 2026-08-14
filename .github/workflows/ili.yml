@@ -6,7 +6,6 @@ on:
 
 permissions:
   contents: write
-  workflows: write  # ← この行を追加
 
 jobs:
   replace:
