@@ -20,7 +20,7 @@ public class ModMaterials {
     public static final MaterialId TIBERITE_ID = new MaterialId("tconx:tiberite");
     public static final MaterialId CHIISTEEL_ID = new MaterialId("tconx:chiisteel");
     public static final MaterialId AUROSTONE_ID = new MaterialId("tconx:aurostone");
-    public static final MaterialId MARULITE_ID = new MaterialId("tconx:malurite");
+    public static final MaterialId MARULITE_ID = new MaterialId("tconx:marulite");
 
     /**
      * Materials are loaded from JSON data files at:
