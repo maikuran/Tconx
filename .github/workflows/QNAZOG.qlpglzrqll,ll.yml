@@ -1,0 +1,81 @@
+name: Rename and move directories for sakalti
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  replace-paths:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
+
+      # 1. パス内の 'tconx' / 'Tconx' を 'sakalti' にリネーム（深い階層から順に処理）
+      - name: Rename directories and files from tconx to sakalti
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          root = Path(".")
+
+          # 親ディレクトリを先に変えるとパスが切れるため、深い階層から順にソートして処理
+          paths = sorted(
+              [p for p in root.rglob("*") if ".git" not in p.parts and ".github" not in p.parts],
+              key=lambda p: len(p.parts),
+              reverse=True
+          )
+
+          for path in paths:
+              name = path.name
+
+              # 大文字・小文字の両方の tconx を sakalti に置換
+              new_name = (
+                  name
+                  .replace("Tconx", "sakalti")
+                  .replace("tconx", "sakalti")
+              )
+
+              if new_name != name:
+                  new_path = path.with_name(new_name)
+
+                  if new_path.exists():
+                      print(f"SKIP (Already exists): {path} -> {new_path}")
+                      continue
+
+                  path.rename(new_path)
+                  print(f"Renamed: {path} -> {new_path}")
+          PY
+
+      # 2. 重複した src/main/java/com/sakalti/sakalti を src/main/java/com/sakalti に戻す処理
+      - name: Flatten duplicate sakalti directory
+        run: |
+          if [ -d "src/main/java/com/sakalti/sakalti" ]; then
+            echo "Moving contents from src/main/java/com/sakalti/sakalti to src/main/java/com/sakalti/"
+            cp -a src/main/java/com/sakalti/sakalti/. src/main/java/com/sakalti/
+            rm -rf src/main/java/com/sakalti/sakalti
+          fi
+
+      - name: Show changes
+        run: |
+          git status --short
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No directory changes found."
+            exit 0
+          fi
+
+          git commit -m "Refactor directory paths: replace tconx with sakalti and fix package structure"
+          git push origin HEAD:main
