@@ -7,7 +7,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ModMain.MODID)
-public class ModMain {
+public final class ModMain {
 
     public static final String MODID = "sakalti";
 
@@ -15,13 +15,8 @@ public class ModMain {
         IEventBus modEventBus =
                 FMLJavaModLoadingContext.get().getModEventBus();
 
-        // エンチャント登録
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
 
-        // ブロック登録
-        ModMetals.BLOCKS.register(modEventBus);
-
-        // アイテム登録
-        ModMetals.ITEMS.register(modEventBus);
+        ModMetals.register(modEventBus);
     }
 }
