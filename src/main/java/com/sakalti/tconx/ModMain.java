@@ -1,6 +1,7 @@
 package com.sakalti.tconx;
 
 import com.sakalti.tconx.enchant.ModEnchantments;
+import com.sakalti.tconx.modifier.TconxModifiers;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -18,5 +19,7 @@ public final class ModMain {
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
 
         ModMetals.register(modEventBus);
+
+        TconxModifiers.MODIFIERS.register(modEventBus);
     }
 }
