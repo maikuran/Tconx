@@ -1,16 +1,17 @@
-name: Replace TConx
+name: Rename Tconx to sakalti
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
+  workflows: write
 
 jobs:
-  replace:
+  rename:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,40 +19,80 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Replace TConx with sakalti
-        shell: bash
+      - name: Replace Tconx in file contents
         run: |
-          set -e
+          python3 <<'PY'
+          from pathlib import Path
 
-          # ファイル内容を置換
-          find . \
-            -type f \
-            ! -path './.git/*' \
-            ! -path './.github/workflows/*' \
-            -print0 |
-          while IFS= read -r -d '' file; do
-            sed -i 's/TConx/sakalti/g' "$file"
-            sed -i 's/tconx/sakalti/g' "$file"
-            sed -i 's/TCOnx/sakalti/g' "$file"
-            sed -i 's/tConx/sakalti/g' "$file"
-          done
+          root = Path(".")
 
-          # Javaパッケージのディレクトリを移動
-          if [ -d "src/main/java/com/sakalti/tconx" ]; then
-            mkdir -p src/main/java/com/sakalti
-            mv src/main/java/com/sakalti/tconx \
-               src/main/java/com/sakalti/sakalti
-          fi
+          for path in root.rglob("*"):
+              if not path.is_file():
+                  continue
 
-          # 移動後のファイルも置換
-          find src -type f -print0 2>/dev/null |
-          while IFS= read -r -d '' file; do
-            sed -i 's/TConx/sakalti/g' "$file"
-            sed -i 's/tconx/sakalti/g' "$file"
-            sed -i 's/TCOnx/sakalti/g' "$file"
-            sed -i 's/tConx/sakalti/g' "$file"
-          done
+              if ".git" in path.parts:
+                  continue
+
+              try:
+                  data = path.read_bytes()
+              except Exception:
+                  continue
+
+              # バイナリは変更しない
+              if b"\x00" in data:
+                  continue
+
+              try:
+                  text = data.decode("utf-8")
+              except UnicodeDecodeError:
+                  continue
+
+              new_text = (
+                  text
+                  .replace("Tconx", "sakalti")
+                  .replace("tconx", "sakalti")
+              )
+
+              if new_text != text:
+                  path.write_text(new_text, encoding="utf-8")
+                  print(f"content: {path}")
+          PY
+
+      - name: Rename directories and files
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          root = Path(".")
+
+          # 深い場所から順番に処理する
+          paths = sorted(
+              [p for p in root.rglob("*") if ".git" not in p.parts],
+              key=lambda p: len(p.parts),
+              reverse=True
+          )
+
+          for path in paths:
+              name = path.name
+
+              new_name = (
+                  name
+                  .replace("Tconx", "sakalti")
+                  .replace("tconx", "sakalti")
+              )
+
+              if new_name != name:
+                  new_path = path.with_name(new_name)
+
+                  if new_path.exists():
+                      print(f"SKIP: {path} -> {new_path} (already exists)")
+                      continue
+
+                  path.rename(new_path)
+                  print(f"path: {path} -> {new_path}")
+          PY
 
       - name: Show changes
         run: |
@@ -69,8 +110,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Rename TConx to sakalti"
-
-      - name: Push
-        run: |
+          git commit -m "Rename Tconx paths and references to sakalti"
           git push origin HEAD:main
