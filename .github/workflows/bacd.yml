@@ -1,0 +1,112 @@
+name: Itemmodel
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  itemmodel:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pull latest main
+        run: |
+          git pull --rebase origin main
+
+      - name: Generate item models
+        shell: bash
+        run: |
+          set -e
+
+          MODID="sakalti"
+          BASE="src/main/resources/assets/${MODID}"
+
+          mkdir -p "${BASE}/models/item"
+
+          # item用テクスチャから通常のitem/generatedモデルを作成
+          if [ -d "${BASE}/textures/item" ]; then
+            for texture in "${BASE}/textures/item/"*.png; do
+              [ -f "$texture" ] || continue
+
+              name="$(basename "$texture" .png)"
+              output="${BASE}/models/item/${name}.json"
+
+              if [ ! -f "$output" ]; then
+                cat > "$output" <<EOF
+          {
+            "parent": "minecraft:item/generated",
+            "textures": {
+              "layer0": "${MODID}:item/${name}"
+            }
+          }
+          EOF
+                echo "Created: $output"
+              fi
+            done
+          fi
+
+          # blockモデルが存在するブロックアイテムについて、
+          # itemモデルが無ければblockモデルを親にする
+          if [ -d "${BASE}/models/block" ]; then
+            for block_model in "${BASE}/models/block/"*.json; do
+              [ -f "$block_model" ] || continue
+
+              name="$(basename "$block_model" .json)"
+              output="${BASE}/models/item/${name}.json"
+
+              if [ ! -f "$output" ]; then
+                cat > "$output" <<EOF
+          {
+            "parent": "${MODID}:block/${name}"
+          }
+          EOF
+                echo "Created block item model: $output"
+              fi
+            done
+          fi
+
+      - name: Add pack.mcmeta
+        shell: bash
+        run: |
+          if [ ! -f "src/main/resources/pack.mcmeta" ]; then
+            cat > "src/main/resources/pack.mcmeta" <<'EOF'
+          {
+            "pack": {
+              "pack_format": 15,
+              "description": "TConX"
+            }
+          }
+          EOF
+            echo "Created pack.mcmeta"
+          fi
+
+      - name: Check changes
+        run: |
+          git status --short
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/assets/sakalti/models/item
+          git add src/main/resources/pack.mcmeta
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+
+          git commit -m "Fix missing item models"
+          git pull --rebase origin main
+          git push origin main
