@@ -53,7 +53,7 @@ public class ModMetals {
     public static final RegistryObject<Block> MOMONGAITE_ORE = registerBlock("momongaite_ore", 3f);
     public static final RegistryObject<Block> MOMONGAITE_BLOCK = registerBlock("momongaite_block", 11f);
     public static final RegistryObject<Item> MOMONGAITE_RAW = registerSimpleItem("momongaite_raw");
-    public static final RegistryObject<Item> MOMONGAITE_INGOT = registerSimpleItem("momongaite _ingot");
+    public static final RegistryObject<Item> MOMONGAITE_INGOT = registerSimpleItem("momongaite_ingot");
 
     public static final RegistryObject<Block> HERDYEEN_BLOCK = registerBlock("herdyeen_block", 18f);
     public static final RegistryObject<Item> HERDYEEN_INGOT = registerSimpleItem("herdyeen_ingot");
