@@ -20,6 +20,9 @@ public final class ModMain {
 
         ModMetals.register(modEventBus);
 
+        // ModTiersのstatic初期化を確実に実行
+        ModTiers.SUPER.getUses();
+
         TconxModifiers.MODIFIERS.register(modEventBus);
     }
 }
