@@ -1,28 +1,63 @@
 package com.sakalti.tconx.modifier;
 
-import com.sakalti.tconx.modifier.*;
-import slimeknights.tconstruct.library.modifiers.Modifier;
+import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
+import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
 
-public class TconxModifiers {
+import static com.sakalti.tconx.ModMain.MODID;
 
-    public static final Modifier GLACIAL_BIND = new GlacialBindModifier();
-    public static final Modifier SUPERMAGNET = new SuperMagnetModifier();
-    public static final Modifier ICE_BIND = new IceBindModifier();
-    public static final Modifier WEAK_BURN = new WeakBurnModifier();
-    public static final Modifier LIGHT_TOUCH = new LightTouchModifier();
-    public static final Modifier FIRE_WALL = new FireWallModifier();
-    public static final Modifier LIFESTEAL = new LifestealModifier();
-    public static final Modifier LONG_SPARK = new LongsparkModifier();
-    public static final Modifier LASER_PRISM = new LaserPrismModifier();
-    public static final Modifier POISONOUS_BIND = new PoisonousBindModifier();
-    public static final Modifier HEAVY_STONE = new HeavyStoneModifier();
-    public static final Modifier JUMPY = new JumpyModifier();
-    public static final Modifier BERSERK = new BerserkModifier();
-    public static final Modifier UNSTABLE = new UnstableModifier();
-    public static final Modifier FIELDY = new FieldyModifier();
-    public static final Modifier AURO_VISION = new AuroVisionModifier();
+public final class TconxModifiers {
 
-    public static void init() {
-        // 何も登録しない、自前インスタンス保持のみ
+    public static final ModifierDeferredRegister MODIFIERS =
+            ModifierDeferredRegister.create(MODID);
+
+    public static final StaticModifier<GlacialBindModifier> GLACIAL_BIND =
+            MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
+
+    public static final StaticModifier<SuperMagnetModifier> SUPERMAGNET =
+            MODIFIERS.register("supermagnet", SuperMagnetModifier::new);
+
+    public static final StaticModifier<IceBindModifier> ICE_BIND =
+            MODIFIERS.register("ice_bind", IceBindModifier::new);
+
+    public static final StaticModifier<WeakBurnModifier> WEAK_BURN =
+            MODIFIERS.register("weak_burn", WeakBurnModifier::new);
+
+    public static final StaticModifier<LightTouchModifier> LIGHT_TOUCH =
+            MODIFIERS.register("light_touch", LightTouchModifier::new);
+
+    public static final StaticModifier<FireWallModifier> FIRE_WALL =
+            MODIFIERS.register("fire_wall", FireWallModifier::new);
+
+    public static final StaticModifier<LifestealModifier> LIFESTEAL =
+            MODIFIERS.register("lifesteal", LifestealModifier::new);
+
+    public static final StaticModifier<LongsparkModifier> LONG_SPARK =
+            MODIFIERS.register("long_spark", LongsparkModifier::new);
+
+    public static final StaticModifier<LaserPrismModifier> LASER_PRISM =
+            MODIFIERS.register("laser_prism", LaserPrismModifier::new);
+
+    public static final StaticModifier<PoisonousBindModifier> POISONOUS_BIND =
+            MODIFIERS.register("poisonous_bind", PoisonousBindModifier::new);
+
+    public static final StaticModifier<HeavyStoneModifier> HEAVY_STONE =
+            MODIFIERS.register("heavy_stone", HeavyStoneModifier::new);
+
+    public static final StaticModifier<JumpyModifier> JUMPY =
+            MODIFIERS.register("jumpy", JumpyModifier::new);
+
+    public static final StaticModifier<BerserkModifier> BERSERK =
+            MODIFIERS.register("berserk", BerserkModifier::new);
+
+    public static final StaticModifier<UnstableModifier> UNSTABLE =
+            MODIFIERS.register("unstable", UnstableModifier::new);
+
+    public static final StaticModifier<FieldyModifier> FIELDY =
+            MODIFIERS.register("fieldy", FieldyModifier::new);
+
+    public static final StaticModifier<AuroVisionModifier> AURO_VISION =
+            MODIFIERS.register("auro_vision", AuroVisionModifier::new);
+
+    private TconxModifiers() {
     }
 }
