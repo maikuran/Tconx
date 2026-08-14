@@ -1,110 +1,26 @@
-name: Replace TConx with sakalti
+name: Replace TConx
 
 on:
-  workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
   contents: write
-  actions: write
 
 jobs:
   replace:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
 
-      - name: Replace TConx with sakalti in all files
-        shell: bash
+      - name: Replace
         run: |
-          python3 <<'PY'
-          from pathlib import Path
+          find . -type f -not -path './.git/*' -exec sed -i 's/TConx/sakalti/g; s/TCONX/SAKALTI/g; s/tconx/sakalti/g' {} +
 
-          root = Path(".")
-
-          # Git管理対象ファイルをすべて取得
-          import subprocess
-
-          files = subprocess.check_output(
-              ["git", "ls-files", "-z"],
-              text=False
-          ).split(b"\0")
-
-          changed = []
-
-          for raw in files:
-              if not raw:
-                  continue
-
-              path = Path(raw.decode("utf-8", errors="surrogateescape"))
-
-              if not path.is_file():
-                  continue
-
-              try:
-                  data = path.read_bytes()
-              except Exception:
-                  continue
-
-              # バイナリは対象外
-              if b"\0" in data:
-                  continue
-
-              original = data
-
-              # 大文字・小文字を区別して置換
-              data = data.replace(b"TConx", b"sakalti")
-              data = data.replace(b"TCONX", b"SAKALTI")
-              data = data.replace(b"tconx", b"sakalti")
-
-              if data != original:
-                  path.write_bytes(data)
-                  changed.append(str(path))
-
-          print("変更されたファイル:")
-          for path in changed:
-              print(" -", path)
-
-          print(f"\n合計: {len(changed)} ファイル")
-          PY
-
-      - name: Show remaining TConx/tconx strings
-        shell: bash
-        run: |
-          echo "残っている TConx / TCONX / tconx:"
-          if grep -RIn \
-            --exclude-dir=.git \
-            --exclude-dir=build \
-            --exclude-dir=.gradle \
-            -E 'TConx|TCONX|tconx' .; then
-            true
-          else
-            echo "残っていません。"
-          fi
-
-      - name: Commit changes
-        shell: bash
+      - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-          git add -A
-
-          if git diff --cached --quiet; then
-            echo "No changes."
-            exit 0
-          fi
-
-          git commit -m "Replace TConx with sakalti"
-
-      - name: Push
-        shell: bash
-        run: |
-          git push origin HEAD:main
+          git add .
+          git commit -m "Replace TConx with sakalti" || exit 0
+          git push origin main
