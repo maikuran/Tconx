@@ -1,0 +1,54 @@
+name: Remove export JSON files
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  remove-export-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove export*.json files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          mapfile -t files < <(
+            git ls-files | grep -E '(^|/)export[^/]*\.json$' || true
+          )
+
+          if [ "${#files[@]}" -eq 0 ]; then
+            echo "No export*.json files found."
+            exit 0
+          fi
+
+          printf 'Removing:\n%s\n' "${files[@]}"
+          rm -f -- "${files[@]}"
+
+      - name: Commit and push removals
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet --exit-code; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+          git commit -m "chore: remove export JSON files"
+          git push
