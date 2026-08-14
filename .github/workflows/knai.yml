@@ -96,4 +96,6 @@ jobs:
 
           git add -A
           git commit -m "Replace TConx with sakalti" || exit 0
+          git pull
+          
           git push origin main
