@@ -14,27 +14,77 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
 
-      - name: Replace TConx with sakalti
-        run: |
-          find . -type f \
-            ! -path './.git/*' \
-            ! -path './.github/workflows/*' \
-            -exec sed -i 's/TConx/sakalti/g' {} +
-
-      - name: Commit and push
+      - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -A
+      - name: Replace TConx with sakalti
+        run: |
+          python3 - <<'PY'
+          import os
 
-          if git diff --cached --quiet; then
-            echo "変更なし"
+          root = "."
+
+          skip_dirs = {
+              ".git",
+              ".gradle",
+              "build",
+              "out"
+          }
+
+          for dirpath, dirnames, filenames in os.walk(root):
+              dirnames[:] = [
+                  d for d in dirnames
+                  if d not in skip_dirs
+              ]
+
+              for filename in filenames:
+                  path = os.path.join(dirpath, filename)
+
+                  try:
+                      with open(path, "rb") as f:
+                          data = f.read()
+
+                      if b"TConx" not in data:
+                          continue
+
+                      new_data = data.replace(
+                          b"TConx",
+                          b"sakalti"
+                      )
+
+                      if new_data != data:
+                          with open(path, "wb") as f:
+                              f.write(new_data)
+
+                          print(f"Updated: {path}")
+
+                  except (UnicodeDecodeError, PermissionError, OSError):
+                      continue
+          PY
+
+      - name: Show changes
+        run: |
+          git status --short
+          git diff --stat
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes."
             exit 0
           fi
 
+          git add -A
           git commit -m "Replace TConx with sakalti"
+
+      - name: Push changes
+        run: |
           git push origin HEAD:main
