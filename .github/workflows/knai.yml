@@ -1,8 +1,10 @@
 name: Replace TConx
 
 on:
+  workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -13,29 +15,85 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Replace text
         run: |
-          find . -type f -not -path './.git/*' \
-            -exec sed -i \
-            's/TConx/sakalti/g; s/TCONX/SAKALTI/g; s/tconx/sakalti/g' {} +
+          python3 <<'PY'
+          from pathlib import Path
 
-      - name: Rename files and directories
+          for path in Path(".").rglob("*"):
+              if ".git" in path.parts:
+                  continue
+              if not path.is_file():
+                  continue
+
+              try:
+                  data = path.read_bytes()
+              except Exception:
+                  continue
+
+              if b"\0" in data:
+                  continue
+
+              new = (
+                  data
+                  .replace(b"TConx", b"sakalti")
+                  .replace(b"TCONX", b"SAKALTI")
+                  .replace(b"tconx", b"sakalti")
+              )
+
+              if new != data:
+                  path.write_bytes(new)
+          PY
+
+      - name: Rename directories and files
         run: |
-          find . -depth -not -path './.git/*' -print0 |
-          while IFS= read -r -d '' path; do
-            new=$(printf '%s' "$path" |
-              sed 's/TConx/sakalti/g; s/TCONX/SAKALTI/g; s/tconx/sakalti/g')
+          python3 <<'PY'
+          from pathlib import Path
 
-            if [ "$path" != "$new" ]; then
-              mv "$path" "$new"
-            fi
+          items = []
+
+          for path in Path(".").rglob("*"):
+              if ".git" in path.parts:
+                  continue
+
+              name = path.name
+              new_name = (
+                  name
+                  .replace("TConx", "sakalti")
+                  .replace("TCONX", "SAKALTI")
+                  .replace("tconx", "sakalti")
+              )
+
+              if name != new_name:
+                  items.append((path, path.with_name(new_name)))
+
+          # 深い階層から処理
+          items.sort(key=lambda x: len(x[0].parts), reverse=True)
+
+          for old, new in items:
+              if old.exists():
+                  new.parent.mkdir(parents=True, exist_ok=True)
+                  old.rename(new)
+          PY
+
+      - name: Fix Java package paths
+        run: |
+          find src -type f -name "*.java" -print0 2>/dev/null |
+          while IFS= read -r -d '' file; do
+            sed -i \
+              's/package com\.sakalti\.tconx/package com.sakalti.sakalti/g;
+               s/import com\.sakalti\.tconx/import com.sakalti.sakalti/g' \
+              "$file"
           done
 
-      - name: Commit and push
+      - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add -A
           git commit -m "Replace TConx with sakalti" || exit 0
           git push origin main
