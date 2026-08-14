@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: write
+  workflows: write  # ← この行を追加
 
 jobs:
   replace:
@@ -15,7 +16,7 @@ jobs:
 
       - name: Replace
         run: |
-          find . -type f -not -path './.git/*' -exec sed -i 's/TConx/sakalti/g; s/TCONX/SAKALTI/g; s/tconx/sakalti/g' {} +
+          find . -type f -not -path './.git/*' -not -path './.github/workflows/*' -exec sed -i 's/TConx/sakalti/g; s/TCONX/SAKALTI/g; s/tconx/sakalti/g' {} +
 
       - name: Commit and push
         run: |
