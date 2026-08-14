@@ -8,6 +8,8 @@ on:
 
 permissions:
   contents: write
+  actions: write
+  workflows: write
 
 jobs:
   replace:
@@ -16,21 +18,59 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Replace TConx with sakalti
+      - name: Replace TConx with sakalti in all files
         shell: bash
         run: |
-          set -e
+          python3 <<'PY'
+          from pathlib import Path
 
-          grep -RIl \
-            --exclude-dir=.git \
-            'TConx' . \
-            | while IFS= read -r file; do
-                echo "Replacing: $file"
-                sed -i 's/TConx/sakalti/g' "$file"
-              done
+          root = Path(".")
 
-      - name: Commit changes
+          skip_dirs = {
+              ".git",
+              ".gradle",
+              "build",
+              ".idea"
+          }
+
+          replacements = {
+              "TConx": "sakalti",
+              "tconx": "sakalti"
+          }
+
+          for path in root.rglob("*"):
+              if not path.is_file():
+                  continue
+
+              if any(part in skip_dirs for part in path.parts):
+                  continue
+
+              try:
+                  data = path.read_bytes()
+                  text = data.decode("utf-8")
+              except (UnicodeDecodeError, OSError):
+                  continue
+
+              original = text
+
+              for old, new in replacements.items():
+                  text = text.replace(old, new)
+
+              if text != original:
+                  path.write_text(text, encoding="utf-8")
+                  print(f"modified: {path}")
+          PY
+
+      - name: Show changes
+        run: |
+          git status --short
+          git diff --stat
+          git diff -- . ':!.git'
+
+      - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -38,9 +78,9 @@ jobs:
           git add -A
 
           if git diff --cached --quiet; then
-            echo "変更はありません"
+            echo "No changes."
             exit 0
           fi
 
           git commit -m "Replace TConx with sakalti"
-          git push
+          git push origin HEAD:main
