@@ -1,90 +1,110 @@
-name: Replace sakalti with sakalti
+name: Replace TConx with sakalti
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   replace:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GH_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Configure Git
+      - name: Replace TConx with sakalti in all files
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          root = Path(".")
+
+          # Git管理対象ファイルをすべて取得
+          import subprocess
+
+          files = subprocess.check_output(
+              ["git", "ls-files", "-z"],
+              text=False
+          ).split(b"\0")
+
+          changed = []
+
+          for raw in files:
+              if not raw:
+                  continue
+
+              path = Path(raw.decode("utf-8", errors="surrogateescape"))
+
+              if not path.is_file():
+                  continue
+
+              try:
+                  data = path.read_bytes()
+              except Exception:
+                  continue
+
+              # バイナリは対象外
+              if b"\0" in data:
+                  continue
+
+              original = data
+
+              # 大文字・小文字を区別して置換
+              data = data.replace(b"TConx", b"sakalti")
+              data = data.replace(b"TCONX", b"SAKALTI")
+              data = data.replace(b"tconx", b"sakalti")
+
+              if data != original:
+                  path.write_bytes(data)
+                  changed.append(str(path))
+
+          print("変更されたファイル:")
+          for path in changed:
+              print(" -", path)
+
+          print(f"\n合計: {len(changed)} ファイル")
+          PY
+
+      - name: Show remaining TConx/tconx strings
+        shell: bash
+        run: |
+          echo "残っている TConx / TCONX / tconx:"
+          if grep -RIn \
+            --exclude-dir=.git \
+            --exclude-dir=build \
+            --exclude-dir=.gradle \
+            -E 'TConx|TCONX|tconx' .; then
+            true
+          else
+            echo "残っていません。"
+          fi
+
+      - name: Commit changes
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Replace sakalti with sakalti
-        run: |
-          python3 - <<'PY'
-          import os
+          git add -A
 
-          root = "."
-
-          skip_dirs = {
-              ".git",
-              ".gradle",
-              "build",
-              "out"
-          }
-
-          for dirpath, dirnames, filenames in os.walk(root):
-              dirnames[:] = [
-                  d for d in dirnames
-                  if d not in skip_dirs
-              ]
-
-              for filename in filenames:
-                  path = os.path.join(dirpath, filename)
-
-                  try:
-                      with open(path, "rb") as f:
-                          data = f.read()
-
-                      if b"sakalti" not in data:
-                          continue
-
-                      new_data = data.replace(
-                          b"sakalti",
-                          b"sakalti"
-                      )
-
-                      if new_data != data:
-                          with open(path, "wb") as f:
-                              f.write(new_data)
-
-                          print(f"Updated: {path}")
-
-                  except (UnicodeDecodeError, PermissionError, OSError):
-                      continue
-          PY
-
-      - name: Show changes
-        run: |
-          git status --short
-          git diff --stat
-
-      - name: Commit changes
-        run: |
-          if git diff --quiet; then
+          if git diff --cached --quiet; then
             echo "No changes."
             exit 0
           fi
 
-          git add -A
-          git commit -m "Replace sakalti with sakalti"
+          git commit -m "Replace TConx with sakalti"
 
-      - name: Push changes
+      - name: Push
+        shell: bash
         run: |
           git push origin HEAD:main
