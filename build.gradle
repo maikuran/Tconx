@@ -6,12 +6,10 @@ plugins {
 sourceSets {
     main {
         resources {
-            srcDir 'src/main/resources'  // これが必要
+            srcDir 'src/main/resources'
         }
     }
 }
-
-// pluginsブロックの後に書く必要がある
 
 group = 'com.sakalti.tconx'
 archivesBaseName = 'tconx'
@@ -55,9 +53,9 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.4.5'
     compileOnly fg.deobf("curse.maven:mantle-74924:7563777")
-
-    // 正しい CurseForge 依存関係指定（slug-projectId: fileId）
-    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:7449219")
+    
+    // Tinkers' Construct を最新版に更新
+    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:7581138")
 }
 
 jar {
@@ -72,6 +70,7 @@ jar {
         )
     }
 }
+
 processResources {
     duplicatesStrategy = 'INCLUDE'
 }
