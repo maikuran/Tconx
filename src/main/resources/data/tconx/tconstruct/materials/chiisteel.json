@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#f8dac4",
   "fluid": "tconx:molten_chiisteel",
-  "translationKey": "material.tconx.chirite",
+  "translationKey": "material.tconx.chiisteel",
   "traits": [
     {
       "name": "tconx:weak_burn",
