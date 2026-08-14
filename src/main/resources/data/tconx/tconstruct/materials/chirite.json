@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#dddd00",
   "fluid": "tconx:molten_chirite",
-  "translationKey": "material.tconx.chirite"
+  "translationKey": "material.tconx.chirite",
   "traits": [
     {
       "name": "tconx:light_touch",
