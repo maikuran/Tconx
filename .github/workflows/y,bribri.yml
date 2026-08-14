@@ -1,4 +1,4 @@
-name: Generate Tinkers' Construct traits.json
+name: Generate Tinkers Construct traits
 
 on:
   push:
@@ -14,12 +14,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Generate traits.json
+      - name: Generate material trait files
         shell: bash
         run: |
-          mkdir -p src/main/resources/data/sakalti/tconstruct/materials
+          mkdir -p src/main/resources/data/sakalti/tinkering/materials/traits
 
-          python3 - <<'PY'
+          python3 -c '
           import json
           from pathlib import Path
 
@@ -42,42 +42,40 @@ jobs:
               "auro_vision"
           ]
 
-          path = Path(
-              "src/main/resources/data/sakalti/tconstruct/materials/traits.json"
-          )
+          base = Path("src/main/resources/data/sakalti/tinkering/materials/traits")
+          base.mkdir(parents=True, exist_ok=True)
 
-          data = {
-              "glacial_bind": "sakalti:glacial_bind",
-              "supermagnet": "sakalti:supermagnet",
-              "ice_bind": "sakalti:ice_bind",
-              "weak_burn": "sakalti:weak_burn",
-              "light_touch": "sakalti:light_touch",
-              "fire_wall": "sakalti:fire_wall",
-              "lifesteal": "sakalti:lifesteal",
-              "long_spark": "sakalti:long_spark",
-              "laser_prism": "sakalti:laser_prism",
-              "poisonous_bind": "sakalti:poisonous_bind",
-              "heavy_stone": "sakalti:heavy_stone",
-              "jumpy": "sakalti:jumpy",
-              "berserk": "sakalti:berserk",
-              "unstable": "sakalti:unstable",
-              "fieldy": "sakalti:fieldy",
-              "auro_vision": "sakalti:auro_vision"
-          }
+          for trait in traits:
+              data = {
+                  "default": [
+                      {
+                          "name": f"sakalti:{trait}"
+                      }
+                  ]
+              }
 
-          path.write_text(
-              json.dumps(data, indent=2, ensure_ascii=False) + "\n",
-              encoding="utf-8"
-          )
+              path = base / f"{trait}.json"
+              path.write_text(
+                  json.dumps(data, indent=2, ensure_ascii=False) + "\n",
+                  encoding="utf-8"
+              )
 
-          print(f"Generated {path}")
-          print(f"Traits: {len(traits)}")
-          PY
+              print(f"Generated: {path}")
 
-      - name: Commit generated traits.json
+          print(f"Generated {len(traits)} trait files.")
+          '
+
+      - name: Commit generated files
+        shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/main/resources/data/sakalti/tconstruct/materials/traits.json
-          git diff --cached --quiet || git commit -m "Generate TConX material traits"
-          git push
+
+          git add src/main/resources/data/sakalti/tinkering/materials/traits/
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Generate TConX material trait files"
+            git push
+          fi
