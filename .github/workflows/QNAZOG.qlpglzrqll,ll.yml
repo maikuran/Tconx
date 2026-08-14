@@ -1,9 +1,4 @@
-name: Rename and move directories for sakalti
-
-on:
-  push:
-    branches:
-      - main
+name: Rename and move directories for sakalt
 
 jobs:
   replace-paths:
