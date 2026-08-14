@@ -1,0 +1,109 @@
+name: Fix TConstruct Material Directories
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-material-directories:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pull latest main
+        run: |
+          git pull --rebase origin main
+
+      - name: Fix TConstruct material directories
+        shell: bash
+        run: |
+          set -e
+
+          OLD="src/main/resources/data/sakalti/tconstruct/materials"
+          NEW="src/main/resources/data/sakalti/tinkering/materials"
+
+          DEFINITION="${NEW}/definition"
+          STATS="${NEW}/stats"
+          TRAITS="${NEW}/traits"
+
+          echo "Creating correct Tinkers' Construct directories..."
+
+          mkdir -p "${DEFINITION}"
+          mkdir -p "${STATS}"
+          mkdir -p "${TRAITS}"
+
+          # 既存のmaterials直下にあるJSONをdefinitionへ移動
+          if [ -d "${OLD}" ]; then
+            find "${OLD}" -maxdepth 1 -type f -name "*.json" -print0 |
+            while IFS= read -r -d '' file; do
+              filename="$(basename "${file}")"
+
+              echo "Moving definition: ${filename}"
+
+              mv "${file}" "${DEFINITION}/${filename}"
+            done
+
+            # 既存statsを正しい場所へ移動
+            if [ -d "${OLD}/stats" ]; then
+              find "${OLD}/stats" -maxdepth 1 -type f -name "*.json" -print0 |
+              while IFS= read -r -d '' file; do
+                filename="$(basename "${file}")"
+
+                echo "Moving stat: ${filename}"
+
+                mv "${file}" "${STATS}/${filename}"
+              done
+            fi
+          fi
+
+          # 旧tconstructディレクトリが空なら削除
+          if [ -d "${OLD}/stats" ] && [ -z "$(find "${OLD}/stats" -mindepth 1 -print -quit)" ]; then
+            rmdir "${OLD}/stats"
+          fi
+
+          if [ -d "${OLD}" ] && [ -z "$(find "${OLD}" -mindepth 1 -print -quit)" ]; then
+            rmdir "${OLD}"
+          fi
+
+          # traitsは新規ディレクトリとして作成
+          # Gitでディレクトリを保持するため.gitkeepを置く
+          touch "${TRAITS}/.gitkeep"
+
+          echo ""
+          echo "Final material directory:"
+          find "src/main/resources/data/sakalti/tinkering/materials" -type f | sort
+
+      - name: Show changes
+        run: |
+          git status --short
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/sakalti
+
+          if git diff --cached --quiet; then
+            echo "No directory changes."
+            exit 0
+          fi
+
+          git commit -m "Fix TConstruct material directories"
+
+      - name: Pull before push
+        run: |
+          git pull --rebase origin main
+
+      - name: Push changes
+        run: |
+          git push origin main
