@@ -81,5 +81,4 @@ jobs:
             exit 0
           fi
           git commit -m "Replace TConx with sakalti"
-          git pull
           git push origin HEAD:main
