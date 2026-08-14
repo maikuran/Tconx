@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:block/cube_all",
   "textures": {
-    "all": "tconx:block/momongaite_block"
+    "all": "tconx:block/aurostone_block"
   }
 }

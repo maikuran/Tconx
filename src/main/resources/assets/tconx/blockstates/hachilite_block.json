@@ -1,5 +1,7 @@
 {
   "variants": {
-    "": { "model": "tconx:block/hachilite_block" }
+    "": {
+      "model": "tconx:block/hachilite_block"
+    }
   }
 }

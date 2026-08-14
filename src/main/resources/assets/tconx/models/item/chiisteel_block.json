@@ -1,6 +1,3 @@
 {
-  "parent": "item/generated",
-  "textures": {
-    "layer0": "tconx:item/chiisteel_block"
-  }
+  "parent": "tconx:block/chiisteel_block"
 }
