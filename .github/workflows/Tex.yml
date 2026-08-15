@@ -3,11 +3,8 @@ name: Generate Fluid Textures
 on:
   workflow_dispatch:
   push:
-    paths:
-      - "src/main/java/**/ModFluids.java"
-      - "src/main/resources/assets/sakalti/tinkering/materials/*.json"
-      - ".github/workflows/generate-fluid-textures.yml"
-      - ".github/scripts/generate_fluid_textures.py"
+    branches:
+      - main
 
 permissions:
   contents: write
