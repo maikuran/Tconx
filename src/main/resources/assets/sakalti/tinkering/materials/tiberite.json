@@ -1,3 +1,6 @@
 {
-  "color": "#8200ff"
+  "color": "FF8200FF",
+  "fallbacks": [
+    "metal"
+  ]
 }
