@@ -2,16 +2,16 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "fluid": "tconstruct:molten_chiirite",
-      "amount": 100
+      "amount": 100,
+      "name": "tconstruct:molten_chiirite"
     },
     {
-      "fluid": "tconstruct:molten_igniz",
-      "amount": 10
+      "amount": 10,
+      "name": "tconstruct:molten_igniz"
     },
     {
-      "fluid": "sakalti:molten_emerald",
-      "amount": 100
+      "amount": 100,
+      "name": "sakalti:molten_emerald"
     }
   ],
   "result": {

@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "fluid": "sakalti:molten_kanilite",
-      "amount": 100
+      "amount": 100,
+      "name": "sakalti:molten_kanilite"
     },
     {
-      "fluid": "sakalti:molten_igniz",
-      "amount": 50
+      "amount": 50,
+      "name": "sakalti:molten_igniz"
     }
   ],
   "result": {

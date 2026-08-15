@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "fluid": "tconstruct:molten_cobalt",
-      "amount": 144
+      "amount": 144,
+      "name": "tconstruct:molten_cobalt"
     },
     {
-      "fluid": "sakalti:molten_chirite",
-      "amount": 50
+      "amount": 50,
+      "name": "sakalti:molten_chirite"
     }
   ],
   "result": {

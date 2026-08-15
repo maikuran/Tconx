@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "fluid": "tconstruct:molten_cobalt",
-      "amount": 300
+      "amount": 300,
+      "name": "tconstruct:molten_cobalt"
     },
     {
-      "fluid": "tconstruct:molten_iron",
-      "amount": 150
+      "amount": 150,
+      "name": "tconstruct:molten_iron"
     }
   ],
   "result": {

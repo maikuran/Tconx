@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "fluid": "sakalti:molten_viberium",
-      "amount": 175
+      "amount": 175,
+      "name": "sakalti:molten_viberium"
     },
     {
-      "fluid": "sakalti:molten_iron",
-      "amount": 100
+      "amount": 100,
+      "name": "sakalti:molten_iron"
     }
   ],
   "result": {

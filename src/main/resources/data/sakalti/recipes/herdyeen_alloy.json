@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "fluid": "tconstruct:molten_emerald",
-      "amount": 100
+      "amount": 100,
+      "name": "tconstruct:molten_emerald"
     },
     {
-      "fluid": "tconstruct:molten_diamond",
-      "amount": 50
+      "amount": 50,
+      "name": "tconstruct:molten_diamond"
     }
   ],
   "result": {

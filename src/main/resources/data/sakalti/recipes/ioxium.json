@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "fluid": "tconstruct:molten_hepatizon",
-      "amount": 40
+      "amount": 40,
+      "name": "tconstruct:molten_hepatizon"
     },
     {
-      "fluid": "sakalti:molten_kanilite",
-      "amount": 40
+      "amount": 40,
+      "name": "sakalti:molten_kanilite"
     }
   ],
   "result": {

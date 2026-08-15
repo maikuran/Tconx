@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "fluid": "tconstruct:molten_gold",
-      "amount": 20
+      "amount": 20,
+      "name": "tconstruct:molten_gold"
     },
     {
-      "fluid": "sakalti:molten_igniz",
-      "amount": 10
+      "amount": 10,
+      "name": "sakalti:molten_igniz"
     }
   ],
   "result": {
