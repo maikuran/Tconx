@@ -18,85 +18,139 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          token: ${{ secrets.GH_PAT }}
 
-      - name: Pull latest main
+      - name: Fetch latest main
         run: |
-          git pull --rebase origin main
+          git fetch origin main
+          git reset --hard origin/main
 
       - name: Convert alloy JSON
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
 
           ROOT="src/main/resources/data/sakalti/tconstruct/alloys"
 
-          test -d "$ROOT"
+          if [ ! -d "$ROOT" ]; then
+            echo "Directory not found: $ROOT"
+            exit 1
+          fi
 
-          find "$ROOT" -type f -name '*.json' -print0 |
+          found=0
+
           while IFS= read -r -d '' file; do
+            found=1
+            echo "Processing: $file"
 
             jq '
+              . as $old
+              |
               {
                 type: "tconstruct:alloy",
 
-                inputs: (
-                  .inputs // []
-                  | map({
-                      fluid: .fluid,
-                      amount: .amount
-                    })
-                ),
+                inputs:
+                  (
+                    if ($old.inputs | type) == "array" then
+                      $old.inputs
+                    else
+                      []
+                    end
+                  ),
 
-                result: {
-                  fluid: .result.fluid,
-                  amount: .result.amount
-                },
+                result:
+                  {
+                    fluid:
+                      (
+                        if ($old.result | type) == "object"
+                        and ($old.result.fluid | type) == "string"
+                        then
+                          $old.result.fluid
+                        else
+                          error("result.fluid is missing: " + input_filename)
+                        end
+                      ),
 
-                temperature: .temperature
+                    amount:
+                      (
+                        if ($old.result | type) == "object"
+                        and ($old.result.amount | type) == "number"
+                        then
+                          $old.result.amount
+                        else
+                          error("result.amount is missing: " + input_filename)
+                        end
+                      )
+                  },
+
+                temperature:
+                  (
+                    if ($old.temperature | type) == "number" then
+                      $old.temperature
+                    else
+                      error("temperature is missing: " + input_filename)
+                    end
+                  )
               }
-            ' "$file" > "$file.tmp"
+            ' "$file" > "${file}.tmp"
 
-            mv "$file.tmp" "$file"
+            mv "${file}.tmp" "$file"
 
             echo "Fixed: $file"
-          done
+
+          done < <(find "$ROOT" -type f -name '*.json' -print0)
+
+          if [ "$found" -eq 0 ]; then
+            echo "No alloy JSON files found."
+            exit 1
+          fi
 
       - name: Validate JSON
         shell: bash
         run: |
-          set -e
+          set -euo pipefail
 
           ROOT="src/main/resources/data/sakalti/tconstruct/alloys"
 
-          find "$ROOT" -type f -name '*.json' -print0 |
           while IFS= read -r -d '' file; do
+            echo "Validating: $file"
+
             jq empty "$file"
 
             jq -e '
-              .type == "tconstruct:alloy"
+              (.type == "tconstruct:alloy")
               and (.inputs | type == "array")
-              and (.inputs | all(
-                (.fluid | type == "string")
-                and (.amount | type == "number")
-              ))
+              and (
+                .inputs
+                | all(
+                    (.fluid | type == "string")
+                    and (.amount | type == "number")
+                  )
+              )
               and (.result | type == "object")
               and (.result.fluid | type == "string")
               and (.result.amount | type == "number")
               and (.temperature | type == "number")
             ' "$file" > /dev/null
 
-            echo "Valid: $file"
-          done
+          done < <(find "$ROOT" -type f -name '*.json' -print0)
 
-      - name: Commit and push
+      - name: Commit changes
         shell: bash
         run: |
+          set -euo pipefail
+
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add -A
+          git add src/main/resources/data/sakalti/tconstruct/alloys/
 
-          git commit --allow-empty -m "Fix TConstruct alloy JSON"
+          git commit --allow-empty \
+            -m "Fix TConstruct alloy JSON"
 
-          git pull --rebase origin main
-          git push origin main
+      - name: Push changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git push origin HEAD:main
