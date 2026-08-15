@@ -1,0 +1,19 @@
+{
+  "type": "tconstruct:alloy",
+  "inputs": [
+    {
+      "name": "sakalti:molten_kanilite",
+      "amount": 100
+    },
+    {
+      "name": "sakalti:molten_igniz",
+      "amount": 60
+    }
+  ],
+  "result": {
+    "fluid": "sakalti:molten_igniz",
+    "amount": 40
+
+  },
+  "temperature": 1450
+}
