@@ -42,5 +42,6 @@ jobs:
             echo "No texture changes."
           else
             git commit -m "Generate fluid textures from material colors"
+            git pull
             git push
           fi
