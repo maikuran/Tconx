@@ -1,132 +1,67 @@
+# onc.py
 from pathlib import Path
 import json
-import re
-
-MODID = "sakalti"
 
 ROOT = Path("src/main/resources")
+DEFINITION = ROOT / "data" / "sakalti" / "tinkering" / "materials" / "definition"
+RENDER = ROOT / "assets" / "sakalti" / "tinkering" / "materials"
 
-DEFINITION_DIR = (
-    ROOT
-    / "data"
-    / MODID
-    / "tinkering"
-    / "materials"
-    / "definition"
-)
+# 素材名: ARGBカラー
+# definition JSON の color が #RRGGBB の場合、自動的に FF を付けます。
+def get_color(data):
+    color = data.get("color", "FFFFFF")
 
-RENDER_DIR = (
-    ROOT
-    / "assets"
-    / MODID
-    / "tinkering"
-    / "materials"
-)
+    if not isinstance(color, str):
+        color = "FFFFFF"
 
-RENDER_DIR.mkdir(parents=True, exist_ok=True)
+    color = color.strip().replace("#", "").upper()
 
+    if len(color) == 6:
+        color = "FF" + color
+    elif len(color) != 8:
+        color = "FFFFFFFF"
 
-def hex_to_rgb(value):
-    if not isinstance(value, str):
-        return None
-
-    value = value.strip()
-
-    if not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
-        return None
-
-    return {
-        "r": int(value[1:3], 16),
-        "g": int(value[3:5], 16),
-        "b": int(value[5:7], 16),
-    }
-
-
-def create_render(material_name, definition):
-    color = definition.get("color", "#FFFFFF")
-
-    rgb = hex_to_rgb(color)
-
-    if rgb is None:
-        raise ValueError(
-            f"{material_name}: invalid color: {color}"
-        )
-
-    # TConstruct material render definition
-    #
-    # 重要:
-    # definition JSON そのものをコピーしません。
-    # render 用 JSON として必要な情報だけを生成します。
-
-    return {
-        "color": color
-    }
+    return color
 
 
 def main():
-    if not DEFINITION_DIR.exists():
-        raise SystemExit(
-            f"Definition directory not found:\n{DEFINITION_DIR}"
-        )
+    RENDER.mkdir(parents=True, exist_ok=True)
 
-    definition_files = sorted(
-        DEFINITION_DIR.glob("*.json")
-    )
+    if not DEFINITION.exists():
+        raise SystemExit(f"Definition directory not found: {DEFINITION}")
 
-    if not definition_files:
-        raise SystemExit(
-            f"No material definitions found:\n{DEFINITION_DIR}"
-        )
+    count = 0
 
-    generated = 0
-
-    for definition_path in definition_files:
-        material_name = definition_path.stem
+    for definition in sorted(DEFINITION.glob("*.json")):
+        material = definition.stem
 
         try:
-            with definition_path.open(
-                "r",
-                encoding="utf-8"
-            ) as f:
-                definition = json.load(f)
+            with definition.open("r", encoding="utf-8") as f:
+                data = json.load(f)
         except json.JSONDecodeError as e:
-            raise SystemExit(
-                f"Invalid JSON: {definition_path}\n"
-                f"{e}"
-            )
+            raise SystemExit(f"Invalid JSON: {definition}\n{e}")
 
-        render = create_render(
-            material_name,
-            definition
-        )
+        # definition に color があれば使用。
+        # なければ白。
+        color = get_color(data)
 
-        output_path = (
-            RENDER_DIR
-            / f"{material_name}.json"
-        )
+        render = {
+            "color": color,
+            "fallbacks": [
+                "metal"
+            ]
+        }
 
-        with output_path.open(
-            "w",
-            encoding="utf-8"
-        ) as f:
-            json.dump(
-                render,
-                f,
-                ensure_ascii=False,
-                indent=2
-            )
+        output = RENDER / f"{material}.json"
+
+        with output.open("w", encoding="utf-8") as f:
+            json.dump(render, f, ensure_ascii=False, indent=2)
             f.write("\n")
 
-        print(
-            f"[GENERATED] "
-            f"{output_path}"
-        )
+        print(f"[GENERATED] {output} -> {color}")
+        count += 1
 
-        generated += 1
-
-    print(
-        f"Generated {generated} material render files."
-    )
+    print(f"Generated {count} material render files.")
 
 
 if __name__ == "__main__":
