@@ -1,0 +1,148 @@
+name: Fix TConX JSON
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fix JSON files
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import json
+          import re
+
+          root = Path("src/main/resources/data/sakalti")
+
+          if not root.exists():
+              print("sakalti data directory not found.")
+              raise SystemExit(1)
+
+          changed = []
+
+          for path in root.rglob("*.json"):
+              text = path.read_text(encoding="utf-8")
+              original = text
+
+              # Tinkers' Construct の harvest tier のスペルミス
+              text = text.replace(
+                  '"minecraft:netherrite"',
+                  '"minecraft:netherite"'
+              )
+
+              text = text.replace(
+                  "'minecraft:netherrite'",
+                  "'minecraft:netherite'"
+              )
+
+              # translationKey の直後に traits 等が続く場合の
+              # カンマ抜けを修正
+              text = re.sub(
+                  r'("translationKey"\s*:\s*"[^"]+")(\s*\n\s*"traits"\s*:)',
+                  r'\1,\2',
+                  text
+              )
+
+              # 他の一般的なフィールドでも、
+              # 値の直後に次のキーが来ている場合を補正
+              text = re.sub(
+                  r'("color"\s*:\s*"#[0-9a-fA-F]+")(\s*\n\s*"[^"]+"\s*:)',
+                  r'\1,\2',
+                  text
+              )
+
+              text = re.sub(
+                  r'("fluid"\s*:\s*"[^"]+")(\s*\n\s*"[^"]+"\s*:)',
+                  r'\1,\2',
+                  text
+              )
+
+              if text != original:
+                  path.write_text(text, encoding="utf-8")
+                  changed.append(str(path))
+
+          print("Fixed files:")
+          for path in changed:
+              print(f"  {path}")
+
+          print(f"Total fixed: {len(changed)}")
+          PY
+
+      - name: Validate every JSON
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+          import json
+          import sys
+
+          root = Path("src/main/resources/data/sakalti")
+          errors = []
+
+          for path in root.rglob("*.json"):
+              try:
+                  with path.open("r", encoding="utf-8") as f:
+                      json.load(f)
+              except Exception as e:
+                  errors.append((path, str(e)))
+
+          if errors:
+              print("Invalid JSON files:")
+              for path, error in errors:
+                  print(f"- {path}")
+                  print(f"  {error}")
+              sys.exit(1)
+
+          print("All JSON files are valid.")
+
+          # 念のため netherrite の残存も確認
+          bad = []
+
+          for path in root.rglob("*.json"):
+              text = path.read_text(encoding="utf-8")
+              if "netherrite" in text.lower():
+                  bad.append(path)
+
+          if bad:
+              print("Found remaining 'netherrite' references:")
+              for path in bad:
+                  print(f"- {path}")
+              sys.exit(1)
+
+          print("No 'netherrite' references remain.")
+          PY
+
+      - name: Show changes
+        run: |
+          git diff -- src/main/resources/data/sakalti
+
+      - name: Commit fixes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/sakalti
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Fix TConX material JSON"
+          git push
