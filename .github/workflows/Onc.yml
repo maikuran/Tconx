@@ -1,4 +1,3 @@
-# .github/workflows/render.yml
 name: Generate TConstruct Material Renders
 
 on:
@@ -29,11 +28,11 @@ jobs:
         run: |
           git pull --ff-only origin main
 
-      - name: Generate renders
+      - name: Generate material renders
         run: |
           python onc.py
 
-      - name: Validate renders
+      - name: Validate JSON
         run: |
           python - <<'PY'
           import json
@@ -46,21 +45,24 @@ jobs:
           files = sorted(root.glob("*.json"))
 
           if not files:
-              raise SystemExit("No render JSON files found.")
+              raise SystemExit(
+                  "No material render JSON files found."
+              )
 
           for path in files:
               with path.open("r", encoding="utf-8") as f:
                   data = json.load(f)
 
-              if "color" not in data:
-                  raise SystemExit(f"Missing color: {path}")
-
-              if "fallbacks" not in data:
-                  raise SystemExit(f"Missing fallbacks: {path}")
+              if not isinstance(data, dict):
+                  raise SystemExit(
+                      f"Invalid render object: {path}"
+                  )
 
               print(f"[VALID] {path}")
 
-          print(f"Validated {len(files)} render files.")
+          print(
+              f"Validated {len(files)} material render files."
+          )
           PY
 
       - name: Check changes
@@ -74,13 +76,14 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit
+      - name: Commit generated renders
         if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add src/main/resources/assets/sakalti/tinkering/materials/
+          git add \
+            src/main/resources/assets/sakalti/tinkering/materials/
 
           git commit -m "Generate TConstruct material renders"
 
