@@ -53,34 +53,41 @@ jobs:
 
                 inputs: (
                   (.inputs // [])
-                  | map({
-                      fluid: (
-                        if (.fluid? | type) == "string" and (.fluid | length) > 0
-                        then .fluid
-                        elif (.name? | type) == "string" and (.name | length) > 0
-                        then .name
-                        else
-                          error("Input is missing a valid fluid/name ID")
-                        end
-                      ),
-                      amount: .amount
-                    })
+                  | map(
+                      {
+                        fluid:
+                          (
+                            if (.fluid? | type) == "string"
+                               and (.fluid | length) > 0
+                            then .fluid
+                            elif (.name? | type) == "string"
+                                 and (.name | length) > 0
+                            then .name
+                            else
+                              error("Input is missing fluid/name")
+                            end
+                          ),
+                        amount: .amount
+                      }
+                    )
                 ),
 
-                result: {
-                  fluid: (
-                    if (.result.fluid? | type) == "string"
-                    and (.result.fluid | length) > 0
-                    then .result.fluid
-                    elif (.result.name? | type) == "string"
-                    and (.result.name | length) > 0
-                    then .result.name
-                    else
-                      error("Result is missing a valid fluid/name ID")
-                    end
-                  ),
-                  amount: .result.amount
-                },
+                result:
+                  {
+                    fluid:
+                      (
+                        if (.result.fluid? | type) == "string"
+                           and (.result.fluid | length) > 0
+                        then .result.fluid
+                        elif (.result.name? | type) == "string"
+                             and (.result.name | length) > 0
+                        then .result.name
+                        else
+                          error("Result is missing fluid/name")
+                        end
+                      ),
+                    amount: .result.amount
+                  },
 
                 temperature: .temperature
               }
@@ -100,46 +107,66 @@ jobs:
             exit 1
           fi
 
-      - name: Validate alloy JSON
+      - name: Validate JSON
         shell: bash
         run: |
           set -euo pipefail
 
           ROOT="src/main/resources/data/sakalti/tconstruct/alloys"
 
-          failed=0
           count=0
+          failed=0
 
           while IFS= read -r -d '' file; do
             count=$((count + 1))
+
             echo "Validating: $file"
 
+            # JSONとして正しいか
             if ! jq empty "$file"; then
               echo "ERROR: Invalid JSON: $file"
               failed=1
               continue
             fi
 
+            # TConstruct alloy形式を検証
             if ! jq -e '
-              .type == "tconstruct:alloy"
-              and (.inputs | type == "array")
-              and (.inputs | length > 0)
-              and all(
-                .[];
-                (.fluid | type == "string")
-                and (.fluid | length > 0)
-                and (.amount | type == "number")
-                and (.amount > 0)
+              (.type == "tconstruct:alloy")
+              and
+              (.inputs | type == "array")
+              and
+              ((.inputs | length) > 0)
+              and
+              (
+                [.inputs[] |
+                  (
+                    (.fluid | type == "string")
+                    and
+                    ((.fluid | length) > 0)
+                    and
+                    (.amount | type == "number")
+                    and
+                    (.amount > 0)
+                  )
+                ]
+                | all
               )
-              and (.result | type == "object")
-              and (.result.fluid | type == "string")
-              and (.result.fluid | length > 0)
-              and (.result.amount | type == "number")
-              and (.result.amount > 0)
-              and (.temperature | type == "number")
-              and (.temperature > 0)
+              and
+              (.result | type == "object")
+              and
+              (.result.fluid | type == "string")
+              and
+              ((.result.fluid | length) > 0)
+              and
+              (.result.amount | type == "number")
+              and
+              (.result.amount > 0)
+              and
+              (.temperature | type == "number")
+              and
+              (.temperature > 0)
             ' "$file" > /dev/null; then
-              echo "ERROR: Invalid TConstruct alloy structure: $file"
+              echo "ERROR: Invalid TConstruct alloy structure:"
               cat "$file"
               failed=1
               continue
@@ -155,7 +182,7 @@ jobs:
           )
 
           if [ "$count" -eq 0 ]; then
-            echo "ERROR: No JSON files found."
+            echo "ERROR: No alloy JSON files found."
             exit 1
           fi
 
@@ -164,12 +191,20 @@ jobs:
             exit 1
           fi
 
-          echo "Validated $count alloy files successfully."
+          echo "Successfully validated $count alloy files."
 
-      - name: Show changes
+      - name: Show generated files
         shell: bash
         run: |
-          git diff -- src/main/resources/data/sakalti/tconstruct/alloys/
+          set -euo pipefail
+
+          ROOT="src/main/resources/data/sakalti/tconstruct/alloys"
+
+          find "$ROOT" \
+            -type f \
+            -name '*.json' \
+            -print \
+            -exec cat {} \;
 
       - name: Commit changes
         shell: bash
@@ -190,9 +225,6 @@ jobs:
           set -euo pipefail
 
           git fetch origin main
-          git rebase origin/main || {
-            echo "Rebase failed."
-            exit 1
-          }
+          git rebase origin/main
 
           git push origin HEAD:main
