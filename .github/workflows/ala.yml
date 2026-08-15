@@ -14,25 +14,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       - name: Pull latest main
         run: |
-          git pull --ff-only origin main
+          git pull --rebase origin main
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Fix alloy JSON
+      - name: Run onc.py
         run: |
+          test -f onec.py
           python onec.py
 
-      - name: Validate JSON
+      - name: Validate alloy JSON
         run: |
           python - <<'PY'
           import json
@@ -41,54 +42,38 @@ jobs:
           root = Path("src/main/resources/data/sakalti/tconstruct/alloys")
 
           if not root.exists():
-              raise SystemExit(f"Directory not found: {root}")
+              raise SystemExit(f"Missing directory: {root}")
 
           files = sorted(root.glob("*.json"))
+
+          if not files:
+              raise SystemExit("No alloy JSON files found.")
 
           for path in files:
               with path.open("r", encoding="utf-8") as f:
                   data = json.load(f)
 
-              if "result" not in data:
-                  raise SystemExit(f"Missing result: {path}")
+              if data != {
+                  "result": {
+                      "fluid": f"sakalti:molten_{path.stem}",
+                      "amount": data["result"]["amount"]
+                  }
+              }:
+                  raise SystemExit(f"Invalid alloy format: {path}")
 
-              result = data["result"]
-
-              if "fluid" not in result:
-                  raise SystemExit(f"Missing result.fluid: {path}")
-
-              if "amount" not in result:
-                  raise SystemExit(f"Missing result.amount: {path}")
-
-              print(f"[OK] {path}")
+              print(f"[VALID] {path}")
 
           print(f"Validated {len(files)} alloy files.")
           PY
 
-      - name: Check changes
-        id: changes
-        run: |
-          if git diff --quiet; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Commit changes
-        if: steps.changes.outputs.changed == 'true'
+      - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add src/main/resources/data/sakalti/tconstruct/alloys/
-          git add onc.py
+          git add -A
 
-          git commit -m "Fix TConstruct alloy JSON"
+          git commit --allow-empty -m "Fix TConstruct alloy JSON"
 
           git pull --rebase origin main
           git push origin main
-
-      - name: No changes
-        if: steps.changes.outputs.changed == 'false'
-        run: |
-          echo "No alloy changes."
