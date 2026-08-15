@@ -1,0 +1,137 @@
+name: Generate Mantle Fluid Textures
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Generate Mantle fluid texture definitions
+        shell: python
+        run: |
+          import json
+          import re
+          from pathlib import Path
+
+          ROOT = Path("src/main/resources/assets/sakalti")
+
+          materials_dir = ROOT / "tinkering" / "materials"
+          output_dir = ROOT / "mantle" / "fluid_texture"
+
+          output_dir.mkdir(parents=True, exist_ok=True)
+
+          # molten_xxx のFluidをJavaから動的に検出
+          java_files = list(Path("src/main/java").rglob("*.java"))
+
+          fluids = set()
+
+          for java_file in java_files:
+              text = java_file.read_text(encoding="utf-8")
+
+              # registerType("molten_xxx")
+              for match in re.finditer(
+                  r'registerType\("([a-z0-9_]+)"\)',
+                  text
+              ):
+                  fluids.add(match.group(1))
+
+              # FLUIDS.register("molten_xxx"
+              for match in re.finditer(
+                  r'FLUIDS\.register\(\s*"([a-z0-9_]+)"',
+                  text
+              ):
+                  fluids.add(match.group(1))
+
+          print("Detected fluids:")
+          for fluid in sorted(fluids):
+              print(" -", fluid)
+
+          for fluid in sorted(fluids):
+
+              # flowingは独立したFluid Textureとして作らない
+              if fluid.endswith("_flowing"):
+                  continue
+
+              # molten_aurostone -> aurostone
+              material_name = fluid.removeprefix("molten_")
+
+              material_file = materials_dir / f"{material_name}.json"
+
+              color = None
+
+              if material_file.exists():
+                  try:
+                      data = json.loads(
+                          material_file.read_text(encoding="utf-8")
+                      )
+
+                      color = data.get("color")
+
+                  except Exception as e:
+                      print(
+                          f"Failed to read {material_file}: {e}"
+                      )
+
+              # 色が取得できなければ安全なデフォルト
+              if not color:
+                  color = "FFFFFF"
+
+              color = str(color).replace("#", "").upper()
+
+              if len(color) == 6:
+                  color = "FF" + color
+
+              if len(color) != 8:
+                  print(
+                      f"Invalid color for {fluid}: {color}"
+                  )
+                  color = "FFFFFFFF"
+
+              output = {
+                  "color": color
+              }
+
+              output_file = output_dir / f"{fluid}.json"
+
+              output_file.write_text(
+                  json.dumps(
+                      output,
+                      indent=2,
+                      ensure_ascii=False
+                  ) + "\n",
+                  encoding="utf-8"
+              )
+
+              print(
+                  f"Generated {output_file} -> {color}"
+              )
+
+      - name: Commit generated Mantle fluid textures
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/assets/sakalti/mantle/fluid_texture
+
+          if git diff --cached --quiet; then
+            echo "No Mantle fluid texture changes."
+          else
+            git commit -m "Generate Mantle fluid textures from material colors"
+            git push
+          fi
