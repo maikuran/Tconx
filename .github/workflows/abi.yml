@@ -1,0 +1,122 @@
+name: Move TConstruct Alloy Recipes
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  move-alloys:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Pull latest main
+        run: |
+          git pull --rebase origin main
+
+      - name: Move alloy JSON files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          OLD="src/main/resources/data/sakalti/tconstruct/alloys"
+          NEW="src/main/resources/data/sakalti/recipes"
+
+          mkdir -p "$NEW"
+
+          found=0
+
+          while IFS= read -r -d '' file; do
+            found=1
+            name="$(basename "$file")"
+
+            echo "Moving: $file"
+            echo "     -> $NEW/$name"
+
+            mv "$file" "$NEW/$name"
+          done < <(
+            find "$OLD" \
+              -maxdepth 1 \
+              -type f \
+              -name '*.json' \
+              -print0
+          )
+
+          if [ "$found" -eq 0 ]; then
+            echo "No alloy files found."
+          fi
+
+          # 空になった旧ディレクトリを削除
+          if [ -d "$OLD" ] && [ -z "$(find "$OLD" -mindepth 1 -print -quit)" ]; then
+            rmdir "$OLD"
+          fi
+
+      - name: Validate moved alloy JSON
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ROOT="src/main/resources/data/sakalti/recipes"
+
+          if [ ! -d "$ROOT" ]; then
+            echo "Recipe directory does not exist."
+            exit 1
+          fi
+
+          while IFS= read -r -d '' file; do
+            echo "Validating: $file"
+
+            jq empty "$file"
+
+            type="$(jq -r '.type // empty' "$file")"
+
+            if [ "$type" = "tconstruct:alloy" ]; then
+              jq -e '
+                (.inputs | type == "array")
+                and
+                (.result | type == "object")
+                and
+                (.result.fluid | type == "string")
+                and
+                (.result.amount | type == "number")
+                and
+                (.temperature | type == "number")
+              ' "$file" > /dev/null
+            fi
+
+          done < <(
+            find "$ROOT" \
+              -type f \
+              -name '*.json' \
+              -print0
+          )
+
+      - name: Commit
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          git commit --allow-empty \
+            -m "Move TConstruct alloy recipes to recipes directory"
+
+      - name: Push
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git pull --rebase origin main
+          git push origin HEAD:main
