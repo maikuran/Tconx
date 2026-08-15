@@ -1,0 +1,100 @@
+name: Fix JSON Spelling
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-json:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fix TConstruct JSON spelling
+        shell: bash
+        run: |
+          set -e
+
+          echo "Searching for netherrite..."
+
+          files=$(grep -RIl --exclude-dir=.git 'netherrite' . || true)
+
+          if [ -z "$files" ]; then
+            echo "No incorrect spelling found."
+            exit 0
+          fi
+
+          echo "Files to fix:"
+          echo "$files"
+
+          while IFS= read -r file; do
+            [ -z "$file" ] && continue
+
+            sed -i 's/netherrite/netherite/g' "$file"
+
+            echo "Fixed: $file"
+          done <<< "$files"
+
+      - name: Validate JSON
+        shell: bash
+        run: |
+          set -e
+
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          failed = False
+
+          for path in Path(".").rglob("*.json"):
+              if ".git" in path.parts:
+                  continue
+
+              try:
+                  with path.open("r", encoding="utf-8") as f:
+                      json.load(f)
+              except Exception as e:
+                  print(f"Invalid JSON: {path}")
+                  print(e)
+                  failed = True
+
+          if failed:
+              raise SystemExit(1)
+
+          print("All JSON files are valid.")
+          PY
+
+      - name: Check remaining typo
+        shell: bash
+        run: |
+          if grep -RIn --exclude-dir=.git 'netherrite' .; then
+            echo "ERROR: netherrite still exists."
+            exit 1
+          fi
+
+          echo "No netherrite remains."
+
+      - name: Commit fixes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add .
+
+          if git diff --cached --quiet; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+
+          git commit -m "Fix TConstruct netherite spelling"
+          git push
