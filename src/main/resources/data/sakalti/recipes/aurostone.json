@@ -3,20 +3,20 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "tconstruct:molten_chiirite"
+      "name": "sakalti:molten_chiirite"
     },
     {
       "amount": 10,
-      "name": "tconstruct:molten_igniz"
+      "name": "sakalti:molten_igniz"
     },
     {
       "amount": 100,
-      "name": "sakalti:molten_emerald"
+      "name": "tconstruct:molten_emerald"
     }
   ],
   "result": {
     "fluid": "sakalti:molten_aurostone",
     "amount": 50
   },
-  "temperature": 1610
+  "temperature": 1420
 }
