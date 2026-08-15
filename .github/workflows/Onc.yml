@@ -1,3 +1,4 @@
+# .github/workflows/render.yml
 name: Generate TConstruct Material Renders
 
 on:
@@ -10,7 +11,7 @@ permissions:
   contents: write
 
 jobs:
-  generate-material-renders:
+  generate:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,66 +20,77 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Pull main
-        run: git pull --ff-only origin main
-
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Generate
-        run: python onc.py
+      - name: Pull latest main
+        run: |
+          git pull --ff-only origin main
 
-      - name: Validate JSON
+      - name: Generate renders
+        run: |
+          python onc.py
+
+      - name: Validate renders
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
-          root = Path("src/main/resources/assets/sakalti/tinkering/materials")
+          root = Path(
+              "src/main/resources/assets/sakalti/tinkering/materials"
+          )
 
-          if not root.exists():
-              raise SystemExit(f"Directory not found: {root}")
-
-          files = sorted(root.rglob("*.json"))
+          files = sorted(root.glob("*.json"))
 
           if not files:
-              raise SystemExit("No material render JSON files found.")
+              raise SystemExit("No render JSON files found.")
 
           for path in files:
-              try:
-                  with path.open(encoding="utf-8") as f:
-                      json.load(f)
-              except Exception as e:
-                  raise SystemExit(f"Invalid JSON: {path}\n{e}")
+              with path.open("r", encoding="utf-8") as f:
+                  data = json.load(f)
+
+              if "color" not in data:
+                  raise SystemExit(f"Missing color: {path}")
+
+              if "fallbacks" not in data:
+                  raise SystemExit(f"Missing fallbacks: {path}")
 
               print(f"[VALID] {path}")
 
-          print(f"Validated {len(files)} files.")
+          print(f"Validated {len(files)} render files.")
           PY
 
       - name: Check changes
         id: changes
         run: |
-          if git status --porcelain -- src/main/resources/assets/sakalti/tinkering/materials/ | grep -q .; then
+          if git status --porcelain -- \
+            src/main/resources/assets/sakalti/tinkering/materials/ \
+            | grep -q .; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit and push
+      - name: Commit
         if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add src/main/resources/assets/sakalti/tinkering/materials/
+
           git commit -m "Generate TConstruct material renders"
 
+      - name: Push
+        if: steps.changes.outputs.changed == 'true'
+        run: |
           git pull --rebase origin main
           git push origin HEAD:main
 
       - name: No changes
         if: steps.changes.outputs.changed == 'false'
-        run: echo "No changes."
+        run: |
+          echo "No changes."
