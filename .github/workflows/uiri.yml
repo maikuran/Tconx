@@ -34,41 +34,25 @@ jobs:
 
           find "$ROOT" -type f -name '*.json' -print0 |
           while IFS= read -r -d '' file; do
-            name="$(basename "$file" .json)"
 
-            jq --arg name "$name" '
+            jq '
               {
                 type: "tconstruct:alloy",
+
                 inputs: (
-                  if .inputs then
-                    .inputs
-                  else
-                    []
-                  end
+                  .inputs // []
+                  | map({
+                      fluid: .fluid,
+                      amount: .amount
+                    })
                 ),
+
                 result: {
-                  fluid: (
-                    if .result.fluid then
-                      .result.fluid
-                    else
-                      ("sakalti:molten_" + $name)
-                    end
-                  ),
-                  amount: (
-                    if .result.amount then
-                      .result.amount
-                    else
-                      16
-                    end
-                  )
+                  fluid: .result.fluid,
+                  amount: .result.amount
                 },
-                temperature: (
-                  if .temperature then
-                    .temperature
-                  else
-                    1000
-                  end
-                )
+
+                temperature: .temperature
               }
             ' "$file" > "$file.tmp"
 
@@ -91,6 +75,10 @@ jobs:
             jq -e '
               .type == "tconstruct:alloy"
               and (.inputs | type == "array")
+              and (.inputs | all(
+                (.fluid | type == "string")
+                and (.amount | type == "number")
+              ))
               and (.result | type == "object")
               and (.result.fluid | type == "string")
               and (.result.amount | type == "number")
@@ -100,7 +88,7 @@ jobs:
             echo "Valid: $file"
           done
 
-      - name: Commit changes
+      - name: Commit and push
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
