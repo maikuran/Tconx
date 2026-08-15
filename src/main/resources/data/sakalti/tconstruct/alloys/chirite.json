@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:alloy",
+  "inputs": [
+    {
+      "name": "tconstruct:molten_diamond",
+      "amount": 8
+    },
+    {
+      "name": "tconstruct:molten_iron",
+      "amount": 24
+    }
+  ],
+  "result": {
+    "fluid": "sakalti:molten_chirite",
+    "amount": 16
+  },
+  "temperature": 980
+}
