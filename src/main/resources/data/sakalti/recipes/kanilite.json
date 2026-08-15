@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:alloy",
+  "inputs": [
+    {
+      "amount": 20,
+      "name": "tconstruct:molten_cobalt"
+    },
+    {
+      "amount": 20,
+      "name": "tconstruct:molten_diamond"
+    }
+  ],
+  "result": {
+    "fluid": "sakalti:molten_kanilite",
+    "amount": 40
+  },
+  "temperature": 974
+}
