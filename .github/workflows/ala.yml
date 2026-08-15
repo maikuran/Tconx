@@ -30,7 +30,7 @@ jobs:
 
       - name: Fix alloy JSON
         run: |
-          python onc.py
+          python onec.py
 
       - name: Validate JSON
         run: |
