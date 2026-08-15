@@ -28,7 +28,7 @@ jobs:
           python-version: "3.x"
 
       - name: Generate renders
-        run: python generate_material_renders.py
+        run: python onc.py
 
       - name: Validate JSON
         run: |
