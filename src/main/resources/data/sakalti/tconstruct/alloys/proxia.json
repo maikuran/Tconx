@@ -8,13 +8,11 @@
     {
       "name": "sakalti:molten_chirite",
       "amount": 50
-
     }
   ],
   "result": {
     "fluid": "sakalti:molten_proxia",
     "amount": 50
-
   },
   "temperature": 1499
 }
