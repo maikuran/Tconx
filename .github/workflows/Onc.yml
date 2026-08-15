@@ -30,7 +30,7 @@ jobs:
 
       - name: Generate material render JSON
         run: |
-          python generate_material_renders.py
+          python onc.py
 
       - name: Validate JSON
         run: |
