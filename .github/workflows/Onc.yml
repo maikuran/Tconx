@@ -14,79 +14,71 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Pull latest main
-        run: |
-          git pull --ff-only origin main
+      - name: Pull main
+        run: git pull --ff-only origin main
 
-      - name: Set up Python
+      - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
 
-      - name: Generate material render JSON
-        run: |
-          python onc.py
+      - name: Generate
+        run: python onc.py
 
-      - name: Validate generated JSON
+      - name: Validate JSON
         run: |
           python - <<'PY'
           import json
           from pathlib import Path
 
-          root = Path(
-              "src/main/resources/assets/sakalti/tinkering/materials"
-          )
+          root = Path("src/main/resources/assets/sakalti/tinkering/materials")
 
-          files = sorted(root.glob("*.json"))
+          if not root.exists():
+              raise SystemExit(f"Directory not found: {root}")
+
+          files = sorted(root.rglob("*.json"))
 
           if not files:
-              raise SystemExit("No render JSON files found.")
+              raise SystemExit("No material render JSON files found.")
 
           for path in files:
               try:
-                  with path.open("r", encoding="utf-8") as f:
+                  with path.open(encoding="utf-8") as f:
                       json.load(f)
-              except json.JSONDecodeError as e:
-                  raise SystemExit(
-                      f"Invalid JSON: {path}\n{e}"
-                  )
+              except Exception as e:
+                  raise SystemExit(f"Invalid JSON: {path}\n{e}")
 
               print(f"[VALID] {path}")
 
-          print(f"Validated {len(files)} render JSON files.")
+          print(f"Validated {len(files)} files.")
           PY
 
-      - name: Check for changes
+      - name: Check changes
         id: changes
         run: |
-          if git diff --quiet -- src/main/resources/assets/sakalti/tinkering/materials/; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
+          if git status --porcelain -- src/main/resources/assets/sakalti/tinkering/materials/ | grep -q .; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Commit generated renders
+      - name: Commit and push
         if: steps.changes.outputs.changed == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add src/main/resources/assets/sakalti/tinkering/materials/
-
           git commit -m "Generate TConstruct material renders"
 
-      - name: Push generated renders
-        if: steps.changes.outputs.changed == 'true'
-        run: |
           git pull --rebase origin main
           git push origin HEAD:main
 
       - name: No changes
         if: steps.changes.outputs.changed == 'false'
-        run: |
-          echo "Material renders are already up to date."
+        run: echo "No changes."
