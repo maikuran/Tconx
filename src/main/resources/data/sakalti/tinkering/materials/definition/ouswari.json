@@ -1,0 +1,15 @@
+{
+  "craftable": true,
+  "tier": 5,
+  "sortOrder": 5,
+  "hidden": false,
+  "color": "#ff66ff",
+  "fluid": "sakalti:molten_ouswari",
+  "translationKey": "material.sakalti.ouswari",
+  "traits": [
+    {
+      "name": "sakalti:super_magnet",
+      "level": 1
+    }
+  ]
+}
