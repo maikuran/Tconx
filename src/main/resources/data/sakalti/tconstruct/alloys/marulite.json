@@ -2,15 +2,15 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "name": "tconstruct:molten_deepsteel",
+      "name": "sakalti:molten_deepsteel",
       "amount": 10
     },
     {
-      "name": "tconstruct:molten_igniz",
+      "name": "sakalti:molten_igniz",
       "amount": 40
     },
     {
-      "name": "sakalti:molten_cobalt",
+      "name": "tconstruct:molten_cobalt",
       "amount": 100
     }
   ],
