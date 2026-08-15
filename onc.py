@@ -2,67 +2,84 @@
 from pathlib import Path
 import json
 
+MODID = "sakalti"
+
 ROOT = Path("src/main/resources")
-DEFINITION = ROOT / "data" / "sakalti" / "tinkering" / "materials" / "definition"
-RENDER = ROOT / "assets" / "sakalti" / "tinkering" / "materials"
 
-# 素材名: ARGBカラー
-# definition JSON の color が #RRGGBB の場合、自動的に FF を付けます。
-def get_color(data):
-    color = data.get("color", "FFFFFF")
+DEFINITION_DIR = (
+    ROOT
+    / "data"
+    / MODID
+    / "tinkering"
+    / "materials"
+    / "definition"
+)
 
-    if not isinstance(color, str):
-        color = "FFFFFF"
-
-    color = color.strip().replace("#", "").upper()
-
-    if len(color) == 6:
-        color = "FF" + color
-    elif len(color) != 8:
-        color = "FFFFFFFF"
-
-    return color
+RENDER_DIR = (
+    ROOT
+    / "assets"
+    / MODID
+    / "tinkering"
+    / "materials"
+)
 
 
-def main():
-    RENDER.mkdir(parents=True, exist_ok=True)
+def normalize_color(value):
+    if not isinstance(value, str):
+        return "FFFFFFFF"
 
-    if not DEFINITION.exists():
-        raise SystemExit(f"Definition directory not found: {DEFINITION}")
+    value = value.strip().lstrip("#").upper()
+
+    if len(value) == 6:
+        return "FF" + value
+
+    if len(value) == 8:
+        return value
+
+    return "FFFFFFFF"
+
+
+def generate():
+    if not DEFINITION_DIR.exists():
+        raise SystemExit(
+            f"Definition directory not found:\n{DEFINITION_DIR}"
+        )
+
+    RENDER_DIR.mkdir(parents=True, exist_ok=True)
 
     count = 0
 
-    for definition in sorted(DEFINITION.glob("*.json")):
-        material = definition.stem
+    for source in sorted(DEFINITION_DIR.glob("*.json")):
+        with source.open("r", encoding="utf-8") as f:
+            definition = json.load(f)
 
-        try:
-            with definition.open("r", encoding="utf-8") as f:
-                data = json.load(f)
-        except json.JSONDecodeError as e:
-            raise SystemExit(f"Invalid JSON: {definition}\n{e}")
+        material = source.stem
 
-        # definition に color があれば使用。
-        # なければ白。
-        color = get_color(data)
+        color = normalize_color(
+            definition.get("color", "FFFFFFFF")
+        )
 
+        # TConstruct MaterialRenderInfo
         render = {
-            "color": color,
-            "fallbacks": [
-                "metal"
-            ]
+            "color": color
         }
 
-        output = RENDER / f"{material}.json"
+        target = RENDER_DIR / f"{material}.json"
 
-        with output.open("w", encoding="utf-8") as f:
-            json.dump(render, f, ensure_ascii=False, indent=2)
+        with target.open("w", encoding="utf-8") as f:
+            json.dump(
+                render,
+                f,
+                ensure_ascii=False,
+                indent=2
+            )
             f.write("\n")
 
-        print(f"[GENERATED] {output} -> {color}")
+        print(f"[GENERATED] {target}  color={color}")
         count += 1
 
-    print(f"Generated {count} material render files.")
+    print(f"Generated {count} render files.")
 
 
 if __name__ == "__main__":
-    main()
+    generate()
