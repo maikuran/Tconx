@@ -107,9 +107,9 @@ jobs:
 
           git commit -m "Generate TConstruct material renders"
 
-          git pull --rebase origin main
+          git pull
 
-          git push origin main
+          git push
 
       - name: No changes
         if: steps.changes.outputs.changed == 'false'
