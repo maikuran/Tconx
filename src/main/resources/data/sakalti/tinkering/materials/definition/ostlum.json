@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#66ff99",
   "fluid": "sakalti:molten_ostlum",
-  "translationKey": "material.sakalti.ostlum"
+  "translationKey": "material.sakalti.ostlum",
   "traits": [
     {
       "name": "sakalti:glacial_bind",

@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#d3072c",
   "fluid": "sakalti:molten_igniz",
-  "translationKey": "material.sakalti.igniz"
+  "translationKey": "material.sakalti.igniz",
   "traits": [
     {
       "name": "sakalti:lifesteal",

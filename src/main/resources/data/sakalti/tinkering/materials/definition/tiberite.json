@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#8200ff",
   "fluid": "sakalti:molten_tiberite",
-  "translationKey": "material.sakalti.tiberite"
+  "translationKey": "material.sakalti.tiberite",
   "traits": [
     {
       "name": "sakalti:laser_prism",

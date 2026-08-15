@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#234156",
   "fluid": "sakalti:molten_deepsteel",
-  "translationKey": "material.sakalti.deepsteel"
+  "translationKey": "material.sakalti.deepsteel",
   "traits": [
     {
       "name": "sakalti:heavy_stone",

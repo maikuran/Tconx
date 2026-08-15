@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#ff66ff",
   "fluid": "sakalti:molten_kanilite",
-  "translationKey": "material.sakalti.kanilite"
+  "translationKey": "material.sakalti.kanilite",
   "traits": [
     {
       "name": "sakalti:super_magnet",

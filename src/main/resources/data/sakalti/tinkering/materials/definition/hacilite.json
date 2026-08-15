@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#56d8e8",
   "fluid": "sakalti:molten_hacilite",
-  "translationKey": "material.sakalti.hacilite"
+  "translationKey": "material.sakalti.hacilite",
   "traits": [
     {
       "name": "sakalti:glacial_bind",

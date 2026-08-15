@@ -5,7 +5,7 @@
   "hidden": false,
   "color": "#dccdc2",
   "fluid": "sakalti:molten_marulite",
-  "translationKey": "material.sakalti.marulite"
+  "translationKey": "material.sakalti.marulite",
   "traits": [
     {
       "name": "sakalti:jumpy",
