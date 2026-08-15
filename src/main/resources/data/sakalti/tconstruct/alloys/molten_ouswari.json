@@ -2,11 +2,11 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "name": "tconstruct:molten_kanilite",
+      "fluid": "tconstruct:molten_kanilite",
       "amount": 100
     },
     {
-      "name": "sakalti:molten_ioxium",
+      "fluid": "sakalti:molten_ioxium",
       "amount": 20
     }
   ],
