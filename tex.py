@@ -6,7 +6,7 @@ from PIL import Image
 
 
 MOD_FLUIDS = Path(
-    "src/main/java/com/sakalti/sakalti/ModFluids.java"
+    "src/main/java/com/sakalti/ModFluids.java"
 )
 
 MATERIALS_DIR = Path(
