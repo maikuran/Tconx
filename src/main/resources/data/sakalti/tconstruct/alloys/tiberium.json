@@ -2,15 +2,15 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "name": "tconstruct:molten_hachilite",
+      "name": "sakalti:molten_hachilite",
       "amount": 30
     },
     {
-      "name": "tconstruct:molten_kanilite",
+      "name": "sakalti:molten_kanilite",
       "amount": 30
     },
     {
-      "name": "sakalti:molten_diamond",
+      "name": "tconstruct:molten_diamond",
       "amount": 30
     }
   ],
