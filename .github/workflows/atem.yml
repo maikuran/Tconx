@@ -133,5 +133,6 @@ jobs:
             echo "No Mantle fluid texture changes."
           else
             git commit -m "Generate Mantle fluid textures from material colors"
+            git pull --rebase
             git push
           fi
