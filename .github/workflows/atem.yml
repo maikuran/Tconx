@@ -1,16 +1,22 @@
 name: Generate Mantle Fluid Textures
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
+      - master
+    paths:
+      - "tex.py"
+      - ".github/workflows/generate-fluid-textures.yml"
+
+  workflow_dispatch:
 
 permissions:
   contents: write
 
 jobs:
   generate:
+    name: Generate fluid textures
     runs-on: ubuntu-latest
 
     steps:
@@ -20,119 +26,48 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.12"
 
-      - name: Generate Mantle fluid texture definitions
-        shell: python
+      - name: Install Pillow
         run: |
-          import json
-          import re
-          from pathlib import Path
+          python -m pip install --upgrade pip
+          python -m pip install Pillow
 
-          ROOT = Path("src/main/resources/assets/sakalti")
+      - name: Generate textures
+        run: |
+          python tex.py
 
-          materials_dir = ROOT / "tinkering" / "materials"
-          output_dir = ROOT / "mantle" / "fluid_texture"
+      - name: Check generated files
+        run: |
+          echo "Generated fluid textures:"
+          find src/main/resources/assets/sakalti/textures/fluid \
+            -type f \
+            -name "*.png" \
+            | sort
 
-          output_dir.mkdir(parents=True, exist_ok=True)
+      - name: Verify texture count
+        run: |
+          COUNT=$(find src/main/resources/assets/sakalti/textures/fluid \
+            -type f \
+            -name "*.png" | wc -l)
 
-          # molten_xxx のFluidをJavaから動的に検出
-          java_files = list(Path("src/main/java").rglob("*.java"))
+          echo "Texture count: $COUNT"
 
-          fluids = set()
+          if [ "$COUNT" -ne 36 ]; then
+            echo "ERROR: Expected 36 fluid textures."
+            exit 1
+          fi
 
-          for java_file in java_files:
-              text = java_file.read_text(encoding="utf-8")
-
-              # registerType("molten_xxx")
-              for match in re.finditer(
-                  r'registerType\("([a-z0-9_]+)"\)',
-                  text
-              ):
-                  fluids.add(match.group(1))
-
-              # FLUIDS.register("molten_xxx"
-              for match in re.finditer(
-                  r'FLUIDS\.register\(\s*"([a-z0-9_]+)"',
-                  text
-              ):
-                  fluids.add(match.group(1))
-
-          print("Detected fluids:")
-          for fluid in sorted(fluids):
-              print(" -", fluid)
-
-          for fluid in sorted(fluids):
-
-              # flowingは独立したFluid Textureとして作らない
-              if fluid.endswith("_flowing"):
-                  continue
-
-              # molten_aurostone -> aurostone
-              material_name = fluid.removeprefix("molten_")
-
-              material_file = materials_dir / f"{material_name}.json"
-
-              color = None
-
-              if material_file.exists():
-                  try:
-                      data = json.loads(
-                          material_file.read_text(encoding="utf-8")
-                      )
-
-                      color = data.get("color")
-
-                  except Exception as e:
-                      print(
-                          f"Failed to read {material_file}: {e}"
-                      )
-
-              # 色が取得できなければ安全なデフォルト
-              if not color:
-                  color = "FFFFFF"
-
-              color = str(color).replace("#", "").upper()
-
-              if len(color) == 6:
-                  color = "FF" + color
-
-              if len(color) != 8:
-                  print(
-                      f"Invalid color for {fluid}: {color}"
-                  )
-                  color = "FFFFFFFF"
-
-              output = {
-                  "color": color
-              }
-
-              output_file = output_dir / f"{fluid}.json"
-
-              output_file.write_text(
-                  json.dumps(
-                      output,
-                      indent=2,
-                      ensure_ascii=False
-                  ) + "\n",
-                  encoding="utf-8"
-              )
-
-              print(
-                  f"Generated {output_file} -> {color}"
-              )
-
-      - name: Commit generated Mantle fluid textures
+      - name: Commit generated textures
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add src/main/resources/assets/sakalti/mantle/fluid_texture
+          git add src/main/resources/assets/sakalti/textures/fluid
 
           if git diff --cached --quiet; then
-            echo "No Mantle fluid texture changes."
+            echo "No texture changes."
           else
-            git commit -m "Generate Mantle fluid textures from material colors"
-            git pull --rebase
+            git commit -m "Generate Mantle fluid textures"
             git push
           fi
