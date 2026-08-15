@@ -2,11 +2,11 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "name": "tconstruct:molten_hachilite",
+      "fluid": "tconstruct:molten_hachilite",
       "amount": 100
     },
     {
-      "name": "sakalti:molten_emerald",
+      "fluid": "sakalti:molten_emerald",
       "amount": 50
     }
   ],
