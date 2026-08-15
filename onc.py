@@ -1,18 +1,15 @@
-#!/usr/bin/env python3
-
-import json
 from pathlib import Path
+import json
 import re
 
-ROOT = Path(__file__).resolve().parents[1]
+MODID = "sakalti"
+
+ROOT = Path("src/main/resources")
 
 DEFINITION_DIR = (
     ROOT
-    / "src"
-    / "main"
-    / "resources"
     / "data"
-    / "sakalti"
+    / MODID
     / "tinkering"
     / "materials"
     / "definition"
@@ -20,63 +17,50 @@ DEFINITION_DIR = (
 
 RENDER_DIR = (
     ROOT
-    / "src"
-    / "main"
-    / "resources"
     / "assets"
-    / "sakalti"
+    / MODID
     / "tinkering"
     / "materials"
 )
 
-DEFAULT_COLOR = "FFFFFF"
+RENDER_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def normalize_color(value):
+def hex_to_rgb(value):
     if not isinstance(value, str):
-        return DEFAULT_COLOR
+        return None
 
     value = value.strip()
 
-    if value.startswith("#"):
-        value = value[1:]
+    if not re.fullmatch(r"#[0-9a-fA-F]{6}", value):
+        return None
 
-    value = value.upper()
-
-    # RRGGBB
-    if re.fullmatch(r"[0-9A-F]{6}", value):
-        return value
-
-    # AARRGGBB / RRGGBBAA 等の誤入力を安全側に処理
-    if re.fullmatch(r"[0-9A-F]{8}", value):
-        return value[-6:]
-
-    return DEFAULT_COLOR
-
-
-def read_json(path):
-    with path.open("r", encoding="utf-8") as f:
-        return json.load(f)
-
-
-def material_name_from_file(path):
-    return path.stem
-
-
-def generate_render(material_file):
-    material = read_json(material_file)
-
-    name = material_name_from_file(material_file)
-
-    color = normalize_color(
-        material.get("color", DEFAULT_COLOR)
-    )
-
-    render = {
-        "color": color
+    return {
+        "r": int(value[1:3], 16),
+        "g": int(value[3:5], 16),
+        "b": int(value[5:7], 16),
     }
 
-    return name, render
+
+def create_render(material_name, definition):
+    color = definition.get("color", "#FFFFFF")
+
+    rgb = hex_to_rgb(color)
+
+    if rgb is None:
+        raise ValueError(
+            f"{material_name}: invalid color: {color}"
+        )
+
+    # TConstruct material render definition
+    #
+    # 重要:
+    # definition JSON そのものをコピーしません。
+    # render 用 JSON として必要な情報だけを生成します。
+
+    return {
+        "color": color
+    }
 
 
 def main():
@@ -84,8 +68,6 @@ def main():
         raise SystemExit(
             f"Definition directory not found:\n{DEFINITION_DIR}"
         )
-
-    RENDER_DIR.mkdir(parents=True, exist_ok=True)
 
     definition_files = sorted(
         DEFINITION_DIR.glob("*.json")
@@ -98,47 +80,53 @@ def main():
 
     generated = 0
 
-    for material_file in definition_files:
+    for definition_path in definition_files:
+        material_name = definition_path.stem
+
         try:
-            name, render = generate_render(material_file)
-
-            output_file = RENDER_DIR / f"{name}.json"
-
-            with output_file.open("w", encoding="utf-8") as f:
-                json.dump(
-                    render,
-                    f,
-                    ensure_ascii=False,
-                    indent=2
-                )
-                f.write("\n")
-
-            print(
-                f"[OK] {material_file.name} -> "
-                f"{output_file.relative_to(ROOT)}"
-            )
-
-            generated += 1
-
+            with definition_path.open(
+                "r",
+                encoding="utf-8"
+            ) as f:
+                definition = json.load(f)
         except json.JSONDecodeError as e:
-            print(
-                f"[ERROR] Invalid JSON: {material_file}"
+            raise SystemExit(
+                f"Invalid JSON: {definition_path}\n"
+                f"{e}"
             )
-            print(
-                f"        line={e.lineno}, "
-                f"column={e.colno}: {e.msg}"
-            )
-            raise SystemExit(1)
 
-        except Exception as e:
-            print(
-                f"[ERROR] Failed: {material_file}"
-            )
-            print(f"        {e}")
-            raise SystemExit(1)
+        render = create_render(
+            material_name,
+            definition
+        )
 
-    print()
-    print(f"Generated {generated} material render files.")
+        output_path = (
+            RENDER_DIR
+            / f"{material_name}.json"
+        )
+
+        with output_path.open(
+            "w",
+            encoding="utf-8"
+        ) as f:
+            json.dump(
+                render,
+                f,
+                ensure_ascii=False,
+                indent=2
+            )
+            f.write("\n")
+
+        print(
+            f"[GENERATED] "
+            f"{output_path}"
+        )
+
+        generated += 1
+
+    print(
+        f"Generated {generated} material render files."
+    )
 
 
 if __name__ == "__main__":
