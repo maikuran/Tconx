@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:molten_ioxium",
-    "amount": 100
+    "name": "sakalti:molten_ioxium",
+    "amount": 144
   },
   "temperature": 1000,
   "output": "sakalti:ioxium"

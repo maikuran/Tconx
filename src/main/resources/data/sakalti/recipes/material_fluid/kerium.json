@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:material_fluid",
-  "fluid": {
-    "fluid": "sakalti:molten_kerium",
-    "amount": 100
-  },
-  "temperature": 1000,
-  "output": "sakalti:kerium"
-}

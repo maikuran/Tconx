@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:molten_tiberite",
-    "amount": 100
+    "name": "sakalti:molten_tiberite",
+    "amount": 144
   },
   "temperature": 1000,
   "output": "sakalti:tiberite"
