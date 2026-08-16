@@ -113,6 +113,6 @@ jobs:
           else
             git commit \
               -m "Generate Mantle fluid resources"
-
+            git pull --rebase
             git push
           fi
