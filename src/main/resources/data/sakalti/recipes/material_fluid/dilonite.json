@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:dilonite",
+    "fluid": "sakalti:molten_dilonite",
     "amount": 100
   },
   "temperature": 1000,

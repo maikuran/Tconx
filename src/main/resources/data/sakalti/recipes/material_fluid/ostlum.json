@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:ostlum",
+    "fluid": "sakalti:molten_ostlum",
     "amount": 100
   },
   "temperature": 1000,

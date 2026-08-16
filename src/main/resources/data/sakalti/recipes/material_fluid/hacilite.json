@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:hacilite",
+    "fluid": "sakalti:molten_hacilite",
     "amount": 100
   },
   "temperature": 1000,

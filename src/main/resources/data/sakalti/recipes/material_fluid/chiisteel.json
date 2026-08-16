@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:chiisteel",
+    "fluid": "sakalti:molten_chiisteel",
     "amount": 100
   },
   "temperature": 1000,
