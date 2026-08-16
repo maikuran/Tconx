@@ -3,7 +3,7 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "tconstruct:hachilite"
+      "name": "sakalti:kanilite"
     },
     {
       "amount": 50,
@@ -14,5 +14,5 @@
     "fluid": "sakalti:ostlum",
     "amount": 15
   },
-  "temperature": 1550
+  "temperature": 1490
 }
