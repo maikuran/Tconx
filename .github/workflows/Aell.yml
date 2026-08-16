@@ -1,0 +1,99 @@
+name: Split Material Traits
+
+on:
+  workflow_dispatch:
+
+jobs:
+  split-material-traits:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Split traits from material definitions
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          definition_dir = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/definition"
+          )
+
+          traits_dir = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/traits"
+          )
+
+          traits_dir.mkdir(parents=True, exist_ok=True)
+
+          for definition_path in definition_dir.rglob("*.json"):
+              with definition_path.open("r", encoding="utf-8") as f:
+                  data = json.load(f)
+
+              if "traits" not in data:
+                  continue
+
+              traits = data.pop("traits")
+
+              if not isinstance(traits, list):
+                  print(f"Skipping invalid traits: {definition_path}")
+                  continue
+
+              # 空のtraitsはファイルを作らない
+              if not traits:
+                  continue
+
+              # definitionの相対パスをそのままtraits側へ対応させる
+              relative_path = definition_path.relative_to(definition_dir)
+              traits_path = traits_dir / relative_path
+
+              traits_path.parent.mkdir(parents=True, exist_ok=True)
+
+              trait_data = {
+                  "default": traits
+              }
+
+              with traits_path.open("w", encoding="utf-8") as f:
+                  json.dump(
+                      trait_data,
+                      f,
+                      ensure_ascii=False,
+                      indent=2
+                  )
+                  f.write("\n")
+
+              # definitionからtraitsを削除
+              with definition_path.open("w", encoding="utf-8") as f:
+                  json.dump(
+                      data,
+                      f,
+                      ensure_ascii=False,
+                      indent=2
+                  )
+                  f.write("\n")
+
+              print(f"Split: {definition_path}")
+              print(f"Created: {traits_path}")
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            src/main/resources/data/sakalti/tinkering/materials/definition/ \
+            src/main/resources/data/sakalti/tinkering/materials/traits/
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Split material traits into trait definitions"
+            git push
+          fi
