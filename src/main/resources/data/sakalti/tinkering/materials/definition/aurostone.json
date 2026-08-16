@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#00ee00",
   "fluid": "sakalti:aurostone",
-  "translationKey": "material.sakalti.aurostone",
-  "traits": [
-    {
-      "name": "sakalti:auro_vision",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.aurostone"
 }

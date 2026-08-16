@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#9cd307",
   "fluid": "sakalti:ioxium",
-  "translationKey": "material.sakalti.ioxium",
-  "traits": [
-    {
-      "name": "sakalti:long_spark",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.ioxium"
 }

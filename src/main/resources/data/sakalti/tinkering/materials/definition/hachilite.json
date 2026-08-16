@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#56d8e8",
   "fluid": "sakalti:hachilite",
-  "translationKey": "material.sakalti.hachilite",
-  "traits": [
-    {
-      "name": "sakalti:glacial_bind",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.hachilite"
 }

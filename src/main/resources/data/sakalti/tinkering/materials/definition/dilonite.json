@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#ffaa00",
   "fluid": "sakalti:dilonite",
-  "translationKey": "material.sakalti.dilonite",
-  "traits": [
-    {
-      "name": "sakalti:fire_wall",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.dilonite"
 }

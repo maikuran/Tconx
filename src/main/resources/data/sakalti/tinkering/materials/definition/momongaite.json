@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#996699",
   "fluid": "sakalti:momongaite",
-  "translationKey": "material.sakalti.momongaite",
-  "traits": [
-    {
-      "name": "sakalti:poisonous_bind",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.momongaite"
 }

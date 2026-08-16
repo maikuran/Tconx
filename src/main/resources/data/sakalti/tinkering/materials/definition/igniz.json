@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#d3072c",
   "fluid": "sakalti:igniz",
-  "translationKey": "material.sakalti.igniz",
-  "traits": [
-    {
-      "name": "sakalti:lifesteal",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.igniz"
 }

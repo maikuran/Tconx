@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#593b67",
   "fluid": "sakalti:proxia",
-  "translationKey": "material.sakalti.proxia",
-  "traits": [
-    {
-      "name": "sakalti:fieldy",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.proxia"
 }

@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#66ffff",
   "fluid": "sakalti:herdyeen",
-  "translationKey": "material.sakalti.herdyeen",
-  "traits": [
-    {
-      "name": "sakalti:ice_bind",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.herdyeen"
 }

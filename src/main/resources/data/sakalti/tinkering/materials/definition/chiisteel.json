@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#f8dac4",
   "fluid": "sakalti:chiisteel",
-  "translationKey": "material.sakalti.chiisteel",
-  "traits": [
-    {
-      "name": "sakalti:weak_burn",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.chiisteel"
 }

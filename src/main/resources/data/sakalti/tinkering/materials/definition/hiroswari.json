@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#b90e3b",
   "fluid": "sakalti:hiroswari",
-  "translationKey": "material.sakalti.hiroswari",
-  "traits": [
-    {
-      "name": "sakalti:berserk",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.hiroswari"
 }

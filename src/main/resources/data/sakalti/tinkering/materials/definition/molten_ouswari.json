@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#ee12be",
   "fluid": "sakalti:ouswari",
-  "translationKey": "material.sakalti.ouswari",
-  "traits": [
-    {
-      "name": "sakalti:unstable",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.ouswari"
 }

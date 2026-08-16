@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#f20000",
   "fluid": "sakalti:seiren",
-  "translationKey": "material.sakalti.seiren",
-  "traits": [
-    {
-      "name": "sakalti:seiren_curse",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.seiren"
 }

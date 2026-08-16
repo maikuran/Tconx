@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#8200ff",
   "fluid": "sakalti:tiberium",
-  "translationKey": "material.sakalti.tiberium",
-  "traits": [
-    {
-      "name": "sakalti:laser_prism",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.tiberium"
 }

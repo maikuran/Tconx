@@ -5,11 +5,5 @@
   "hidden": false,
   "color": "#dddd00",
   "fluid": "sakalti:chirite",
-  "translationKey": "material.sakalti.chirite",
-  "traits": [
-    {
-      "name": "sakalti:light_touch",
-      "level": 1
-    }
-  ]
+  "translationKey": "material.sakalti.chirite"
 }
