@@ -3,19 +3,19 @@
   "inputs": [
     {
       "amount": 30,
-      "name": "sakalti:molten_hachilite"
+      "name": "sakalti:hachilite"
     },
     {
       "amount": 30,
-      "name": "sakalti:molten_kanilite"
+      "name": "sakalti:kanilite"
     },
     {
       "amount": 30,
-      "name": "tconstruct:molten_diamond"
+      "name": "tconstruct:diamond"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_tiberium",
+    "fluid": "sakalti:tiberium",
     "amount": 30
   },
   "temperature": 1300

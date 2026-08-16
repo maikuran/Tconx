@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 175,
-      "name": "sakalti:molten_viberium"
+      "name": "sakalti:viberium"
     },
     {
       "amount": 100,
-      "name": "sakalti:molten_iron"
+      "name": "sakalti:iron"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_kerium",
+    "fluid": "sakalti:kerium",
     "amount": 50
   },
   "temperature": 1350

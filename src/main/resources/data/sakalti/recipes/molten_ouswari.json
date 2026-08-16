@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "tconstruct:molten_kanilite"
+      "name": "tconstruct:kanilite"
     },
     {
       "amount": 20,
-      "name": "sakalti:molten_ioxium"
+      "name": "sakalti:ioxium"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_ouswari",
+    "fluid": "sakalti:ouswari",
     "amount": 50
   },
   "temperature": 1550

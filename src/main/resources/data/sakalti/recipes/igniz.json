@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "sakalti:molten_kanilite"
+      "name": "sakalti:kanilite"
     },
     {
       "amount": 60,
-      "name": "sakalti:molten_igniz"
+      "name": "sakalti:igniz"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_igniz",
+    "fluid": "sakalti:igniz",
     "amount": 40
   },
   "temperature": 1450

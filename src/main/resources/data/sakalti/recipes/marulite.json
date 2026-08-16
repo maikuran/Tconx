@@ -3,19 +3,19 @@
   "inputs": [
     {
       "amount": 10,
-      "name": "sakalti:molten_deepsteel"
+      "name": "sakalti:deepsteel"
     },
     {
       "amount": 40,
-      "name": "sakalti:molten_igniz"
+      "name": "sakalti:igniz"
     },
     {
       "amount": 100,
-      "name": "tconstruct:molten_cobalt"
+      "name": "tconstruct:cobalt"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_marulite",
+    "fluid": "sakalti:marulite",
     "amount": 50
   },
   "temperature": 1260

@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "tconstruct:molten_emerald"
+      "name": "tconstruct:emerald"
     },
     {
       "amount": 50,
-      "name": "tconstruct:molten_diamond"
+      "name": "tconstruct:diamond"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_herdyeen",
+    "fluid": "sakalti:herdyeen",
     "amount": 50
   },
   "temperature": 900

@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 20,
-      "name": "tconstruct:molten_cobalt"
+      "name": "tconstruct:cobalt"
     },
     {
       "amount": 20,
-      "name": "tconstruct:molten_diamond"
+      "name": "tconstruct:diamond"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_kanilite",
+    "fluid": "sakalti:kanilite",
     "amount": 40
   },
   "temperature": 974

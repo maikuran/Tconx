@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 20,
-      "name": "tconstruct:molten_gold"
+      "name": "tconstruct:gold"
     },
     {
       "amount": 10,
-      "name": "sakalti:molten_igniz"
+      "name": "sakalti:igniz"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_dilonite",
+    "fluid": "sakalti:dilonite",
     "amount": 9
   },
   "temperature": 1100

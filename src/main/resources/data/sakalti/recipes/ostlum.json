@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "tconstruct:molten_hachilite"
+      "name": "tconstruct:hachilite"
     },
     {
       "amount": 50,
-      "name": "sakalti:molten_emerald"
+      "name": "sakalti:emerald"
     }
   ],
   "result": {
-    "fluid": "sakalti:molten_ostlum",
+    "fluid": "sakalti:ostlum",
     "amount": 15
   },
   "temperature": 1550
