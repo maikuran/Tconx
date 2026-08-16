@@ -4,7 +4,7 @@
   "sortOrder": 3,
   "hidden": false,
   "color": "#56d8e8",
-  "fluid": "sakalti:molten_hacilite",
+  "fluid": "sakalti:hacilite",
   "translationKey": "material.sakalti.hacilite",
   "traits": [
     {

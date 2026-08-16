@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#dccdc2",
-  "fluid": "sakalti:molten_marulite",
+  "fluid": "sakalti:marulite",
   "translationKey": "material.sakalti.marulite",
   "traits": [
     {

@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#8200ff",
-  "fluid": "sakalti:molten_tiberite",
+  "fluid": "sakalti:tiberite",
   "translationKey": "material.sakalti.tiberite",
   "traits": [
     {

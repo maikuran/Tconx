@@ -4,7 +4,7 @@
   "sortOrder": 4,
   "hidden": false,
   "color": "#ff66ff",
-  "fluid": "sakalti:molten_kanilite",
+  "fluid": "sakalti:kanilite",
   "translationKey": "material.sakalti.kanilite",
   "traits": [
     {

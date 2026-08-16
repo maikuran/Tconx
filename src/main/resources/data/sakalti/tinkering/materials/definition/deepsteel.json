@@ -4,7 +4,7 @@
   "sortOrder": 5,
   "hidden": false,
   "color": "#234156",
-  "fluid": "sakalti:molten_deepsteel",
+  "fluid": "sakalti:deepsteel",
   "translationKey": "material.sakalti.deepsteel",
   "traits": [
     {

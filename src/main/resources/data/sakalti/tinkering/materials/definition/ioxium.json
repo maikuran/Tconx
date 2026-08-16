@@ -4,7 +4,7 @@
   "sortOrder": 4,
   "hidden": false,
   "color": "#9cd307",
-  "fluid": "sakalti:molten_ioxium",
+  "fluid": "sakalti:ioxium",
   "translationKey": "material.sakalti.ioxium",
   "traits": [
     {

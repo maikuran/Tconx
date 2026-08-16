@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#b90e3b",
-  "fluid": "sakalti:molten_hiroswari",
+  "fluid": "sakalti:hiroswari",
   "translationKey": "material.sakalti.hiroswari",
   "traits": [
     {

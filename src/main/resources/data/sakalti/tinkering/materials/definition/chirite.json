@@ -4,7 +4,7 @@
   "sortOrder": 5,
   "hidden": false,
   "color": "#dddd00",
-  "fluid": "sakalti:molten_chirite",
+  "fluid": "sakalti:chirite",
   "translationKey": "material.sakalti.chirite",
   "traits": [
     {

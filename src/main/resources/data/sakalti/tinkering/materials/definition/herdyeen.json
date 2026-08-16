@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#66ffff",
-  "fluid": "sakalti:molten_herdyeen",
+  "fluid": "sakalti:herdyeen",
   "translationKey": "material.sakalti.herdyeen",
   "traits": [
     {

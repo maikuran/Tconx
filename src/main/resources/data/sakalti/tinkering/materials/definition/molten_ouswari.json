@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#ee12be",
-  "fluid": "sakalti:molten_ouswari",
+  "fluid": "sakalti:ouswari",
   "translationKey": "material.sakalti.ouswari",
   "traits": [
     {

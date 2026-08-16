@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#593b67",
-  "fluid": "sakalti:molten_proxia",
+  "fluid": "sakalti:proxia",
   "translationKey": "material.sakalti.proxia",
   "traits": [
     {

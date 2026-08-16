@@ -4,7 +4,7 @@
   "sortOrder": 7,
   "hidden": false,
   "color": "#66ff99",
-  "fluid": "sakalti:molten_ostlum",
+  "fluid": "sakalti:ostlum",
   "translationKey": "material.sakalti.ostlum",
   "traits": [
     {

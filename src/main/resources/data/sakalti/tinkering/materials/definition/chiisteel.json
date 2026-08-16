@@ -4,7 +4,7 @@
   "sortOrder": 5,
   "hidden": false,
   "color": "#f8dac4",
-  "fluid": "sakalti:molten_chiisteel",
+  "fluid": "sakalti:chiisteel",
   "translationKey": "material.sakalti.chiisteel",
   "traits": [
     {

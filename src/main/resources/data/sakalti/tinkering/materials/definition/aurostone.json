@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#00ee00",
-  "fluid": "sakalti:molten_aurostone",
+  "fluid": "sakalti:aurostone",
   "translationKey": "material.sakalti.aurostone",
   "traits": [
     {

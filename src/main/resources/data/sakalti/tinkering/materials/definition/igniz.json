@@ -4,7 +4,7 @@
   "sortOrder": 7,
   "hidden": false,
   "color": "#d3072c",
-  "fluid": "sakalti:molten_igniz",
+  "fluid": "sakalti:igniz",
   "translationKey": "material.sakalti.igniz",
   "traits": [
     {
