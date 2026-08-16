@@ -1,5 +1,9 @@
 package com.sakalti;
 
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.material.Fluid;
+
+import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
@@ -7,7 +11,7 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import net.minecraft.world.level.material.Fluid;
+import java.util.function.Consumer;
 
 public final class ModFluids {
 
@@ -33,301 +37,414 @@ public final class ModFluids {
             );
 
     // =========================================================
-    // Fluid registrations
+    // Fluid Entry
     // =========================================================
 
-    public static final RegistryObject<FluidType> HACHILITE_TYPE =
-            registerType("hachilite");
+    private static final class FluidEntry {
 
-    public static final RegistryObject<ForgeFlowingFluid> HACHILITE =
-            registerSource("hachilite", HACHILITE_TYPE);
+        final String name;
 
-    public static final RegistryObject<ForgeFlowingFluid> HACHILITE_FLOWING =
-            registerFlowing("hachilite", HACHILITE_TYPE, HACHILITE);
+        RegistryObject<FluidType> type;
+        RegistryObject<ForgeFlowingFluid> source;
+        RegistryObject<ForgeFlowingFluid> flowing;
 
-    public static final RegistryObject<FluidType> KANILITE_TYPE =
-            registerType("kanilite");
+        FluidEntry(String name) {
+            this.name = name;
+        }
+    }
 
-    public static final RegistryObject<ForgeFlowingFluid> KANILITE =
-            registerSource("kanilite", KANILITE_TYPE);
+    // =========================================================
+    // 共通登録関数
+    // =========================================================
 
-    public static final RegistryObject<ForgeFlowingFluid> KANILITE_FLOWING =
-            registerFlowing("kanilite", KANILITE_TYPE, KANILITE);
+    private static FluidEntry registerFluid(String name) {
 
-    public static final RegistryObject<FluidType> IGNIZ_TYPE =
-            registerType("igniz");
+        FluidEntry entry = new FluidEntry(name);
 
-    public static final RegistryObject<ForgeFlowingFluid> IGNIZ =
-            registerSource("igniz", IGNIZ_TYPE);
+        // -----------------------------------------------------
+        // FluidType
+        // -----------------------------------------------------
 
-    public static final RegistryObject<ForgeFlowingFluid> IGNIZ_FLOWING =
-            registerFlowing("igniz", IGNIZ_TYPE, IGNIZ);
+        entry.type = FLUID_TYPES.register(
+                name,
+                () -> createFluidType(name)
+        );
 
-    public static final RegistryObject<FluidType> CHIRITE_TYPE =
-            registerType("chirite");
+        // -----------------------------------------------------
+        // Source
+        // -----------------------------------------------------
 
-    public static final RegistryObject<ForgeFlowingFluid> CHIRITE =
-            registerSource("chirite", CHIRITE_TYPE);
+        entry.source = FLUIDS.register(
+                name,
+                () -> new ForgeFlowingFluid.Source(
+                        createProperties(entry)
+                )
+        );
 
-    public static final RegistryObject<ForgeFlowingFluid> CHIRITE_FLOWING =
-            registerFlowing("chirite", CHIRITE_TYPE, CHIRITE);
+        // -----------------------------------------------------
+        // Flowing
+        // -----------------------------------------------------
 
-    public static final RegistryObject<FluidType> MOMONGAITE_TYPE =
-            registerType("momongaite");
+        entry.flowing = FLUIDS.register(
+                name + "_flowing",
+                () -> new ForgeFlowingFluid.Flowing(
+                        createProperties(entry)
+                )
+        );
 
-    public static final RegistryObject<ForgeFlowingFluid> MOMONGAITE =
-            registerSource("momongaite", MOMONGAITE_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> MOMONGAITE_FLOWING =
-            registerFlowing("momongaite", MOMONGAITE_TYPE, MOMONGAITE);
-
-    public static final RegistryObject<FluidType> HERDYEEN_TYPE =
-            registerType("herdyeen");
-
-    public static final RegistryObject<ForgeFlowingFluid> HERDYEEN =
-            registerSource("herdyeen", HERDYEEN_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> HERDYEEN_FLOWING =
-            registerFlowing("herdyeen", HERDYEEN_TYPE, HERDYEEN);
-
-    public static final RegistryObject<FluidType> HIROSWARI_TYPE =
-            registerType("hiroswari");
-
-    public static final RegistryObject<ForgeFlowingFluid> HIROSWARI =
-            registerSource("hiroswari", HIROSWARI_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> HIROSWARI_FLOWING =
-            registerFlowing("hiroswari", HIROSWARI_TYPE, HIROSWARI);
-
-    public static final RegistryObject<FluidType> MARULITE_TYPE =
-            registerType("marulite");
-
-    public static final RegistryObject<ForgeFlowingFluid> MARULITE =
-            registerSource("marulite", MARULITE_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> MARULITE_FLOWING =
-            registerFlowing("marulite", MARULITE_TYPE, MARULITE);
-
-    public static final RegistryObject<FluidType> PROXIA_TYPE =
-            registerType("proxia");
-
-    public static final RegistryObject<ForgeFlowingFluid> PROXIA =
-            registerSource("proxia", PROXIA_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> PROXIA_FLOWING =
-            registerFlowing("proxia", PROXIA_TYPE, PROXIA);
-
-    public static final RegistryObject<FluidType> OUSWARI_TYPE =
-            registerType("ouswari");
-
-    public static final RegistryObject<ForgeFlowingFluid> OUSWARI =
-            registerSource("ouswari", OUSWARI_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> OUSWARI_FLOWING =
-            registerFlowing("ouswari", OUSWARI_TYPE, OUSWARI);
-
-    public static final RegistryObject<FluidType> AUROSTONE_TYPE =
-            registerType("aurostone");
-
-    public static final RegistryObject<ForgeFlowingFluid> AUROSTONE =
-            registerSource("aurostone", AUROSTONE_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> AUROSTONE_FLOWING =
-            registerFlowing("aurostone", AUROSTONE_TYPE, AUROSTONE);
-
-    public static final RegistryObject<FluidType> DEEPSTEEL_TYPE =
-            registerType("deepsteel");
-
-    public static final RegistryObject<ForgeFlowingFluid> DEEPSTEEL =
-            registerSource("deepsteel", DEEPSTEEL_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> DEEPSTEEL_FLOWING =
-            registerFlowing("deepsteel", DEEPSTEEL_TYPE, DEEPSTEEL);
-
-    public static final RegistryObject<FluidType> CHIISTEEL_TYPE =
-            registerType("chiisteel");
-
-    public static final RegistryObject<ForgeFlowingFluid> CHIISTEEL =
-            registerSource("chiisteel", CHIISTEEL_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> CHIISTEEL_FLOWING =
-            registerFlowing("chiisteel", CHIISTEEL_TYPE, CHIISTEEL);
-
-    public static final RegistryObject<FluidType> IOXIUM_TYPE =
-            registerType("ioxium");
-
-    public static final RegistryObject<ForgeFlowingFluid> IOXIUM =
-            registerSource("ioxium", IOXIUM_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> IOXIUM_FLOWING =
-            registerFlowing("ioxium", IOXIUM_TYPE, IOXIUM);
-
-    public static final RegistryObject<FluidType> DILONITE_TYPE =
-            registerType("dilonite");
-
-    public static final RegistryObject<ForgeFlowingFluid> DILONITE =
-            registerSource("dilonite", DILONITE_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> DILONITE_FLOWING =
-            registerFlowing("dilonite", DILONITE_TYPE, DILONITE);
-
-    public static final RegistryObject<FluidType> TIBERITE_TYPE =
-            registerType("tiberite");
-
-    public static final RegistryObject<ForgeFlowingFluid> TIBERITE =
-            registerSource("tiberite", TIBERITE_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> TIBERITE_FLOWING =
-            registerFlowing("tiberite", TIBERITE_TYPE, TIBERITE);
-
-    public static final RegistryObject<FluidType> OSTLUM_TYPE =
-            registerType("ostlum");
-
-    public static final RegistryObject<ForgeFlowingFluid> OSTLUM =
-            registerSource("ostlum", OSTLUM_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> OSTLUM_FLOWING =
-            registerFlowing("ostlum", OSTLUM_TYPE, OSTLUM);
-
-    public static final RegistryObject<FluidType> EMERALD_TYPE =
-            registerType("emerald");
-
-    public static final RegistryObject<ForgeFlowingFluid> EMERALD =
-            registerSource("emerald", EMERALD_TYPE);
-
-    public static final RegistryObject<ForgeFlowingFluid> EMERALD_FLOWING =
-            registerFlowing("emerald", EMERALD_TYPE, EMERALD);
+        return entry;
+    }
 
     // =========================================================
     // FluidType
     // =========================================================
 
-    private static RegistryObject<FluidType> registerType(String name) {
-        return FLUID_TYPES.register(
-                name,
-                () -> new FluidType(
-                        FluidType.Properties.create()
-                                .density(2000)
-                                .viscosity(1000)
-                                .temperature(1300)
-                                .canSwim(false)
-                                .canDrown(false)
-                )
-        );
+    private static FluidType createFluidType(String name) {
+
+        ResourceLocation stillTexture =
+                new ResourceLocation(
+                        MODID,
+                        "fluid/" + name + "_still"
+                );
+
+        ResourceLocation flowingTexture =
+                new ResourceLocation(
+                        MODID,
+                        "fluid/" + name + "_flowing"
+                );
+
+        return new FluidType(
+                FluidType.Properties.create()
+                        .density(2000)
+                        .viscosity(1000)
+                        .temperature(1300)
+                        .canSwim(false)
+                        .canDrown(false)
+        ) {
+
+            @Override
+            public void initializeClient(
+                    Consumer<IClientFluidTypeExtensions> consumer
+            ) {
+                consumer.accept(new IClientFluidTypeExtensions() {
+
+                    @Override
+                    public ResourceLocation getStillTexture() {
+                        return stillTexture;
+                    }
+
+                    @Override
+                    public ResourceLocation getFlowingTexture() {
+                        return flowingTexture;
+                    }
+                });
+            }
+        };
     }
 
     // =========================================================
-    // Source
-    // =========================================================
-
-    private static RegistryObject<ForgeFlowingFluid> registerSource(
-            String name,
-            RegistryObject<FluidType> type
-    ) {
-        return FLUIDS.register(
-                name,
-                () -> new ForgeFlowingFluid.Source(
-                        createProperties(
-                                type,
-                                name
-                        )
-                )
-        );
-    }
-
-    // =========================================================
-    // Flowing
-    // =========================================================
-
-    private static RegistryObject<ForgeFlowingFluid> registerFlowing(
-            String name,
-            RegistryObject<FluidType> type,
-            RegistryObject<ForgeFlowingFluid> source
-    ) {
-        return FLUIDS.register(
-                name + "_flowing",
-                () -> new ForgeFlowingFluid.Flowing(
-                        createProperties(
-                                type,
-                                name
-                        )
-                )
-        );
-    }
-
-    // =========================================================
-    // Properties
+    // ForgeFlowingFluid Properties
     // =========================================================
 
     private static ForgeFlowingFluid.Properties createProperties(
-            RegistryObject<FluidType> type,
-            String name
+            FluidEntry entry
     ) {
-        /*
-         * Source / Flowing の相互参照をここで直接作らない。
-         *
-         * そのため illegal forward reference を回避できる。
-         */
         return new ForgeFlowingFluid.Properties(
-                type,
-                () -> getSource(name),
-                () -> getFlowing(name)
+                entry.type,
+                entry.source,
+                entry.flowing
         )
                 .slopeFindDistance(4)
                 .levelDecreasePerBlock(1);
     }
 
-    private static ForgeFlowingFluid getSource(String name) {
-        return switch (name) {
-            case "hachilite" -> HACHILITE.get();
-            case "kanilite" -> KANILITE.get();
-            case "igniz" -> IGNIZ.get();
-            case "chirite" -> CHIRITE.get();
-            case "momongaite" -> MOMONGAITE.get();
-            case "herdyeen" -> HERDYEEN.get();
-            case "hiroswari" -> HIROSWARI.get();
-            case "marulite" -> MARULITE.get();
-            case "proxia" -> PROXIA.get();
-            case "ouswari" -> OUSWARI.get();
-            case "aurostone" -> AUROSTONE.get();
-            case "deepsteel" -> DEEPSTEEL.get();
-            case "chiisteel" -> CHIISTEEL.get();
-            case "ioxium" -> IOXIUM.get();
-            case "dilonite" -> DILONITE.get();
-            case "tiberite" -> TIBERITE.get();
-            case "ostlum" -> OSTLUM.get();
-            case "emerald" -> EMERALD.get();
-            default -> throw new IllegalArgumentException(
-                    "Unknown fluid: " + name
-            );
-        };
-    }
+    // =========================================================
+    // Hachilite
+    // =========================================================
 
-    private static ForgeFlowingFluid getFlowing(String name) {
-        return switch (name) {
-            case "hachilite" -> HACHILITE_FLOWING.get();
-            case "kanilite" -> KANILITE_FLOWING.get();
-            case "igniz" -> IGNIZ_FLOWING.get();
-            case "chirite" -> CHIRITE_FLOWING.get();
-            case "momongaite" -> MOMONGAITE_FLOWING.get();
-            case "herdyeen" -> HERDYEEN_FLOWING.get();
-            case "hiroswari" -> HIROSWARI_FLOWING.get();
-            case "marulite" -> MARULITE_FLOWING.get();
-            case "proxia" -> PROXIA_FLOWING.get();
-            case "ouswari" -> OUSWARI_FLOWING.get();
-            case "aurostone" -> AUROSTONE_FLOWING.get();
-            case "deepsteel" -> DEEPSTEEL_FLOWING.get();
-            case "chiisteel" -> CHIISTEEL_FLOWING.get();
-            case "ioxium" -> IOXIUM_FLOWING.get();
-            case "dilonite" -> DILONITE_FLOWING.get();
-            case "tiberite" -> TIBERITE_FLOWING.get();
-            case "ostlum" -> OSTLUM_FLOWING.get();
-            case "emerald" -> EMERALD_FLOWING.get();
-            default -> throw new IllegalArgumentException(
-                    "Unknown fluid: " + name
-            );
-        };
-    }
+    private static final FluidEntry HACHILITE_ENTRY =
+            registerFluid("hachilite");
+
+    public static final RegistryObject<FluidType> HACHILITE_TYPE =
+            HACHILITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> HACHILITE =
+            HACHILITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> HACHILITE_FLOWING =
+            HACHILITE_ENTRY.flowing;
+
+    // =========================================================
+    // Kanilite
+    // =========================================================
+
+    private static final FluidEntry KANILITE_ENTRY =
+            registerFluid("kanilite");
+
+    public static final RegistryObject<FluidType> KANILITE_TYPE =
+            KANILITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> KANILITE =
+            KANILITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> KANILITE_FLOWING =
+            KANILITE_ENTRY.flowing;
+
+    // =========================================================
+    // Igniz
+    // =========================================================
+
+    private static final FluidEntry IGNIZ_ENTRY =
+            registerFluid("igniz");
+
+    public static final RegistryObject<FluidType> IGNIZ_TYPE =
+            IGNIZ_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> IGNIZ =
+            IGNIZ_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> IGNIZ_FLOWING =
+            IGNIZ_ENTRY.flowing;
+
+    // =========================================================
+    // Chirite
+    // =========================================================
+
+    private static final FluidEntry CHIRITE_ENTRY =
+            registerFluid("chirite");
+
+    public static final RegistryObject<FluidType> CHIRITE_TYPE =
+            CHIRITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> CHIRITE =
+            CHIRITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> CHIRITE_FLOWING =
+            CHIRITE_ENTRY.flowing;
+
+    // =========================================================
+    // Momongaite
+    // =========================================================
+
+    private static final FluidEntry MOMONGAITE_ENTRY =
+            registerFluid("momongaite");
+
+    public static final RegistryObject<FluidType> MOMONGAITE_TYPE =
+            MOMONGAITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> MOMONGAITE =
+            MOMONGAITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> MOMONGAITE_FLOWING =
+            MOMONGAITE_ENTRY.flowing;
+
+    // =========================================================
+    // Herdyeen
+    // =========================================================
+
+    private static final FluidEntry HERDYEEN_ENTRY =
+            registerFluid("herdyeen");
+
+    public static final RegistryObject<FluidType> HERDYEEN_TYPE =
+            HERDYEEN_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> HERDYEEN =
+            HERDYEEN_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> HERDYEEN_FLOWING =
+            HERDYEEN_ENTRY.flowing;
+
+    // =========================================================
+    // Hiroswari
+    // =========================================================
+
+    private static final FluidEntry HIROSWARI_ENTRY =
+            registerFluid("hiroswari");
+
+    public static final RegistryObject<FluidType> HIROSWARI_TYPE =
+            HIROSWARI_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> HIROSWARI =
+            HIROSWARI_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> HIROSWARI_FLOWING =
+            HIROSWARI_ENTRY.flowing;
+
+    // =========================================================
+    // Marulite
+    // =========================================================
+
+    private static final FluidEntry MARULITE_ENTRY =
+            registerFluid("marulite");
+
+    public static final RegistryObject<FluidType> MARULITE_TYPE =
+            MARULITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> MARULITE =
+            MARULITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> MARULITE_FLOWING =
+            MARULITE_ENTRY.flowing;
+
+    // =========================================================
+    // Proxia
+    // =========================================================
+
+    private static final FluidEntry PROXIA_ENTRY =
+            registerFluid("proxia");
+
+    public static final RegistryObject<FluidType> PROXIA_TYPE =
+            PROXIA_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> PROXIA =
+            PROXIA_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> PROXIA_FLOWING =
+            PROXIA_ENTRY.flowing;
+
+    // =========================================================
+    // Ouswari
+    // =========================================================
+
+    private static final FluidEntry OUSWARI_ENTRY =
+            registerFluid("ouswari");
+
+    public static final RegistryObject<FluidType> OUSWARI_TYPE =
+            OUSWARI_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> OUSWARI =
+            OUSWARI_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> OUSWARI_FLOWING =
+            OUSWARI_ENTRY.flowing;
+
+    // =========================================================
+    // Aurostone
+    // =========================================================
+
+    private static final FluidEntry AUROSTONE_ENTRY =
+            registerFluid("aurostone");
+
+    public static final RegistryObject<FluidType> AUROSTONE_TYPE =
+            AUROSTONE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> AUROSTONE =
+            AUROSTONE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> AUROSTONE_FLOWING =
+            AUROSTONE_ENTRY.flowing;
+
+    // =========================================================
+    // Deepsteel
+    // =========================================================
+
+    private static final FluidEntry DEEPSTEEL_ENTRY =
+            registerFluid("deepsteel");
+
+    public static final RegistryObject<FluidType> DEEPSTEEL_TYPE =
+            DEEPSTEEL_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> DEEPSTEEL =
+            DEEPSTEEL_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> DEEPSTEEL_FLOWING =
+            DEEPSTEEL_ENTRY.flowing;
+
+    // =========================================================
+    // Chiisteel
+    // =========================================================
+
+    private static final FluidEntry CHIISTEEL_ENTRY =
+            registerFluid("chiisteel");
+
+    public static final RegistryObject<FluidType> CHIISTEEL_TYPE =
+            CHIISTEEL_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> CHIISTEEL =
+            CHIISTEEL_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> CHIISTEEL_FLOWING =
+            CHIISTEEL_ENTRY.flowing;
+
+    // =========================================================
+    // Ioxium
+    // =========================================================
+
+    private static final FluidEntry IOXIUM_ENTRY =
+            registerFluid("ioxium");
+
+    public static final RegistryObject<FluidType> IOXIUM_TYPE =
+            IOXIUM_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> IOXIUM =
+            IOXIUM_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> IOXIUM_FLOWING =
+            IOXIUM_ENTRY.flowing;
+
+    // =========================================================
+    // Dilonite
+    // =========================================================
+
+    private static final FluidEntry DILONITE_ENTRY =
+            registerFluid("dilonite");
+
+    public static final RegistryObject<FluidType> DILONITE_TYPE =
+            DILONITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> DILONITE =
+            DILONITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> DILONITE_FLOWING =
+            DILONITE_ENTRY.flowing;
+
+    // =========================================================
+    // Tiberite
+    // =========================================================
+
+    private static final FluidEntry TIBERITE_ENTRY =
+            registerFluid("tiberite");
+
+    public static final RegistryObject<FluidType> TIBERITE_TYPE =
+            TIBERITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> TIBERITE =
+            TIBERITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> TIBERITE_FLOWING =
+            TIBERITE_ENTRY.flowing;
+
+    // =========================================================
+    // Ostlum
+    // =========================================================
+
+    private static final FluidEntry OSTLUM_ENTRY =
+            registerFluid("ostlum");
+
+    public static final RegistryObject<FluidType> OSTLUM_TYPE =
+            OSTLUM_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> OSTLUM =
+            OSTLUM_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> OSTLUM_FLOWING =
+            OSTLUM_ENTRY.flowing;
+
+    // =========================================================
+    // Emerald
+    // =========================================================
+
+    private static final FluidEntry EMERALD_ENTRY =
+            registerFluid("emerald");
+
+    public static final RegistryObject<FluidType> EMERALD_TYPE =
+            EMERALD_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> EMERALD =
+            EMERALD_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> EMERALD_FLOWING =
+            EMERALD_ENTRY.flowing;
 
     // =========================================================
     // Register
