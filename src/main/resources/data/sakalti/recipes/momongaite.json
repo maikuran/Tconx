@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:alloy",
+  "inputs": [
+    {
+      "amount": 175,
+      "name": "sakalti:hepatizon"
+    },
+    {
+      "amount": 100,
+      "name": "tconstruct:molten_iron"
+    }
+  ],
+  "result": {
+    "fluid": "sakalti:momongaite",
+    "amount": 50
+  },
+  "temperature": 1350
+}
