@@ -3,7 +3,6 @@ package com.sakalti.modifier;
 import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
 
-import static com.sakalti.ModMain.MODID;
 
 public final class TconxModifiers {
 
