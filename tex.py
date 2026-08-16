@@ -1,7 +1,7 @@
 from pathlib import Path
+import json
 import math
 import random
-import re
 
 from PIL import Image, ImageDraw, ImageFilter
 
@@ -12,26 +12,47 @@ SEED = 20260816
 
 ROOT = Path(__file__).resolve().parent
 
-RESOURCE_DIR = (
+TEXTURE_DIR = (
     ROOT
     / "src"
     / "main"
     / "resources"
-)
-
-TEXTURE_DIR = (
-    RESOURCE_DIR
     / "assets"
     / MODID
     / "textures"
     / "fluid"
 )
 
-JAVA_DIR = (
+FLUID_TEXTURE_JSON_DIR = (
     ROOT
     / "src"
     / "main"
-    / "java"
+    / "resources"
+    / "assets"
+    / MODID
+    / "mantle"
+    / "fluid_texture"
+)
+
+FLUID_JSON_DIR = (
+    ROOT
+    / "src"
+    / "main"
+    / "resources"
+    / "data"
+    / MODID
+    / "fluid"
+)
+
+FLUID_TAG_DIR = (
+    ROOT
+    / "src"
+    / "main"
+    / "resources"
+    / "data"
+    / MODID
+    / "tags"
+    / "fluids"
 )
 
 
@@ -81,17 +102,44 @@ def smooth_noise(x, y, seed, scale):
         fx = fx * fx * (3.0 - 2.0 * fx)
         fy = fy * fy * (3.0 - 2.0 * fy)
 
-        octave_seed = seed + octave * 17
+        n00 = noise(
+            ix,
+            iy,
+            seed + octave * 17,
+        )
 
-        n00 = noise(ix, iy, octave_seed)
-        n10 = noise(ix + 1, iy, octave_seed)
-        n01 = noise(ix, iy + 1, octave_seed)
-        n11 = noise(ix + 1, iy + 1, octave_seed)
+        n10 = noise(
+            ix + 1,
+            iy,
+            seed + octave * 17,
+        )
 
-        nx0 = n00 * (1.0 - fx) + n10 * fx
-        nx1 = n01 * (1.0 - fx) + n11 * fx
+        n01 = noise(
+            ix,
+            iy + 1,
+            seed + octave * 17,
+        )
 
-        value = nx0 * (1.0 - fy) + nx1 * fy
+        n11 = noise(
+            ix + 1,
+            iy + 1,
+            seed + octave * 17,
+        )
+
+        nx0 = (
+            n00 * (1.0 - fx)
+            + n10 * fx
+        )
+
+        nx1 = (
+            n01 * (1.0 - fx)
+            + n11 * fx
+        )
+
+        value = (
+            nx0 * (1.0 - fy)
+            + nx1 * fy
+        )
 
         total += value * amplitude
         normalization += amplitude
@@ -257,81 +305,19 @@ def create_fluid_texture(
         gloss,
     )
 
-    # 最終的に必ずRGB PNGにする
     return image.convert("RGB")
 
 
-def valid_fluid_name(name):
-    if not name:
-        return False
-
-    if len(name) > 128:
-        return False
-
-    return re.fullmatch(
-        r"[a-z0-9_.-]+",
-        name,
-    ) is not None
-
-
 def find_fluid_names():
-    """
-    液体IDを固定リストなしで動的検出する。
-
-    JSONを生成することはない。
-    """
-
     names = set()
 
-    # ---------------------------------------------------------
-    # Javaソースから登録名を検出
-    # ---------------------------------------------------------
+    if FLUID_JSON_DIR.exists():
+        for path in FLUID_JSON_DIR.rglob("*.json"):
+            names.add(path.stem)
 
-    if JAVA_DIR.exists():
-        for path in JAVA_DIR.rglob("*.java"):
-            try:
-                text = path.read_text(
-                    encoding="utf-8"
-                )
-            except UnicodeDecodeError:
-                continue
-
-            patterns = (
-                # FLUIDS.register("molten_xxx", ...)
-                r"\bFLUIDS\s*\.\s*register\s*\(\s*"
-                r'"([a-z0-9_.-]+)"',
-
-                # register("molten_xxx", ...)
-                r"\bregister\s*\(\s*"
-                r'"(molten_[a-z0-9_.-]+)"',
-
-                # create("molten_xxx", ...)
-                r"\bcreate\s*\(\s*"
-                r'"(molten_[a-z0-9_.-]+)"',
-
-                # source("molten_xxx", ...)
-                r"\bsource\s*\(\s*"
-                r'"(molten_[a-z0-9_.-]+)"',
-
-                # ResourceLocation("sakalti", "molten_xxx")
-                rf'ResourceLocation\s*\(\s*'
-                rf'"{re.escape(MODID)}"\s*,\s*'
-                rf'"([a-z0-9_.-]+)"',
-            )
-
-            for pattern in patterns:
-                for match in re.finditer(
-                    pattern,
-                    text,
-                ):
-                    name = match.group(1)
-
-                    if valid_fluid_name(name):
-                        names.add(name)
-
-    # ---------------------------------------------------------
-    # 既存のPNGからも検出
-    # ---------------------------------------------------------
+    if FLUID_TAG_DIR.exists():
+        for path in FLUID_TAG_DIR.rglob("*.json"):
+            names.add(path.stem)
 
     if TEXTURE_DIR.exists():
         for path in TEXTURE_DIR.glob("*.png"):
@@ -343,52 +329,39 @@ def find_fluid_names():
                 "_flowing",
             ):
                 if stem.endswith(suffix):
-                    stem = stem[
-                        : -len(suffix)
-                    ]
+                    stem = stem[:-len(suffix)]
 
-            if valid_fluid_name(stem):
+            if stem:
                 names.add(stem)
 
-    # ---------------------------------------------------------
-    # generated texture専用ディレクトリ以外の
-    # assetsからも流体名らしいものを検出
-    # ---------------------------------------------------------
+    if FLUID_TEXTURE_JSON_DIR.exists():
+        for path in FLUID_TEXTURE_JSON_DIR.rglob("*.json"):
+            names.add(path.stem)
 
-    asset_dir = (
-        RESOURCE_DIR
-        / "assets"
-        / MODID
+    valid = set()
+
+    allowed = (
+        "abcdefghijklmnopqrstuvwxyz"
+        "0123456789"
+        "_-."
     )
 
-    if asset_dir.exists():
-        for path in asset_dir.rglob("*.png"):
-            if "fluid" not in path.parts:
-                continue
+    for name in names:
+        if not name:
+            continue
 
-            stem = path.stem
+        if all(
+            char in allowed
+            for char in name
+        ):
+            valid.add(name)
 
-            for suffix in (
-                "_still",
-                "_flow",
-                "_flowing",
-            ):
-                if stem.endswith(suffix):
-                    stem = stem[
-                        : -len(suffix)
-                    ]
-
-            if valid_fluid_name(stem):
-                names.add(stem)
-
-    return sorted(names)
+    return sorted(valid)
 
 
 def color_for_fluid(name):
     """
-    液体名から決定論的にRGB色を作る。
-
-    RGBAではなくRGB 3チャンネル。
+    液体IDから決定論的にRGBを生成する。
     """
 
     value = 0
@@ -410,6 +383,19 @@ def color_for_fluid(name):
     )
 
 
+def rgb_hex(color):
+    """
+    RGB 3値を6文字のRRGGBBへ変換。
+    RGBAの8文字にはしない。
+    """
+
+    return (
+        f"{color[0]:02X}"
+        f"{color[1]:02X}"
+        f"{color[2]:02X}"
+    )
+
+
 def texture_path(name, flowing):
     suffix = (
         "flow"
@@ -423,88 +409,57 @@ def texture_path(name, flowing):
     )
 
 
-def save_rgb_png(image, path):
-    """
-    PNGを必ずRGBとして保存する。
-    """
+def fluid_texture_json_path(name):
+    return (
+        FLUID_TEXTURE_JSON_DIR
+        / f"{name}.json"
+    )
 
-    if image.mode != "RGB":
-        image = image.convert("RGB")
+
+def write_fluid_texture_json(name):
+    color = color_for_fluid(name)
+
+    # 重要:
+    # FF + RRGGBB ではなく、
+    # RRGGBBの6文字だけを書く。
+    color_hex = rgb_hex(color)
+
+    data = {
+        "still": (
+            f"{MODID}:fluid/"
+            f"{name}_still"
+        ),
+        "flowing": (
+            f"{MODID}:fluid/"
+            f"{name}_flow"
+        ),
+        "color": color_hex,
+    }
+
+    path = fluid_texture_json_path(name)
 
     path.parent.mkdir(
         parents=True,
         exist_ok=True,
     )
 
-    image.save(
-        path,
-        "PNG",
-        optimize=True,
-    )
-
-    # 保存後にRGBであることを検証
-    with Image.open(path) as check:
-        if check.mode != "RGB":
-            raise RuntimeError(
-                f"Generated PNG is not RGB: {path}"
-            )
-
-        if check.size != (
-            SIZE,
-            SIZE,
-        ):
-            raise RuntimeError(
-                f"Invalid texture size: {path}"
-            )
-
-
-def remove_old_generated_json():
-    """
-    今回の構成ではMantle用fluid_texture JSONを使わない。
-
-    リポジトリ内に残っている旧生成JSONだけ削除する。
-    """
-
-    old_dir = (
-        RESOURCE_DIR
-        / "assets"
-        / MODID
-        / "mantle"
-        / "fluid_texture"
-    )
-
-    if not old_dir.exists():
-        return
-
-    for path in old_dir.rglob("*.json"):
-        path.unlink()
-
-    # 空ディレクトリを後ろから削除
-    directories = sorted(
-        (
-            p
-            for p in old_dir.rglob("*")
-            if p.is_dir()
-        ),
-        key=lambda p: len(p.parts),
-        reverse=True,
-    )
-
-    for directory in directories:
-        try:
-            directory.rmdir()
-        except OSError:
-            pass
-
-    try:
-        old_dir.rmdir()
-    except OSError:
-        pass
+    with path.open(
+        "w",
+        encoding="utf-8",
+        newline="\n",
+    ) as file:
+        json.dump(
+            data,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
+        file.write("\n")
 
 
 def generate():
     print(
-        "=== Sakalti Fluid PNG Generator ==="
+        "=== Sakalti Mantle Fluid Generator ==="
     )
 
     names = find_fluid_names()
@@ -523,13 +478,14 @@ def generate():
         exist_ok=True,
     )
 
-    # 旧Mantle JSONを完全に除去
-    remove_old_generated_json()
+    FLUID_TEXTURE_JSON_DIR.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
 
     generated = 0
 
     for index, name in enumerate(names):
-
         color = color_for_fluid(name)
 
         seed = (
@@ -537,20 +493,16 @@ def generate():
             + index * 1000
         )
 
-        print(
-            f"[GENERATE] {name}"
-        )
-
         still = create_fluid_texture(
             color,
             seed,
-            flowing=False,
+            False,
         )
 
         flowing = create_fluid_texture(
             color,
             seed + 1,
-            flowing=True,
+            True,
         )
 
         still_path = texture_path(
@@ -563,29 +515,32 @@ def generate():
             True,
         )
 
-        save_rgb_png(
-            still,
+        still.save(
             still_path,
+            "PNG",
+            optimize=True,
         )
 
-        save_rgb_png(
-            flowing,
+        flowing.save(
             flowing_path,
+            "PNG",
+            optimize=True,
+        )
+
+        write_fluid_texture_json(
+            name
         )
 
         print(
-            f"  [RGB] {still_path}"
-        )
-
-        print(
-            f"  [RGB] {flowing_path}"
+            f"[OK] {name} "
+            f"RGB={rgb_hex(color)}"
         )
 
         generated += 2
 
     print()
     print(
-        f"Generated {generated} RGB PNG files."
+        f"Generated {generated} PNG textures."
     )
 
     print(
