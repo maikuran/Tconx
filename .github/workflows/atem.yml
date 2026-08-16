@@ -231,4 +231,5 @@ jobs:
           fi
 
           git commit -m "Generate Mantle fluid textures and definitions"
+          git pull --rebase
           git push
