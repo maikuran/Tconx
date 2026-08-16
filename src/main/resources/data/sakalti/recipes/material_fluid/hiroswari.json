@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "name": "sakalti:molten_hiroswari",
+    "name": "sakalti:hiroswari",
     "amount": 144
   },
   "temperature": 1000,
