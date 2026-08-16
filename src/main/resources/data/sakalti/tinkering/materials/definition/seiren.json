@@ -1,0 +1,15 @@
+{
+  "craftable": true,
+  "tier": 6,
+  "sortOrder": 6,
+  "hidden": false,
+  "color": "#fff200",
+  "fluid": "sakalti:seiren",
+  "translationKey": "material.sakalti.seiren",
+  "traits": [
+    {
+      "name": "sakalti:seiren_curse",
+      "level": 1
+    }
+  ]
+}
