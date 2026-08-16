@@ -1,4 +1,5 @@
-name: Generate Mantle Fluid Textures
+
+name: Generate Mantle 
 
 on:
   push:
@@ -116,3 +117,4 @@ jobs:
             git pull --rebase
             git push
           fi
+```
