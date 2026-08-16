@@ -1,4 +1,4 @@
-package com.sakalti.sakalti;
+package com.sakalti;
 
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
