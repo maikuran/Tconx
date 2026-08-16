@@ -1,0 +1,36 @@
+name: Remove molten_ from recipe JSONs
+
+on:
+  workflow_dispatch:
+
+jobs:
+  replace-molten:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Replace molten_ in recipe JSON files
+        run: |
+          find src/main/resources/data/sakalti/recipes/ \
+            -type f \
+            -name '*.json' \
+            -exec sed -i 's/molten_//g' {} +
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet; then
+            echo "変更はありません。"
+            exit 0
+          fi
+
+          git add src/main/resources/data/sakalti/recipes/
+          git commit -m "Remove molten_ from recipe JSONs"
+          git push
