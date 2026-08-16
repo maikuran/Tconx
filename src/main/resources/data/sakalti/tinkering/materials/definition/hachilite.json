@@ -4,8 +4,8 @@
   "sortOrder": 3,
   "hidden": false,
   "color": "#56d8e8",
-  "fluid": "sakalti:hacilite",
-  "translationKey": "material.sakalti.hacilite",
+  "fluid": "sakalti:hachilite",
+  "translationKey": "material.sakalti.hachilite",
   "traits": [
     {
       "name": "sakalti:glacial_bind",
