@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CSC",
+    "SGS",
+    "CSC"
+  ],
+  "key": {
+    "C": {
+      "item": "sakalti:diamond"
+    },
+    "G": {
+      "item": "minecraft:iron"
+    },
+    "S": {
+      "item": "minecraft:deepslate"
+    }
+  },
+  "result": {
+    "item": "sakalti:deepchunk"
+  }
+}
