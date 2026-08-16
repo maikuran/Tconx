@@ -10,7 +10,9 @@ public final class ModMaterials {
 
     public static final MaterialId HACHILITE_ID =
             new MaterialId("sakalti:hachilite");
-
+    
+    public static final MaterialId SEIREN_ID =
+            new MaterialId("sakalti:seiren");
     public static final MaterialId OUSWARI_ID =
             new MaterialId("sakalti:ouswari");
 
