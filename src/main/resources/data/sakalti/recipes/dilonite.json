@@ -3,7 +3,7 @@
   "inputs": [
     {
       "amount": 20,
-      "name": "tconstruct:gold"
+      "name": "tconstruct:molten_gold"
     },
     {
       "amount": 10,
