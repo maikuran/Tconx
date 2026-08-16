@@ -7,7 +7,7 @@ import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
 public final class TconxModifiers {
 
     public static final ModifierDeferredRegister MODIFIERS =
-            ModifierDeferredRegister.create(sakalti);
+            ModifierDeferredRegister.create("sakalti");
 
     public static final StaticModifier<GlacialBindModifier> GLACIAL_BIND =
             MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
