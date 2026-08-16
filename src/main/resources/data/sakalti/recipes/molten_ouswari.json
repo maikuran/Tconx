@@ -3,7 +3,7 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "tconstruct:kanilite"
+      "name": "sakaltikanilite"
     },
     {
       "amount": 20,
@@ -14,5 +14,5 @@
     "fluid": "sakalti:ouswari",
     "amount": 50
   },
-  "temperature": 1550
+  "temperature": 1450
 }
