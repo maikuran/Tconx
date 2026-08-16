@@ -103,13 +103,13 @@ public final class ModFluids {
 
         ResourceLocation stillTexture =
                 new ResourceLocation(
-                        MODID,
+                        "sakalti",
                         "fluid/" + name + "_still"
                 );
 
         ResourceLocation flowingTexture =
                 new ResourceLocation(
-                        MODID,
+                        "sakalti",
                         "fluid/" + name + "_flowing"
                 );
 
