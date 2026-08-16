@@ -402,17 +402,17 @@ public final class ModFluids {
     // Tiberite
     // =========================================================
 
-    private static final FluidEntry TIBERITE_ENTRY =
-            registerFluid("tiberite");
+    private static final FluidEntry TIBERIUM_ENTRY =
+            registerFluid("tiberium");
 
-    public static final RegistryObject<FluidType> TIBERITE_TYPE =
-            TIBERITE_ENTRY.type;
+    public static final RegistryObject<FluidType> TIBERIUM_TYPE =
+            TIBERIUM_ENTRY.type;
 
-    public static final RegistryObject<ForgeFlowingFluid> TIBERITE =
-            TIBERITE_ENTRY.source;
+    public static final RegistryObject<ForgeFlowingFluid> TIBERIUM =
+            TIBERIUM_ENTRY.source;
 
-    public static final RegistryObject<ForgeFlowingFluid> TIBERITE_FLOWING =
-            TIBERITE_ENTRY.flowing;
+    public static final RegistryObject<ForgeFlowingFluid> TIBERIUM_FLOWING =
+            TIBERIUM_ENTRY.flowing;
 
     // =========================================================
     // Ostlum
