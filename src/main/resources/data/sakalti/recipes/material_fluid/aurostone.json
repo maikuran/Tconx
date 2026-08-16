@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "name": "sakalti:aurostone",
-    "amount": 144
+    "fluid": "sakalti:aurostone",
+    "amount": 100
   },
   "temperature": 1000,
   "output": "sakalti:aurostone"

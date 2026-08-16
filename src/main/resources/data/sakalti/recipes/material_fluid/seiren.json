@@ -1,9 +1,9 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "name": "sakalti:seiren",
-    "amount": 60
+    "fluid": "sakalti:seiren",
+    "amount": 100
   },
-  "temperature": 1200,
+  "temperature": 1000,
   "output": "sakalti:seiren"
 }

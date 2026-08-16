@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "name": "sakalti:chirite",
-    "amount": 144
+    "fluid": "sakalti:chirite",
+    "amount": 100
   },
   "temperature": 1000,
   "output": "sakalti:chirite"

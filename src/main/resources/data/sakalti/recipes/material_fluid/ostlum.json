@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "name": "sakalti:ostlum",
-    "amount": 144
+    "fluid": "sakalti:ostlum",
+    "amount": 100
   },
   "temperature": 1000,
   "output": "sakalti:ostlum"

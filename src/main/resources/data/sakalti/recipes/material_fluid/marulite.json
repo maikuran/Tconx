@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "name": "sakalti:marulite",
-    "amount": 144
+    "fluid": "sakalti:marulite",
+    "amount": 100
   },
   "temperature": 1000,
   "output": "sakalti:marulite"
