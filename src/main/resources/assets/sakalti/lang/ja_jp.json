@@ -14,7 +14,7 @@
   "material.sakalti.aurostone": "オーロストーン",
   "material.sakalti.deepsteel": "深層鋼",
   "material.sakalti.hiroswari": "ひろすわり",
-  "material.sakalti.ouswari": "おうすわり",
+  "material.sakalti.seiren": "セイレーン",
 
   "item.sakalti.wooden_nuzwat": "木のヌズワト",
   "item.sakalti.stone_nuzwat": "石のヌズワト",
@@ -36,6 +36,7 @@
   "item.sakalti.deepchunk": "深層塊",
 
   "block.sakalti.hachilite_block": "ハチライトブロック",
+  "block.sakalti.seiren_block": "セイレーンブロック",
   "block.sakalti.kanilite_block": "カニライトブロック",
   "block.sakalti.herdyeen_block": "ハーディーンブロック",
   "block.sakalti.ostlum_block": "オストラムブロック",
@@ -61,7 +62,9 @@
 
   "fluid_type.sakalti.hachilite": "溶融ハチライト",
   "fluid_type.sakalti.kanilite": "溶融カニライト",
+  
   "fluid_type.sakalti.herdyeen": "溶融ハーディーン",
+  "fluid_type.sakalti.seiren": "溶融セイレーン",
   "fluid_type.sakalti.ostlum": "溶融オストラム",
   "fluid_type.sakalti.chirite": "溶融チーライト",
   "fluid_type.sakalti.ioxium": "溶融イオキシウム",
@@ -92,7 +95,7 @@
   "modifier.sakalti.fire_wall": "炎の壁",
   "modifier.sakalti.laser_prism": "レーザープリズム",
   "modifier.sakalti.heavy_stone": "重い石",
-  "modifier.sakalti.jumpy": "ジャンプ",
+  "modifier.sakalti.seiren_curse": "セイレーンの呪い",
 
   "modifier.sakalti.glacial_bind.description": "攻撃時、敵を鈍足状態にする。",
   "modifier.sakalti.heavy_stone.description": "ほぼ動けない代わりに耐性3",
@@ -105,7 +108,7 @@
   "modifier.sakalti.berserk.description": "耐久値を多めに消費する...ああ、強くなるぅうう",
   "modifier.sakalti.poisonous_bind.description": "攻撃時、敵を毒状態にする。",
   "modifier.sakalti.fire_wall.description": "広範囲に1ダメージぐらい",
-  "modifier.sakalti.super_magnet.description": "アイテムを引き寄せる。",
+  "modifier.sakalti.seiren_curse.description": "恐ろしい呪いがかかる... アァーーーーーーーーー",
   "modifier.sakalti.lifesteal.description": "攻撃時、与えたダメージの一部を自身の体力として回復する。",
   "modifier.sakalti.ice_bind.description": "攻撃時、その方向に2m間隔に棘を発動する。",
   "modifier.sakalti.long_spark.description": "攻撃時、その方向に2m間隔に棘を発動する。ただし10mまでであり遠くほどダメージが高い。"
