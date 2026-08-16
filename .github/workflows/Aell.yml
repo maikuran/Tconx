@@ -95,5 +95,6 @@ jobs:
             echo "No changes."
           else
             git commit -m "Split material traits into trait definitions"
+            git pull --rebase
             git push
           fi
