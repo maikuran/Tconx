@@ -15,6 +15,7 @@
   "material.sakalti.aurostone": "オーロストーン",
   "material.sakalti.deepsteel": "深層鋼",
   "material.sakalti.hiroswari": "ひろすわり",
+  "material.sakalti.ouswari": "おうすわり",
   "material.sakalti.seiren": "セイレーン",
 
   "item.sakalti.wooden_nuzwat": "木のヌズワト",
@@ -53,8 +54,8 @@
   "block.sakalti.deepsteel_block": "深層鋼ブロック",
   "block.sakalti.aurostone_block": "オーロストーンブロック",
   "block.sakalti.marulite_block": "マルライトブロック",
-  "block.sakalti.hiroswari_block": "ひろすわり",
-  "block.sakalti.ouswari_block": "おうすわり",
+  "block.sakalti.hiroswari_block": "ひろすわりブロック",
+  "block.sakalti.ouswari_block": "おうすわりブロック",
 
   "block.sakalti.hachilite_ore": "ハチライト鉱石",
   "block.sakalti.kanilite_ore": "カニライト鉱石",
