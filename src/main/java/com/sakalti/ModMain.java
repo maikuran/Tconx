@@ -1,4 +1,4 @@
-package com.sakalti.sakalti;
+package com.sakalti;
 
 import com.sakalti.sakalti.enchant.ModEnchantments;
 import com.sakalti.sakalti.modifier.TconxModifiers;
