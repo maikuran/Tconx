@@ -1,0 +1,18 @@
+{
+  "type": "tconstruct:alloy",
+  "inputs": [
+    {
+      "amount": 15,
+      "name": "tconstruct:kanilite"
+    },
+    {
+      "amount": 50,
+      "name": "tconstruct:molten_iron"
+    }
+  ],
+  "result": {
+    "fluid": "sakalti:hachirite",
+    "amount": 50
+  },
+  "temperature": 980
+}
