@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "name": "sakalti:kanilite",
+    "name": "sakalti:molten_kanilite",
     "amount": 144
   },
   "temperature": 1000,
