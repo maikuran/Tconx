@@ -79,8 +79,8 @@ public final class ModCreativeTabs {
                                 output.accept(ModMetals.DILONITE_BLOCK.get());
                                 output.accept(ModMetals.DILONITE_INGOT.get());
 
-                                output.accept(ModMetals.TIBERITE_BLOCK.get());
-                                output.accept(ModMetals.TIBERITE_INGOT.get());
+                                output.accept(ModMetals.TIBERIUM_BLOCK.get());
+                                output.accept(ModMetals.TIBERIUM_INGOT.get());
 
                                 output.accept(ModMetals.OSTLUM_BLOCK.get());
                                 output.accept(ModMetals.OSTLUM_INGOT.get());
