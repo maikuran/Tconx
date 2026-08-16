@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "tconstruct:emerald"
+      "name": "tconstruct:molten_emerald"
     },
     {
       "amount": 50,
-      "name": "tconstruct:diamond"
+      "name": "tconstruct:molten_diamond"
     }
   ],
   "result": {
