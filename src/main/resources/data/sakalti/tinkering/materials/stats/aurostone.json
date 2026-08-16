@@ -14,7 +14,7 @@
     },
     "tconstruct:head": {
       "durability": 1493,
-      "melee_attack": 15.5,
+      "melee_attack": 9.5,
       "mining_speed": 15.0,
       "mining_tier": "sakalti:super"
     },
