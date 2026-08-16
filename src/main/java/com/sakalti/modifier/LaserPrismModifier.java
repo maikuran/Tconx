@@ -1,4 +1,4 @@
-package com.sakalti.sakalti.modifier;
+package com.sakalti.modifier;
 
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;

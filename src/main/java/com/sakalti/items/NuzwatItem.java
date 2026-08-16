@@ -1,4 +1,4 @@
-package com.sakalti.sakalti.items;
+package com.sakalti.items;
 
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.LightBlock;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.registries.ForgeRegistries;
-import com.sakalti.sakalti.enchant.ModEnchantments;
+import com.sakalti.enchant.ModEnchantments;
 
 public class NuzwatItem extends SwordItem {
 

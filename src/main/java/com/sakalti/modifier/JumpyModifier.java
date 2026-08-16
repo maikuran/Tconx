@@ -1,4 +1,4 @@
-package com.sakalti.sakalti.modifier;
+package com.sakalti.modifier;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;

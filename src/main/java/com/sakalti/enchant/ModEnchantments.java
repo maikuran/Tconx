@@ -1,12 +1,12 @@
-package com.sakalti.sakalti.enchant;
+package com.sakalti.enchant;
 
 import net.minecraft.world.item.ItemStack;
-import com.sakalti.sakalti.enchant.PierceThrustEnchantment;
-import com.sakalti.sakalti.enchant.HemorrhageEnchantment;
+import com.sakalti.enchant.PierceThrustEnchantment;
+import com.sakalti.enchant.HemorrhageEnchantment;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraft.world.entity.EquipmentSlot;
-import com.sakalti.sakalti.items.NuzwatItem;
+import com.sakalti.items.NuzwatItem;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;

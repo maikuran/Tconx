@@ -1,6 +1,6 @@
-package com.sakalti.sakalti.registry;
+package com.sakalti.registry;
 
-import com.sakalti.sakalti.items.NuzwatItem;
+import com.sakalti.items.NuzwatItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.registries.DeferredRegister;

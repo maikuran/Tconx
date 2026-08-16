@@ -1,7 +1,7 @@
-package com.sakalti.sakalti.registry;
+package com.sakalti.registry;
 
-import com.sakalti.sakalti.registry.ModMirzo;
-import com.sakalti.sakalti.registry.ModNuzwats;
+import com.sakalti.registry.ModMirzo;
+import com.sakalti.registry.ModNuzwats;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;

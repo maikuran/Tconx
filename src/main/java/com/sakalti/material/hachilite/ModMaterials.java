@@ -1,4 +1,4 @@
-package com.sakalti.sakalti.material.hachilite;
+package com.sakalti.material.hachilite;
 
 import slimeknights.tconstruct.library.materials.definition.MaterialId;
 

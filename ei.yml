@@ -1,4 +1,4 @@
-name: Replace sakalti.sakalti
+name: Replace sakalti
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ jobs:
           python3 <<'PY'
           from pathlib import Path
 
-          old = "sakalti.sakalti"
+          old = "sakalti"
           new = "sakalti"
 
           skip_dirs = {
@@ -71,5 +71,5 @@ jobs:
             exit 0
           fi
 
-          git commit -m "Replace sakalti.sakalti with sakalti"
+          git commit -m "Replace sakalti with sakalti"
           git push

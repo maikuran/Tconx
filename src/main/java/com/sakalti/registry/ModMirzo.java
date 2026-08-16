@@ -1,6 +1,6 @@
-package com.sakalti.sakalti.registry;
+package com.sakalti.registry;
 
-import com.sakalti.sakalti.items.MirzoItem;
+import com.sakalti.items.MirzoItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.registries.DeferredRegister;

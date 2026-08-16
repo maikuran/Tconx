@@ -11,7 +11,7 @@ sourceSets {
     }
 }
 
-group = 'com.sakalti.sakalti'
+group = 'com.sakalti'
 archivesBaseName = 'sakalti'
 version = '1.0.0'
 

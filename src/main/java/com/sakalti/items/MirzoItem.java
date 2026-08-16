@@ -1,6 +1,6 @@
-package com.sakalti.sakalti.items;
+package com.sakalti.items;
 
-import com.sakalti.sakalti.enchant.ModEnchantments;
+import com.sakalti.enchant.ModEnchantments;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
