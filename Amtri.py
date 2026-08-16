@@ -1,133 +1,119 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
-RESOURCES = ROOT / "src" / "main" / "resources"
+
+JAVA_FILE = (
+    ROOT
+    / "src"
+    / "main"
+    / "java"
+    / "com"
+    / "sakalti"
+    / "material"
+    / "hachilite"
+    / "ModMaterials.java"
+)
+
+OUTPUT_DIR = (
+    ROOT
+    / "src"
+    / "main"
+    / "resources"
+    / "data"
+    / "sakalti"
+    / "recipes"
+    / "material_fluid"
+)
 
 
-def read_json(path: Path):
-    try:
-        with path.open("r", encoding="utf-8") as f:
-            return json.load(f)
-    except (OSError, json.JSONDecodeError):
-        return None
-
-
-def find_json_files():
-    if not RESOURCES.exists():
-        return []
-
-    return list(RESOURCES.rglob("*.json"))
+MATERIAL_PATTERN = re.compile(
+    r'new\s+MaterialId\s*\(\s*"([^"]+)"\s*\)'
+)
 
 
 def find_materials():
-    """
-    リポジトリ内のJSONを動的に走査してMaterial候補を探す。
+    if not JAVA_FILE.exists():
+        raise FileNotFoundError(
+            f"ModMaterials.java が見つかりません: {JAVA_FILE}"
+        )
 
-    固定のMaterial名は持たない。
-    """
+    text = JAVA_FILE.read_text(encoding="utf-8")
 
-    materials = {}
+    materials = MATERIAL_PATTERN.findall(text)
 
-    for path in find_json_files():
-        data = read_json(path)
-
-        if not isinstance(data, dict):
-            continue
-
-        # material系JSONを探す
-        material_id = data.get("material")
-
-        if isinstance(material_id, str):
-            materials[material_id] = {
-                "id": material_id,
-                "source": path,
-                "data": data,
-            }
-
-        # 複数Materialを格納する形式にも対応
-        material_list = data.get("materials")
-
-        if isinstance(material_list, list):
-            for entry in material_list:
-                if not isinstance(entry, dict):
-                    continue
-
-                mid = entry.get("id") or entry.get("name")
-
-                if isinstance(mid, str):
-                    materials[mid] = {
-                        "id": mid,
-                        "source": path,
-                        "data": entry,
-                    }
-
-    return materials
+    # 順序を維持しつつ重複削除
+    return list(dict.fromkeys(materials))
 
 
-def find_material_fluid(material_id: str, material_data: dict):
-    """
-    Material定義からFluidを探す。
-    """
+def fluid_id(material_id: str):
+    namespace, name = material_id.split(":", 1)
 
-    candidates = [
-        material_data.get("fluid"),
-        material_data.get("fluid_name"),
-        material_data.get("fluidName"),
-    ]
-
-    for value in candidates:
-        if isinstance(value, str):
-            return value
-
-    # Material名から直接Fluid IDを推測するのではなく、
-    # 既存JSON内から対応するFluidを探す。
-    for path in find_json_files():
-        data = read_json(path)
-
-        if not isinstance(data, dict):
-            continue
-
-        text = json.dumps(data, ensure_ascii=False)
-
-        if material_id not in text:
-            continue
-
-        for key in ("fluid", "fluid_name", "fluidName"):
-            value = data.get(key)
-
-            if isinstance(value, str):
-                return value
-
-    return None
+    # Material名から molten_ を付ける
+    return f"{namespace}:molten_{name}"
 
 
-def main():
-    print("=== Amtri ===")
-    print(f"Resources: {RESOURCES}")
+def create_recipe(material_id: str):
+    fluid = fluid_id(material_id)
 
+    return {
+        "type": "tconstruct:material_fluid",
+        "fluid": {
+            "name": fluid,
+            "amount": 144
+        },
+        "temperature": 1000,
+        "output": material_id
+    }
+
+
+def clean_generated_files():
+    if not OUTPUT_DIR.exists():
+        return
+
+    for path in OUTPUT_DIR.glob("*.json"):
+        path.unlink()
+
+
+def generate():
     materials = find_materials()
 
     if not materials:
-        print("Materialが見つかりませんでした。")
+        print("Materialが1つも見つかりませんでした。")
         return
 
-    print(f"検出Material数: {len(materials)}")
+    OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
-    for material_id, info in sorted(materials.items()):
-        fluid = find_material_fluid(
-            material_id,
-            info["data"],
+    clean_generated_files()
+
+    for material_id in materials:
+        namespace, name = material_id.split(":", 1)
+
+        output = create_recipe(material_id)
+
+        output_file = OUTPUT_DIR / f"{name}.json"
+
+        output_file.write_text(
+            json.dumps(
+                output,
+                indent=2,
+                ensure_ascii=False
+            ) + "\n",
+            encoding="utf-8"
         )
 
-        print()
-        print(f"Material : {material_id}")
-        print(f"Source   : {info['source']}")
-        print(f"Fluid    : {fluid or 'NOT FOUND'}")
+        print(
+            f"Generated: {output_file} "
+            f"({material_id} <- {fluid_id(material_id)})"
+        )
+
+    print()
+    print(f"Material数: {len(materials)}")
 
 
 if __name__ == "__main__":
-    main()
+    generate()
