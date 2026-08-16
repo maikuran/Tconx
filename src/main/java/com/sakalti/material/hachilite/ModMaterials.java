@@ -46,8 +46,8 @@ public final class ModMaterials {
     public static final MaterialId DILONITE_ID =
             new MaterialId("sakalti:dilonite");
 
-    public static final MaterialId TIBERITE_ID =
-            new MaterialId("sakalti:tiberite");
+    public static final MaterialId TIBERIUM_ID =
+            new MaterialId("sakalti:tiberium");
 
     public static final MaterialId CHIISTEEL_ID =
             new MaterialId("sakalti:chiisteel");
