@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "sakalti:molten_nehilium",
+    "name": "sakalti:nehilium",
     "amount": 144
   },
   "result": "sakalti:nehilium_ingot",

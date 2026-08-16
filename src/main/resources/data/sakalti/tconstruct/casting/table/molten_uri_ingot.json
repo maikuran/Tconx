@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "sakalti:molten_uri",
+    "name": "sakalti:uri",
     "amount": 144
   },
   "result": "sakalti:uri_ingot",

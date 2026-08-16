@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "sakalti:molten_tiberite",
+    "name": "sakalti:tiberite",
     "amount": 144
   },
   "result": "sakalti:tiberite_ingot",

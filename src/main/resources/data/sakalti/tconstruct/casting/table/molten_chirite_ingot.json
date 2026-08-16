@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:casting_table",
   "fluid": {
-    "name": "sakalti:molten_chirite",
+    "name": "sakalti:chirite",
     "amount": 144
   },
   "result": "sakalti:chirite_ingot",
