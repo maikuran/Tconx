@@ -11,7 +11,7 @@ import net.minecraftforge.registries.RegistryObject;
 public final class ModCreativeTabs {
 
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS =
-            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, ModMetals.MODID);
+            DeferredRegister.create(Registries.CREATIVE_MODE_TAB, "sakalti");
 
     public static final RegistryObject<CreativeModeTab> SAKALTI_TAB =
             CREATIVE_MODE_TABS.register("sakalti", () ->
@@ -20,37 +20,31 @@ public final class ModCreativeTabs {
                             .icon(() -> new ItemStack(ModMetals.SEIREN_INGOT.get()))
                             .displayItems((parameters, output) -> {
 
-                                // Hachilite
                                 output.accept(ModMetals.HACHILITE_ORE.get());
                                 output.accept(ModMetals.HACHILITE_BLOCK.get());
                                 output.accept(ModMetals.HACHILITE_RAW.get());
                                 output.accept(ModMetals.HACHILITE_INGOT.get());
 
-                                // Kanilite
                                 output.accept(ModMetals.KANILITE_ORE.get());
                                 output.accept(ModMetals.KANILITE_BLOCK.get());
                                 output.accept(ModMetals.KANILITE_RAW.get());
                                 output.accept(ModMetals.KANILITE_INGOT.get());
 
-                                // Igniz
                                 output.accept(ModMetals.IGNIZ_ORE.get());
                                 output.accept(ModMetals.IGNIZ_BLOCK.get());
                                 output.accept(ModMetals.IGNIZ_RAW.get());
                                 output.accept(ModMetals.IGNIZ_INGOT.get());
 
-                                // Chirite
                                 output.accept(ModMetals.CHIRITE_ORE.get());
                                 output.accept(ModMetals.CHIRITE_BLOCK.get());
                                 output.accept(ModMetals.CHIRITE_RAW.get());
                                 output.accept(ModMetals.CHIRITE_INGOT.get());
 
-                                // Momongaite
                                 output.accept(ModMetals.MOMONGAITE_ORE.get());
                                 output.accept(ModMetals.MOMONGAITE_BLOCK.get());
                                 output.accept(ModMetals.MOMONGAITE_RAW.get());
                                 output.accept(ModMetals.MOMONGAITE_INGOT.get());
 
-                                // Other metals
                                 output.accept(ModMetals.HERDYEEN_BLOCK.get());
                                 output.accept(ModMetals.HERDYEEN_INGOT.get());
 
