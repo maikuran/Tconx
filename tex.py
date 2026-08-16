@@ -1,5 +1,5 @@
 from pathlib import Path
-import re
+import json
 import math
 import random
 
@@ -10,16 +10,49 @@ MODID = "sakalti"
 SIZE = 128
 SEED = 20260816
 
-JAVA_FILE = Path(
-    "src/main/java/com/sakalti/ModFluids.java"
+ROOT = Path(__file__).resolve().parent
+
+TEXTURE_DIR = (
+    ROOT
+    / "src"
+    / "main"
+    / "resources"
+    / "assets"
+    / MODID
+    / "textures"
+    / "fluid"
 )
 
-TEXTURE_DIR = Path(
-    "src/main/resources/assets/sakalti/textures/fluid"
+FLUID_TEXTURE_JSON_DIR = (
+    ROOT
+    / "src"
+    / "main"
+    / "resources"
+    / "assets"
+    / MODID
+    / "mantle"
+    / "fluid_texture"
 )
 
-FLUID_DIR = Path(
-    "src/main/resources/assets/sakalti/fluid"
+FLUID_JSON_DIR = (
+    ROOT
+    / "src"
+    / "main"
+    / "resources"
+    / "data"
+    / MODID
+    / "fluid"
+)
+
+FLUID_TAG_DIR = (
+    ROOT
+    / "src"
+    / "main"
+    / "resources"
+    / "data"
+    / MODID
+    / "tags"
+    / "fluids"
 )
 
 
@@ -37,128 +70,178 @@ def mix(a, b, amount):
     )
 
 
-def detect_fluids():
-    if not JAVA_FILE.exists():
-        raise FileNotFoundError(
-            f"ModFluids.java not found: {JAVA_FILE}"
+def noise(x, y, seed):
+    value = (
+        math.sin(
+            x * 12.9898
+            + y * 78.233
+            + seed * 37.719
+        )
+        * 43758.5453
+    )
+
+    return value - math.floor(value)
+
+
+def smooth_noise(x, y, seed, scale):
+    total = 0.0
+    amplitude = 1.0
+    frequency = 1.0
+    normalization = 0.0
+
+    for octave in range(4):
+        nx = x / scale * frequency
+        ny = y / scale * frequency
+
+        ix = math.floor(nx)
+        iy = math.floor(ny)
+
+        fx = nx - ix
+        fy = ny - iy
+
+        fx = fx * fx * (3.0 - 2.0 * fx)
+        fy = fy * fy * (3.0 - 2.0 * fy)
+
+        n00 = noise(
+            ix,
+            iy,
+            seed + octave * 17,
         )
 
-    source = JAVA_FILE.read_text(
-        encoding="utf-8"
-    )
-
-    names = re.findall(
-        r'MOLTEN_([A-Z0-9_]+)_TYPE\s*=\s*'
-        r'registerType\("molten_([^"]+)"\)',
-        source
-    )
-
-    fluids = []
-
-    for constant_name, registry_name in names:
-        fluids.append(
-            registry_name
+        n10 = noise(
+            ix + 1,
+            iy,
+            seed + octave * 17,
         )
 
-    fluids = list(dict.fromkeys(fluids))
-
-    if not fluids:
-        raise RuntimeError(
-            "No molten fluids detected from ModFluids.java"
+        n01 = noise(
+            ix,
+            iy + 1,
+            seed + octave * 17,
         )
 
-    return fluids
+        n11 = noise(
+            ix + 1,
+            iy + 1,
+            seed + octave * 17,
+        )
+
+        nx0 = (
+            n00 * (1.0 - fx)
+            + n10 * fx
+        )
+
+        nx1 = (
+            n01 * (1.0 - fx)
+            + n11 * fx
+        )
+
+        value = (
+            nx0 * (1.0 - fy)
+            + nx1 * fy
+        )
+
+        total += value * amplitude
+        normalization += amplitude
+
+        amplitude *= 0.5
+        frequency *= 2.0
+
+    return total / normalization
 
 
-def fluid_color(index):
-    rng = random.Random(
-        SEED + index * 7919
+def seamless_noise(x, y, seed, scale):
+    px = (x % SIZE) / SIZE
+    py = (y % SIZE) / SIZE
+
+    angle_x = px * math.tau
+    angle_y = py * math.tau
+
+    sx = math.cos(angle_x) * scale
+    sy = math.sin(angle_x) * scale
+
+    tx = math.cos(angle_y) * scale
+    ty = math.sin(angle_y) * scale
+
+    return smooth_noise(
+        sx + tx,
+        sy + ty,
+        seed,
+        scale,
     )
 
-    return (
-        rng.randint(45, 225),
-        rng.randint(45, 225),
-        rng.randint(45, 225),
+
+def create_fluid_texture(
+    base_color,
+    seed,
+    flowing=False,
+):
+    image = Image.new(
+        "RGB",
+        (SIZE, SIZE),
     )
 
-
-def create_texture(base_color, seed, flowing):
-    rng = random.Random(seed)
+    pixels = image.load()
 
     dark = mix(
         base_color,
         (0, 0, 0),
-        0.30
+        0.30,
     )
 
     bright = mix(
         base_color,
         (255, 255, 255),
-        0.25
+        0.24,
     )
-
-    image = Image.new(
-        "RGB",
-        (SIZE, SIZE)
-    )
-
-    pixels = image.load()
-
-    waves = []
-
-    for _ in range(16):
-        waves.append(
-            (
-                rng.uniform(0, SIZE),
-                rng.uniform(0, SIZE),
-                rng.uniform(0.025, 0.08),
-                rng.uniform(0.025, 0.08),
-                rng.uniform(0, math.tau)
-            )
-        )
 
     for y in range(SIZE):
         for x in range(SIZE):
 
-            value = 0.5
-
-            for wx, wy, sx, sy, phase in waves:
-                if flowing:
-                    dx = x - wx
-                    dy = (y - wy) * 0.45
-                else:
-                    dx = (x - wx) * 0.8
-                    dy = (y - wy) * 0.8
-
-                value += (
-                    math.sin(
-                        dx * sx
-                        + dy * sy
-                        + phase
-                    )
-                    * 0.035
+            if flowing:
+                n = seamless_noise(
+                    x,
+                    y * 0.42,
+                    seed,
+                    16.0,
+                )
+            else:
+                n = seamless_noise(
+                    x * 0.75,
+                    y * 0.75,
+                    seed,
+                    18.0,
                 )
 
-            value += (
-                rng.random() - 0.5
-            ) * 0.08
+            fine = seamless_noise(
+                x * 1.5,
+                y * 1.5,
+                seed + 100,
+                8.0,
+            )
+
+            value = (
+                0.25
+                + n * 0.75
+                + (fine - 0.5) * 0.12
+            )
 
             value = max(
                 0.0,
-                min(1.0, value)
+                min(1.0, value),
             )
 
             if value < 0.5:
                 color = mix(
                     dark,
                     base_color,
-                    value * 2
+                    value * 2.0,
                 )
             else:
                 color = mix(
                     base_color,
                     bright,
-                    (value - 0.5) * 2
+                    (value - 0.5) * 2.0,
                 )
 
             pixels[x, y] = color
@@ -166,36 +249,40 @@ def create_texture(base_color, seed, flowing):
     gloss = Image.new(
         "RGBA",
         (SIZE, SIZE),
-        (0, 0, 0, 0)
+        (0, 0, 0, 0),
     )
 
     draw = ImageDraw.Draw(gloss)
 
-    for _ in range(28):
-        x = rng.randint(
-            -SIZE,
-            SIZE * 2
+    random.seed(seed + 5000)
+
+    count = 28 if flowing else 24
+
+    for _ in range(count):
+        x = random.randint(
+            -20,
+            SIZE + 20,
         )
 
-        y = rng.randint(
-            -SIZE,
-            SIZE * 2
+        y = random.randint(
+            -20,
+            SIZE + 20,
         )
 
-        length = rng.randint(
+        length = random.randint(
             12,
-            45
+            42,
         )
 
         if flowing:
             end = (
-                x + rng.randint(-2, 2),
-                y + length
+                x + random.randint(-2, 2),
+                y + length,
             )
         else:
             end = (
                 x + length,
-                y + rng.randint(-2, 2)
+                y + random.randint(-2, 2),
             )
 
         draw.line(
@@ -204,110 +291,276 @@ def create_texture(base_color, seed, flowing):
                 255,
                 255,
                 255,
-                rng.randint(15, 65)
+                random.randint(18, 70),
             ),
-            width=rng.randint(1, 3)
+            width=random.randint(1, 3),
         )
 
     gloss = gloss.filter(
-        ImageFilter.GaussianBlur(1.2)
+        ImageFilter.GaussianBlur(1.3)
     )
 
     image = Image.alpha_composite(
         image.convert("RGBA"),
-        gloss
+        gloss,
     )
 
     return image.convert("RGB")
 
 
-def write_fluid_json(
-    name,
-    color
-):
-    FLUID_DIR.mkdir(
-        parents=True,
-        exist_ok=True
+def find_fluid_names():
+    """
+    リポジトリから液体IDを動的に検出する。
+
+    固定FLUIDSリストは使用しない。
+    """
+
+    names = set()
+
+    # data/<modid>/fluid/*.json
+    if FLUID_JSON_DIR.exists():
+        for path in FLUID_JSON_DIR.rglob("*.json"):
+            names.add(path.stem)
+
+    # data/<modid>/tags/fluids/*.json
+    if FLUID_TAG_DIR.exists():
+        for path in FLUID_TAG_DIR.rglob("*.json"):
+            names.add(path.stem)
+
+    # assets/<modid>/textures/fluid/ に既存テクスチャがある場合
+    if TEXTURE_DIR.exists():
+        for path in TEXTURE_DIR.glob("*.png"):
+            stem = path.stem
+
+            for suffix in (
+                "_still",
+                "_flow",
+                "_flowing",
+            ):
+                if stem.endswith(suffix):
+                    stem = stem[
+                        : -len(suffix)
+                    ]
+
+            if stem:
+                names.add(stem)
+
+    # Mantleの既存fluid_texture JSON
+    if FLUID_TEXTURE_JSON_DIR.exists():
+        for path in FLUID_TEXTURE_JSON_DIR.rglob(
+            "*.json"
+        ):
+            names.add(path.stem)
+
+    # Minecraftの名前として不正なものを除外
+    valid = set()
+
+    for name in names:
+        if not name:
+            continue
+
+        allowed = (
+            "abcdefghijklmnopqrstuvwxyz"
+            "0123456789"
+            "_-."
+        )
+
+        if all(
+            char in allowed
+            for char in name
+        ):
+            valid.add(name)
+
+    return sorted(valid)
+
+
+def color_for_fluid(name):
+    """
+    固定液体一覧を持たず、
+    液体名から決定論的に色を作る。
+    """
+
+    value = 0
+
+    for char in name:
+        value = (
+            value * 31
+            + ord(char)
+        ) & 0xFFFFFFFF
+
+    random.seed(
+        SEED + value
     )
 
-    r, g, b = color
-
-    color_hex = (
-        f"FF{r:02X}{g:02X}{b:02X}"
+    return (
+        random.randint(40, 235),
+        random.randint(40, 235),
+        random.randint(40, 235),
     )
 
-    content = (
-        "{\n"
-        f'  "still": "{MODID}:fluid/{name}_still",\n'
-        f'  "flowing": "{MODID}:fluid/{name}_flow",\n'
-        f'  "color": "{color_hex}"\n'
-        "}\n"
+
+def texture_path(name, flowing):
+    suffix = (
+        "flow"
+        if flowing
+        else "still"
     )
 
-    path = (
-        FLUID_DIR
+    return (
+        TEXTURE_DIR
+        / f"{name}_{suffix}.png"
+    )
+
+
+def fluid_texture_json_path(name):
+    return (
+        FLUID_TEXTURE_JSON_DIR
         / f"{name}.json"
     )
 
-    path.write_text(
-        content,
-        encoding="utf-8"
+
+def write_fluid_texture_json(
+    name,
+):
+    """
+    Mantle 1.11.104用のFluidTexture JSON。
+
+    still / flowing は必須。
+    colorも必ず生成する。
+    """
+
+    color = color_for_fluid(name)
+
+    color_hex = (
+        f"FF"
+        f"{color[0]:02X}"
+        f"{color[1]:02X}"
+        f"{color[2]:02X}"
     )
+
+    data = {
+        "still": (
+            f"{MODID}:fluid/"
+            f"{name}_still"
+        ),
+        "flowing": (
+            f"{MODID}:fluid/"
+            f"{name}_flow"
+        ),
+        "color": color_hex,
+    }
+
+    path = fluid_texture_json_path(
+        name
+    )
+
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    with path.open(
+        "w",
+        encoding="utf-8",
+        newline="\n",
+    ) as file:
+        json.dump(
+            data,
+            file,
+            indent=2,
+            ensure_ascii=False,
+        )
+
+        file.write("\n")
 
 
 def generate():
-    fluids = detect_fluids()
+    print(
+        "=== Sakalti Mantle Fluid Generator ==="
+    )
+
+    names = find_fluid_names()
+
+    print(
+        f"Detected {len(names)} fluids."
+    )
+
+    if not names:
+        raise RuntimeError(
+            "No fluids detected."
+        )
 
     TEXTURE_DIR.mkdir(
         parents=True,
-        exist_ok=True
+        exist_ok=True,
     )
 
-    print(
-        f"Detected {len(fluids)} fluids:"
+    FLUID_TEXTURE_JSON_DIR.mkdir(
+        parents=True,
+        exist_ok=True,
     )
 
-    for index, name in enumerate(fluids):
+    generated = 0
 
-        print(
-            f"[GENERATE] {name}"
+    for index, name in enumerate(names):
+        color = color_for_fluid(name)
+
+        seed = (
+            SEED
+            + index * 1000
         )
 
-        color = fluid_color(index)
-
-        still = create_texture(
+        still = create_fluid_texture(
             color,
-            SEED + index * 2,
-            False
+            seed,
+            False,
         )
 
-        flowing = create_texture(
+        flowing = create_fluid_texture(
             color,
-            SEED + index * 2 + 1,
-            True
+            seed + 1,
+            True,
+        )
+
+        still_path = texture_path(
+            name,
+            False,
+        )
+
+        flowing_path = texture_path(
+            name,
+            True,
         )
 
         still.save(
-            TEXTURE_DIR
-            / f"{name}_still.png",
+            still_path,
             "PNG",
-            optimize=True
+            optimize=True,
         )
 
         flowing.save(
-            TEXTURE_DIR
-            / f"{name}_flow.png",
+            flowing_path,
             "PNG",
-            optimize=True
+            optimize=True,
         )
 
-        write_fluid_json(
-            name,
-            color
+        write_fluid_texture_json(
+            name
         )
+
+        print(
+            f"[OK] {name}"
+        )
+
+        generated += 2
+
+    print()
+    print(
+        f"Generated {generated} PNG textures."
+    )
 
     print(
-        f"Generated {len(fluids) * 2} textures."
+        f"Detected fluids: {len(names)}"
     )
 
 
