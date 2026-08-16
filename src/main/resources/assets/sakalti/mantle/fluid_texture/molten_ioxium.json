@@ -1,3 +1,5 @@
 {
-  "color": "FF9CD307"
+  "still": "sakalti:fluid/molten_ioxium_still",
+  "flowing": "sakalti:fluid/molten_ioxium_flow",
+  "color": "FF8457A9"
 }

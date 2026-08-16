@@ -1,3 +1,5 @@
 {
-  "color": "FFDCCDC2"
+  "still": "sakalti:fluid/molten_marulite_still",
+  "flowing": "sakalti:fluid/molten_marulite_flow",
+  "color": "FF473662"
 }

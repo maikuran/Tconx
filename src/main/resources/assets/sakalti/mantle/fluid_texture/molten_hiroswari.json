@@ -1,3 +1,5 @@
 {
-  "color": "FFB90E3B"
+  "still": "sakalti:fluid/molten_hiroswari_still",
+  "flowing": "sakalti:fluid/molten_hiroswari_flow",
+  "color": "FF99AD6D"
 }

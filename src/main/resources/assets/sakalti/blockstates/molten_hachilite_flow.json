@@ -3,5 +3,7 @@
     "": {
       "model": "sakalti:block/molten_hachilite_flow"
     }
-  }
+  },
+  "still": "assets:fluid/molten_hachilite_flow_still",
+  "flowing": "assets:fluid/molten_hachilite_flow_flow"
 }

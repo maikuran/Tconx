@@ -1,3 +1,5 @@
 {
-  "color": "FFF8DAC4"
+  "still": "sakalti:fluid/molten_chiisteel_still",
+  "flowing": "sakalti:fluid/molten_chiisteel_flow",
+  "color": "FFBFCBA3"
 }

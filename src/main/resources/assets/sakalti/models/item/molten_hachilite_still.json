@@ -2,5 +2,7 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "sakalti:item/molten_hachilite_still"
-  }
+  },
+  "still": "sakalti:fluid/molten_hachilite_still_still",
+  "flowing": "sakalti:fluid/molten_hachilite_still_flow"
 }

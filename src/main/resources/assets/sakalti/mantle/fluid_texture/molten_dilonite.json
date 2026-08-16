@@ -1,3 +1,5 @@
 {
-  "color": "FFFFAA00"
+  "still": "sakalti:fluid/molten_dilonite_still",
+  "flowing": "sakalti:fluid/molten_dilonite_flow",
+  "color": "FF4F32CF"
 }

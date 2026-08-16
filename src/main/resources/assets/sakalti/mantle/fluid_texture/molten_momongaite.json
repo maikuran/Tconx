@@ -1,3 +1,5 @@
 {
-  "color": "FF996699"
+  "still": "sakalti:fluid/molten_momongaite_still",
+  "flowing": "sakalti:fluid/molten_momongaite_flow",
+  "color": "FF96B6C3"
 }

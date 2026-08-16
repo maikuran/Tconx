@@ -1,3 +1,5 @@
 {
-  "color": "FF593B67"
+  "still": "sakalti:fluid/molten_proxia_still",
+  "flowing": "sakalti:fluid/molten_proxia_flow",
+  "color": "FF415DC3"
 }
