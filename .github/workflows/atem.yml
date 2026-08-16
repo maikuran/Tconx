@@ -1,5 +1,4 @@
-
-name: Generate Mantle 
+name: Generate Mantle Fluid Textures
 
 on:
   push:
@@ -14,7 +13,7 @@ permissions:
 
 jobs:
   generate:
-    name: Generate Mantle fluid textures
+    name: Generate fluid textures and fluid JSON
     runs-on: ubuntu-latest
 
     steps:
@@ -31,85 +30,205 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install Pillow
 
-      - name: Generate fluids dynamically
+      - name: Generate textures
         run: |
           python tex.py
 
-      - name: Validate generated resources
+      - name: Detect and repair Mantle fluid JSON definitions
+        shell: bash
         run: |
-          set -e
+          set -euo pipefail
 
-          test -d src/main/resources/assets/sakalti/textures/fluid
-          test -d src/main/resources/assets/sakalti/fluid
+          ROOT="src/main/resources/assets"
 
-          echo "=== Textures ==="
-          find src/main/resources/assets/sakalti/textures/fluid \
+          if [ ! -d "$ROOT" ]; then
+            echo "ERROR: $ROOT does not exist."
+            exit 1
+          fi
+
+          found=0
+
+          while IFS= read -r -d '' file; do
+            found=1
+
+            echo "Processing: $file"
+
+            python - "$file" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          path = Path(sys.argv[1])
+
+          try:
+              data = json.loads(path.read_text(encoding="utf-8"))
+          except Exception as exc:
+              print(f"SKIP invalid JSON: {path}: {exc}")
+              raise SystemExit(0)
+
+          if not isinstance(data, dict):
+              raise SystemExit(0)
+
+          # Mantle FluidTexture の定義だけを対象にする。
+          #
+          # 既に still があるJSONは基本的に尊重する。
+          # color だけの流体定義には、
+          # ファイル名から対応する fluid 名を推測して追加する。
+          #
+          # 例:
+          # molten_emerald.json
+          #
+          # -> still:
+          # sakalti:fluid/molten_emerald_still
+          #
+          # -> flowing:
+          # sakalti:fluid/molten_emerald_flow
+
+          if "still" not in data:
+              stem = path.stem
+
+              if stem.startswith("molten_"):
+                  namespace = path.parts[-4] if len(path.parts) >= 4 else "sakalti"
+
+                  data["still"] = f"{namespace}:fluid/{stem}_still"
+                  data["flowing"] = f"{namespace}:fluid/{stem}_flow"
+
+                  path.write_text(
+                      json.dumps(
+                          data,
+                          ensure_ascii=False,
+                          indent=2,
+                      ) + "\n",
+                      encoding="utf-8",
+                  )
+
+                  print(f"  repaired: {path}")
+                  print(f"  still:   {data['still']}")
+                  print(f"  flowing: {data['flowing']}")
+
+          elif "flowing" not in data:
+              stem = path.stem
+              namespace = path.parts[-4] if len(path.parts) >= 4 else "sakalti"
+
+              data["flowing"] = f"{namespace}:fluid/{stem}_flow"
+
+              path.write_text(
+                  json.dumps(
+                      data,
+                      ensure_ascii=False,
+                      indent=2,
+                  ) + "\n",
+                  encoding="utf-8",
+              )
+
+              print(f"  added flowing: {path}")
+
+          PY
+
+          done < <(
+            find "$ROOT" \
+              -type f \
+              -name "*.json" \
+              -print0
+          )
+
+          if [ "$found" -eq 0 ]; then
+            echo "No JSON files found."
+          fi
+
+      - name: Verify Mantle fluid JSON definitions
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ROOT="src/main/resources/assets"
+
+          while IFS= read -r -d '' file; do
+            python - "$file" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          path = Path(sys.argv[1])
+
+          try:
+              data = json.loads(path.read_text(encoding="utf-8"))
+          except Exception:
+              raise SystemExit(0)
+
+          if not isinstance(data, dict):
+              raise SystemExit(0)
+
+          if not path.stem.startswith("molten_"):
+              raise SystemExit(0)
+
+          if "still" not in data:
+              raise SystemExit(
+                  f"ERROR: Missing 'still' in {path}"
+              )
+
+          if not isinstance(data["still"], str):
+              raise SystemExit(
+                  f"ERROR: 'still' must be a string in {path}"
+              )
+
+          if "flowing" not in data:
+              raise SystemExit(
+                  f"ERROR: Missing 'flowing' in {path}"
+              )
+
+          if not isinstance(data["flowing"], str):
+              raise SystemExit(
+                  f"ERROR: 'flowing' must be a string in {path}"
+              )
+
+          print(
+              f"[OK] {path} -> "
+              f"still={data['still']} "
+              f"flowing={data['flowing']}"
+          )
+          PY
+          done < <(
+            find "$ROOT" \
+              -type f \
+              -name "*.json" \
+              -print0
+          )
+
+      - name: Check generated textures
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          DIR="src/main/resources/assets/sakalti/textures/fluid"
+
+          if [ ! -d "$DIR" ]; then
+            echo "ERROR: Texture directory does not exist."
+            exit 1
+          fi
+
+          echo "Generated fluid textures:"
+          find "$DIR" \
             -type f \
             -name "*.png" \
             | sort
 
-          echo "=== Fluid JSON ==="
-          find src/main/resources/assets/sakalti/fluid \
-            -type f \
-            -name "*.json" \
-            | sort
-
-      - name: Validate Mantle JSON
+      - name: Commit generated files
+        shell: bash
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
+          set -euo pipefail
 
-          root = Path(
-              "src/main/resources/assets/sakalti/fluid"
-          )
-
-          files = sorted(root.glob("*.json"))
-
-          if not files:
-              raise SystemExit(
-                  "No Mantle fluid JSON files generated."
-              )
-
-          for path in files:
-              data = json.loads(
-                  path.read_text(encoding="utf-8")
-              )
-
-              for key in ("still", "flowing", "color"):
-                  if key not in data:
-                      raise SystemExit(
-                          f"{path}: missing '{key}'"
-                      )
-
-                  if not isinstance(
-                      data[key],
-                      str
-                  ):
-                      raise SystemExit(
-                          f"{path}: '{key}' must be a string"
-                      )
-
-              print(
-                  f"[OK] {path}"
-              )
-          PY
-
-      - name: Commit generated resources
-        run: |
           git config user.name "github-actions[bot]"
-          git config user.email \
-            "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add \
-            src/main/resources/assets/sakalti/textures/fluid \
-            src/main/resources/assets/sakalti/fluid
+            src/main/resources/assets \
+            tex.py
 
           if git diff --cached --quiet; then
-            echo "No generated resource changes."
-          else
-            git commit \
-              -m "Generate Mantle fluid resources"
-            git pull --rebase --autostash
-            git push
+            echo "No generated changes."
+            exit 0
           fi
+
+          git commit -m "Generate Mantle fluid textures and definitions"
+          git push
