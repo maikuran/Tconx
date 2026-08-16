@@ -4,8 +4,8 @@
   "sortOrder": 6,
   "hidden": false,
   "color": "#8200ff",
-  "fluid": "sakalti:tiberite",
-  "translationKey": "material.sakalti.tiberite",
+  "fluid": "sakalti:tiberium",
+  "translationKey": "material.sakalti.tiberium",
   "traits": [
     {
       "name": "sakalti:laser_prism",
