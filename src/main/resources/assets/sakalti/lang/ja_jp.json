@@ -1,5 +1,5 @@
 {
-  "material.sakalti.hachilite": "ハチライト",
+  "material.sakalti.marulite": "マルライト",
   "material.sakalti.kanilite": "カニライト",
   "material.sakalti.herdyeen": "ハーディーン",
   "material.sakalti.ostlum": "オストラム",
@@ -44,6 +44,7 @@
   "block.sakalti.igniz_block": "イグニズブロック",
   "block.sakalti.dilonite_block": "ダイロナイトブロック",
   "block.sakalti.proxia_block": "プロキシアブロック",
+  "block.sakalti.marulite_block": "マルライトブロック",
   "block.sakalti.tiberium_block": "ティーベリウムブロック",
   "block.sakalti.momongaite_block": "モモンガイトブロック",
   "block.sakalti.chirite_block": "チーライトブロック",
@@ -60,7 +61,7 @@
   "block.sakalti.momongaite_ore": "モモンガイト鉱石",
   "block.sakalti.chirite_ore": "チーライト鉱石",
 
-  "fluid_type.sakalti.hachilite": "溶融ハチライト",
+  "fluid_type.sakalti.marulite": "溶融マルライト",
   "fluid_type.sakalti.kanilite": "溶融カニライト",
   
   "fluid_type.sakalti.herdyeen": "溶融ハーディーン",
