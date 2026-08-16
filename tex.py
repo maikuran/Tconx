@@ -12,11 +12,15 @@ SEED = 20260816
 
 ROOT = Path(__file__).resolve().parent
 
-TEXTURE_DIR = (
+RESOURCE_DIR = (
     ROOT
     / "src"
     / "main"
     / "resources"
+)
+
+TEXTURE_DIR = (
+    RESOURCE_DIR
     / "assets"
     / MODID
     / "textures"
@@ -24,35 +28,17 @@ TEXTURE_DIR = (
 )
 
 FLUID_TEXTURE_JSON_DIR = (
-    ROOT
-    / "src"
-    / "main"
-    / "resources"
+    RESOURCE_DIR
     / "assets"
     / MODID
     / "mantle"
     / "fluid_texture"
 )
 
-FLUID_JSON_DIR = (
-    ROOT
-    / "src"
-    / "main"
-    / "resources"
+DATA_DIR = (
+    RESOURCE_DIR
     / "data"
     / MODID
-    / "fluid"
-)
-
-FLUID_TAG_DIR = (
-    ROOT
-    / "src"
-    / "main"
-    / "resources"
-    / "data"
-    / MODID
-    / "tags"
-    / "fluids"
 )
 
 
@@ -136,12 +122,11 @@ def smooth_noise(x, y, seed, scale):
             + n11 * fx
         )
 
-        value = (
+        total += (
             nx0 * (1.0 - fy)
             + nx1 * fy
-        )
+        ) * amplitude
 
-        total += value * amplitude
         normalization += amplitude
 
         amplitude *= 0.5
@@ -197,7 +182,6 @@ def create_fluid_texture(
 
     for y in range(SIZE):
         for x in range(SIZE):
-
             if flowing:
                 n = seamless_noise(
                     x,
@@ -308,37 +292,9 @@ def create_fluid_texture(
     return image.convert("RGB")
 
 
-def find_fluid_names():
-    names = set()
-
-    if FLUID_JSON_DIR.exists():
-        for path in FLUID_JSON_DIR.rglob("*.json"):
-            names.add(path.stem)
-
-    if FLUID_TAG_DIR.exists():
-        for path in FLUID_TAG_DIR.rglob("*.json"):
-            names.add(path.stem)
-
-    if TEXTURE_DIR.exists():
-        for path in TEXTURE_DIR.glob("*.png"):
-            stem = path.stem
-
-            for suffix in (
-                "_still",
-                "_flow",
-                "_flowing",
-            ):
-                if stem.endswith(suffix):
-                    stem = stem[:-len(suffix)]
-
-            if stem:
-                names.add(stem)
-
-    if FLUID_TEXTURE_JSON_DIR.exists():
-        for path in FLUID_TEXTURE_JSON_DIR.rglob("*.json"):
-            names.add(path.stem)
-
-    valid = set()
+def valid_name(name):
+    if not name:
+        return False
 
     allowed = (
         "abcdefghijklmnopqrstuvwxyz"
@@ -346,53 +302,188 @@ def find_fluid_names():
         "_-."
     )
 
-    for name in names:
-        if not name:
+    return all(
+        char in allowed
+        for char in name
+    )
+
+
+def normalize_color(value):
+    """
+    色をRGBへ変換。
+
+    例:
+        FF00EE00 -> (0, 238, 0)
+        00EE00   -> (0, 238, 0)
+
+    8桁ARGBの場合は後ろ6文字だけを使用する。
+    """
+
+    if not isinstance(value, str):
+        return None
+
+    value = value.strip()
+
+    if value.startswith("#"):
+        value = value[1:]
+
+    if len(value) == 8:
+        value = value[-6:]
+
+    if len(value) != 6:
+        return None
+
+    try:
+        return (
+            int(value[0:2], 16),
+            int(value[2:4], 16),
+            int(value[4:6], 16),
+        )
+    except ValueError:
+        return None
+
+
+def resource_name_from_json(path):
+    """
+    JSONファイル名から液体名を取得する。
+    """
+
+    name = path.stem
+
+    if name.endswith("_still"):
+        name = name[:-6]
+
+    if name.endswith("_flow"):
+        name = name[:-5]
+
+    if name.endswith("_flowing"):
+        name = name[:-8]
+
+    return name
+
+
+def collect_json_files():
+    if not DATA_DIR.exists():
+        return []
+
+    return sorted(
+        DATA_DIR.rglob("*.json")
+    )
+
+
+def find_fluid_colors():
+    """
+    リポジトリ内のJSONを動的に探索して
+    液体のcolorを取得する。
+
+    液体一覧をコード内に持たない。
+    """
+
+    colors = {}
+
+    for path in collect_json_files():
+        try:
+            with path.open(
+                "r",
+                encoding="utf-8",
+            ) as file:
+                data = json.load(file)
+        except (
+            OSError,
+            UnicodeDecodeError,
+            json.JSONDecodeError,
+        ):
             continue
 
-        if all(
-            char in allowed
-            for char in name
+        if not isinstance(data, dict):
+            continue
+
+        color = normalize_color(
+            data.get("color")
+        )
+
+        if color is None:
+            continue
+
+        relative = path.relative_to(
+            DATA_DIR
+        )
+
+        parts = relative.parts
+
+        if not parts:
+            continue
+
+        name = resource_name_from_json(
+            path
+        )
+
+        if not valid_name(name):
+            continue
+
+        colors[name] = color
+
+    return colors
+
+
+def find_existing_fluid_names():
+    """
+    既存のMantle fluid texture JSONと
+    fluid texture PNGから名前を補完する。
+
+    色そのものはここから推測しない。
+    """
+
+    names = set()
+
+    if FLUID_TEXTURE_JSON_DIR.exists():
+        for path in FLUID_TEXTURE_JSON_DIR.rglob(
+            "*.json"
         ):
-            valid.add(name)
+            name = resource_name_from_json(
+                path
+            )
 
-    return sorted(valid)
+            if valid_name(name):
+                names.add(name)
+
+    if TEXTURE_DIR.exists():
+        for path in TEXTURE_DIR.glob(
+            "*.png"
+        ):
+            name = resource_name_from_json(
+                path
+            )
+
+            if valid_name(name):
+                names.add(name)
+
+    return names
 
 
-def color_for_fluid(name):
+def find_fluid_names():
     """
-    液体IDから決定論的にRGBを生成する。
+    JSONに存在するcolorを持つ液体を
+    動的に検出する。
+
+    固定リストは使用しない。
     """
 
-    value = 0
+    colors = find_fluid_colors()
 
-    for char in name:
-        value = (
-            value * 31
-            + ord(char)
-        ) & 0xFFFFFFFF
+    names = set(colors.keys())
 
-    rng = random.Random(
-        SEED + value
+    names.update(
+        find_existing_fluid_names()
     )
 
+    return sorted(names), colors
+
+
+def fluid_texture_json_path(name):
     return (
-        rng.randint(40, 235),
-        rng.randint(40, 235),
-        rng.randint(40, 235),
-    )
-
-
-def rgb_hex(color):
-    """
-    RGB 3値を6文字のRRGGBBへ変換。
-    RGBAの8文字にはしない。
-    """
-
-    return (
-        f"{color[0]:02X}"
-        f"{color[1]:02X}"
-        f"{color[2]:02X}"
+        FLUID_TEXTURE_JSON_DIR
+        / f"{name}.json"
     )
 
 
@@ -409,20 +500,25 @@ def texture_path(name, flowing):
     )
 
 
-def fluid_texture_json_path(name):
-    return (
-        FLUID_TEXTURE_JSON_DIR
-        / f"{name}.json"
+def write_fluid_texture_json(
+    name,
+    color,
+):
+    """
+    Mantle 1.11.104用。
+
+    colorは元JSONから取得したRGBを
+    ARGB形式へ戻して出力する。
+    """
+
+    r, g, b = color
+
+    color_hex = (
+        f"FF"
+        f"{r:02X}"
+        f"{g:02X}"
+        f"{b:02X}"
     )
-
-
-def write_fluid_texture_json(name):
-    color = color_for_fluid(name)
-
-    # 重要:
-    # FF + RRGGBB ではなく、
-    # RRGGBBの6文字だけを書く。
-    color_hex = rgb_hex(color)
 
     data = {
         "still": (
@@ -436,7 +532,9 @@ def write_fluid_texture_json(name):
         "color": color_hex,
     }
 
-    path = fluid_texture_json_path(name)
+    path = fluid_texture_json_path(
+        name
+    )
 
     path.parent.mkdir(
         parents=True,
@@ -454,6 +552,7 @@ def write_fluid_texture_json(name):
             indent=2,
             ensure_ascii=False,
         )
+
         file.write("\n")
 
 
@@ -462,10 +561,10 @@ def generate():
         "=== Sakalti Mantle Fluid Generator ==="
     )
 
-    names = find_fluid_names()
+    names, colors = find_fluid_names()
 
     print(
-        f"Detected {len(names)} fluids."
+        f"Detected {len(names)} fluid names."
     )
 
     if not names:
@@ -486,11 +585,26 @@ def generate():
     generated = 0
 
     for index, name in enumerate(names):
-        color = color_for_fluid(name)
+
+        if name not in colors:
+            print(
+                f"[SKIP] {name}: "
+                "no source color found"
+            )
+            continue
+
+        color = colors[name]
 
         seed = (
             SEED
             + index * 1000
+        )
+
+        print(
+            f"[GENERATE] {name} "
+            f"RGB=#{color[0]:02X}"
+            f"{color[1]:02X}"
+            f"{color[2]:02X}"
         )
 
         still = create_fluid_texture(
@@ -528,12 +642,8 @@ def generate():
         )
 
         write_fluid_texture_json(
-            name
-        )
-
-        print(
-            f"[OK] {name} "
-            f"RGB={rgb_hex(color)}"
+            name,
+            color,
         )
 
         generated += 2
@@ -544,7 +654,7 @@ def generate():
     )
 
     print(
-        f"Detected fluids: {len(names)}"
+        f"Colored fluids: {len(colors)}"
     )
 
 
