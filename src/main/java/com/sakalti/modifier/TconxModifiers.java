@@ -48,6 +48,9 @@ public final class TconxModifiers {
     public static final StaticModifier<BerserkModifier> BERSERK =
             MODIFIERS.register("berserk", BerserkModifier::new);
 
+    public static final StaticModifier<SeirenCurseModifier> SEIRENCURSE =
+            MODIFIERS.register("seiren_curse", SeirenCurseModifier::new);
+
     public static final StaticModifier<UnstableModifier> UNSTABLE =
             MODIFIERS.register("unstable", UnstableModifier::new);
 
