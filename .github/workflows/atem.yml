@@ -7,6 +7,7 @@ on:
       - master
     paths:
       - "tex.py"
+      - "src/main/java/com/sakalti/sakalti/ModFluids.java"
       - ".github/workflows/generate-fluid-textures.yml"
 
   workflow_dispatch:
@@ -16,7 +17,7 @@ permissions:
 
 jobs:
   generate:
-    name: Generate fluid textures
+    name: Generate Mantle fluid textures
     runs-on: ubuntu-latest
 
     steps:
@@ -33,41 +34,85 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install Pillow
 
-      - name: Generate textures
+      - name: Generate fluids dynamically
         run: |
           python tex.py
 
-      - name: Check generated files
+      - name: Validate generated resources
         run: |
-          echo "Generated fluid textures:"
+          set -e
+
+          test -d src/main/resources/assets/sakalti/textures/fluid
+          test -d src/main/resources/assets/sakalti/fluid
+
+          echo "=== Textures ==="
           find src/main/resources/assets/sakalti/textures/fluid \
             -type f \
             -name "*.png" \
             | sort
 
-      - name: Verify texture count
-        run: |
-          COUNT=$(find src/main/resources/assets/sakalti/textures/fluid \
+          echo "=== Fluid JSON ==="
+          find src/main/resources/assets/sakalti/fluid \
             -type f \
-            -name "*.png" | wc -l)
+            -name "*.json" \
+            | sort
 
-          echo "Texture count: $COUNT"
+      - name: Validate Mantle JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
 
-          if [ "$COUNT" -ne 36 ]; then
-            echo "ERROR: Expected 36 fluid textures."
-            exit 1
-          fi
+          root = Path(
+              "src/main/resources/assets/sakalti/fluid"
+          )
 
-      - name: Commit generated textures
+          files = sorted(root.glob("*.json"))
+
+          if not files:
+              raise SystemExit(
+                  "No Mantle fluid JSON files generated."
+              )
+
+          for path in files:
+              data = json.loads(
+                  path.read_text(encoding="utf-8")
+              )
+
+              for key in ("still", "flowing", "color"):
+                  if key not in data:
+                      raise SystemExit(
+                          f"{path}: missing '{key}'"
+                      )
+
+                  if not isinstance(
+                      data[key],
+                      str
+                  ):
+                      raise SystemExit(
+                          f"{path}: '{key}' must be a string"
+                      )
+
+              print(
+                  f"[OK] {path}"
+              )
+          PY
+
+      - name: Commit generated resources
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add src/main/resources/assets/sakalti/textures/fluid
+          git add \
+            src/main/resources/assets/sakalti/textures/fluid \
+            src/main/resources/assets/sakalti/fluid
 
           if git diff --cached --quiet; then
-            echo "No texture changes."
+            echo "No generated resource changes."
           else
-            git commit -m "Generate Mantle fluid textures"
+            git commit \
+              -m "Generate Mantle fluid resources"
+
             git push
           fi
