@@ -1,0 +1,124 @@
+name: Split Material Traits
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/main/resources/data/sakalti/tinkering/materials/definition/**/*.json"
+
+  workflow_dispatch:
+
+jobs:
+  split-material-traits:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Convert material traits
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          definition_dir = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/definition"
+          )
+
+          traits_dir = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/traits"
+          )
+
+          traits_dir.mkdir(parents=True, exist_ok=True)
+
+          for definition_path in definition_dir.rglob("*.json"):
+
+              with definition_path.open("r", encoding="utf-8") as f:
+                  data = json.load(f)
+
+              # traits が存在しない場合は何もしない
+              if "traits" not in data:
+                  continue
+
+              traits = data["traits"]
+
+              if not isinstance(traits, list):
+                  print(f"Invalid traits array: {definition_path}")
+                  continue
+
+              # 各Traitにlevel: 1を補完
+              normalized_traits = []
+
+              for trait in traits:
+                  if not isinstance(trait, dict):
+                      continue
+
+                  if "name" not in trait:
+                      continue
+
+                  normalized_trait = dict(trait)
+
+                  if "level" not in normalized_trait:
+                      normalized_trait["level"] = 1
+
+                  normalized_traits.append(normalized_trait)
+
+              # traits JSONを生成
+              relative_path = definition_path.relative_to(definition_dir)
+              traits_path = traits_dir / relative_path
+
+              traits_path.parent.mkdir(parents=True, exist_ok=True)
+
+              trait_data = {
+                  "default": normalized_traits
+              }
+
+              with traits_path.open("w", encoding="utf-8") as f:
+                  json.dump(
+                      trait_data,
+                      f,
+                      ensure_ascii=False,
+                      indent=2
+                  )
+                  f.write("\n")
+
+              # definitionからtraitsを削除
+              del data["traits"]
+
+              with definition_path.open("w", encoding="utf-8") as f:
+                  json.dump(
+                      data,
+                      f,
+                      ensure_ascii=False,
+                      indent=2
+                  )
+                  f.write("\n")
+
+              print(f"Processed: {definition_path}")
+              print(f"Created:  {traits_path}")
+
+          PY
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            src/main/resources/data/sakalti/tinkering/materials/definition/ \
+            src/main/resources/data/sakalti/tinkering/materials/traits/
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+
+          git commit -m "Split material traits and add trait levels"
+          git push
