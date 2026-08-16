@@ -6,10 +6,6 @@ on:
     branches:
       - main
       - master
-    paths:
-      - "tex.py"
-      - "src/main/java/com/sakalti/sakalti/ModFluids.java"
-      - ".github/workflows/generate-fluid-textures.yml"
 
   workflow_dispatch:
 
@@ -114,6 +110,6 @@ jobs:
           else
             git commit \
               -m "Generate Mantle fluid resources"
-            git pull --rebase
+            git pull --rebase --autostash
             git push
           fi
