@@ -8,7 +8,6 @@ import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 
 public class SeirenCurseModifier extends Modifier {
 
-    @Override
     public void afterEntityHit(
             ToolStack tool,
             int level,
