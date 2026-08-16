@@ -188,11 +188,11 @@ public final class ModMetals {
             registerItem("dilonite_ingot");
 
 
-    public static final RegistryObject<Block> TIBERITE_BLOCK =
-            registerBlock("tiberite_block", 18.0f);
+    public static final RegistryObject<Block> TIBERIUM_BLOCK =
+            registerBlock("tiberium_block", 18.0f);
 
-    public static final RegistryObject<Item> TIBERITE_INGOT =
-            registerItem("tiberite_ingot");
+    public static final RegistryObject<Item> TIBERIUM_INGOT =
+            registerItem("tiberium_ingot");
 
 
     public static final RegistryObject<Block> OSTLUM_BLOCK =
