@@ -168,8 +168,8 @@ public final class ModMetals {
 
     public static final RegistryObject<Item> SEIREN_INGOT =
             registerItem("seiren_ingot");
-    
-　　     public static final RegistryObject<Block> CHIISTEEL_BLOCK =
+
+    public static final RegistryObject<Block> CHIISTEEL_BLOCK =
             registerBlock("chiisteel_block", 35.0f);
 
     public static final RegistryObject<Item> CHIISTEEL_INGOT =
