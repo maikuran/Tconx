@@ -117,7 +117,7 @@ public final class ModFluids {
                 FluidType.Properties.create()
                         .density(2000)
                         .viscosity(1000)
-                        .temperature(1300)
+                        .temperature(1900)
                         .canSwim(false)
                         .canDrown(false)
         ) {
