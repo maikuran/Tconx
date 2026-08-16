@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:deepchunk"
+  },
+  "result": {
+    "fluid": "sakalti:deepsteel",
+    "amount": 98
+  },
+  "temperature": 1000,
+  "time": 57
+}
