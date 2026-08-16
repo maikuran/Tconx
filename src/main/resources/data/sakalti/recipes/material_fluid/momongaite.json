@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "name": "sakalti:molten_momongaite",
+    "name": "sakalti:momongaite",
     "amount": 144
   },
   "temperature": 1000,
