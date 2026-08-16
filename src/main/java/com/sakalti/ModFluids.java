@@ -434,17 +434,17 @@ public final class ModFluids {
     // Emerald
     // =========================================================
 
-    private static final FluidEntry EMERALD_ENTRY =
-            registerFluid("emerald");
+    private static final FluidEntry SEIREN_ENTRY =
+            registerFluid("seiren");
 
-    public static final RegistryObject<FluidType> EMERALD_TYPE =
-            EMERALD_ENTRY.type;
+    public static final RegistryObject<FluidType> SEIREN_TYPE =
+            SEIREN_ENTRY.type;
 
-    public static final RegistryObject<ForgeFlowingFluid> EMERALD =
-            EMERALD_ENTRY.source;
+    public static final RegistryObject<ForgeFlowingFluid> SEIREN =
+            SEIREN_ENTRY.source;
 
-    public static final RegistryObject<ForgeFlowingFluid> EMERALD_FLOWING =
-            EMERALD_ENTRY.flowing;
+    public static final RegistryObject<ForgeFlowingFluid> SEIREN_FLOWING =
+            SEIREN_ENTRY.flowing;
 
     // =========================================================
     // Register
