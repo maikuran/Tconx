@@ -1,0 +1,75 @@
+name: Replace sakalti.sakalti
+
+on:
+  workflow_dispatch:
+
+jobs:
+  replace:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace strings
+        shell: bash
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          old = "sakalti.sakalti"
+          new = "sakalti"
+
+          skip_dirs = {
+              ".git",
+              ".github",
+              "node_modules",
+              "build",
+              "dist",
+              "target",
+              ".gradle",
+          }
+
+          changed = []
+
+          for path in Path(".").rglob("*"):
+              if not path.is_file():
+                  continue
+
+              if any(part in skip_dirs for part in path.parts):
+                  continue
+
+              try:
+                  data = path.read_text(encoding="utf-8")
+              except (UnicodeDecodeError, OSError):
+                  continue
+
+              if old in data:
+                  path.write_text(data.replace(old, new), encoding="utf-8")
+                  changed.append(str(path))
+
+          print(f"Changed files: {len(changed)}")
+          for path in changed:
+              print(path)
+          PY
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+            exit 0
+          fi
+
+          git commit -m "Replace sakalti.sakalti with sakalti"
+          git push
