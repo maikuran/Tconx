@@ -22,6 +22,7 @@ public final class ModMain {
 
         // 溶融液体
         ModFluids.register(modEventBus);
+        ModCreativeTabs.register(eventBus);
 
         // エンチャント
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
