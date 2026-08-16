@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_fluid",
+  "fluid": {
+    "name": "sakalti:deepsteel",
+    "amount": 144
+  },
+  "temperature": 1000,
+  "output": "sakalti:deepsteel"
+}
