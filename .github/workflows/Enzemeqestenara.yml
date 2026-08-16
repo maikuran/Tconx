@@ -41,4 +41,5 @@ jobs:
           fi
 
           git commit -m "Amtri: update generated material casting"
+          git pull --rebase
           git push origin main
