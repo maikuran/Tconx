@@ -1,0 +1,58 @@
+name: Remove molten_ from Material Fluid
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  remove-molten:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove molten_ prefix
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path("src/main/resources/data/sakalti/recipes/material_fluid")
+
+          if not root.exists():
+              print("material_fluid directory not found.")
+              raise SystemExit(0)
+
+          for path in root.glob("*.json"):
+              text = path.read_text(encoding="utf-8")
+
+              # molten_ だけを削除
+              new_text = re.sub(r'molten_', '', text)
+
+              if text != new_text:
+                  path.write_text(new_text, encoding="utf-8")
+                  print(f"Updated: {path}")
+              else:
+                  print(f"No change: {path}")
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/sakalti/recipes/material_fluid
+
+
+          git commit -m "Amtri: normalize material fluid IDs"
+          git pull --rebase
+          git push
