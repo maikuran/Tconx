@@ -45,7 +45,7 @@ public final class ModCreativeTabs {
                                 output.accept(ModMetals.MOMONGAITE_BLOCK.get());
                                 output.accept(ModMetals.MOMONGAITE_RAW.get());
                                 output.accept(ModMetals.MOMONGAITE_INGOT.get());
-                                output.accept(HealthCrystals_HEALTH_CRYSTAL.get());
+                                output.accept(HealthCrystals.HEALTH_CRYSTAL.get());
                                 output.accept(ModMetals.HERDYEEN_BLOCK.get());
                                 output.accept(ModMetals.HERDYEEN_INGOT.get());
 
