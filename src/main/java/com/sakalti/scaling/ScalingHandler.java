@@ -168,8 +168,7 @@ public final class ScalingHandler {
         );
 
         /*
-         * 現在Levelが0より大きければ
-         * 現在のScalingを即座に適用
+         * 現在Levelを即座に適用
          */
         if (healthScaling) {
             applyHealthScaling(mob);
@@ -188,7 +187,7 @@ public final class ScalingHandler {
      * ↓
      * Scaling Level +1
      * ↓
-     * 全DimensionのMobを更新
+     * 全ServerLevelのMobを更新
      */
 
     @SubscribeEvent
@@ -226,19 +225,16 @@ public final class ScalingHandler {
                 for (ServerLevel level :
                         event.getServer().getAllLevels()) {
 
-                    for (Mob mob :
-                            level.getEntities()
-                                    .getAll()
-                                    .stream()
-                                    .filter(entity ->
-                                            entity instanceof Mob
-                                    )
-                                    .map(entity ->
-                                            (Mob) entity
-                                    )
-                                    .toList()) {
+                    /*
+                     * getAll()はIterable<Entity>なので
+                     * stream()は使用しない。
+                     */
+                    for (var entity :
+                            level.getEntities().getAll()) {
 
-                        applyHealthScaling(mob);
+                        if (entity instanceof Mob mob) {
+                            applyHealthScaling(mob);
+                        }
                     }
                 }
             }
