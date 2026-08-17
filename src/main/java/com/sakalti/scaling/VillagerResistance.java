@@ -3,6 +3,7 @@ package com.sakalti.scaling;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.npc.Villager;
+import net.minecraft.world.phys.AABB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -35,28 +36,45 @@ public final class VillagerResistance {
             return;
         }
 
-        for (var entity :
-                event.level.getEntities().getAll()) {
+        /*
+         * 現在のDimension全体を覆うAABB
+         *
+         * 広範囲の村人を取得するための範囲。
+         */
+        AABB area = new AABB(
+                -30000000,
+                -2048,
+                -30000000,
+                30000000,
+                2048,
+                30000000
+        );
 
-            if (entity instanceof Villager villager) {
+        for (Villager villager :
+                event.level.getEntities(
+                        net.minecraft.world.entity.EntityTypeTest.forClass(
+                                Villager.class
+                        ),
+                        area,
+                        villager -> true
+                )) {
 
-                /*
-                 * Resistance V
-                 *
-                 * Amplifier 4 = レベルV
-                 * 100tick = 5秒
-                 */
-                villager.addEffect(
-                        new MobEffectInstance(
-                                MobEffects.DAMAGE_RESISTANCE,
-                                100,
-                                4,
-                                false,
-                                false,
-                                false
-                        )
-                );
-            }
+            /*
+             * Resistance V
+             *
+             * Amplifier 4 = レベルV
+             * 100tick = 5秒
+             */
+            villager.addEffect(
+                    new MobEffectInstance(
+                            MobEffects.DAMAGE_RESISTANCE,
+                            100,
+                            4,
+                            false,
+                            false,
+                            false
+                    )
+            );
         }
     }
 }
