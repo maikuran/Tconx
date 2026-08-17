@@ -2,9 +2,7 @@ package com.sakalti.scaling;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -15,7 +13,6 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
@@ -30,33 +27,29 @@ public final class ScalingHandler {
 
     /*
      * =========================================================
-     * 設定
+     * 基本設定
      * =========================================================
      */
 
-    // 1 Minecraft day = 24000 ticks
+    // Minecraftの1日は24000tick
     private static final long TICKS_PER_DAY = 24000L;
 
-    // 1 Levelごとの増加率
-    // Level 1 = HP +10%, Damage +5%
+    // 1日ごとの上昇率
     private static final double HEALTH_PER_LEVEL = 0.10D;
     private static final double DAMAGE_PER_LEVEL = 0.05D;
 
-    // Scalingの現在Level
+    // 現在のScaling Level
     private static int scalingLevel = 0;
 
-    // 経過tick
+    // 現在の日数を計測するtick
     private static long scalingTicks = 0L;
 
-    // ON/OFF
+    // Scaling ON/OFF
     private static boolean healthScaling = true;
     private static boolean damageScaling = true;
 
     /*
-     * Mobごとの元HP
-     *
-     * 「元のHP × Scaling倍率」
-     * にするために保存する。
+     * Mob本来の最大HPを保存
      */
     private static final Map<UUID, Double> BASE_HEALTH =
             new HashMap<>();
@@ -64,7 +57,7 @@ public final class ScalingHandler {
 
     /*
      * =========================================================
-     * Key Registry
+     * KeyMapping
      * =========================================================
      */
 
@@ -87,7 +80,7 @@ public final class ScalingHandler {
 
     /*
      * =========================================================
-     * Client Key Registry
+     * Key Registry
      * =========================================================
      */
 
@@ -115,10 +108,8 @@ public final class ScalingHandler {
      * Client Tick
      * =========================================================
      *
-     * D = Damage ON/OFF
-     * H = Health ON/OFF
-     *
-     * この簡易版ではキー入力をローカルで切り替える。
+     * D = Damage Scaling ON/OFF
+     * H = Health Scaling ON/OFF
      */
 
     @Mod.EventBusSubscriber(
@@ -153,8 +144,6 @@ public final class ScalingHandler {
      * =========================================================
      * Mob Spawn
      * =========================================================
-     *
-     * Mobが生成された時点のHPを記録する。
      */
 
     @SubscribeEvent
@@ -170,16 +159,21 @@ public final class ScalingHandler {
             return;
         }
 
+        /*
+         * Mob本来のHPを保存
+         */
         BASE_HEALTH.put(
                 mob.getUUID(),
                 (double) mob.getMaxHealth()
         );
 
         /*
-         * 現在のScaling Levelが0より大きい場合、
-         * スポーン直後から現在Levelを適用する。
+         * 現在Levelが0より大きければ
+         * 現在のScalingを即座に適用
          */
-        applyHealthScaling(mob);
+        if (healthScaling) {
+            applyHealthScaling(mob);
+        }
     }
 
 
@@ -188,9 +182,13 @@ public final class ScalingHandler {
      * Server Tick
      * =========================================================
      *
-     * 24000 tick = 1日
+     * 24000tick = 1日
      *
-     * 1日経過するたびにLevel +1
+     * 1日経過
+     * ↓
+     * Scaling Level +1
+     * ↓
+     * 全DimensionのMobを更新
      */
 
     @SubscribeEvent
@@ -204,6 +202,9 @@ public final class ScalingHandler {
 
         scalingTicks++;
 
+        /*
+         * 1日経過
+         */
         if (scalingTicks >= TICKS_PER_DAY) {
 
             scalingTicks = 0L;
@@ -211,51 +212,36 @@ public final class ScalingHandler {
             scalingLevel++;
 
             System.out.println(
-                    "[Sakalti Scaling] Scaling Level increased to "
+                    "[Sakalti Scaling] "
+                            + "Scaling Level increased to "
                             + scalingLevel
             );
-        }
-    }
 
+            /*
+             * Health ScalingがONなら
+             * 全ServerLevelのMobを更新
+             */
+            if (healthScaling) {
 
-    /*
-     * =========================================================
-     * Level変更時のHP適用
-     * =========================================================
-     *
-     * Levelが変わったタイミングで全ServerLevelのMobを更新する。
-     */
+                for (ServerLevel level :
+                        event.getServer().getAllLevels()) {
 
-    @SubscribeEvent
-    public static void onLevelTick(
-            TickEvent.LevelTickEvent event
-    ) {
+                    for (Mob mob :
+                            level.getEntities()
+                                    .getAll()
+                                    .stream()
+                                    .filter(entity ->
+                                            entity instanceof Mob
+                                    )
+                                    .map(entity ->
+                                            (Mob) entity
+                                    )
+                                    .toList()) {
 
-        if (event.phase != TickEvent.Phase.END) {
-            return;
-        }
-
-        if (!(event.level instanceof ServerLevel level)) {
-            return;
-        }
-
-        /*
-         * 1日ごとのLevel変更を検出するための処理。
-         *
-         * 24000 tick単位で更新。
-         */
-        if (level.getGameTime() % TICKS_PER_DAY != 0) {
-            return;
-        }
-
-        for (LivingEntity entity : level.getEntities()
-                .getAll()
-                .stream()
-                .filter(e -> e instanceof Mob)
-                .map(e -> (Mob) e)
-                .toList()) {
-
-            applyHealthScaling(entity);
+                        applyHealthScaling(mob);
+                    }
+                }
+            }
         }
     }
 
@@ -274,17 +260,17 @@ public final class ScalingHandler {
             return;
         }
 
-        AttributeInstance attribute =
+        AttributeInstance maxHealth =
                 mob.getAttribute(
                         Attributes.MAX_HEALTH
                 );
 
-        if (attribute == null) {
+        if (maxHealth == null) {
             return;
         }
 
         /*
-         * 元HPがまだ登録されていなければ登録
+         * 元HPを取得
          */
         double baseHealth =
                 BASE_HEALTH.computeIfAbsent(
@@ -293,6 +279,8 @@ public final class ScalingHandler {
                 );
 
         /*
+         * Levelごとの倍率
+         *
          * Level 0 = ×1.00
          * Level 1 = ×1.10
          * Level 2 = ×1.20
@@ -306,18 +294,21 @@ public final class ScalingHandler {
         double newMaxHealth =
                 baseHealth * multiplier;
 
-        double oldHealth =
+        double oldMaxHealth =
+                maxHealth.getValue();
+
+        float oldHealth =
                 mob.getHealth();
 
-        double oldMaxHealth =
-                attribute.getValue();
-
-        attribute.setBaseValue(
+        /*
+         * 最大HP変更
+         */
+        maxHealth.setBaseValue(
                 newMaxHealth
         );
 
         /*
-         * HP増加分を現在HPにも反映
+         * 増加した分だけ現在HPにも追加
          */
         if (newMaxHealth > oldMaxHealth) {
 
@@ -350,16 +341,15 @@ public final class ScalingHandler {
         }
 
         /*
-         * 敵Mobだけを対象にする。
+         * Mobだけ対象
          */
         if (!(event.getEntity() instanceof Mob)) {
             return;
         }
 
-        float originalDamage =
-                event.getAmount();
-
         /*
+         * Levelごとのダメージ倍率
+         *
          * Level 0 = ×1.00
          * Level 1 = ×1.05
          * Level 2 = ×1.10
@@ -373,7 +363,7 @@ public final class ScalingHandler {
                 );
 
         event.setAmount(
-                originalDamage * multiplier
+                event.getAmount() * multiplier
         );
     }
 
