@@ -24,9 +24,7 @@ public final class ModMain {
         // 溶融液体
         ModFluids.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
-        HealthCrystals.register(
-          FMLJavaModLoadingContext.get().getModEventBus()
-        );
+        HealthCrystals.register(modEventBus);
         // エンチャント
         ModEnchantments.ENCHANTMENTS.register(modEventBus);
 
