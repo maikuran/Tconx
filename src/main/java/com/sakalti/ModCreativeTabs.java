@@ -1,6 +1,7 @@
 package com.sakalti;
 
 import net.minecraft.core.registries.Registries;
+import com.sakalti.scaling.HealthCrystals;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
@@ -44,7 +45,7 @@ public final class ModCreativeTabs {
                                 output.accept(ModMetals.MOMONGAITE_BLOCK.get());
                                 output.accept(ModMetals.MOMONGAITE_RAW.get());
                                 output.accept(ModMetals.MOMONGAITE_INGOT.get());
-
+                                output.accept(HealthCrystals_HEALTH_CRYSTAL.get());
                                 output.accept(ModMetals.HERDYEEN_BLOCK.get());
                                 output.accept(ModMetals.HERDYEEN_INGOT.get());
 
@@ -54,6 +55,7 @@ public final class ModCreativeTabs {
                                 output.accept(ModMetals.MARULITE_BLOCK.get());
                                 output.accept(ModMetals.MARULITE_INGOT.get());
 
+                                
                                 output.accept(ModMetals.PROXIA_BLOCK.get());
                                 output.accept(ModMetals.PROXIA_INGOT.get());
 
