@@ -12,7 +12,7 @@ public final class TconxModifiers {
     public static final StaticModifier<GlacialBindModifier> GLACIAL_BIND =
             MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
 
-    public static final StaticModifier<GlacialBindModifier> CORALIAN =
+    public static final StaticModifier<CoralianModifier> CORALIAN =
             MODIFIERS.register("coralian", CoralianModifier::new);
 
     public static final StaticModifier<SuperMagnetModifier> SUPERMAGNET =
