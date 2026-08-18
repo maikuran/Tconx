@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:traits",
+    "fluid": "sakalti:molten_traits",
     "amount": 100
   },
   "temperature": 1000,
