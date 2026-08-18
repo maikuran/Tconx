@@ -1,0 +1,9 @@
+{
+  "craftable": true,
+  "tier": 2,
+  "sortOrder": 2,
+  "hidden": false,
+  "color": "#9c988e",
+  "fluid": "sakalti:coral",
+  "translationKey": "material.sakalti.coral"
+}
