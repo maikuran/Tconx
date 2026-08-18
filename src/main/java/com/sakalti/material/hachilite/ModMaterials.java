@@ -13,6 +13,8 @@ public final class ModMaterials {
     
     public static final MaterialId SEIREN_ID =
             new MaterialId("sakalti:seiren");
+    public static final MaterialId CORAL_ID =
+            new MaterialId("sakalti:coral");
     public static final MaterialId OUSWARI_ID =
             new MaterialId("sakalti:ouswari");
 
