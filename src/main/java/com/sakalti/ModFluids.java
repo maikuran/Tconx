@@ -445,7 +445,20 @@ public final class ModFluids {
 
     public static final RegistryObject<ForgeFlowingFluid> SEIREN_FLOWING =
             SEIREN_ENTRY.flowing;
+    private static final FluidEntry CORAL_ENTRY =
+            registerFluid("coral");
 
+    public static final RegistryObject<FluidType> CORAL_TYPE =
+            CORAL_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> CORAL =
+            CORAL_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> CORAL_FLOWING =
+            CORAL_ENTRY.flowing;
+
+    // =========================================================
+    // Register
     // =========================================================
     // Register
     // =========================================================
