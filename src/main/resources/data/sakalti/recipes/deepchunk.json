@@ -7,10 +7,10 @@
   ],
   "key": {
     "C": {
-      "item": "sakalti:diamond"
+      "item": "minecraft:diamond"
     },
     "G": {
-      "item": "minecraft:iron"
+      "item": "minecraft:iron_ingot"
     },
     "S": {
       "item": "minecraft:deepslate"
