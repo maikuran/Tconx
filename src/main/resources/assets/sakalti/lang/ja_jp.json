@@ -1,5 +1,6 @@
 {
   "material.sakalti.marulite": "マルライト",
+  "material.sakalti.coral": "サンゴ",
   "material.sakalti.kanilite": "カニライト",
   "material.sakalti.hachilite": "ハチライト",
   "material.sakalti.herdyeen": "ハーディーン",
@@ -69,6 +70,7 @@
   "fluid_type.sakalti.kanilite": "溶融カニライト",
   
   "fluid_type.sakalti.herdyeen": "溶融ハーディーン",
+  "fluid_type.sakalti.coral": "溶融サンゴ",
   "fluid_type.sakalti.seiren": "溶融セイレーン",
   "fluid_type.sakalti.ostlum": "溶融オストラム",
   "fluid_type.sakalti.chirite": "溶融チーライト",
@@ -99,6 +101,7 @@
   "modifier.sakalti.super_magnet": "超磁石",
   "modifier.sakalti.fire_wall": "炎の壁",
   "modifier.sakalti.laser_prism": "レーザープリズム",
+  "modifier.sakalti.coralian": "サンゴ民",
   "modifier.sakalti.heavy_stone": "重い石",
   "modifier.sakalti.seiren_curse": "セイレーンの呪い",
 
