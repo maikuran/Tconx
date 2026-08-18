@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:viberium",
+    "fluid": "sakalti:molten_viberium",
     "amount": 100
   },
   "temperature": 1000,
