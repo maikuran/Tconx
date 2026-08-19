@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:proxia",
-    "amount": 144
-  },
-  "result": "sakalti:proxia_ingot",
-  "cooling_time": 57
-}

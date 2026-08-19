@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:herdyeen",
-    "amount": 144
-  },
-  "result": "sakalti:herdyeen_ingot",
-  "cooling_time": 57
-}

@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_basin",
-  "fluid": {
-    "name": "sakalti:molten_ostlum",
-    "amount": 1296
-  },
-  "result": "sakalti:ostlum_block",
-  "cooling_time": 150
-}

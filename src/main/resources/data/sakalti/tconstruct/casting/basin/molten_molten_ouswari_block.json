@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_basin",
-  "fluid": {
-    "name": "sakalti:molten_molten_ouswari",
-    "amount": 1296
-  },
-  "result": "sakalti:molten_ouswari_block",
-  "cooling_time": 150
-}

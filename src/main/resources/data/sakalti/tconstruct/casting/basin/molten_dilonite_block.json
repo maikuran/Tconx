@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_basin",
-  "fluid": {
-    "name": "sakalti:molten_dilonite",
-    "amount": 1296
-  },
-  "result": "sakalti:dilonite_block",
-  "cooling_time": 150
-}

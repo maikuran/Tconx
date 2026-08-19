@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:chirite",
-    "amount": 144
-  },
-  "result": "sakalti:chirite_ingot",
-  "cooling_time": 57
-}

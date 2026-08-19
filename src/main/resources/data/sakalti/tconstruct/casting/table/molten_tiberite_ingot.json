@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:tiberite",
-    "amount": 144
-  },
-  "result": "sakalti:tiberite_ingot",
-  "cooling_time": 57
-}

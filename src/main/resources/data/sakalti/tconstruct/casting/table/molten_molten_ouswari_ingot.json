@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:ouswari",
-    "amount": 144
-  },
-  "result": "sakalti:ouswari_ingot",
-  "cooling_time": 57
-}

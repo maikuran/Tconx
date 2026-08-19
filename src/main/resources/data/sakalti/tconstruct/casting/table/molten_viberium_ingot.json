@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:viberium",
-    "amount": 144
-  },
-  "result": "sakalti:viberium_ingot",
-  "cooling_time": 57
-}

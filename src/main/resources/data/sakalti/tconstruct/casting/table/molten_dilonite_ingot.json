@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:dilonite",
-    "amount": 144
-  },
-  "result": "sakalti:dilonite_ingot",
-  "cooling_time": 57
-}

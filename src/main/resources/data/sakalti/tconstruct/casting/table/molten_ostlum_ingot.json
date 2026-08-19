@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:ostlum",
-    "amount": 144
-  },
-  "result": "sakalti:ostlum_ingot",
-  "cooling_time": 57
-}

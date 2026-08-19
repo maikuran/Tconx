@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:uri",
-    "amount": 144
-  },
-  "result": "sakalti:uri_ingot",
-  "cooling_time": 57
-}

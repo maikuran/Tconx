@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:marulite",
-    "amount": 144
-  },
-  "result": "sakalti:marulite_ingot",
-  "cooling_time": 57
-}

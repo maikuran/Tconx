@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:deepsteel",
-    "amount": 144
-  },
-  "result": "sakalti:deepsteel_ingot",
-  "cooling_time": 57
-}

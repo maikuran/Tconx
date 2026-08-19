@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:kanilite",
-    "amount": 144
-  },
-  "result": "sakalti:kanilite_ingot",
-  "cooling_time": 57
-}

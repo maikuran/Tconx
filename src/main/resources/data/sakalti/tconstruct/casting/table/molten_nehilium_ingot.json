@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:nehilium",
-    "amount": 144
-  },
-  "result": "sakalti:nehilium_ingot",
-  "cooling_time": 57
-}

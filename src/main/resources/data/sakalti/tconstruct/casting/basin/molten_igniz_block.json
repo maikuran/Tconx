@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_basin",
-  "fluid": {
-    "name": "sakalti:molten_igniz",
-    "amount": 1296
-  },
-  "result": "sakalti:igniz_block",
-  "cooling_time": 150
-}

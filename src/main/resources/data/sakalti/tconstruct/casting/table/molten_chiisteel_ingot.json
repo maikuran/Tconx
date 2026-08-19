@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:chiisteel",
-    "amount": 144
-  },
-  "result": "sakalti:chiisteel_ingot",
-  "cooling_time": 57
-}

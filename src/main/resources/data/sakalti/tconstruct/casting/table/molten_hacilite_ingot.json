@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:hacilite",
-    "amount": 144
-  },
-  "result": "sakalti:hacilite_ingot",
-  "cooling_time": 57
-}

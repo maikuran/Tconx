@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:casting_table",
-  "fluid": {
-    "name": "sakalti:momongaite",
-    "amount": 144
-  },
-  "result": "sakalti:momongaite_ingot",
-  "cooling_time": 57
-}
