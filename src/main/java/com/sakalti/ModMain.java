@@ -2,6 +2,7 @@ package com.sakalti;
 
 import com.sakalti.enchant.ModEnchantments;
 import com.sakalti.modifier.TconxModifiers;
+import com.sakalti.entity.*;
 import com.sakalti.scaling.HealthCrystals;
 
 import net.minecraft.world.item.Items;
@@ -23,6 +24,7 @@ public final class ModMain {
 
         // 溶融液体
         ModFluids.register(modEventBus);
+        CrimsonFlyEntity.register(FMLJavaModLoadingContext.get().getModEventBus());
         ModCreativeTabs.register(modEventBus);
         HealthCrystals.register(modEventBus);
         // エンチャント
