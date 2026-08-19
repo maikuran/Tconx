@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFilter
 
 
 MODID = "sakalti"
-SIZE = 128
+SIZE = 16
 SEED = 20260816
 
 ROOT = Path(__file__).resolve().parent
