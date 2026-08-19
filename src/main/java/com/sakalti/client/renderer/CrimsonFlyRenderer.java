@@ -1,23 +1,19 @@
 package com.sakalti.client.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.sakalti.client.ModClient;
 import com.sakalti.client.model.CrimsonFlyModel;
 import com.sakalti.entity.CrimsonFlyEntity;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.resources.ResourceLocation;
 
-public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
-
-    public static final ModelLayerLocation LAYER_LOCATION =
-            new ModelLayerLocation(
-                    new ResourceLocation("sakalti", "crimson_fly"),
-                    "main"
-            );
+public class CrimsonFlyRenderer
+        extends EntityRenderer<CrimsonFlyEntity> {
 
     private static final ResourceLocation TEXTURE =
             new ResourceLocation(
@@ -33,7 +29,9 @@ public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
         super(context);
 
         this.model = new CrimsonFlyModel(
-                context.bakeLayer(LAYER_LOCATION)
+                context.bakeLayer(
+                        ModClient.CRIMSON_FLY_LAYER
+                )
         );
 
         this.shadowRadius = 0.35F;
@@ -50,18 +48,12 @@ public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
     ) {
         poseStack.pushPose();
 
-        poseStack.scale(
-                1.0F,
-                1.0F,
-                1.0F
-        );
-
         this.model.setupAnim(
                 entity,
                 entity.tickCount,
                 partialTick,
                 entity.tickCount + partialTick,
-                entity.getYRot(),
+                entityYaw,
                 entity.getXRot()
         );
 
@@ -71,7 +63,7 @@ public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
                         RenderType.entityCutoutNoCull(TEXTURE)
                 ),
                 packedLight,
-                net.minecraft.client.renderer.texture.OverlayTexture.NO_OVERLAY,
+                OverlayTexture.NO_OVERLAY,
                 1.0F,
                 1.0F,
                 1.0F,
