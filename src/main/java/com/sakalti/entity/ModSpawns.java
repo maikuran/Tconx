@@ -16,11 +16,10 @@ import net.minecraftforge.fml.common.Mod;
 public class ModSpawns {
 
     @SubscribeEvent
-    public static void onPotentialSpawns(
-            LevelEvent.PotentialSpawns event
-    ) {
-        // モンスターの自然スポーン候補だけを変更
-        if (event.getCategory() != MobCategory.MONSTER) {
+    public static void onPotentialSpawns(LevelEvent.PotentialSpawns event) {
+
+        // モンスター以外は対象外
+        if (event.getMobCategory() != MobCategory.MONSTER) {
             return;
         }
 
@@ -30,7 +29,6 @@ public class ModSpawns {
 
         BlockPos pos = event.getPos();
 
-        // その地点のBiome
         ResourceLocation biomeId =
                 level.getBiome(pos)
                         .unwrapKey()
@@ -51,7 +49,7 @@ public class ModSpawns {
             return;
         }
 
-        event.addSpawnerData(
+        event.getSpawnerData().add(
                 new MobSpawnSettings.SpawnerData(
                         CrimsonFlyEntity.CRIMSON_FLY.get(),
                         20,
