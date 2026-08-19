@@ -1,11 +1,10 @@
 package com.sakalti.entity;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
@@ -15,7 +14,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Hoglin;
-import net.minecraft.world.entity.monster.Piglin;
+import net.minecraft.world.entity.monster.piglin.Piglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
@@ -29,7 +28,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.EnumSet;
 
-public class CrimsonFlyEntity extends Mob {
+public class CrimsonFlyEntity extends PathfinderMob {
 
     public static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(
@@ -63,7 +62,7 @@ public class CrimsonFlyEntity extends Mob {
     }
 
     public static AttributeSupplier.Builder createAttributes() {
-        return Mob.createMobAttributes()
+        return PathfinderMob.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.30D)
@@ -74,19 +73,16 @@ public class CrimsonFlyEntity extends Mob {
     @Override
     protected void registerGoals() {
 
-        // 高い場所を優先
         this.goalSelector.addGoal(
                 1,
                 new SeekHigherGroundGoal(this)
         );
 
-        // 専用攻撃Goal
         this.goalSelector.addGoal(
                 2,
                 new CrimsonFlyMeleeAttackGoal(this)
         );
 
-        // プレイヤーを見る
         this.goalSelector.addGoal(
                 8,
                 new LookAtPlayerGoal(
@@ -101,13 +97,11 @@ public class CrimsonFlyEntity extends Mob {
                 new RandomLookAroundGoal(this)
         );
 
-        // 攻撃されたら反撃
         this.targetSelector.addGoal(
                 1,
                 new HurtByTargetGoal(this)
         );
 
-        // ピグリン
         this.targetSelector.addGoal(
                 2,
                 new NearestAttackableTargetGoal<>(
@@ -117,7 +111,6 @@ public class CrimsonFlyEntity extends Mob {
                 )
         );
 
-        // ホグリン
         this.targetSelector.addGoal(
                 3,
                 new NearestAttackableTargetGoal<>(
@@ -128,11 +121,7 @@ public class CrimsonFlyEntity extends Mob {
         );
     }
 
-    /**
-     * 難易度別攻撃力
-     */
     public float getCrimsonFlyAttackDamage() {
-
         return switch (this.level().getDifficulty()) {
             case EASY -> 4.0F;
             case HARD -> 9.0F;
@@ -140,13 +129,9 @@ public class CrimsonFlyEntity extends Mob {
         };
     }
 
-    /**
-     * 高所へ移動するAI
-     */
     public static class SeekHigherGroundGoal extends Goal {
 
         private final CrimsonFlyEntity fly;
-
         private BlockPos targetPos;
         private int cooldown;
 
@@ -177,37 +162,32 @@ public class CrimsonFlyEntity extends Mob {
 
                 int x =
                         current.getX()
-                                + this.fly.getRandom()
-                                .nextInt(21)
+                                + this.fly.getRandom().nextInt(21)
                                 - 10;
 
                 int y =
                         current.getY()
                                 + 3
-                                + this.fly.getRandom()
-                                .nextInt(12);
+                                + this.fly.getRandom().nextInt(12);
 
                 int z =
                         current.getZ()
-                                + this.fly.getRandom()
-                                .nextInt(21)
+                                + this.fly.getRandom().nextInt(21)
                                 - 10;
 
                 BlockPos candidate =
                         new BlockPos(x, y, z);
 
-                if (candidate.getY()
-                        <= current.getY()) {
+                if (candidate.getY() <= current.getY()) {
                     continue;
                 }
 
                 if (this.fly.level().isEmptyBlock(candidate)
                         && this.fly.level().isEmptyBlock(
                                 candidate.above()
-                )) {
+                        )) {
 
                     this.targetPos = candidate;
-
                     return true;
                 }
             }
@@ -251,19 +231,13 @@ public class CrimsonFlyEntity extends Mob {
         public void stop() {
 
             this.targetPos = null;
-
             this.fly.getNavigation().stop();
         }
     }
 
-    /**
-     * Crimson Fly専用近接攻撃Goal
-     */
-    public static class CrimsonFlyMeleeAttackGoal
-            extends Goal {
+    public static class CrimsonFlyMeleeAttackGoal extends Goal {
 
         private final CrimsonFlyEntity fly;
-
         private int attackCooldown;
 
         public CrimsonFlyMeleeAttackGoal(
@@ -323,7 +297,6 @@ public class CrimsonFlyEntity extends Mob {
             double distance =
                     this.fly.distanceToSqr(target);
 
-            // ターゲットへ接近
             if (distance > 3.0D) {
 
                 this.fly.getNavigation().moveTo(
@@ -342,7 +315,6 @@ public class CrimsonFlyEntity extends Mob {
 
                 this.attackCooldown = 20;
 
-                // 実際の攻撃
                 float damage =
                         this.fly.getCrimsonFlyAttackDamage();
 
@@ -351,7 +323,6 @@ public class CrimsonFlyEntity extends Mob {
                         damage
                 );
 
-                // 攻撃アニメーション
                 this.fly.swing(
                         net.minecraft.world.InteractionHand.MAIN_HAND
                 );
