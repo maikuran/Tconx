@@ -1,15 +1,16 @@
 package com.sakalti.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.FlyingMoveControl;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
@@ -17,7 +18,6 @@ import net.minecraft.world.entity.monster.Hoglin;
 import net.minecraft.world.entity.monster.Piglin;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.Difficulty;
 
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -38,7 +38,8 @@ public class CrimsonFlyEntity extends Mob {
             );
 
     public static final RegistryObject<EntityType<CrimsonFlyEntity>> CRIMSON_FLY =
-            ENTITIES.register("crimson_fly",
+            ENTITIES.register(
+                    "crimson_fly",
                     () -> EntityType.Builder.of(
                                     CrimsonFlyEntity::new,
                                     MobCategory.MONSTER
@@ -55,9 +56,9 @@ public class CrimsonFlyEntity extends Mob {
     ) {
         super(type, level);
 
-        this.moveControl = new FlyingMoveControl(this, 20, true);
+        this.moveControl =
+                new FlyingMoveControl(this, 20, true);
 
-        // 飛行するため重力を無効化
         this.setNoGravity(true);
     }
 
@@ -73,19 +74,19 @@ public class CrimsonFlyEntity extends Mob {
     @Override
     protected void registerGoals() {
 
-        // 最優先：高い場所へ移動
+        // 高い場所を優先
         this.goalSelector.addGoal(
                 1,
                 new SeekHigherGroundGoal(this)
         );
 
-        // 攻撃
+        // 専用攻撃Goal
         this.goalSelector.addGoal(
                 2,
-                new MeleeAttackGoal(this, 1.2D, true)
+                new CrimsonFlyMeleeAttackGoal(this)
         );
 
-        // 視線
+        // プレイヤーを見る
         this.goalSelector.addGoal(
                 8,
                 new LookAtPlayerGoal(
@@ -106,7 +107,7 @@ public class CrimsonFlyEntity extends Mob {
                 new HurtByTargetGoal(this)
         );
 
-        // ピグリンを敵対
+        // ピグリン
         this.targetSelector.addGoal(
                 2,
                 new NearestAttackableTargetGoal<>(
@@ -116,7 +117,7 @@ public class CrimsonFlyEntity extends Mob {
                 )
         );
 
-        // ホグリンを敵対
+        // ホグリン
         this.targetSelector.addGoal(
                 3,
                 new NearestAttackableTargetGoal<>(
@@ -128,17 +129,11 @@ public class CrimsonFlyEntity extends Mob {
     }
 
     /**
-     * 難易度による攻撃力
-     *
-     * Easy   = 4
-     * Normal = 6
-     * Hard   = 9
+     * 難易度別攻撃力
      */
     public float getCrimsonFlyAttackDamage() {
 
-        Difficulty difficulty = this.level().getDifficulty();
-
-        return switch (difficulty) {
+        return switch (this.level().getDifficulty()) {
             case EASY -> 4.0F;
             case HARD -> 9.0F;
             default -> 6.0F;
@@ -146,7 +141,7 @@ public class CrimsonFlyEntity extends Mob {
     }
 
     /**
-     * 高い場所へ向かうAI
+     * 高所へ移動するAI
      */
     public static class SeekHigherGroundGoal extends Goal {
 
@@ -155,7 +150,9 @@ public class CrimsonFlyEntity extends Mob {
         private BlockPos targetPos;
         private int cooldown;
 
-        public SeekHigherGroundGoal(CrimsonFlyEntity fly) {
+        public SeekHigherGroundGoal(
+                CrimsonFlyEntity fly
+        ) {
             this.fly = fly;
 
             this.setFlags(
@@ -199,13 +196,11 @@ public class CrimsonFlyEntity extends Mob {
                 BlockPos candidate =
                         new BlockPos(x, y, z);
 
-                // 現在位置より高い場所だけ
                 if (candidate.getY()
                         <= current.getY()) {
                     continue;
                 }
 
-                // 空間が確保されている場所
                 if (this.fly.level().isEmptyBlock(candidate)
                         && this.fly.level().isEmptyBlock(
                                 candidate.above()
@@ -227,15 +222,14 @@ public class CrimsonFlyEntity extends Mob {
                 return false;
             }
 
-            if (this.fly.distanceToSqr(
-                    this.targetPos.getX() + 0.5D,
-                    this.targetPos.getY() + 0.5D,
-                    this.targetPos.getZ() + 0.5D
-            ) <= 4.0D) {
-                return false;
-            }
+            double distance =
+                    this.fly.distanceToSqr(
+                            this.targetPos.getX() + 0.5D,
+                            this.targetPos.getY() + 0.5D,
+                            this.targetPos.getZ() + 0.5D
+                    );
 
-            return true;
+            return distance > 4.0D;
         }
 
         @Override
@@ -263,8 +257,108 @@ public class CrimsonFlyEntity extends Mob {
     }
 
     /**
-     * Entity属性登録
+     * Crimson Fly専用近接攻撃Goal
      */
+    public static class CrimsonFlyMeleeAttackGoal
+            extends Goal {
+
+        private final CrimsonFlyEntity fly;
+
+        private int attackCooldown;
+
+        public CrimsonFlyMeleeAttackGoal(
+                CrimsonFlyEntity fly
+        ) {
+            this.fly = fly;
+
+            this.setFlags(
+                    EnumSet.of(
+                            Flag.MOVE,
+                            Flag.LOOK
+                    )
+            );
+        }
+
+        @Override
+        public boolean canUse() {
+
+            LivingEntity target =
+                    this.fly.getTarget();
+
+            return target != null
+                    && target.isAlive();
+        }
+
+        @Override
+        public boolean canContinueToUse() {
+
+            LivingEntity target =
+                    this.fly.getTarget();
+
+            return target != null
+                    && target.isAlive();
+        }
+
+        @Override
+        public void start() {
+            this.attackCooldown = 0;
+        }
+
+        @Override
+        public void tick() {
+
+            LivingEntity target =
+                    this.fly.getTarget();
+
+            if (target == null) {
+                return;
+            }
+
+            this.fly.getLookControl().setLookAt(
+                    target,
+                    30.0F,
+                    30.0F
+            );
+
+            double distance =
+                    this.fly.distanceToSqr(target);
+
+            // ターゲットへ接近
+            if (distance > 3.0D) {
+
+                this.fly.getNavigation().moveTo(
+                        target,
+                        1.2D
+                );
+
+            } else {
+
+                this.fly.getNavigation().stop();
+
+                if (this.attackCooldown > 0) {
+                    this.attackCooldown--;
+                    return;
+                }
+
+                this.attackCooldown = 20;
+
+                // 実際の攻撃
+                float damage =
+                        this.fly.getCrimsonFlyAttackDamage();
+
+                target.hurt(
+                        this.fly.damageSources().mobAttack(this.fly),
+                        damage
+                );
+
+                // 攻撃アニメーション
+                this.fly.swing(
+                        net.minecraft.world.InteractionHand.MAIN_HAND
+                );
+            }
+        }
+    }
+
     @Mod.EventBusSubscriber(
             modid = "sakalti",
             bus = Mod.EventBusSubscriber.Bus.MOD
@@ -277,15 +371,13 @@ public class CrimsonFlyEntity extends Mob {
         ) {
             event.put(
                     CRIMSON_FLY.get(),
-                    CrimsonFlyEntity.createAttributes()
+                    CrimsonFlyEntity
+                            .createAttributes()
                             .build()
             );
         }
     }
 
-    /**
-     * メインMODクラスから呼び出して登録する
-     */
     public static void register(IEventBus eventBus) {
         ENTITIES.register(eventBus);
     }
