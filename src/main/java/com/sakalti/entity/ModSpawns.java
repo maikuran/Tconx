@@ -18,7 +18,7 @@ public class ModSpawns {
     @SubscribeEvent
     public static void onPotentialSpawns(LevelEvent.PotentialSpawns event) {
 
-        // モンスター以外は対象外
+        // モンスターの自然スポーン候補だけを対象にする
         if (event.getMobCategory() != MobCategory.MONSTER) {
             return;
         }
@@ -29,6 +29,7 @@ public class ModSpawns {
 
         BlockPos pos = event.getPos();
 
+        // その地点のBiome
         ResourceLocation biomeId =
                 level.getBiome(pos)
                         .unwrapKey()
@@ -49,7 +50,8 @@ public class ModSpawns {
             return;
         }
 
-        event.getSpawnerData().add(
+        // Crimson Flyをスポーン候補に追加
+        event.addSpawnerData(
                 new MobSpawnSettings.SpawnerData(
                         CrimsonFlyEntity.CRIMSON_FLY.get(),
                         20,
