@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:ourite_ore"
+  },
+  "result": {
+    "fluid": "sakalti:ourite",
+    "amount": 120
+  },
+  "temperature": 1400,
+  "time": 200
+}
