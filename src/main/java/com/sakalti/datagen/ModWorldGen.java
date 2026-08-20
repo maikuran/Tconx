@@ -1,7 +1,6 @@
 package com.sakalti.datagen;
 
-import com.sakalti.Sakalti;
-import com.sakalti.registry.ModBlocks;
+import com.sakalti.ModMetals;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderSet;
