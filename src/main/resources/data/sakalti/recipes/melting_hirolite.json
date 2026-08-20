@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:hirolite_ore"
+  },
+  "result": {
+    "fluid": "sakalti:hirolite",
+    "amount": 98
+  },
+  "temperature": 1450,
+  "time": 200
+}
