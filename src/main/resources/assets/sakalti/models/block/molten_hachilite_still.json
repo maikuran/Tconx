@@ -2,7 +2,5 @@
   "parent": "minecraft:block/block",
   "textures": {
     "layer0": "sakalti:block/molten_hachilite_still"
-  },
-  "still": "sakalti:fluid/molten_hachilite_still_still",
-  "flowing": "sakalti:fluid/molten_hachilite_still_flow"
+  }
 }
