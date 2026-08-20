@@ -1,26 +1,17 @@
 package com.sakalti;
 
-import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraftforge.common.ForgeTier;
-import net.minecraftforge.common.TierSortingRegistry;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
+import net.minecraftforge.registries.ForgeRegistries;
 
-import java.util.List;
+public class ModTags {
 
-public class ModTiers {
+    public static class Blocks {
+        public static final TagKey<Block> NEEDS_SUPER_TOOL = tag("needs_super_tool");
 
-    public static final Tier SUPER = TierSortingRegistry.registerTier(
-            new ForgeTier(
-                    5,
-                    0,
-                    0.0f,
-                    0.0f,
-                    0,
-                    ModTags.Blocks.NEEDS_SUPER_TOOL,
-                    () -> Ingredient.of(ModMetals.IGNIZ_INGOT.get())
-            ),
-            new net.minecraft.resources.ResourceLocation(ModMetals.MODID, "super"),
-            List.of(net.minecraft.world.item.Tiers.NETHERITE),
-            List.of()
-    );
+        private static TagKey<Block> tag(String name) {
+            return TagKey.create(ForgeRegistries.BLOCKS.getRegistryKey(), new ResourceLocation(ModMetals.MODID, name));
+        }
+    }
 }
