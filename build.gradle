@@ -52,10 +52,10 @@ repositories {
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.4.5'
-    compileOnly fg.deobf("curse.maven:mantle-74924:7563777")
+    compileOnly fg.deobf("curse.maven:mantle-74924:3631982")
     
     // Tinkers' Construct を最新版に更新
-    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:7449219")
+    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:3695126")
 }
 
 jar {
