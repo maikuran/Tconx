@@ -3,7 +3,7 @@ name: Generate Mantle Fluid Textures
 on:
   push:
     branches:
-      - main
+      - 1.16.5
       - master
 
   workflow_dispatch:
