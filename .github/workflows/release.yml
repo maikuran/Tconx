@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - main
+      - 1.16.5
     tags:
-      - 'v1.2'  # タグが push されたときにも実行
+      - 'v1.3'  # タグが push されたときにも実行
 
 jobs:
   build:
@@ -37,7 +37,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: Release!
-          tag_name: v1.2
+          tag_name: v1.3
           files: build/libs/*.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
