@@ -1,10 +1,11 @@
+
 package com.sakalti;
 
-import net.minecraft.block.AbstractBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -30,13 +31,16 @@ public final class ModMetals {
     }
 
 
-    // =========================
-    // Hachilite
-    // =========================
+    // ============================================================
+    // Hirolite / Ourite / Hachilite
+    // ============================================================
+
     public static final RegistryObject<Block> HIROLITE_ORE =
             registerBlock("hirolite_ore", 3.0F);
+
     public static final RegistryObject<Block> OURITE_ORE =
             registerBlock("ourite_ore", 3.0F);
+
     public static final RegistryObject<Block> HACHILITE_ORE =
             registerBlock("hachilite_ore", 3.0F);
 
@@ -50,9 +54,9 @@ public final class ModMetals {
             registerItem("hachilite_ingot");
 
 
-    // =========================
+    // ============================================================
     // Kanilite
-    // =========================
+    // ============================================================
 
     public static final RegistryObject<Block> KANILITE_ORE =
             registerBlock("kanilite_ore", 4.0F);
@@ -67,9 +71,9 @@ public final class ModMetals {
             registerItem("kanilite_ingot");
 
 
-    // =========================
+    // ============================================================
     // Igniz
-    // =========================
+    // ============================================================
 
     public static final RegistryObject<Block> IGNIZ_ORE =
             registerBlock("igniz_ore", 4.0F);
@@ -84,9 +88,9 @@ public final class ModMetals {
             registerItem("igniz_ingot");
 
 
-    // =========================
+    // ============================================================
     // Chirite
-    // =========================
+    // ============================================================
 
     public static final RegistryObject<Block> CHIRITE_ORE =
             registerBlock("chirite_ore", 4.0F);
@@ -101,9 +105,9 @@ public final class ModMetals {
             registerItem("chirite_ingot");
 
 
-    // =========================
+    // ============================================================
     // Momongaite
-    // =========================
+    // ============================================================
 
     public static final RegistryObject<Block> MOMONGAITE_ORE =
             registerBlock("momongaite_ore", 3.0F);
@@ -118,9 +122,9 @@ public final class ModMetals {
             registerItem("momongaite_ingot");
 
 
-    // =========================
+    // ============================================================
     // Other metals
-    // =========================
+    // ============================================================
 
     public static final RegistryObject<Block> HERDYEEN_BLOCK =
             registerBlock("herdyeen_block", 18.0F);
@@ -216,9 +220,9 @@ public final class ModMetals {
             registerItem("ostlum_ingot");
 
 
-    // =========================
-    // Register helpers
-    // =========================
+    // ============================================================
+    // Block registration helper
+    // ============================================================
 
     private static RegistryObject<Block> registerBlock(
             String name,
@@ -228,8 +232,8 @@ public final class ModMetals {
                 BLOCKS.register(
                         name,
                         () -> new Block(
-                                AbstractBlock.Properties
-                                        .of(Material.METAL)
+                                BlockBehaviour.Properties
+                                        .of()
                                         .strength(strength)
                                         .requiresCorrectToolForDrops()
                         )
@@ -247,6 +251,10 @@ public final class ModMetals {
     }
 
 
+    // ============================================================
+    // Item registration helper
+    // ============================================================
+
     private static RegistryObject<Item> registerItem(
             String name
     ) {
@@ -258,6 +266,10 @@ public final class ModMetals {
         );
     }
 
+
+    // ============================================================
+    // Register
+    // ============================================================
 
     public static void register(
             IEventBus eventBus
