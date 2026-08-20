@@ -1,0 +1,9 @@
+{
+  "craftable": true,
+  "tier": 5,
+  "sortOrder": 5,
+  "hidden": false,
+  "color": "#232dce",
+  "fluid": "sakalti:ourite",
+  "translationKey": "material.sakalti.ourite"
+}
