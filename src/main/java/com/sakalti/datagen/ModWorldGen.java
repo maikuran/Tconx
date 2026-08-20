@@ -5,17 +5,19 @@ import com.sakalti.ModMain;
 import com.sakalti.ModMetals;
 
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
-import net.minecraft.core.HolderLookup;
+import net.minecraft.core.RegistrySetBuilder;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.worldgen.BootstapContext;
-import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.tags.BlockTags;
-import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
@@ -24,20 +26,17 @@ import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
 
+import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ForgeBiomeModifiers;
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
+import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
-import net.minecraftforge.data.event.GatherDataEvent;
-
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.CompletableFuture;
 
 @Mod.EventBusSubscriber(
         modid = ModMain.MODID,
@@ -50,13 +49,13 @@ public final class ModWorldGen {
 
     /*
      * ============================================================
-     * Configured Features
+     * CONFIGURED FEATURES
      * ============================================================
      */
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> HIROLITE_ORE =
             ResourceKey.create(
-                    net.minecraft.core.registries.Registries.CONFIGURED_FEATURE,
+                    Registries.CONFIGURED_FEATURE,
                     new ResourceLocation(
                             ModMain.MODID,
                             "hirolite_ore"
@@ -65,7 +64,7 @@ public final class ModWorldGen {
 
     public static final ResourceKey<ConfiguredFeature<?, ?>> OURITE_ORE =
             ResourceKey.create(
-                    net.minecraft.core.registries.Registries.CONFIGURED_FEATURE,
+                    Registries.CONFIGURED_FEATURE,
                     new ResourceLocation(
                             ModMain.MODID,
                             "ourite_ore"
@@ -74,13 +73,13 @@ public final class ModWorldGen {
 
     /*
      * ============================================================
-     * Placed Features
+     * PLACED FEATURES
      * ============================================================
      */
 
     public static final ResourceKey<PlacedFeature> HIROLITE_ORE_PLACED =
             ResourceKey.create(
-                    net.minecraft.core.registries.Registries.PLACED_FEATURE,
+                    Registries.PLACED_FEATURE,
                     new ResourceLocation(
                             ModMain.MODID,
                             "hirolite_ore"
@@ -89,7 +88,7 @@ public final class ModWorldGen {
 
     public static final ResourceKey<PlacedFeature> OURITE_ORE_PLACED =
             ResourceKey.create(
-                    net.minecraft.core.registries.Registries.PLACED_FEATURE,
+                    Registries.PLACED_FEATURE,
                     new ResourceLocation(
                             ModMain.MODID,
                             "ourite_ore"
@@ -98,7 +97,7 @@ public final class ModWorldGen {
 
     /*
      * ============================================================
-     * Biome Modifiers
+     * BIOME MODIFIERS
      * ============================================================
      */
 
@@ -122,7 +121,7 @@ public final class ModWorldGen {
 
     /*
      * ============================================================
-     * Configured Feature
+     * CONFIGURED FEATURE BOOTSTRAP
      * ============================================================
      */
 
@@ -131,13 +130,10 @@ public final class ModWorldGen {
     ) {
 
         /*
-         * --------------------------------------------------------
-         * Hirolite
-         * --------------------------------------------------------
+         * Hirolite Ore
          *
-         * かなり希少
-         * 最大4個の鉱石脈
-         * オーバーワールド地下
+         * 最大4個の鉱石で構成される鉱脈
+         * オーバーワールドの石系ブロックを置換
          */
 
         context.register(
@@ -159,13 +155,10 @@ public final class ModWorldGen {
         );
 
         /*
-         * --------------------------------------------------------
-         * Ourite
-         * --------------------------------------------------------
+         * Ourite Ore
          *
-         * かなり希少
-         * 最大4個の鉱石脈
-         * オーバーワールド地下
+         * 最大4個の鉱石で構成される鉱脈
+         * オーバーワールドの石系ブロックを置換
          */
 
         context.register(
@@ -189,7 +182,7 @@ public final class ModWorldGen {
 
     /*
      * ============================================================
-     * Placed Features
+     * PLACED FEATURE BOOTSTRAP
      * ============================================================
      */
 
@@ -197,9 +190,18 @@ public final class ModWorldGen {
             BootstapContext<PlacedFeature> context
     ) {
 
-        HolderLookup.RegistryLookup<ConfiguredFeature<?, ?>> configuredFeatures =
+        /*
+         * ここが重要。
+         *
+         * BootstapContext#lookup() は
+         * HolderGetter を返す。
+         *
+         * RegistryLookup ではない。
+         */
+
+        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures =
                 context.lookup(
-                        net.minecraft.core.registries.Registries.CONFIGURED_FEATURE
+                        Registries.CONFIGURED_FEATURE
                 );
 
         /*
@@ -207,10 +209,7 @@ public final class ModWorldGen {
          * Hirolite
          * --------------------------------------------------------
          *
-         * RarityFilter:
-         * 平均16チャンクに1回程度の試行
-         *
-         * Height:
+         * 平均16回に1回
          * Y=-64 ～ Y=16
          */
 
@@ -235,7 +234,8 @@ public final class ModWorldGen {
          * Ourite
          * --------------------------------------------------------
          *
-         * Hirolite と同程度に希少。
+         * 平均16回に1回
+         * Y=-64 ～ Y=16
          */
 
         context.register(
@@ -257,7 +257,7 @@ public final class ModWorldGen {
 
     /*
      * ============================================================
-     * Biome Modifiers
+     * BIOME MODIFIER BOOTSTRAP
      * ============================================================
      */
 
@@ -265,14 +265,40 @@ public final class ModWorldGen {
             BootstapContext<BiomeModifier> context
     ) {
 
-        HolderLookup.RegistryLookup<PlacedFeature> placedFeatures =
+        /*
+         * PlacedFeature の HolderGetter
+         */
+
+        HolderGetter<PlacedFeature> placedFeatures =
                 context.lookup(
-                        net.minecraft.core.registries.Registries.PLACED_FEATURE
+                        Registries.PLACED_FEATURE
                 );
 
-        HolderLookup.RegistryLookup<net.minecraft.world.level.biome.Biome> biomes =
+        /*
+         * Biome の HolderGetter
+         */
+
+        HolderGetter<Biome> biomes =
                 context.lookup(
-                        net.minecraft.core.registries.Registries.BIOME
+                        Registries.BIOME
+                );
+
+        /*
+         * オーバーワールドタグを取得。
+         *
+         * getOrThrow() ではなく get()。
+         *
+         * BiomeTags.IS_OVERWORLD は TagKey<Biome> なので、
+         * HolderSet.Named<Biome> が返る。
+         */
+
+        HolderSet.Named<Biome> overworldBiomes =
+                biomes.get(
+                        BiomeTags.IS_OVERWORLD
+                ).orElseThrow(
+                        () -> new IllegalStateException(
+                                "Missing biome tag: " + BiomeTags.IS_OVERWORLD
+                        )
                 );
 
         /*
@@ -284,11 +310,7 @@ public final class ModWorldGen {
         context.register(
                 ADD_HIROLITE_ORE,
                 new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
-                        HolderSet.direct(
-                                biomes.getOrThrow(
-                                        net.minecraft.tags.BiomeTags.IS_OVERWORLD
-                                )
-                        ),
+                        overworldBiomes,
                         HolderSet.direct(
                                 placedFeatures.getOrThrow(
                                         HIROLITE_ORE_PLACED
@@ -307,11 +329,7 @@ public final class ModWorldGen {
         context.register(
                 ADD_OURITE_ORE,
                 new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
-                        HolderSet.direct(
-                                biomes.getOrThrow(
-                                        net.minecraft.tags.BiomeTags.IS_OVERWORLD
-                                )
-                        ),
+                        overworldBiomes,
                         HolderSet.direct(
                                 placedFeatures.getOrThrow(
                                         OURITE_ORE_PLACED
@@ -324,20 +342,35 @@ public final class ModWorldGen {
 
     /*
      * ============================================================
-     * RegistrySetBuilder
+     * REGISTRY SET BUILDER
      * ============================================================
      */
 
-    public static final net.minecraft.core.RegistrySetBuilder BUILDER =
-            new net.minecraft.core.RegistrySetBuilder()
+    public static final RegistrySetBuilder BUILDER =
+            new RegistrySetBuilder()
+
+                    /*
+                     * Configured Features
+                     */
+
                     .add(
-                            net.minecraft.core.registries.Registries.CONFIGURED_FEATURE,
+                            Registries.CONFIGURED_FEATURE,
                             ModWorldGen::bootstrapConfiguredFeatures
                     )
+
+                    /*
+                     * Placed Features
+                     */
+
                     .add(
-                            net.minecraft.core.registries.Registries.PLACED_FEATURE,
+                            Registries.PLACED_FEATURE,
                             ModWorldGen::bootstrapPlacedFeatures
                     )
+
+                    /*
+                     * Forge Biome Modifiers
+                     */
+
                     .add(
                             ForgeRegistries.Keys.BIOME_MODIFIERS,
                             ModWorldGen::bootstrapBiomeModifiers
@@ -345,12 +378,14 @@ public final class ModWorldGen {
 
     /*
      * ============================================================
-     * Gather Data
+     * GATHER DATA
      * ============================================================
      */
 
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
+    public static void gatherData(
+            GatherDataEvent event
+    ) {
 
         event.getGenerator().addProvider(
                 event.includeServer(),
