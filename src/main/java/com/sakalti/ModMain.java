@@ -33,6 +33,7 @@ public final class ModMain {
         TconxModifiers.MODIFIERS.register(modEventBus);
 
         // ModTiers の static 初期化を確実に実行
+        ModTiers.SUPER.getUses();
         
     }
 }
