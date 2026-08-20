@@ -1,7 +1,6 @@
 modLoader="javafml"
 loaderVersion="[47,48)"
 license="MIT"
-side="CLIENT"
 
 [[mods]]
 modId="sakalti"
