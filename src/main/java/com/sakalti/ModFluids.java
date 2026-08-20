@@ -445,6 +445,28 @@ public final class ModFluids {
 
     public static final RegistryObject<ForgeFlowingFluid> SEIREN_FLOWING =
             SEIREN_ENTRY.flowing;
+    private static final FluidEntry OURITE_ENTRY =
+            registerFluid("ourite");
+
+    public static final RegistryObject<FluidType> OURITE_TYPE =
+            OURITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> OURITE =
+            OURITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> OURITE_FLOWING =
+            OURITE_ENTRY.flowing;
+    private static final FluidEntry HIROLITE_ENTRY =
+            registerFluid("hirolite");
+
+    public static final RegistryObject<FluidType> HIROLITE_TYPE =
+            HIROLITE_ENTRY.type;
+
+    public static final RegistryObject<ForgeFlowingFluid> HIROLITE =
+            HIROLITE_ENTRY.source;
+
+    public static final RegistryObject<ForgeFlowingFluid> HIROLITE_FLOWING =
+            HIROLITE_ENTRY.flowing;
     private static final FluidEntry CORAL_ENTRY =
             registerFluid("coral");
 
