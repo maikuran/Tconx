@@ -1,12 +1,13 @@
 package com.sakalti.entity;
 
-import net.minecraft.entity.EntityClassification;
-import net.minecraft.entity.EntityType;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biomes;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.MobSpawnSettings;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.event.world.BiomeLoadingEvent;
 
 @Mod.EventBusSubscriber(
         modid = "sakalti",
@@ -15,24 +16,48 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 public class ModSpawns {
 
     @SubscribeEvent
-    public static void onBiomeLoading(BiomeLoadingEvent event) {
+    public static void onPotentialSpawns(LevelEvent.PotentialSpawns event) {
 
-        // 真紅の森だけ
-        if (event.getName() == null
-                || !event.getName().equals(Biomes.CRIMSON_FOREST.getRegistryName())) {
+        // モンスターの自然スポーン候補だけを対象にする
+        if (event.getMobCategory() != MobCategory.MONSTER) {
             return;
         }
 
-        // モンスターの自然スポーン候補に Crimson Fly を追加
-        event.getSpawns()
-                .getSpawner(EntityClassification.MONSTER)
-                .add(
-                        new Biome.SpawnListEntry(
-                                CrimsonFlyEntity.CRIMSON_FLY.get(),
-                                20,
-                                2,
-                                4
-                        )
-                );
+        if (!(event.getLevel() instanceof Level level)) {
+            return;
+        }
+
+        BlockPos pos = event.getPos();
+
+        // その地点のBiome
+        ResourceLocation biomeId =
+                level.getBiome(pos)
+                        .unwrapKey()
+                        .map(key -> key.location())
+                        .orElse(null);
+
+        if (biomeId == null) {
+            return;
+        }
+
+        // 真紅の森だけ
+        if (!biomeId.equals(
+                new ResourceLocation(
+                        "minecraft",
+                        "crimson_forest"
+                )
+        )) {
+            return;
+        }
+
+        // Crimson Flyをスポーン候補に追加
+        event.addSpawnerData(
+                new MobSpawnSettings.SpawnerData(
+                        CrimsonFlyEntity.CRIMSON_FLY.get(),
+                        20,
+                        2,
+                        4
+                )
+        );
     }
 }
