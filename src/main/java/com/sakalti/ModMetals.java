@@ -1,9 +1,10 @@
 package com.sakalti;
 
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -14,23 +15,30 @@ public final class ModMetals {
     public static final String MODID = "sakalti";
 
     public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
+            DeferredRegister.create(
+                    ForgeRegistries.BLOCKS,
+                    MODID
+            );
 
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+            DeferredRegister.create(
+                    ForgeRegistries.ITEMS,
+                    MODID
+            );
 
     private ModMetals() {
     }
+
 
     // =========================
     // Hachilite
     // =========================
 
     public static final RegistryObject<Block> HACHILITE_ORE =
-            registerBlock("hachilite_ore", 3.0f);
+            registerBlock("hachilite_ore", 3.0F);
 
     public static final RegistryObject<Block> HACHILITE_BLOCK =
-            registerBlock("hachilite_block", 7.0f);
+            registerBlock("hachilite_block", 7.0F);
 
     public static final RegistryObject<Item> HACHILITE_RAW =
             registerItem("hachilite_raw");
@@ -44,10 +52,10 @@ public final class ModMetals {
     // =========================
 
     public static final RegistryObject<Block> KANILITE_ORE =
-            registerBlock("kanilite_ore", 4.0f);
+            registerBlock("kanilite_ore", 4.0F);
 
     public static final RegistryObject<Block> KANILITE_BLOCK =
-            registerBlock("kanilite_block", 10.0f);
+            registerBlock("kanilite_block", 10.0F);
 
     public static final RegistryObject<Item> KANILITE_RAW =
             registerItem("kanilite_raw");
@@ -61,10 +69,10 @@ public final class ModMetals {
     // =========================
 
     public static final RegistryObject<Block> IGNIZ_ORE =
-            registerBlock("igniz_ore", 4.0f);
+            registerBlock("igniz_ore", 4.0F);
 
     public static final RegistryObject<Block> IGNIZ_BLOCK =
-            registerBlock("igniz_block", 13.0f);
+            registerBlock("igniz_block", 13.0F);
 
     public static final RegistryObject<Item> IGNIZ_RAW =
             registerItem("igniz_raw");
@@ -78,10 +86,10 @@ public final class ModMetals {
     // =========================
 
     public static final RegistryObject<Block> CHIRITE_ORE =
-            registerBlock("chirite_ore", 4.0f);
+            registerBlock("chirite_ore", 4.0F);
 
     public static final RegistryObject<Block> CHIRITE_BLOCK =
-            registerBlock("chirite_block", 16.0f);
+            registerBlock("chirite_block", 16.0F);
 
     public static final RegistryObject<Item> CHIRITE_RAW =
             registerItem("chirite_raw");
@@ -95,10 +103,10 @@ public final class ModMetals {
     // =========================
 
     public static final RegistryObject<Block> MOMONGAITE_ORE =
-            registerBlock("momongaite_ore", 3.0f);
+            registerBlock("momongaite_ore", 3.0F);
 
     public static final RegistryObject<Block> MOMONGAITE_BLOCK =
-            registerBlock("momongaite_block", 11.0f);
+            registerBlock("momongaite_block", 11.0F);
 
     public static final RegistryObject<Item> MOMONGAITE_RAW =
             registerItem("momongaite_raw");
@@ -112,49 +120,49 @@ public final class ModMetals {
     // =========================
 
     public static final RegistryObject<Block> HERDYEEN_BLOCK =
-            registerBlock("herdyeen_block", 18.0f);
+            registerBlock("herdyeen_block", 18.0F);
 
     public static final RegistryObject<Item> HERDYEEN_INGOT =
             registerItem("herdyeen_ingot");
 
 
     public static final RegistryObject<Block> HIROSWARI_BLOCK =
-            registerBlock("hiroswari_block", 3.0f);
+            registerBlock("hiroswari_block", 3.0F);
 
     public static final RegistryObject<Item> HIROSWARI_INGOT =
             registerItem("hiroswari_ingot");
 
 
     public static final RegistryObject<Block> MARULITE_BLOCK =
-            registerBlock("marulite_block", 115.0f);
+            registerBlock("marulite_block", 115.0F);
 
     public static final RegistryObject<Item> MARULITE_INGOT =
             registerItem("marulite_ingot");
 
 
     public static final RegistryObject<Block> PROXIA_BLOCK =
-            registerBlock("proxia_block", 4.0f);
+            registerBlock("proxia_block", 4.0F);
 
     public static final RegistryObject<Item> PROXIA_INGOT =
             registerItem("proxia_ingot");
 
 
     public static final RegistryObject<Block> OUSWARI_BLOCK =
-            registerBlock("ouswari_block", 96.0f);
+            registerBlock("ouswari_block", 96.0F);
 
     public static final RegistryObject<Item> OUSWARI_INGOT =
             registerItem("ouswari_ingot");
 
 
     public static final RegistryObject<Block> AUROSTONE_BLOCK =
-            registerBlock("aurostone_block", 25.0f);
+            registerBlock("aurostone_block", 25.0F);
 
     public static final RegistryObject<Item> AUROSTONE_INGOT =
             registerItem("aurostone_ingot");
 
 
     public static final RegistryObject<Block> DEEPSTEEL_BLOCK =
-            registerBlock("deepsteel_block", 58.0f);
+            registerBlock("deepsteel_block", 58.0F);
 
     public static final RegistryObject<Item> DEEPSTEEL_INGOT =
             registerItem("deepsteel_ingot");
@@ -164,39 +172,42 @@ public final class ModMetals {
 
 
     public static final RegistryObject<Block> SEIREN_BLOCK =
-            registerBlock("seiren_block", 162.0f);
+            registerBlock("seiren_block", 162.0F);
 
     public static final RegistryObject<Item> SEIREN_INGOT =
             registerItem("seiren_ingot");
 
+
     public static final RegistryObject<Block> CHIISTEEL_BLOCK =
-            registerBlock("chiisteel_block", 35.0f);
+            registerBlock("chiisteel_block", 35.0F);
 
     public static final RegistryObject<Item> CHIISTEEL_INGOT =
             registerItem("chiisteel_ingot");
+
+
     public static final RegistryObject<Block> IOXIUM_BLOCK =
-            registerBlock("ioxium_block", 7.0f);
+            registerBlock("ioxium_block", 7.0F);
 
     public static final RegistryObject<Item> IOXIUM_INGOT =
             registerItem("ioxium_ingot");
 
 
     public static final RegistryObject<Block> DILONITE_BLOCK =
-            registerBlock("dilonite_block", 9.0f);
+            registerBlock("dilonite_block", 9.0F);
 
     public static final RegistryObject<Item> DILONITE_INGOT =
             registerItem("dilonite_ingot");
 
 
     public static final RegistryObject<Block> TIBERIUM_BLOCK =
-            registerBlock("tiberium_block", 18.0f);
+            registerBlock("tiberium_block", 18.0F);
 
     public static final RegistryObject<Item> TIBERIUM_INGOT =
             registerItem("tiberium_ingot");
 
 
     public static final RegistryObject<Block> OSTLUM_BLOCK =
-            registerBlock("ostlum_block", 34.0f);
+            registerBlock("ostlum_block", 34.0F);
 
     public static final RegistryObject<Item> OSTLUM_INGOT =
             registerItem("ostlum_ingot");
@@ -210,14 +221,16 @@ public final class ModMetals {
             String name,
             float strength
     ) {
-        RegistryObject<Block> block = BLOCKS.register(
-                name,
-                () -> new Block(
-                        BlockBehaviour.Properties.of()
-                                .strength(strength)
-                                .requiresCorrectToolForDrops()
-                )
-        );
+        RegistryObject<Block> block =
+                BLOCKS.register(
+                        name,
+                        () -> new Block(
+                                AbstractBlock.Properties
+                                        .of(Material.METAL)
+                                        .strength(strength)
+                                        .requiresCorrectToolForDrops()
+                        )
+                );
 
         ITEMS.register(
                 name,
@@ -231,15 +244,21 @@ public final class ModMetals {
     }
 
 
-    private static RegistryObject<Item> registerItem(String name) {
+    private static RegistryObject<Item> registerItem(
+            String name
+    ) {
         return ITEMS.register(
                 name,
-                () -> new Item(new Item.Properties())
+                () -> new Item(
+                        new Item.Properties()
+                )
         );
     }
 
 
-    public static void register(IEventBus eventBus) {
+    public static void register(
+            IEventBus eventBus
+    ) {
         BLOCKS.register(eventBus);
         ITEMS.register(eventBus);
     }
