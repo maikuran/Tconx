@@ -1,4 +1,3 @@
-
 package com.sakalti.datagen;
 
 import com.sakalti.ModMain;
@@ -26,8 +25,8 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
-
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
+
 import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
@@ -72,7 +71,6 @@ public final class ModWorldGen {
                     )
             );
 
-
     public static final ResourceKey<ConfiguredFeature<?, ?>> OURITE_ORE =
             ResourceKey.create(
                     Registries.CONFIGURED_FEATURE,
@@ -95,7 +93,6 @@ public final class ModWorldGen {
                             "hirolite_ore"
                     )
             );
-
 
     public static final ResourceKey<PlacedFeature> OURITE_ORE_PLACED =
             ResourceKey.create(
@@ -120,7 +117,6 @@ public final class ModWorldGen {
                     )
             );
 
-
     public static final ResourceKey<BiomeModifier> ADD_OURITE_ORE =
             ResourceKey.create(
                     ForgeRegistries.Keys.BIOME_MODIFIERS,
@@ -140,15 +136,10 @@ public final class ModWorldGen {
     ) {
 
         /*
-         * --------------------------------------------------------
-         * Hirolite
-         * --------------------------------------------------------
+         * Hirolite Ore
          *
          * BASE_STONE_OVERWORLD に含まれるブロックを
-         * Hirolite Oreへ置換する。
-         *
-         * OreConfiguration.target() は RuleTest を要求するため、
-         * TagMatchTest を使用する。
+         * Hirolite Ore に置換する。
          */
 
         context.register(
@@ -173,9 +164,7 @@ public final class ModWorldGen {
 
 
         /*
-         * --------------------------------------------------------
-         * Ourite
-         * --------------------------------------------------------
+         * Ourite Ore
          */
 
         context.register(
@@ -215,9 +204,7 @@ public final class ModWorldGen {
 
 
         /*
-         * --------------------------------------------------------
          * Hirolite
-         * --------------------------------------------------------
          *
          * 平均16回に1回
          * Y=-64 ～ Y=16
@@ -246,9 +233,10 @@ public final class ModWorldGen {
 
 
         /*
-         * --------------------------------------------------------
          * Ourite
-         * --------------------------------------------------------
+         *
+         * 平均16回に1回
+         * Y=-64 ～ Y=16
          */
 
         context.register(
@@ -295,7 +283,7 @@ public final class ModWorldGen {
 
 
         /*
-         * オーバーワールドのBiomeタグ。
+         * オーバーワールドのBiomeタグを取得。
          */
 
         HolderSet.Named<Biome> overworldBiomes =
@@ -317,7 +305,6 @@ public final class ModWorldGen {
 
         context.register(
                 ADD_HIROLITE_ORE,
-
                 new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                         overworldBiomes,
 
@@ -340,7 +327,6 @@ public final class ModWorldGen {
 
         context.register(
                 ADD_OURITE_ORE,
-
                 new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                         overworldBiomes,
 
@@ -363,27 +349,15 @@ public final class ModWorldGen {
     public static final RegistrySetBuilder BUILDER =
             new RegistrySetBuilder()
 
-                    /*
-                     * Configured Features
-                     */
-
                     .add(
                             Registries.CONFIGURED_FEATURE,
                             ModWorldGen::bootstrapConfiguredFeatures
                     )
 
-                    /*
-                     * Placed Features
-                     */
-
                     .add(
                             Registries.PLACED_FEATURE,
                             ModWorldGen::bootstrapPlacedFeatures
                     )
-
-                    /*
-                     * Forge Biome Modifiers
-                     */
 
                     .add(
                             ForgeRegistries.Keys.BIOME_MODIFIERS,
@@ -400,20 +374,17 @@ public final class ModWorldGen {
             GatherDataEvent event
     ) {
 
-        final PackOutput output =
-                event.getGenerator().getPackOutput();
-
+        DatapackBuiltinEntriesProvider provider =
+                new DatapackBuiltinEntriesProvider(
+                        event.getGenerator().getPackOutput(),
+                        event.getLookupProvider(),
+                        BUILDER,
+                        Set.of(ModMain.MODID)
+                );
 
         event.getGenerator().addProvider(
                 event.includeServer(),
-
-                (DataGenerator.PackGenerator<DatapackBuiltinEntriesProvider>) generatorOutput ->
-                        new DatapackBuiltinEntriesProvider(
-                                generatorOutput,
-                                event.getLookupProvider(),
-                                BUILDER,
-                                Set.of(ModMain.MODID)
-                        )
+                provider
         );
     }
 }
