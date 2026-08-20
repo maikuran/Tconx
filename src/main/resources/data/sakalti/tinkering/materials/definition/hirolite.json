@@ -1,0 +1,9 @@
+{
+  "craftable": true,
+  "tier": 5,
+  "sortOrder": 5,
+  "hidden": false,
+  "color": "#40414f",
+  "fluid": "sakalti:hirolite",
+  "translationKey": "material.sakalti.hirolite"
+}
