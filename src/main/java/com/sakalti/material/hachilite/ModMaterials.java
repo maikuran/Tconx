@@ -45,6 +45,12 @@ public final class ModMaterials {
     public static final MaterialId IOXIUM_ID =
             new MaterialId("sakalti:ioxium");
 
+    public static final MaterialId HIROLITE_ID =
+            new MaterialId("sakalti:hirolite");
+
+    public static final MaterialId OURITE_ID =
+            new MaterialId("sakalti:ourite");
+
     public static final MaterialId DILONITE_ID =
             new MaterialId("sakalti:dilonite");
 
