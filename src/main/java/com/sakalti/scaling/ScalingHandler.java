@@ -2,7 +2,9 @@ package com.sakalti.scaling;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -13,11 +15,15 @@ import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.network.NetworkEvent;
+import net.minecraftforge.network.NetworkRegistry;
+import net.minecraftforge.network.simple.SimpleChannel;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Supplier;
 
 @Mod.EventBusSubscriber(
         modid = "sakalti",
@@ -31,25 +37,33 @@ public final class ScalingHandler {
      * =========================================================
      */
 
-    // Minecraftの1日は24000tick
     private static final long TICKS_PER_DAY = 24000L;
 
-    // 1日ごとの上昇率
     private static final double HEALTH_PER_LEVEL = 0.10D;
     private static final double DAMAGE_PER_LEVEL = 0.05D;
 
-    // 現在のScaling Level
+    /*
+     * Scaling Level
+     *
+     * サーバー側だけが変更する。
+     */
     private static int scalingLevel = 0;
 
-    // 現在の日数を計測するtick
+    /*
+     * 経過tick
+     */
     private static long scalingTicks = 0L;
 
-    // Scaling ON/OFF
+    /*
+     * Scaling ON/OFF
+     *
+     * サーバー側が本体。
+     */
     private static boolean healthScaling = true;
     private static boolean damageScaling = true;
 
     /*
-     * Mob本来の最大HPを保存
+     * Mob本来の最大HP
      */
     private static final Map<UUID, Double> BASE_HEALTH =
             new HashMap<>();
@@ -57,31 +71,151 @@ public final class ScalingHandler {
 
     /*
      * =========================================================
-     * KeyMapping
+     * Network
      * =========================================================
      */
 
-    public static final KeyMapping DAMAGE_KEY =
-            new KeyMapping(
-                    "key.sakalti.scaling_damage",
-                    InputConstants.Type.KEYSYM,
-                    GLFW.GLFW_KEY_D,
-                    "key.categories.sakalti"
+    private static final String PROTOCOL_VERSION = "1";
+
+    private static final SimpleChannel NETWORK =
+            NetworkRegistry.newSimpleChannel(
+                    new net.minecraft.resources.ResourceLocation(
+                            "sakalti",
+                            "scaling"
+                    ),
+                    () -> PROTOCOL_VERSION,
+                    PROTOCOL_VERSION::equals,
+                    PROTOCOL_VERSION::equals
             );
 
-    public static final KeyMapping HEALTH_KEY =
-            new KeyMapping(
-                    "key.sakalti.scaling_health",
-                    InputConstants.Type.KEYSYM,
-                    GLFW.GLFW_KEY_H,
-                    "key.categories.sakalti"
-            );
+    private static int packetId = 0;
 
 
     /*
      * =========================================================
-     * Key Registry
+     * Packet
      * =========================================================
+     *
+     * CLIENT
+     *   ↓
+     * ToggleScalingPacket
+     *   ↓
+     * SERVER
+     */
+
+    public static final class ToggleScalingPacket {
+
+        private final int type;
+
+        /*
+         * type
+         *
+         * 0 = Damage
+         * 1 = Health
+         */
+        public ToggleScalingPacket(int type) {
+            this.type = type;
+        }
+
+        public ToggleScalingPacket(FriendlyByteBuf buffer) {
+            this.type = buffer.readInt();
+        }
+
+        public void encode(FriendlyByteBuf buffer) {
+            buffer.writeInt(type);
+        }
+
+        public void handle(Supplier<NetworkEvent.Context> supplier) {
+
+            NetworkEvent.Context context =
+                    supplier.get();
+
+            context.enqueueWork(() -> {
+
+                ServerPlayer player =
+                        context.getSender();
+
+                /*
+                 * 専用サーバー側でのみ変更
+                 */
+                if (player == null) {
+                    return;
+                }
+
+                if (type == 0) {
+
+                    damageScaling =
+                            !damageScaling;
+
+                    System.out.println(
+                            "[Sakalti Scaling] Damage Scaling: "
+                                    + damageScaling
+                    );
+
+                } else if (type == 1) {
+
+                    healthScaling =
+                            !healthScaling;
+
+                    System.out.println(
+                            "[Sakalti Scaling] Health Scaling: "
+                                    + healthScaling
+                    );
+
+                    /*
+                     * OFFにした場合は
+                     * MobのHPを元に戻すのではなく、
+                     * 現在の状態を維持。
+                     *
+                     * ONにした瞬間に全Mobへ再適用。
+                     */
+                    if (healthScaling) {
+
+                        for (ServerLevel level :
+                                player.getServer().getAllLevels()) {
+
+                            for (var entity :
+                                    level.getEntities().getAll()) {
+
+                                if (entity instanceof Mob mob) {
+                                    applyHealthScaling(mob);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            context.setPacketHandled(true);
+        }
+    }
+
+
+    /*
+     * =========================================================
+     * Network Register
+     * =========================================================
+     */
+
+    static {
+
+        NETWORK.registerMessage(
+                packetId++,
+                ToggleScalingPacket.class,
+                ToggleScalingPacket::encode,
+                ToggleScalingPacket::new,
+                ToggleScalingPacket::handle
+        );
+    }
+
+
+    /*
+     * =========================================================
+     * Client KeyMapping
+     * =========================================================
+     *
+     * Clientクラスを専用サーバーでロードしないように
+     * ClientRegistry内に隔離。
      */
 
     @Mod.EventBusSubscriber(
@@ -93,10 +227,27 @@ public final class ScalingHandler {
 
         private ClientRegistry() {}
 
+        public static final KeyMapping DAMAGE_KEY =
+                new KeyMapping(
+                        "key.sakalti.scaling_damage",
+                        InputConstants.Type.KEYSYM,
+                        GLFW.GLFW_KEY_D,
+                        "key.categories.sakalti"
+                );
+
+        public static final KeyMapping HEALTH_KEY =
+                new KeyMapping(
+                        "key.sakalti.scaling_health",
+                        InputConstants.Type.KEYSYM,
+                        GLFW.GLFW_KEY_H,
+                        "key.categories.sakalti"
+                );
+
         @SubscribeEvent
         public static void registerKeys(
                 RegisterKeyMappingsEvent event
         ) {
+
             event.register(DAMAGE_KEY);
             event.register(HEALTH_KEY);
         }
@@ -108,8 +259,17 @@ public final class ScalingHandler {
      * Client Tick
      * =========================================================
      *
-     * D = Damage Scaling ON/OFF
-     * H = Health Scaling ON/OFF
+     * D
+     * ↓
+     * Damage Toggle Packet
+     * ↓
+     * Server
+     *
+     * H
+     * ↓
+     * Health Toggle Packet
+     * ↓
+     * Server
      */
 
     @Mod.EventBusSubscriber(
@@ -125,16 +285,23 @@ public final class ScalingHandler {
         public static void onClientTick(
                 TickEvent.ClientTickEvent event
         ) {
+
             if (event.phase != TickEvent.Phase.END) {
                 return;
             }
 
-            if (DAMAGE_KEY.consumeClick()) {
-                damageScaling = !damageScaling;
+            if (ClientRegistry.DAMAGE_KEY.consumeClick()) {
+
+                NETWORK.sendToServer(
+                        new ToggleScalingPacket(0)
+                );
             }
 
-            if (HEALTH_KEY.consumeClick()) {
-                healthScaling = !healthScaling;
+            if (ClientRegistry.HEALTH_KEY.consumeClick()) {
+
+                NETWORK.sendToServer(
+                        new ToggleScalingPacket(1)
+                );
             }
         }
     }
@@ -151,6 +318,9 @@ public final class ScalingHandler {
             EntityJoinLevelEvent event
     ) {
 
+        /*
+         * クライアントでは処理しない
+         */
         if (event.getLevel().isClientSide()) {
             return;
         }
@@ -160,7 +330,7 @@ public final class ScalingHandler {
         }
 
         /*
-         * Mob本来のHPを保存
+         * 元のHPを保存
          */
         BASE_HEALTH.put(
                 mob.getUUID(),
@@ -168,7 +338,7 @@ public final class ScalingHandler {
         );
 
         /*
-         * 現在Levelを即座に適用
+         * 現在のScaling Levelを適用
          */
         if (healthScaling) {
             applyHealthScaling(mob);
@@ -180,14 +350,6 @@ public final class ScalingHandler {
      * =========================================================
      * Server Tick
      * =========================================================
-     *
-     * 24000tick = 1日
-     *
-     * 1日経過
-     * ↓
-     * Scaling Level +1
-     * ↓
-     * 全ServerLevelのMobを更新
      */
 
     @SubscribeEvent
@@ -202,7 +364,7 @@ public final class ScalingHandler {
         scalingTicks++;
 
         /*
-         * 1日経過
+         * 24000tick = 1日
          */
         if (scalingTicks >= TICKS_PER_DAY) {
 
@@ -217,18 +379,14 @@ public final class ScalingHandler {
             );
 
             /*
-             * Health ScalingがONなら
-             * 全ServerLevelのMobを更新
+             * Health Scaling ONなら
+             * 全ワールドのMobを更新
              */
             if (healthScaling) {
 
                 for (ServerLevel level :
                         event.getServer().getAllLevels()) {
 
-                    /*
-                     * getAll()はIterable<Entity>なので
-                     * stream()は使用しない。
-                     */
                     for (var entity :
                             level.getEntities().getAll()) {
 
@@ -266,7 +424,7 @@ public final class ScalingHandler {
         }
 
         /*
-         * 元HPを取得
+         * 元HP
          */
         double baseHealth =
                 BASE_HEALTH.computeIfAbsent(
@@ -275,14 +433,11 @@ public final class ScalingHandler {
                 );
 
         /*
-         * Levelごとの倍率
-         *
          * Level 0 = ×1.00
          * Level 1 = ×1.10
          * Level 2 = ×1.20
          * Level 3 = ×1.30
          */
-
         double multiplier =
                 1.0D
                         + (scalingLevel * HEALTH_PER_LEVEL);
@@ -304,7 +459,7 @@ public final class ScalingHandler {
         );
 
         /*
-         * 増加した分だけ現在HPにも追加
+         * 増加分を現在HPにも追加
          */
         if (newMaxHealth > oldMaxHealth) {
 
@@ -337,21 +492,18 @@ public final class ScalingHandler {
         }
 
         /*
-         * Mobだけ対象
+         * Mobのみ
          */
         if (!(event.getEntity() instanceof Mob)) {
             return;
         }
 
         /*
-         * Levelごとのダメージ倍率
-         *
          * Level 0 = ×1.00
          * Level 1 = ×1.05
          * Level 2 = ×1.10
          * Level 3 = ×1.15
          */
-
         float multiplier =
                 (float) (
                         1.0D
@@ -380,5 +532,15 @@ public final class ScalingHandler {
 
     public static boolean isDamageScalingEnabled() {
         return damageScaling;
+    }
+
+
+    /*
+     * =========================================================
+     * Constructor
+     * =========================================================
+     */
+
+    private ScalingHandler() {
     }
 }
