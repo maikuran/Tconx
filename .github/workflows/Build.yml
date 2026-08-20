@@ -3,7 +3,7 @@ name: Build Mod
 on:
   push:
     branches:
-      - main
+      - 1.16.5
     tags:
       - '*'  # タグpushも検知する（リリース用にも使うため）
 
