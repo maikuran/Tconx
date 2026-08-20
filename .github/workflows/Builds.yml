@@ -1,0 +1,45 @@
+name: Build Mod!
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 1.16.5
+    tags:
+      - 'v1.3'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 💡 通常は不要なためコメントアウトしています。必要な場合は外してください。
+      # - name: Download loom-1.9.428.jar
+      #   run: |
+      #     mkdir -p libs
+      #     curl -L -o libs/loom-1.9.428.jar https://maven.architectury.dev/dev/architectury/loom/1.9.428/loom-1.9.428.jar
+
+      - name: Set up JDK 8 (for 1.16.5)
+        uses: actions/setup-java@v4
+        with:
+          java-version: '8' # 💡 1.16.5のビルドにはJava 8を指定します
+          distribution: 'temurin'
+          cache: 'gradle'   # 💡 ビルドを高速化するためのキャッシュ設定
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew clean build --info --refresh-dependencies --stacktrace
+
+      - name: Upload to GitHub Releases
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Release!
+          tag_name: ${{ github.ref_name }} # 💡 固定ではなく、pushされたタグ名（例: v1.3）を自動追従します
+          files: build/libs/*.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
