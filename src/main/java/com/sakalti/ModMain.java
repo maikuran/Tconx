@@ -1,6 +1,5 @@
 package com.sakalti;
 
-import com.sakalti.enchant.ModEnchantments;
 import com.sakalti.modifier.TconxModifiers;
 import com.sakalti.entity.*;
 import com.sakalti.scaling.HealthCrystals;
@@ -28,12 +27,12 @@ public final class ModMain {
         ModCreativeTabs.register(modEventBus);
         HealthCrystals.register(modEventBus);
         // エンチャント
-        ModEnchantments.ENCHANTMENTS.register(modEventBus);
+        
 
         // TConX modifier
         TconxModifiers.MODIFIERS.register(modEventBus);
 
         // ModTiers の static 初期化を確実に実行
-        ModTiers.SUPER.getUses();
+        
     }
 }
