@@ -17,12 +17,14 @@ version = '1.0.0'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+        // 1.16.5はJava 8で動作します
+        languageVersion = JavaLanguageVersion.of(8)
     }
 }
 
 minecraft {
-    mappings channel: 'official', version: '1.20.1'
+    // 1.16.5用の公式マッピングを指定
+    mappings channel: 'official', version: '1.16.5'
 
     runs {
         client {
@@ -51,11 +53,12 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.20.1-47.4.5'
-    compileOnly fg.deobf("curse.maven:mantle-74924:7563777")
+    // Minecraft Forge 1.16.5 の最新安定版を指定
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.42'
     
-    // Tinkers' Construct を最新版に更新
-    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:7449219")
+    // 1.16.5 向けの Mantle と Tinkers' Construct (CurseMaven)
+    compileOnly fg.deobf("curse.maven:mantle-74924:3631982")
+    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:3695126")
 }
 
 jar {
