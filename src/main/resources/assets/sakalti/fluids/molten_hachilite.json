@@ -1,0 +1,11 @@
+{
+  "fluid": {
+    "name": "molten_hachilite",
+    "stillTexture": "sakalti:block/molten_hachilite_still",
+    "flowingTexture": "sakalti:block/molten_hachilite_flow",
+    "color": 5227511,
+    "temperature": 900,
+    "viscosity": 6000,
+    "density": 3000
+  }
+}

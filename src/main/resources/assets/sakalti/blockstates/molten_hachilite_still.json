@@ -1,9 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "sakalti:block/molten_hachilite_still"
-    }
-  },
-  "still": "assets:fluid/molten_hachilite_still_still",
-  "flowing": "assets:fluid/molten_hachilite_still_flow"
+    "": { "model": "sakalti:block/molten_hachilite_still" }
+  }
 }
