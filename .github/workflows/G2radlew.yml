@@ -18,17 +18,17 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 8
+          java-version: 17
 
       # Gradle 8.9 をセットアップ（システムのGradle 9.xを回避）
       - name: Set up Gradle 8.9
         uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: 6.9.4
+          gradle-version: 8.9
 
       - name: Generate Gradle Wrapper (8.9)
         run: |
-          gradle wrapper --gradle-version 6.9.4
+          gradle wrapper --gradle-version 8.9
 
       - name: Commit and push Gradle Wrapper
         run: |
