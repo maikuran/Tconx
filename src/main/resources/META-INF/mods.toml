@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[47,48)"
+loaderVersion="[36,)"
 license="MIT"
 
 [[mods]]
@@ -8,27 +8,34 @@ version="1.0.0"
 displayName="TConX"
 authors="お方"
 description='''
-TConXはテスト用MODです。Forge 1.20.1対応。
+TConXはテスト用MODです。Forge 1.16.5対応。
 '''
 displayURL="https://github.com/maikuran/Tconx"
 
 [[dependencies.sakalti]]
 modId="forge"
 mandatory=true
-versionRange="[47,48)"
+versionRange="[36,37)"
 ordering="NONE"
 side="BOTH"
 
 [[dependencies.sakalti]]
 modId="minecraft"
 mandatory=true
-versionRange="[1.20.1,1.21)"
+versionRange="[1.16.5]"
 ordering="NONE"
+side="BOTH"
+
+[[dependencies.sakalti]]
+modId="mantle"
+mandatory=true
+versionRange="[1.6,)"
+ordering="AFTER"
 side="BOTH"
 
 [[dependencies.sakalti]]
 modId="tconstruct"
 mandatory=true
-versionRange="[3.9,)"
+versionRange="[3.3,)"
 ordering="AFTER"
 side="BOTH"
