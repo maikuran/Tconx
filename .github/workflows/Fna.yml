@@ -1,0 +1,300 @@
+name: Balance Tinkers Material Stats
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  balance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Balance all material stats
+        shell: python
+        run: |
+          import json
+          from pathlib import Path
+
+          root = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/stats"
+          )
+
+          if not root.exists():
+              raise SystemExit(f"Directory not found: {root}")
+
+          def scale(
+              obj,
+              key,
+              factor,
+              minimum=None,
+              maximum=None
+          ):
+              value = obj.get(key)
+
+              if not isinstance(value, (int, float)):
+                  return
+
+              value *= factor
+
+              if minimum is not None:
+                  value = max(value, minimum)
+
+              if maximum is not None:
+                  value = min(value, maximum)
+
+              obj[key] = round(value, 3)
+
+          count = 0
+
+          for path in sorted(root.glob("*.json")):
+              with path.open("r", encoding="utf-8") as f:
+                  data = json.load(f)
+
+              stats = data.get("stats", {})
+
+              # =========================
+              # Tool / Weapon Head
+              # =========================
+              head = stats.get("tconstruct:head", {})
+
+              scale(
+                  head,
+                  "melee_attack",
+                  0.55,
+                  minimum=-5.0,
+                  maximum=12.0
+              )
+
+              scale(
+                  head,
+                  "mining_speed",
+                  0.65,
+                  minimum=1.0,
+                  maximum=14.0
+              )
+
+              scale(
+                  head,
+                  "durability",
+                  0.70,
+                  minimum=250,
+                  maximum=1400
+              )
+
+              # SUPER tier itself remains unchanged.
+              # Only the stats are balanced.
+
+              # =========================
+              # Grip
+              # =========================
+              grip = stats.get("tconstruct:grip", {})
+
+              scale(
+                  grip,
+                  "melee_damage",
+                  0.55,
+                  minimum=-3.0,
+                  maximum=3.5
+              )
+
+              scale(
+                  grip,
+                  "durability",
+                  0.75,
+                  minimum=-1.0,
+                  maximum=1.0
+              )
+
+              scale(
+                  grip,
+                  "accuracy",
+                  0.75,
+                  minimum=-1.0,
+                  maximum=1.0
+              )
+
+              # =========================
+              # Handle
+              # =========================
+              handle = stats.get("tconstruct:handle", {})
+
+              scale(
+                  handle,
+                  "durability",
+                  0.75,
+                  minimum=-1.0,
+                  maximum=1.5
+              )
+
+              scale(
+                  handle,
+                  "melee_damage",
+                  0.65,
+                  minimum=-1.0,
+                  maximum=1.0
+              )
+
+              scale(
+                  handle,
+                  "melee_speed",
+                  0.70,
+                  minimum=-1.0,
+                  maximum=1.0
+              )
+
+              scale(
+                  handle,
+                  "mining_speed",
+                  0.70,
+                  minimum=-1.0,
+                  maximum=1.0
+              )
+
+              # =========================
+              # Ranged Limb
+              # =========================
+              limb = stats.get("tconstruct:limb", {})
+
+              scale(
+                  limb,
+                  "accuracy",
+                  0.75,
+                  minimum=-1.0,
+                  maximum=1.0
+              )
+
+              scale(
+                  limb,
+                  "draw_speed",
+                  0.75,
+                  minimum=-1.0,
+                  maximum=1.0
+              )
+
+              scale(
+                  limb,
+                  "durability",
+                  0.70,
+                  minimum=250,
+                  maximum=1400
+              )
+
+              scale(
+                  limb,
+                  "velocity",
+                  0.70,
+                  minimum=-0.20,
+                  maximum=0.20
+              )
+
+              # =========================
+              # Armor
+              # =========================
+              armor_parts = [
+                  "tconstruct:plating_boots",
+                  "tconstruct:plating_chestplate",
+                  "tconstruct:plating_helmet",
+                  "tconstruct:plating_leggings"
+              ]
+
+              for part_name in armor_parts:
+                  armor = stats.get(part_name, {})
+
+                  scale(
+                      armor,
+                      "armor",
+                      0.60,
+                      minimum=0.0
+                  )
+
+                  scale(
+                      armor,
+                      "durability",
+                      0.70,
+                      minimum=50,
+                      maximum=900
+                  )
+
+                  scale(
+                      armor,
+                      "toughness",
+                      0.70,
+                      minimum=0.0,
+                      maximum=4.0
+                  )
+
+              # =========================
+              # Shield
+              # =========================
+              shield = stats.get(
+                  "tconstruct:plating_shield",
+                  {}
+              )
+
+              scale(
+                  shield,
+                  "durability",
+                  0.70,
+                  minimum=100,
+                  maximum=900
+              )
+
+              scale(
+                  shield,
+                  "toughness",
+                  0.60,
+                  minimum=0.0,
+                  maximum=8.0
+              )
+
+              scale(
+                  shield,
+                  "knockback_resistance",
+                  0.25,
+                  minimum=0.0,
+                  maximum=1.0
+              )
+
+              # =========================
+              # Write JSON
+              # =========================
+              with path.open(
+                  "w",
+                  encoding="utf-8",
+                  newline="\n"
+              ) as f:
+                  json.dump(
+                      data,
+                      f,
+                      ensure_ascii=False,
+                      indent=2
+                  )
+                  f.write("\n")
+
+              count += 1
+
+          print(
+              f"Balanced {count} material stat files."
+          )
+
+      - name: Commit changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add \
+            src/main/resources/data/sakalti/tinkering/materials/stats/*.json
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Balance Tinkers material stats"
+          git push
