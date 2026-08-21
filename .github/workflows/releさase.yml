@@ -24,10 +24,10 @@ jobs:
           mkdir -p libs
           curl -L -o libs/loom-1.9.428.jar https://maven.architectury.dev/dev/architectury/loom/1.9.428/loom-1.9.428.jar
 
-      - name: Set up JDK 17
+      - name: Set up JDK 8
         uses: actions/setup-java@v2
         with:
-          java-version: '17'
+          java-version: '8'
           distribution: 'temurin'
 
       - name: Grant execute permission for gradlew
