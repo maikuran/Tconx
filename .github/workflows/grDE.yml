@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: main
+          ref: 1.16.5test
 
       - name: Set up JDK 8
         uses: actions/setup-java@v4
