@@ -1,5 +1,5 @@
 plugins {
-    id 'net.minecraftforge.gradle' version '6.0.24'
+    id 'net.minecraftforge.gradle' version '5.1.+'
     id 'java'
 }
 
@@ -17,21 +17,32 @@ version = '1.0.0'
 
 java {
     toolchain {
-        // 1.16.5はJava 8で動作します
         languageVersion = JavaLanguageVersion.of(8)
     }
 }
 
 minecraft {
-    // 1.16.5用の公式マッピングを指定
     mappings channel: 'official', version: '1.16.5'
 
     runs {
         client {
             workingDirectory project.file('run')
+
+            mods {
+                sakalti {
+                    source sourceSets.main
+                }
+            }
         }
+
         server {
             workingDirectory project.file('run')
+
+            mods {
+                sakalti {
+                    source sourceSets.main
+                }
+            }
         }
     }
 }
@@ -41,24 +52,25 @@ repositories {
         name = 'forge'
         url = 'https://maven.minecraftforge.net/'
     }
+
     maven {
         name = 'blamejared'
         url = 'https://maven.blamejared.com/'
     }
+
     maven {
         name = 'CurseMaven'
         url = 'https://cursemaven.com'
     }
+
     mavenCentral()
 }
 
 dependencies {
-    // Minecraft Forge 1.16.5 の最新安定版を指定
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.42'
-    
-    // 1.16.5 向けの Mantle と Tinkers' Construct (CurseMaven)
-    compileOnly fg.deobf("curse.maven:mantle-74924:3631982")
-    compileOnly fg.deobf("curse.maven:tinkers-construct-74072:3695126")
+
+    compileOnly fg.deobf('curse.maven:mantle-74924:3631982')
+    compileOnly fg.deobf('curse.maven:tinkers-construct-74072:3695126')
 }
 
 jar {
