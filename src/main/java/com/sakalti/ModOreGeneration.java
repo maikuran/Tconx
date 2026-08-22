@@ -73,7 +73,7 @@ public final class ModOreGeneration {
     public static void onCommonSetup(FMLCommonSetupEvent event) {
 
         event.enqueueWork(new Runnable() {
-            @Override
+            
             public void run() {
 
                 // ==================================================
@@ -400,7 +400,7 @@ public final class ModOreGeneration {
         Supplier<ConfiguredFeature<?, ?>> supplier =
                 new Supplier<ConfiguredFeature<?, ?>>() {
 
-                    @Override
+                    
                     public ConfiguredFeature<?, ?> get() {
                         return feature;
                     }
