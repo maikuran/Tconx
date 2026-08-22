@@ -10,19 +10,19 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 public class JumpyModifier extends Modifier {
 
-    public JumpyModifier(int color) {
-        super(color);
+    public JumpyModifier() {
+        super(); // 1.16.5 では引数なしのコンストラクタ
     }
 
     /**
      * インベントリ/手持ちにある間の毎tick処理 (1.16.5仕様)
      */
-    
+    @Override
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity entity, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
-        // ツールが破損しておらず、メイン手/オフ手に持っている時
-        if (!world.isClientSide && !tool.isBroken() && isSelected) {
+        // ツールが破損しておらず、メイン手/オフ手に持っている時（サーバー側）
+        if (!world.isClientSide() && !tool.isBroken() && isSelected) {
             
-            // Jump Boost 効果を付与（amplifier は 0 が1段階目なので level - 1）
+            // Jump Boost（跳躍力上昇）効果を付与
             EffectInstance jumpBoost = new EffectInstance(
                     Effects.JUMP,
                     220,                           // ちらつき防止の長め設定 (11秒)
