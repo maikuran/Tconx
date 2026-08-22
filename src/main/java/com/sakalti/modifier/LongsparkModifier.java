@@ -13,8 +13,8 @@ import java.util.List;
 
 public class LongsparkModifier extends Modifier {
 
-    public LongsparkModifier(int color) {
-        super(color);
+    public LongsparkModifier() {
+        super(); // 1.16.5 では引数なしのコンストラクタ
     }
 
     // 正面方向のみ検知 (1.16.5仕様)
@@ -22,9 +22,10 @@ public class LongsparkModifier extends Modifier {
         Vector3d lookVec = user.getLookAngle().normalize();
         Vector3d origin = user.position().add(0, user.getEyeHeight() * 0.7, 0);
         Vector3d target = origin.add(lookVec.scale(distance));
+        
         AxisAlignedBB aabb = new AxisAlignedBB(
-                target.x - 0.5, target.y - 1.0, target.z - 0.5,
-                target.x + 0.5, target.y + 1.0, target.z + 0.5
+                target.x - 0.75, target.y - 1.0, target.z - 0.75,
+                target.x + 0.75, target.y + 1.0, target.z + 0.75
         );
 
         List<LivingEntity> list = user.level.getEntitiesOfClass(
@@ -39,54 +40,42 @@ public class LongsparkModifier extends Modifier {
     /**
      * 近接攻撃ヒット後の処理 (1.16.5仕様)
      */
-    
-    public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
+    @Override
+    public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
 
-        if (attacker == null || attacker.level.isClientSide) return;
+        if (attacker == null || attacker.level.isClientSide()) return 0;
 
-        // プレイヤー攻撃判定の作成（安全策つき）
+        // プレイヤー攻撃判定の作成
         DamageSource source = (attacker instanceof PlayerEntity) 
                 ? DamageSource.playerAttack((PlayerEntity) attacker) 
                 : DamageSource.mobAttack(attacker);
 
-        // 2m先の判定
-        LivingEntity entity2m = findEntityInFront(attacker, 2.0D);
-        if (entity2m != null) {
-            float extraDamage = (float)(0.5 * (1.5 + level));
-            entity2m.hurt(source, extraDamage);
-            return;
+        // 距離と対応する計算式パラメータ
+        double[] distances = {10.0D, 8.0D, 6.0D, 4.0D, 2.0D};
+        
+        // 10mから順に判定（元コード通りのダメージ倍率設定）
+        for (double dist : distances) {
+            LivingEntity target = findEntityInFront(attacker, dist);
+            if (target != null) {
+                float extraDamage;
+                if (dist == 10.0D) {
+                    extraDamage = (float)(5.15 * (2.0 + level));
+                } else if (dist == 8.0D) {
+                    extraDamage = (float)(3.15 * (1.6 + level));
+                } else if (dist == 6.0D) {
+                    extraDamage = (float)(2.15 * (1.6 + level));
+                } else if (dist == 4.0D) {
+                    extraDamage = (float)(1.15 * (1.5 + level));
+                } else { // 2.0D
+                    extraDamage = (float)(0.5 * (1.5 + level));
+                }
+
+                target.hurt(source, extraDamage);
+                break; // 最も遠い対象1体だけにヒットして終了
+            }
         }
 
-        // 4m先の判定
-        LivingEntity entity4m = findEntityInFront(attacker, 4.0D);
-        if (entity4m != null) {
-            float extraDamage = (float)(1.15 * (1.5 + level));
-            entity4m.hurt(source, extraDamage);
-            return;
-        }
-
-        // 6m先の判定
-        LivingEntity entity6m = findEntityInFront(attacker, 6.0D);
-        if (entity6m != null) {
-            float extraDamage = (float)(2.15 * (1.6 + level));
-            entity6m.hurt(source, extraDamage);
-            return;
-        }
-
-        // 8m先の判定
-        LivingEntity entity8m = findEntityInFront(attacker, 8.0D);
-        if (entity8m != null) {
-            float extraDamage = (float)(3.15 * (1.6 + level));
-            entity8m.hurt(source, extraDamage);
-            return;
-        }
-
-        // 10m先の判定
-        LivingEntity entity10m = findEntityInFront(attacker, 10.0D);
-        if (entity10m != null) {
-            float extraDamage = (float)(5.15 * (2.0 + level));
-            entity10m.hurt(source, extraDamage);
-        }
+        return 0; // 1.16.5 では int を返します
     }
 }
