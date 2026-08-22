@@ -1,14 +1,13 @@
 package com.sakalti;
 
+import com.sakalti.entity.CrimsonFlyEntity;
+import com.sakalti.entity.ModSpawns;
 import com.sakalti.modifier.TconxModifiers;
-import com.sakalti.entity.*;
 import com.sakalti.scaling.HealthCrystals;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ModMain.MODID)
@@ -21,42 +20,53 @@ public final class ModMain {
         IEventBus modEventBus =
                 FMLJavaModLoadingContext.get().getModEventBus();
 
-        // ========================================================
-        // Registry
-        // ========================================================
+        // ============================================================
+        // Blocks / Items
+        // ============================================================
 
         ModMetals.register(modEventBus);
 
+        // ============================================================
+        // Fluids
+        // ============================================================
+
         ModFluids.register(modEventBus);
+
+        // ============================================================
+        // Entity
+        // ============================================================
 
         CrimsonFlyEntity.register(modEventBus);
 
+        // ============================================================
+        // Entity attributes / spawn
+        // ============================================================
+
+        // ModSpawns は @Mod.EventBusSubscriber で自動登録されるため
+        // ここでは直接 register しない
+
+        // ============================================================
+        // Health Crystals
+        // ============================================================
+
         HealthCrystals.register(modEventBus);
+
+        // ============================================================
+        // TConX modifiers
+        // ============================================================
 
         TconxModifiers.MODIFIERS.register(modEventBus);
 
+        // ============================================================
+        // ModTiers
+        // ============================================================
+
         ModTiers.SUPER.getUses();
 
-        // ========================================================
-        // Common Setup
-        // ========================================================
+        // ============================================================
+        // Ore generation
+        // ============================================================
 
-        modEventBus.addListener(this::setup);
-
-        // ========================================================
-        // Forge Events
-        // ========================================================
-
-        MinecraftForge.EVENT_BUS.register(ModOreGeneration.class);
-    }
-
-    private void setup(final FMLCommonSetupEvent event) {
-
-        event.enqueueWork(new Runnable() {
-            
-            public void run() {
-                ModOreGeneration.ConfiguredFeatures();
-            }
-        });
+        ModOreGeneration.register();
     }
 }
