@@ -11,17 +11,14 @@ public final class ModCreativeTabs {
 
     public static final ItemGroup SAKALTI_TAB = new ItemGroup("sakalti") {
 
-        
         public ItemStack makeIcon() {
             return new ItemStack(ModMetals.SEIREN_INGOT.get());
         }
 
-        
         public ITextComponent getDisplayName() {
             return new TranslationTextComponent("itemGroup.sakalti");
         }
 
-        
         public void fillItemList(NonNullList<ItemStack> items) {
             // HACHILITE シリーズ
             items.add(new ItemStack(ModMetals.HACHILITE_ORE.get()));
@@ -29,12 +26,12 @@ public final class ModCreativeTabs {
             items.add(new ItemStack(ModMetals.HACHILITE_RAW.get()));
             items.add(new ItemStack(ModMetals.HACHILITE_INGOT.get()));
 
-            // HIROLITE シリーズ（BLOCK / INGOT 追加）
+            // HIROLITE シリーズ
             items.add(new ItemStack(ModMetals.HIROLITE_ORE.get()));
             items.add(new ItemStack(ModMetals.HIROLITE_BLOCK.get()));
             items.add(new ItemStack(ModMetals.HIROLITE_INGOT.get()));
 
-            // OURITE シリーズ（BLOCK / INGOT 追加）
+            // OURITE シリーズ
             items.add(new ItemStack(ModMetals.OURITE_ORE.get()));
             items.add(new ItemStack(ModMetals.OURITE_BLOCK.get()));
             items.add(new ItemStack(ModMetals.OURITE_INGOT.get()));
