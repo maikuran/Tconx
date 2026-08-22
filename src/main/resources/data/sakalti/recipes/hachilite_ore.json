@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:hachilite_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:hachilite",
+    "amount": 60
+  },
+  "temperature": 1114,
+  "time": 57
+}
