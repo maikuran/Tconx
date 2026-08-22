@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:momongaite_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:momongaite",
+    "amount": 60
+  },
+  "temperature": 1220,
+  "time": 57
+}
