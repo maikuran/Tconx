@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:ioxium_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:ioxium_ingot",
+    "count": 9
+  }
+}

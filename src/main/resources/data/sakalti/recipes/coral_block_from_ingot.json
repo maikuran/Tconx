@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:coral_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:coral_block",
+    "count": 1
+  }
+}

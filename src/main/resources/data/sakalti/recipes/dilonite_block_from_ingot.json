@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:dilonite_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:dilonite_block",
+    "count": 1
+  }
+}

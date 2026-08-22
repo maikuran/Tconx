@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:herdyeen_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:herdyeen_ingot",
+    "count": 9
+  }
+}

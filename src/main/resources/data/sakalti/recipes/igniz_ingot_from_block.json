@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:igniz_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:igniz_ingot",
+    "count": 9
+  }
+}
