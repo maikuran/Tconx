@@ -22,7 +22,7 @@ public final class ModMain {
         ModMetals.register(modEventBus);
 
         // 溶融液体
-        ModFluids.register(modEventBus);
+        // ModFluids.register(modEventBus);
         CrimsonFlyEntity.register(modEventBus);
         // ModCreativeTabs.register(modEventBus);
         HealthCrystals.register(modEventBus);
