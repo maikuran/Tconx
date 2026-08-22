@@ -39,7 +39,7 @@ public class LongsparkModifier extends Modifier {
     /**
      * 近接攻撃ヒット後の処理 (1.16.5仕様)
      */
-    
+    @Override
     public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
 
