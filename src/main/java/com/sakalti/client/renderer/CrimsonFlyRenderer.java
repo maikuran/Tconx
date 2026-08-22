@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 
 public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
 
@@ -20,13 +21,11 @@ public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
 
     public CrimsonFlyRenderer(EntityRendererManager renderManager) {
         super(renderManager);
-
-        // 1.16.5 では ModelLayerLocation を使わず直接インスタンス化します
         this.model = new CrimsonFlyModel();
-        this.shadowSize = 0.35F; // 1.16.5 では shadowRadius ではなく shadowSize です
+        this.shadowSize = 0.35F;
     }
 
-    
+    @Override
     public void render(
             CrimsonFlyEntity entity,
             float entityYaw,
@@ -37,17 +36,23 @@ public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
     ) {
         matrixStack.push();
 
-        // 1.16.5 でのモデルアニメーション定義と描画呼び出し
-        this.model.setRotationAngles(
+        // 1.16.5 での回転補間とアニメーション値の正しい計算
+        float renderYaw = MathHelper.interpolateAngle(partialTicks, entity.prevRotationYaw, entity.rotationYaw);
+        float limbSwing = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
+        float limbSwingAmount = MathHelper.lerp(partialTicks, entity.prevLimbSwingAmount, entity.limbSwingAmount);
+        float ageInTicks = entity.ticksExisted + partialTicks;
+        float headPitch = MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch);
+
+        this.model.setupAnim(
                 entity,
-                entity.ticksExisted,
-                0.0F,
-                entity.ticksExisted + partialTicks,
-                entityYaw,
-                entity.rotationPitch
+                limbSwing,
+                limbSwingAmount,
+                ageInTicks,
+                renderYaw,
+                headPitch
         );
 
-        this.model.render(
+        this.model.renderToBuffer(
                 matrixStack,
                 buffer.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE)),
                 packedLight,
@@ -70,8 +75,8 @@ public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
         );
     }
 
-    
-    public ResourceLocation getEntityTexture(CrimsonFlyEntity entity) {
+    @Override
+    public ResourceLocation getTextureLocation(CrimsonFlyEntity entity) {
         return TEXTURE;
     }
 }
