@@ -44,4 +44,6 @@ jobs:
 
           git add -A
           git commit -m "Remove @Override annotations"
+          git pull --rebase
           git push origin 1.16.5test
+          
