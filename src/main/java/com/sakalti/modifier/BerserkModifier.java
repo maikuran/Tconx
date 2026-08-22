@@ -12,7 +12,7 @@ public class BerserkModifier extends Modifier {
         super(0xCC0000);
     }
 
-    @Override
+    
     public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
