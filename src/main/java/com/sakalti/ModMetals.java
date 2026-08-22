@@ -5,7 +5,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
@@ -29,12 +28,29 @@ public final class ModMetals {
     // Hirolite / Ourite / Hachilite
     // ============================================================
 
+    // --- Hirolite ---
     public static final RegistryObject<Block> HIROLITE_ORE =
             registerBlock("hirolite_ore", 41.0F);
 
+    public static final RegistryObject<Block> HIROLITE_BLOCK =
+            registerBlock("hirolite_block", 45.0F);
+
+    public static final RegistryObject<Item> HIROLITE_INGOT =
+            registerItem("hirolite_ingot");
+
+
+    // --- Ourite ---
     public static final RegistryObject<Block> OURITE_ORE =
             registerBlock("ourite_ore", 44.0F);
 
+    public static final RegistryObject<Block> OURITE_BLOCK =
+            registerBlock("ourite_block", 50.0F);
+
+    public static final RegistryObject<Item> OURITE_INGOT =
+            registerItem("ourite_ingot");
+
+
+    // --- Hachilite ---
     public static final RegistryObject<Block> HACHILITE_ORE =
             registerBlock("hachilite_ore", 3.0F);
 
@@ -226,8 +242,6 @@ public final class ModMetals {
                         .setRequiresTool()
         ));
 
-        // BlockItem 登録時に Supplier（() -> block.get()）を使うことで
-        // NullPointerException（クラッシュ）を防ぎます
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
 
         return block;
