@@ -23,16 +23,15 @@ import java.util.function.Supplier;
 @Mod.EventBusSubscriber(modid = ModMetals.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModOreGeneration {
 
-    // === 置換対象ブロック（RuleTest）の定義 ===
-    private static final RuleTest BASE_STONE = OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD;
-    private static final RuleTest BASE_NETHER = OreFeatureConfig.FillerBlockType.NETHERRACK;
-    // BlockMatcherではなく1.16.5標準の BlockMatchRuleTest を使用（Java 8互換）
+    // === 置換対象ブロック（RuleTest）の定義 (Mojmap仕様) ===
+    private static final RuleTest BASE_STONE = OreFeatureConfig.FillerBlockType.STONE_ORE_REPLACEABLES;
+    private static final RuleTest BASE_NETHER = OreFeatureConfig.FillerBlockType.NETHERRACK_ORE_REPLACEABLES;
     private static final RuleTest BASE_END = new BlockMatchRuleTest(Blocks.END_STONE);
 
     // === 1. Overworld 鉱石（フィールド宣言） ===
     public static ConfiguredFeature<?, ?> ORE_KANILITE;
     public static ConfiguredFeature<?, ?> ORE_HACHILITE;
-    public static ConfiguredFeature<?, ?> ORE_CHIRITE; // 修正点: cannot find symbol を防止
+    public static ConfiguredFeature<?, ?> ORE_CHIRITE;
 
     // === 2. Nether 鉱石 ===
     public static ConfiguredFeature<?, ?> ORE_IGNIZ;
@@ -42,54 +41,53 @@ public class ModOreGeneration {
     public static ConfiguredFeature<?, ?> ORE_OURITE;
     public static ConfiguredFeature<?, ?> ORE_HIROLITE;
 
-
     /**
      * FMLCommonSetupEvent 等から呼び出す登録メソッド
      */
     public static void registerConfiguredFeatures() {
 
         // ------------------------------------------------------------
-        // Overworld (TopSolidRangeConfig の第2引数を 0 に修正)
+        // Overworld
         // ------------------------------------------------------------
         ORE_KANILITE = register("ore_kanilite", Feature.ORE
-            .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.KANILITE_ORE.get().getDefaultState(), 6))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 50)))
+            .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.KANILITE_ORE.get().defaultBlockState(), 6))
+            .withPlacement(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 50)))
             .square().count(6));
 
         ORE_HACHILITE = register("ore_hachilite", Feature.ORE
-            .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.HACHILITE_ORE.get().getDefaultState(), 8))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 64)))
+            .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.HACHILITE_ORE.get().defaultBlockState(), 8))
+            .withPlacement(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 64)))
             .square().count(8));
 
         ORE_CHIRITE = register("ore_chirite", Feature.ORE
-            .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.CHIRITE_ORE.get().getDefaultState(), 6))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 31)))
+            .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.CHIRITE_ORE.get().defaultBlockState(), 6))
+            .withPlacement(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 31)))
             .square().count(9));
 
         // ------------------------------------------------------------
         // Nether
         // ------------------------------------------------------------
         ORE_IGNIZ = register("ore_igniz", Feature.ORE
-            .withConfiguration(new OreFeatureConfig(BASE_NETHER, ModMetals.IGNIZ_ORE.get().getDefaultState(), 5))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 110)))
+            .withConfiguration(new OreFeatureConfig(BASE_NETHER, ModMetals.IGNIZ_ORE.get().defaultBlockState(), 5))
+            .withPlacement(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 110)))
             .square().count(4));
 
         ORE_MOMONGAITE = register("ore_momongaite", Feature.ORE
-            .withConfiguration(new OreFeatureConfig(BASE_NETHER, ModMetals.MOMONGAITE_ORE.get().getDefaultState(), 6))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 110)))
+            .withConfiguration(new OreFeatureConfig(BASE_NETHER, ModMetals.MOMONGAITE_ORE.get().defaultBlockState(), 6))
+            .withPlacement(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 110)))
             .square().count(5));
 
         // ------------------------------------------------------------
         // The End
         // ------------------------------------------------------------
         ORE_OURITE = register("ore_ourite", Feature.ORE
-            .withConfiguration(new OreFeatureConfig(BASE_END, ModMetals.OURITE_ORE.get().getDefaultState(), 2))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 70)))
+            .withConfiguration(new OreFeatureConfig(BASE_END, ModMetals.OURITE_ORE.get().defaultBlockState(), 2))
+            .withPlacement(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 70)))
             .square().count(1));
 
         ORE_HIROLITE = register("ore_hirolite", Feature.ORE
-            .withConfiguration(new OreFeatureConfig(BASE_END, ModMetals.HIROLITE_ORE.get().getDefaultState(), 3))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 70)))
+            .withConfiguration(new OreFeatureConfig(BASE_END, ModMetals.HIROLITE_ORE.get().defaultBlockState(), 3))
+            .withPlacement(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 70)))
             .square().count(2));
     }
 
@@ -100,7 +98,6 @@ public class ModOreGeneration {
         return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation(ModMetals.MODID, key), configuredFeature);
     }
 
-
     // === バイオームイベント（Java 8 ラムダ式による Supplier 渡し） ===
     @SubscribeEvent
     public static void onBiomeLoading(BiomeLoadingEvent event) {
@@ -108,12 +105,11 @@ public class ModOreGeneration {
         // 1. ネザーバイオーム
         if (event.getCategory() == Biome.Category.NETHER) {
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(new Supplier<ConfiguredFeature<?, ?>>() {
-                
+                @Override
                 public ConfiguredFeature<?, ?> get() {
                     return ORE_IGNIZ;
                 }
             });
-            // 以下、Java 8 のラムダ省略形 ( () -> フィールド )
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_MOMONGAITE);
         }
         // 2. エンドバイオーム
