@@ -10,23 +10,22 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 public class CoralianModifier extends Modifier {
 
-    public CoralianModifier(int color) {
-        super(color);
+    public CoralianModifier() {
+        super(); // 1.16.5 では引数なしのコンストラクタを使用します
     }
 
-    
+    @Override
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity entity, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
-        // ツールが破損しておらず、手に持っている（またはスロットにある）場合
-        // 手に持っている時限定にする場合は `if (isSelected)` を条件に追加してください
-        if (!world.isClientSide && !tool.isBroken()) {
+        // ツールが破損しておらず、メイン手またはオフ手に持っている場合（isSelected）
+        if (!world.isClientSide() && !tool.isBroken() && isSelected) {
             
-            // 水中息転換（水中採掘/呼吸）バフを付与 (効果時間: 220 ticks = 11秒)
+            // 水中息転換（水中呼吸）バフを付与 (効果時間: 220 ticks = 11秒)
             EffectInstance waterBreathing = new EffectInstance(
                     Effects.WATER_BREATHING,
                     220,
                     0,
-                    true,  // ambient (ビコン等の環境エフェクトか)
-                    false  // showParticles (パーティクルを表示するか)
+                    true,  // ambient
+                    false  // showParticles
             );
 
             entity.addEffect(waterBreathing);
