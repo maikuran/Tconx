@@ -17,7 +17,7 @@ public class UnstableModifier extends Modifier {
     /**
      * 近接攻撃のダメージ計算＆耐久消費 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
@@ -46,7 +46,8 @@ public class UnstableModifier extends Modifier {
 
         // サーバー側でのみ追加の耐久ダメージを適用
         if (!attacker.getCommandSenderWorld().isClientSide && durabilityCost > 0) {
-            ToolDamageUtil.damage(tool, durabilityCost, attacker, context.getSlotType());
+            // context.getSlotType() ではなく context.getItemInHand() を使用
+            ToolDamageUtil.damage(tool, durabilityCost, attacker, context.getItemInHand());
         }
 
         // 倍率を掛けた最終ダメージを返す
