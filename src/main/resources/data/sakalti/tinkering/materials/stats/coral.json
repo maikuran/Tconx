@@ -19,8 +19,8 @@
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": -0.004,
-      "draw_speed": -0.005,
+      "accuracy": -0.003,
+      "draw_speed": -0.004,
       "durability": 250,
       "velocity": 0.001
     },

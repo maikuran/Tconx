@@ -20,7 +20,7 @@
     },
     "tconstruct:limb": {
       "accuracy": -0.002,
-      "draw_speed": -0.004,
+      "draw_speed": -0.003,
       "durability": 250,
       "velocity": 0.001
     },
@@ -28,22 +28,22 @@
     "tconstruct:plating_boots": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.01
+      "toughness": 0.007
     },
     "tconstruct:plating_chestplate": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.01
+      "toughness": 0.007
     },
     "tconstruct:plating_helmet": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.01
+      "toughness": 0.007
     },
     "tconstruct:plating_leggings": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.01
+      "toughness": 0.007
     },
     "tconstruct:plating_shield": {
       "durability": 100,
