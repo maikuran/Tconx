@@ -13,26 +13,28 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class LureMeteorModifier extends Modifier {
 
     public LureMeteorModifier() {
-        super(0xFF6600);
+        super(0xFF6600); // 隕石: オレンジ
     }
 
     /**
-     * 近接攻撃ヒット後にメテオシャワーを発動 (1.16.5仕様)
+     * 近接攻撃ヒット後にメテオシャワーを発動 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
-        LivingEntity target = context.getTarget();
+        LivingEntity target = context.getLivingTarget();
         LivingEntity attacker = context.getAttacker();
 
         // サーバー側かつ対象と攻撃者が存在する場合のみ処理
-        if (target != null && attacker != null && !target.level.isClientSide()) {
-            World world = target.level;
+        if (target != null && attacker != null) {
+            World world = target.getCommandSenderWorld();
 
-            // 1. 空から降ってくる紫色の演出（エンドドラゴンのブレス / パーティクル）
-            spawnMeteorParticles(world, target);
+            if (!world.isClientSide) {
+                // 1. 空から降ってくる紫色の演出（エンドドラゴンのブレス / パーティクル）
+                spawnMeteorParticles(world, target);
 
-            // 2. 防具貫通30% のダメージ計算と適用
-            applyArmorPiercingDamage(world, attacker, target, level);
+                // 2. 防具貫通30% のダメージ計算と適用
+                applyArmorPiercingDamage(world, attacker, target, level);
+            }
         }
 
         return 0; // 1.16.5 では int を返します
