@@ -53,7 +53,7 @@ public final class ModMain {
     private void setup(final FMLCommonSetupEvent event) {
 
         event.enqueueWork(new Runnable() {
-            @Override
+            
             public void run() {
                 ModOreGeneration.registerConfiguredFeatures();
             }
