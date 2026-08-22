@@ -10,18 +10,18 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class WeakBurnModifier extends Modifier {
 
     public WeakBurnModifier() {
-        super(0xFF3333);
+        super(0xFF3333); // 弱燃焼: ライトレッド
     }
 
     /**
-     * 近接攻撃がヒットした後に発動 (1.16.5仕様)
+     * 近接攻撃がヒットした後に発動 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
-        LivingEntity target = context.getTarget();
+        LivingEntity target = context.getLivingTarget();
 
         // サーバー側かつ攻撃対象が存在する場合のみ処理
-        if (target != null && !target.level.isClientSide()) {
+        if (target != null && !target.getCommandSenderWorld().isClientSide) {
 
             int fixedLevel = 1; // レベル固定
             int durationTicks = 40 * fixedLevel;  // 40 ticks (2秒)
