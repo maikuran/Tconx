@@ -1,177 +1,59 @@
 package com.sakalti.client.model;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.sakalti.entity.CrimsonFlyEntity;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.model.geom.builders.CubeDeformation;
-import net.minecraft.client.model.geom.PartPose;
-import net.minecraft.client.model.geom.builders.MeshDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
-import net.minecraft.client.model.geom.builders.CubeListBuilder;
-import net.minecraft.client.model.geom.builders.LayerDefinition;
-import net.minecraft.client.model.geom.builders.PartDefinition;
+
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.util.math.MathHelper;
 
 public class CrimsonFlyModel extends EntityModel<CrimsonFlyEntity> {
 
-    public static final int TEXTURE_WIDTH = 64;
-    public static final int TEXTURE_HEIGHT = 64;
+    private final ModelRenderer body;
+    private final ModelRenderer head;
+    private final ModelRenderer leftWing;
+    private final ModelRenderer rightWing;
+    private final ModelRenderer leftLeg;
+    private final ModelRenderer rightLeg;
 
-    private final ModelPart root;
-    private final ModelPart body;
-    private final ModelPart head;
-    private final ModelPart leftWing;
-    private final ModelPart rightWing;
-    private final ModelPart leftLeg;
-    private final ModelPart rightLeg;
-
-    public CrimsonFlyModel(ModelPart root) {
-        this.root = root;
-
-        this.body = root.getChild("body");
-        this.head = root.getChild("head");
-        this.leftWing = root.getChild("left_wing");
-        this.rightWing = root.getChild("right_wing");
-        this.leftLeg = root.getChild("left_leg");
-        this.rightLeg = root.getChild("right_leg");
-    }
-
-    public static LayerDefinition createBodyLayer() {
-
-        MeshDefinition mesh = new MeshDefinition();
-        PartDefinition root = mesh.getRoot();
+    public CrimsonFlyModel() {
+        this.textureWidth = 64;
+        this.textureHeight = 64;
 
         // 胴体
-        root.addOrReplaceChild(
-                "body",
-                CubeListBuilder.create()
-                        .texOffs(0, 0)
-                        .addBox(
-                                -4.0F,
-                                -3.0F,
-                                -6.0F,
-                                8.0F,
-                                6.0F,
-                                12.0F
-                        ),
-                PartPose.ZERO
-        );
+        this.body = new ModelRenderer(this, 0, 0);
+        this.body.addBox(-4.0F, -3.0F, -6.0F, 8.0F, 6.0F, 12.0F);
+        this.body.setRotationPoint(0.0F, 0.0F, 0.0F);
 
         // 頭
-        root.addOrReplaceChild(
-                "head",
-                CubeListBuilder.create()
-                        .texOffs(0, 18)
-                        .addBox(
-                                -3.0F,
-                                -3.0F,
-                                -4.0F,
-                                6.0F,
-                                6.0F,
-                                6.0F
-                        ),
-                PartPose.offset(
-                        0.0F,
-                        -1.0F,
-                        -7.0F
-                )
-        );
+        this.head = new ModelRenderer(this, 0, 18);
+        this.head.addBox(-3.0F, -3.0F, -4.0F, 6.0F, 6.0F, 6.0F);
+        this.head.setRotationPoint(0.0F, -1.0F, -7.0F);
 
         // 左翼
-        root.addOrReplaceChild(
-                "left_wing",
-                CubeListBuilder.create()
-                        .texOffs(0, 30)
-                        .addBox(
-                                0.0F,
-                                -0.5F,
-                                -4.0F,
-                                12.0F,
-                                1.0F,
-                                8.0F
-                        ),
-                PartPose.offset(
-                        4.0F,
-                        -1.0F,
-                        0.0F
-                )
-        );
+        this.leftWing = new ModelRenderer(this, 0, 30);
+        this.leftWing.addBox(0.0F, -0.5F, -4.0F, 12.0F, 1.0F, 8.0F);
+        this.leftWing.setRotationPoint(4.0F, -1.0F, 0.0F);
 
         // 右翼
-        root.addOrReplaceChild(
-                "right_wing",
-                CubeListBuilder.create()
-                        .texOffs(0, 40)
-                        .addBox(
-                                -12.0F,
-                                -0.5F,
-                                -4.0F,
-                                12.0F,
-                                1.0F,
-                                8.0F
-                        ),
-                PartPose.offset(
-                        -4.0F,
-                        -1.0F,
-                        0.0F
-                )
-        );
+        this.rightWing = new ModelRenderer(this, 0, 40);
+        this.rightWing.addBox(-12.0F, -0.5F, -4.0F, 12.0F, 1.0F, 8.0F);
+        this.rightWing.setRotationPoint(-4.0F, -1.0F, 0.0F);
 
         // 左脚
-        root.addOrReplaceChild(
-                "left_leg",
-                CubeListBuilder.create()
-                        .texOffs(0, 50)
-                        .addBox(
-                                -1.0F,
-                                0.0F,
-                                -1.0F,
-                                2.0F,
-                                5.0F,
-                                2.0F
-                        ),
-                PartPose.offset(
-                        2.0F,
-                        3.0F,
-                        2.0F
-                )
-        );
+        this.leftLeg = new ModelRenderer(this, 0, 50);
+        this.leftLeg.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 5.0F, 2.0F);
+        this.leftLeg.setRotationPoint(2.0F, 3.0F, 2.0F);
 
         // 右脚
-        root.addOrReplaceChild(
-                "right_leg",
-                CubeListBuilder.create()
-                        .texOffs(8, 50)
-                        .addBox(
-                                -1.0F,
-                                0.0F,
-                                -1.0F,
-                                2.0F,
-                                5.0F,
-                                2.0F
-                        ),
-                PartPose.offset(
-                        -2.0F,
-                        3.0F,
-                        2.0F
-                )
-        );
-
-        return LayerDefinition.create(
-                mesh,
-                TEXTURE_WIDTH,
-                TEXTURE_HEIGHT
-        );
+        this.rightLeg = new ModelRenderer(this, 8, 50);
+        this.rightLeg.addBox(-1.0F, 0.0F, -1.0F, 2.0F, 5.0F, 2.0F);
+        this.rightLeg.setRotationPoint(-2.0F, 3.0F, 2.0F);
     }
 
     @Override
-    public void setupAnim(
+    public void setRotationAngles(
             CrimsonFlyEntity entity,
             float limbSwing,
             float limbSwingAmount,
@@ -180,24 +62,19 @@ public class CrimsonFlyModel extends EntityModel<CrimsonFlyEntity> {
             float headPitch
     ) {
         // 羽ばたき
-        float wingAngle =
-                (float) Math.sin(ageInTicks * 1.8F) * 0.45F;
-
-        this.leftWing.zRot = -wingAngle;
-        this.rightWing.zRot = wingAngle;
+        float wingAngle = MathHelper.sin(ageInTicks * 1.8F) * 0.45F;
+        this.leftWing.rotateAngleZ = -wingAngle;
+        this.rightWing.rotateAngleZ = wingAngle;
 
         // 頭
-        this.head.yRot =
-                netHeadYaw * ((float) Math.PI / 180F);
-
-        this.head.xRot =
-                headPitch * ((float) Math.PI / 180F);
+        this.head.rotateAngleY = netHeadYaw * ((float) Math.PI / 180F);
+        this.head.rotateAngleX = headPitch * ((float) Math.PI / 180F);
     }
 
     @Override
-    public void renderToBuffer(
-            PoseStack poseStack,
-            VertexConsumer vertexConsumer,
+    public void render(
+            MatrixStack matrixStack,
+            IVertexBuilder buffer,
             int packedLight,
             int packedOverlay,
             float red,
@@ -205,15 +82,11 @@ public class CrimsonFlyModel extends EntityModel<CrimsonFlyEntity> {
             float blue,
             float alpha
     ) {
-        root.render(
-                poseStack,
-                vertexConsumer,
-                packedLight,
-                packedOverlay,
-                red,
-                green,
-                blue,
-                alpha
-        );
+        this.body.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.head.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.leftWing.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.rightWing.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.leftLeg.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
+        this.rightLeg.render(matrixStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);
     }
 }
