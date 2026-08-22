@@ -72,7 +72,7 @@ public final class ModFluids {
 
     private static ForgeFlowingFluid.Properties createProperties(FluidEntry entry) {
         ResourceLocation stillTexture = new ResourceLocation(MODID, "fluid/" + entry.name + "_still");
-        ResourceLocation flowingTexture = new ResourceLocation(MODID, "fluid/" + entry.name + "_flowing");
+        ResourceLocation flowingTexture = new ResourceLocation(MODID, "fluid/" + entry.name + "_flow");
 
         // 1.16.5 では FluidAttributes.builder を使ってテクスチャや物性を指定します
         FluidAttributes.Builder attributes = FluidAttributes.builder(stillTexture, flowingTexture)
