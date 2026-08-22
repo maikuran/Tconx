@@ -17,10 +17,10 @@ public final class TconxModifiers {
     public static final RegistryObject<CoralianModifier> CORALIAN =
             MODIFIERS.register("coralian", CoralianModifier::new);
 
-    public static final RegistryObject<CelestiteResonanceModifier> GLACIAL_BIND =
+    public static final RegistryObject<CelestiteResonanceModifier> CELESTITE_RESONANCE =
             MODIFIERS.register("celestite_resonance", CelestiteResonanceModifier::new);
 
-    public static final RegistryObject<LureMeteorModifier> CORALIAN =
+    public static final RegistryObject<LureMeteorModifier> LURE_METEOR =
             MODIFIERS.register("lure_meteor", LureMeteorModifier::new);
 
     public static final RegistryObject<SuperMagnetModifier> SUPERMAGNET =
