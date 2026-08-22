@@ -2,53 +2,53 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.075,
-      "durability": 0.075,
-      "melee_damage": 2.75
+      "accuracy": 0.056,
+      "durability": 0.056,
+      "melee_damage": 1.513
     },
     "tconstruct:handle": {
-      "durability": 0.165,
-      "melee_damage": 0.143,
-      "melee_speed": 0.154,
-      "mining_speed": 0.308
+      "durability": 0.124,
+      "melee_damage": 0.093,
+      "melee_speed": 0.108,
+      "mining_speed": 0.216
     },
     "tconstruct:head": {
-      "durability": 1045.1,
-      "melee_attack": 5.225,
-      "mining_speed": 9.75,
+      "durability": 731.57,
+      "melee_attack": 2.874,
+      "mining_speed": 6.338,
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": -0.338,
-      "draw_speed": -0.562,
-      "durability": 1045.1,
-      "velocity": 0.07
+      "accuracy": -0.254,
+      "draw_speed": -0.422,
+      "durability": 731.57,
+      "velocity": 0.049
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 2.4,
-      "durability": 554.4,
-      "toughness": 3.15
+      "armor": 1.44,
+      "durability": 388.08,
+      "toughness": 2.205
     },
     "tconstruct:plating_chestplate": {
-      "armor": 6.0,
-      "durability": 836.5,
-      "toughness": 3.15
+      "armor": 3.6,
+      "durability": 585.55,
+      "toughness": 2.205
     },
     "tconstruct:plating_helmet": {
-      "armor": 2.4,
-      "durability": 834.4,
-      "toughness": 3.15
+      "armor": 1.44,
+      "durability": 584.08,
+      "toughness": 2.205
     },
     "tconstruct:plating_leggings": {
-      "armor": 4.2,
-      "durability": 778.4,
-      "toughness": 3.15
+      "armor": 2.52,
+      "durability": 544.88,
+      "toughness": 2.205
     },
     "tconstruct:plating_shield": {
-      "durability": 770.0,
-      "toughness": 5.1,
-      "knockback_resistance": 1.0
+      "durability": 539.0,
+      "toughness": 3.06,
+      "knockback_resistance": 0.25
     }
   }
 }

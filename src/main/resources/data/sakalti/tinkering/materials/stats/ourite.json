@@ -2,53 +2,53 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.075,
-      "durability": 0.075,
-      "melee_damage": 3.025
+      "accuracy": 0.056,
+      "durability": 0.056,
+      "melee_damage": 1.664
     },
     "tconstruct:handle": {
-      "durability": 0.9,
-      "melee_damage": 0.52,
-      "melee_speed": 0.35,
-      "mining_speed": 0.35
+      "durability": 0.675,
+      "melee_damage": 0.338,
+      "melee_speed": 0.245,
+      "mining_speed": 0.245
     },
     "tconstruct:head": {
-      "durability": 1185.1,
-      "melee_attack": 11.275,
-      "mining_speed": 14.0,
+      "durability": 829.57,
+      "melee_attack": 6.201,
+      "mining_speed": 9.1,
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": -0.338,
-      "draw_speed": -0.562,
-      "durability": 1185.1,
-      "velocity": 0.07
+      "accuracy": -0.254,
+      "draw_speed": -0.422,
+      "durability": 829.57,
+      "velocity": 0.049
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 6.0,
-      "durability": 414.4,
-      "toughness": 3.15
+      "armor": 3.6,
+      "durability": 290.08,
+      "toughness": 2.205
     },
     "tconstruct:plating_chestplate": {
-      "armor": 9.0,
-      "durability": 626.5,
-      "toughness": 3.15
+      "armor": 5.4,
+      "durability": 438.55,
+      "toughness": 2.205
     },
     "tconstruct:plating_helmet": {
-      "armor": 6.0,
-      "durability": 554.4,
-      "toughness": 3.15
+      "armor": 3.6,
+      "durability": 388.08,
+      "toughness": 2.205
     },
     "tconstruct:plating_leggings": {
-      "armor": 7.8,
-      "durability": 518.7,
-      "toughness": 3.15
+      "armor": 4.68,
+      "durability": 363.09,
+      "toughness": 2.205
     },
     "tconstruct:plating_shield": {
-      "durability": 700.0,
-      "toughness": 8.0,
-      "knockback_resistance": 1.0
+      "durability": 490.0,
+      "toughness": 4.8,
+      "knockback_resistance": 0.25
     }
   }
 }
