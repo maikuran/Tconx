@@ -1,6 +1,9 @@
 name: Sync Modifier Java from main
 
 on:
+  push: 
+    branches: 
+    - 1.16.5test
   workflow_dispatch:
 
 permissions:
