@@ -1,0 +1,47 @@
+name: Remove Override
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 1.16.5test
+
+jobs:
+  remove-override:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout 1.16.5test
+        uses: actions/checkout@v4
+        with:
+          ref: 1.16.5test
+          fetch-depth: 0
+
+      - name: Remove all @Override strings
+        shell: bash
+        run: |
+          set -e
+
+          git grep -lz '@Override' -- . ':!.git/*' | while IFS= read -r -d '' file; do
+            sed -i 's/@Override//g' "$file"
+          done
+
+      - name: Commit and push changes
+        shell: bash
+        run: |
+          set -e
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet; then
+            echo "No @Override strings found."
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "Remove @Override annotations"
+          git push origin 1.16.5test
