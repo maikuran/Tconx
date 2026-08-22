@@ -10,18 +10,19 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class GlacialBindModifier extends Modifier {
 
     public GlacialBindModifier() {
-        super(0xCCFFFF);
+        super(0xCCFFFF); // 氷河: ホワイトブルー
     }
 
     /**
-     * 近接攻撃がヒットした後に発動 (1.16.5仕様)
+     * 近接攻撃がヒットした後に発動 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
-        LivingEntity target = context.getTarget();
+        // LivingEntity 型で取得
+        LivingEntity target = context.getLivingTarget();
 
         // サーバー側かつ攻撃対象が存在する場合のみ処理
-        if (target != null && !target.level.isClientSide()) {
+        if (target != null && !target.getCommandSenderWorld().isClientSide) {
 
             int fixedLevel = 3; // レベル固定
             int durationTicks = 20 * 3 * fixedLevel;  // 180 ticks (9秒)
