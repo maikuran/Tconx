@@ -15,7 +15,7 @@ public class BerserkModifier extends Modifier {
     /**
      * 近接攻撃時の与ダメージ計算フック (1.16.5 TCon 3.x 仕様)
      */
-    @Override
+    
     public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
