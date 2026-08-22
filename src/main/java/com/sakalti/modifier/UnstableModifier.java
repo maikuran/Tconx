@@ -17,7 +17,7 @@ public class UnstableModifier extends Modifier {
     /**
      * 近接攻撃のダメージ計算＆耐久消費 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
@@ -45,25 +45,7 @@ public class UnstableModifier extends Modifier {
         }
 
         // サーバー側でのみ追加の耐久ダメージを適用
-        if (!attacker.getCommandSenderWorld().isClientSide() && durabilityCost > 0) {
-            ToolDamageUtil.damage(tool, durabilityCost, attacker, context.getSlotType());
-        }
-
-        // 倍率を掛けた最終ダメージを返す
-        return damage * multiplier;
-    }
-}        } else if (multiplier < 3.0f) {
-            durabilityCost = 1;
-        } else if (multiplier < 4.0f) {
-            durabilityCost = 2;
-        } else if (multiplier < 4.4f) {
-            durabilityCost = 3;
-        } else {
-            durabilityCost = 4;
-        }
-
-        // サーバー側でのみ追加の耐久ダメージを適用 (TCon標準ヘルパーを使用)
-        if (!attacker.level.isClientSide() && durabilityCost > 0) {
+        if (!attacker.getCommandSenderWorld().isClientSide && durabilityCost > 0) {
             ToolDamageUtil.damage(tool, durabilityCost, attacker, context.getSlotType());
         }
 
