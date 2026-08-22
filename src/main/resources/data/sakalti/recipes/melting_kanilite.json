@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:kanilite_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:kanilite",
+    "amount": 60
+  },
+  "temperature": 994,
+  "time": 57
+}
