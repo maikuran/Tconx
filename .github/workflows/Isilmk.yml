@@ -1,0 +1,99 @@
+name: Fix TCon Modifiers Super Constructors
+
+on:
+  push: 
+    branches: 
+    - 1.16.5test
+  workflow_dispatch: # GitHub UIのActionsタブから手動で実行可能
+
+jobs:
+  fix-modifiers:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Replace super() with color codes in modifiers
+        run: |
+          python3 -c "
+          import os, re
+
+          modifier_dir = 'src/main/java/com/sakalti/modifier'
+
+          # Modifier名に応じた最適なカラーコード定義
+          color_map = {
+              'coralian': '0x33FFCC',      # 珊瑚ターコイズ
+              'unstable': '0xCC00FF',      # 不安定パープル
+              'supermagnet': '0xFF3300',   # 磁石レッド
+              'lifesteal': '0x990000',     # 吸血ダークレッド
+              'seirencurse': '0x006699',   # セイレーンの呪いディープブルー
+              'laserprism': '0x00FFFF',    # レーザーシアン
+              'heavystone': '0x666666',    # 重石グレー
+              'icebind': '0x99FFFF',       # 氷結アイスブルー
+              'glacialbind': '0xCCFFFF',   # 氷河ホワイトブルー
+              'celestiteresonance': '0x9933FF', # 天青石バイオレット
+              'luremeteor': '0xFF6600',    # 隕石オレンジ
+              'weakburn': '0xFF3333',      # 弱燃焼ライトレッド
+              'lighttouch': '0xFFFF99',    # ライトタッチイエロー
+              'firewall': '0xFF0000',      # ファイアウォールレッド
+              'longspark': '0xFFFF00',     # スパークゴールド
+              'poisonousbind': '0x00FF33', # 毒ポイズングリーン
+              'jumpy': '0x66FF66',         # 跳躍グリーン
+              'berserk': '0xCC0000',       # 狂戦士ブラッドレッド
+              'fieldy': '0x996633',        # フィールドアースブラウン
+              'aurovision': '0x00FFCC'     # オーラビジョンライトグリーン
+          }
+
+          default_color = '0xFFFFFF' # 該当なしの場合のデフォルト（ホワイト）
+
+          if os.path.exists(modifier_dir):
+              for root, _, files in os.walk(modifier_dir):
+                  for file in files:
+                      if file.endswith('.java'):
+                          path = os.path.join(root, file)
+                          file_lower = file.lower()
+                          
+                          # カラーコードの選定
+                          chosen_color = default_color
+                          for key, color in color_map.items():
+                              if key in file_lower:
+                                  chosen_color = color
+                                  break
+                          
+                          with open(path, 'r', encoding='utf-8') as f:
+                              content = f.read()
+                          
+                          # 引数なしの super(); またはコメント付き super(); を置換
+                          new_content = re.sub(
+                              r'super\s*\(\s*\)\s*;(\s*//.*)?',
+                              f'super({chosen_color});',
+                              content
+                          )
+                          
+                          if new_content != content:
+                              with open(path, 'w', encoding='utf-8') as f:
+                                  f.write(new_content)
+                              print(f'Updated: {file} -> super({chosen_color});')
+          "
+
+      - name: Commit and push changes in src/main/java/com/sakalti/modifier
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # src/main/java/com/sakalti/modifier フォルダのみをステージング
+          git add src/main/java/com/sakalti/modifier
+          
+          # 変更がある場合のみコミット＆プッシュ
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "fix: add color codes to super() constructors in modifiers"
+            git push
+          fi
