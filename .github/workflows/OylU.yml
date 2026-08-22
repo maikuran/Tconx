@@ -1,0 +1,66 @@
+name: Sync Modifier Java from main
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-modifiers:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout 1.16.5test
+        uses: actions/checkout@v4
+        with:
+          ref: 1.16.5test
+          fetch-depth: 0
+
+      - name: Fetch main
+        run: |
+          git fetch origin main:refs/remotes/origin/main
+
+      - name: Prepare modifier files from main
+        run: |
+          set -e
+
+          TARGET="src/main/java/com/sakalti/modifier"
+          TEMP_DIR="$(mktemp -d)"
+
+          mkdir -p "$TEMP_DIR"
+
+          git archive origin/main:"$TARGET" | tar -x -C "$TEMP_DIR"
+
+          mkdir -p "$TARGET"
+
+          rsync -a --delete \
+            --exclude="CoralianModifier.java" \
+            --exclude="SuperMagnetModifier.java" \
+            "$TEMP_DIR/" \
+            "$TARGET/"
+
+          rm -rf "$TEMP_DIR"
+
+      - name: Show changed files
+        run: |
+          git status --short
+          git diff -- src/main/java/com/sakalti/modifier
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/java/com/sakalti/modifier
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Sync modifier Java files from main"
+
+      - name: Push changes
+        run: |
+          git push origin HEAD:1.16.5test
