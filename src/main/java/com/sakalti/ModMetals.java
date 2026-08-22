@@ -236,7 +236,7 @@ public final class ModMetals {
 
     private static RegistryObject<Block> registerBlock(String name, float strength) {
         RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(
-                AbstractBlock.Properties.create(Material.ROCK)
+                AbstractBlock.Properties.create(Material.METAL)
                         .hardnessAndResistance(strength)
                         .harvestTool(net.minecraftforge.common.ToolType.PICKAXE)
                         .setRequiresTool()
