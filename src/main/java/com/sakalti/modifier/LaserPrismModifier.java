@@ -18,7 +18,7 @@ public class LaserPrismModifier extends Modifier {
     /**
      * 近接攻撃がヒットした後に発動 (1.16.5仕様)
      */
-    @Override
+    
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
         if (attacker != null) {
