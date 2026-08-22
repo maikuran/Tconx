@@ -16,7 +16,7 @@ public class GlacialBindModifier extends Modifier {
     /**
      * 近接攻撃がヒットした後に発動 (1.16.5 TCon 3.x 仕様)
      */
-    @Override
+    
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         // LivingEntity 型で取得
         LivingEntity target = context.getLivingTarget();
