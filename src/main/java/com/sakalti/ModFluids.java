@@ -57,7 +57,7 @@ public final class ModFluids {
 
         // Flowing
         entry.flowing = FLUIDS.register(
-                name + "_flowing",
+                name + "_flow",
                 () -> new ForgeFlowingFluid.Flowing(
                         createProperties(entry)
                 )
