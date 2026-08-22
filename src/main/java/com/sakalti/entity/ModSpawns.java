@@ -7,7 +7,6 @@ import net.minecraft.entity.monster.MonsterEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.MobSpawnInfo;
 import net.minecraft.world.gen.Heightmap;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,22 +19,20 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 public class ModSpawns {
 
     @SubscribeEvent
-    public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-        event.put(
-                CrimsonFlyEntity.CRIMSON_FLY.get(),
-                CrimsonFlyEntity.createAttributes().build()
-        );
-    }
-
-    @SubscribeEvent
     public static void onCommonSetup(FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
             EntitySpawnPlacementRegistry.<CrimsonFlyEntity>register(
                     CrimsonFlyEntity.CRIMSON_FLY.get(),
                     EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
                     Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-                    (entityType, world, spawnType, pos, random) -> 
-                        MonsterEntity.checkMonsterSpawnRules((EntityType<? extends MonsterEntity>) (EntityType<?>) entityType, world, spawnType, pos, random)
+                    (entityType, world, spawnType, pos, random) ->
+                            MonsterEntity.checkMonsterSpawnRules(
+                                    (EntityType<? extends MonsterEntity>) (EntityType<?>) entityType,
+                                    world,
+                                    spawnType,
+                                    pos,
+                                    random
+                            )
             );
         });
     }
@@ -54,15 +51,19 @@ public class ModSpawns {
                 return;
             }
 
-            if (biomeName.equals(new ResourceLocation("minecraft", "crimson_forest"))) {
-                event.getSpawns().getSpawner(EntityClassification.MONSTER).add(
-                        new MobSpawnInfo.Spawners(
-                                CrimsonFlyEntity.CRIMSON_FLY.get(),
-                                20,
-                                2,
-                                4
-                        )
-                );
+            if (biomeName.equals(
+                    new ResourceLocation("minecraft", "crimson_forest"))) {
+
+                event.getSpawns()
+                        .getSpawner(EntityClassification.MONSTER)
+                        .add(
+                                new MobSpawnInfo.Spawners(
+                                        CrimsonFlyEntity.CRIMSON_FLY.get(),
+                                        20,
+                                        2,
+                                        4
+                                )
+                        );
             }
         }
     }
