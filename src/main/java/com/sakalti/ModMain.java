@@ -55,7 +55,7 @@ public final class ModMain {
         event.enqueueWork(new Runnable() {
             
             public void run() {
-                ModOreGeneration.registerConfiguredFeatures();
+                ModOreGeneration.ConfiguredFeatures();
             }
         });
     }
