@@ -2,7 +2,6 @@ package com.sakalti.scaling;
 
 import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
@@ -20,7 +19,6 @@ public final class CreeperRemoval {
 
     /*
      * 何tickごとに確認するか
-     *
      * 100tick = 5秒
      */
     private static final int CHECK_INTERVAL = 100;
@@ -31,46 +29,45 @@ public final class CreeperRemoval {
     private static final double RANGE = 64.0D;
 
     @SubscribeEvent
-    public static void onServerTick(TickEvent.ServerTickEvent event) {
+    public static void onWorldTick(TickEvent.WorldTickEvent event) {
 
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
 
-        MinecraftServer server = event.getServer();
-
-        /*
-         * 5秒ごと
-         */
-        if (server.getTickCount() % CHECK_INTERVAL != 0) {
+        // クライアント側ではなく、サーバー側のワールドでのみ処理する
+        if (!(event.world instanceof ServerWorld)) {
             return;
         }
 
+        ServerWorld world = (ServerWorld) event.world;
+
         /*
-         * 全Dimensionのプレイヤーを確認
+         * 5秒ごと（ゲームタイムを基準に判定）
          */
-        for (ServerWorld world : server.getAllLevels()) {
+        if (world.getGameTime() % CHECK_INTERVAL != 0) {
+            return;
+        }
 
-            for (ServerPlayerEntity player : world.players()) {
+        for (ServerPlayerEntity player : world.players()) {
 
-                /*
-                 * プレイヤー周辺64ブロックの範囲
-                 */
-                AxisAlignedBB box = player
-                        .getBoundingBox()
-                        .inflate(RANGE);
+            /*
+             * プレイヤー周辺64ブロックの範囲
+             */
+            AxisAlignedBB box = player
+                    .getBoundingBox()
+                    .inflate(RANGE);
 
-                /*
-                 * 範囲内のクリーパーを取得して削除
-                 */
-                world.getEntitiesOfClass(
-                        CreeperEntity.class,
-                        box,
-                        creeper -> true
-                ).forEach(
-                        creeper -> creeper.remove()
-                );
-            }
+            /*
+             * 範囲内のクリーパーを取得して削除
+             */
+            world.getEntitiesOfClass(
+                    CreeperEntity.class,
+                    box,
+                    creeper -> true
+            ).forEach(
+                    creeper -> creeper.remove()
+            );
         }
     }
 }
