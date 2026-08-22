@@ -2,9 +2,8 @@ name: Pure Python Auto Asset Generator
 
 on:
   push:
-    paths:
-      - 'src/main/java/com/sakalti/material/hachilite/ModMaterials.java'
-      - 'src/main/resources/data/sakalti/tinkering/materials/definition/*.json'
+    branches:
+     - main
   workflow_dispatch:
 
 jobs:
