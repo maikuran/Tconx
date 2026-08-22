@@ -22,7 +22,7 @@ public class CelestiteResonanceModifier extends Modifier {
     /**
      * ダメージ計算時：対象の体力比例でボーナスダメージ（最大+50%）
      */
-    @Override
+    
     public float getEntityDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity target = context.getTarget();
         if (target != null) {
@@ -37,7 +37,7 @@ public class CelestiteResonanceModifier extends Modifier {
     /**
      * 攻撃ヒット後：青い衝撃波を周囲に放ち、範囲追撃
      */
-    @Override
+    
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity target = context.getTarget();
         LivingEntity attacker = context.getAttacker();
