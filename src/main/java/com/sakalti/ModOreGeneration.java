@@ -56,19 +56,10 @@ public final class ModOreGeneration {
     public static ConfiguredFeature<?, ?> ORE_HIROLITE;
 
     // ============================================================
-    // Registration
+    // Static initialization
     // ============================================================
 
-    public static void registerConfiguredFeatures() {
-
-        if (ORE_KANILITE != null) {
-            return;
-        }
-
-        // --------------------------------------------------------
-        // Overworld
-        // --------------------------------------------------------
-
+    static {
         ORE_KANILITE = register(
                 "ore_kanilite",
                 Feature.ORE.configured(
@@ -135,9 +126,9 @@ public final class ModOreGeneration {
                 .count(9)
         );
 
-        // --------------------------------------------------------
+        // ========================================================
         // Nether
-        // --------------------------------------------------------
+        // ========================================================
 
         ORE_IGNIZ = register(
                 "ore_igniz",
@@ -183,9 +174,9 @@ public final class ModOreGeneration {
                 .count(5)
         );
 
-        // --------------------------------------------------------
+        // ========================================================
         // End
-        // --------------------------------------------------------
+        // ========================================================
 
         ORE_OURITE = register(
                 "ore_ourite",
@@ -233,7 +224,7 @@ public final class ModOreGeneration {
     }
 
     // ============================================================
-    // Registry helper
+    // Registry
     // ============================================================
 
     private static <FC extends IFeatureConfig>
@@ -243,10 +234,7 @@ public final class ModOreGeneration {
     ) {
         return Registry.register(
                 WorldGenRegistries.CONFIGURED_FEATURE,
-                new ResourceLocation(
-                        ModMetals.MODID,
-                        name
-                ),
+                new ResourceLocation(ModMetals.MODID, name),
                 feature
         );
     }
@@ -258,81 +246,42 @@ public final class ModOreGeneration {
     @SubscribeEvent
     public static void onBiomeLoading(BiomeLoadingEvent event) {
 
-        /*
-         * ConfiguredFeature がまだ生成されていない場合は、
-         * null Supplier をBiomeGenerationSettingsへ入れない。
-         *
-         * これが今回のNPE防止の重要部分。
-         */
-
         if (event.getCategory() == Biome.Category.NETHER) {
 
-            if (ORE_IGNIZ != null) {
-                event.getGeneration()
-                        .getFeatures(
-                                GenerationStage.Decoration.UNDERGROUND_ORES
-                        )
-                        .add(() -> ORE_IGNIZ);
-            }
+            event.getGeneration()
+                    .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+                    .add(() -> ORE_IGNIZ);
 
-            if (ORE_MOMONGAITE != null) {
-                event.getGeneration()
-                        .getFeatures(
-                                GenerationStage.Decoration.UNDERGROUND_ORES
-                        )
-                        .add(() -> ORE_MOMONGAITE);
-            }
+            event.getGeneration()
+                    .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+                    .add(() -> ORE_MOMONGAITE);
 
             return;
         }
 
         if (event.getCategory() == Biome.Category.THEEND) {
 
-            if (ORE_OURITE != null) {
-                event.getGeneration()
-                        .getFeatures(
-                                GenerationStage.Decoration.UNDERGROUND_ORES
-                        )
-                        .add(() -> ORE_OURITE);
-            }
+            event.getGeneration()
+                    .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+                    .add(() -> ORE_OURITE);
 
-            if (ORE_HIROLITE != null) {
-                event.getGeneration()
-                        .getFeatures(
-                                GenerationStage.Decoration.UNDERGROUND_ORES
-                        )
-                        .add(() -> ORE_HIROLITE);
-            }
+            event.getGeneration()
+                    .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+                    .add(() -> ORE_HIROLITE);
 
             return;
         }
 
-        // --------------------------------------------------------
-        // Overworld
-        // --------------------------------------------------------
+        event.getGeneration()
+                .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+                .add(() -> ORE_KANILITE);
 
-        if (ORE_KANILITE != null) {
-            event.getGeneration()
-                    .getFeatures(
-                            GenerationStage.Decoration.UNDERGROUND_ORES
-                    )
-                    .add(() -> ORE_KANILITE);
-        }
+        event.getGeneration()
+                .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+                .add(() -> ORE_HACHILITE);
 
-        if (ORE_CHIRITE != null) {
-            event.getGeneration()
-                    .getFeatures(
-                            GenerationStage.Decoration.UNDERGROUND_ORES
-                    )
-                    .add(() -> ORE_CHIRITE);
-        }
-
-        if (ORE_HACHILITE != null) {
-            event.getGeneration()
-                    .getFeatures(
-                            GenerationStage.Decoration.UNDERGROUND_ORES
-                    )
-                    .add(() -> ORE_HACHILITE);
-        }
+        event.getGeneration()
+                .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+                .add(() -> ORE_CHIRITE);
     }
 }
