@@ -283,7 +283,7 @@ public final class ModOreGeneration {
                     )
                     .add(
                             new Supplier<ConfiguredFeature<?, ?>>() {
-                                @Override
+                                
                                 public ConfiguredFeature<?, ?> get() {
                                     return ORE_IGNIZ;
                                 }
@@ -296,7 +296,7 @@ public final class ModOreGeneration {
                     )
                     .add(
                             new Supplier<ConfiguredFeature<?, ?>>() {
-                                @Override
+                                
                                 public ConfiguredFeature<?, ?> get() {
                                     return ORE_MOMONGAITE;
                                 }
@@ -318,7 +318,7 @@ public final class ModOreGeneration {
                     )
                     .add(
                             new Supplier<ConfiguredFeature<?, ?>>() {
-                                @Override
+                                
                                 public ConfiguredFeature<?, ?> get() {
                                     return ORE_OURITE;
                                 }
@@ -331,7 +331,7 @@ public final class ModOreGeneration {
                     )
                     .add(
                             new Supplier<ConfiguredFeature<?, ?>>() {
-                                @Override
+                                
                                 public ConfiguredFeature<?, ?> get() {
                                     return ORE_HIROLITE;
                                 }
@@ -351,7 +351,7 @@ public final class ModOreGeneration {
                 )
                 .add(
                         new Supplier<ConfiguredFeature<?, ?>>() {
-                            @Override
+                            
                             public ConfiguredFeature<?, ?> get() {
                                 return ORE_KANILITE;
                             }
@@ -364,7 +364,7 @@ public final class ModOreGeneration {
                 )
                 .add(
                         new Supplier<ConfiguredFeature<?, ?>>() {
-                            @Override
+                            
                             public ConfiguredFeature<?, ?> get() {
                                 return ORE_HACHILITE;
                             }
@@ -377,7 +377,7 @@ public final class ModOreGeneration {
                 )
                 .add(
                         new Supplier<ConfiguredFeature<?, ?>>() {
-                            @Override
+                            
                             public ConfiguredFeature<?, ?> get() {
                                 return ORE_CHIRITE;
                             }
