@@ -21,8 +21,7 @@ public class BerserkModifier extends Modifier {
 
         if (RANDOM.nextFloat() < 0.33f) {
             if (!attacker.getCommandSenderWorld().isClientSide) {
-                // tool.getStack() ではなく tool.getItem() を使用
-                ToolDamageUtil.damage(tool, 2, attacker, tool.getItem());
+                ToolDamageUtil.damage(tool, 2, attacker, tool.asStack());
             }
             return damage * 3.0f;
         }
