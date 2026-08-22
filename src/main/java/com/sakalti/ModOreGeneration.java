@@ -1,11 +1,16 @@
 package com.sakalti;
 
 import net.minecraft.block.Blocks;
-import net.minecraft.block.pattern.BlockMatcher;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
 import net.minecraft.world.gen.feature.template.RuleTest;
 import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidRangeConfig;
@@ -13,22 +18,21 @@ import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.function.Supplier;
+
 @Mod.EventBusSubscriber(modid = ModMetals.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ModOreGeneration {
 
-    // === 地面（置換対象ブロック）の定義 ===
-    // オーバーワールド（石）
+    // === 置換対象ブロック（RuleTest）の定義 ===
     private static final RuleTest BASE_STONE = OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD;
-    // ネザー（ネザーラック）
     private static final RuleTest BASE_NETHER = OreFeatureConfig.FillerBlockType.NETHERRACK;
-    // エンド（エンドストーン）※1.16.5には標準ルールが無いため BlockMatcher で直接指定
-    private static final RuleTest BASE_END = new BlockMatcher(Blocks.END_STONE);
+    // BlockMatcherではなく1.16.5標準の BlockMatchRuleTest を使用（Java 8互換）
+    private static final RuleTest BASE_END = new BlockMatchRuleTest(Blocks.END_STONE);
 
-
-    // === 1. Overworld 鉱石 ===
+    // === 1. Overworld 鉱石（フィールド宣言） ===
     public static ConfiguredFeature<?, ?> ORE_KANILITE;
     public static ConfiguredFeature<?, ?> ORE_HACHILITE;
-    public static ConfiguredFeature<?, ?> ORE_CHIRITE; // 修正点: 宣言漏れを追加！
+    public static ConfiguredFeature<?, ?> ORE_CHIRITE; // 修正点: cannot find symbol を防止
 
     // === 2. Nether 鉱石 ===
     public static ConfiguredFeature<?, ?> ORE_IGNIZ;
@@ -39,69 +43,85 @@ public class ModOreGeneration {
     public static ConfiguredFeature<?, ?> ORE_HIROLITE;
 
 
+    /**
+     * FMLCommonSetupEvent 等から呼び出す登録メソッド
+     */
     public static void registerConfiguredFeatures() {
 
         // ------------------------------------------------------------
-        // Overworld (Kanilite / Hachilite / Chirite)
+        // Overworld (TopSolidRangeConfig の第2引数を 0 に修正)
         // ------------------------------------------------------------
-        ORE_KANILITE = Feature.ORE
+        ORE_KANILITE = register("ore_kanilite", Feature.ORE
             .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.KANILITE_ORE.get().getDefaultState(), 6))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 50)))
-            .square().count(6);
+            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 50)))
+            .square().count(6));
 
-        ORE_HACHILITE = Feature.ORE
+        ORE_HACHILITE = register("ore_hachilite", Feature.ORE
             .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.HACHILITE_ORE.get().getDefaultState(), 8))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 64)))
-            .square().count(8);
+            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 64)))
+            .square().count(8));
 
-        ORE_CHIRITE = Feature.ORE
+        ORE_CHIRITE = register("ore_chirite", Feature.ORE
             .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.CHIRITE_ORE.get().getDefaultState(), 6))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 31)))
-            .square().count(9);
+            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 31)))
+            .square().count(9));
 
         // ------------------------------------------------------------
-        // Nether (Igniz / Momongaite)
+        // Nether
         // ------------------------------------------------------------
-        ORE_IGNIZ = Feature.ORE
+        ORE_IGNIZ = register("ore_igniz", Feature.ORE
             .withConfiguration(new OreFeatureConfig(BASE_NETHER, ModMetals.IGNIZ_ORE.get().getDefaultState(), 5))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 110)))
-            .square().count(4);
+            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 110)))
+            .square().count(4));
 
-        ORE_MOMONGAITE = Feature.ORE
+        ORE_MOMONGAITE = register("ore_momongaite", Feature.ORE
             .withConfiguration(new OreFeatureConfig(BASE_NETHER, ModMetals.MOMONGAITE_ORE.get().getDefaultState(), 6))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 110)))
-            .square().count(5);
+            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 110)))
+            .square().count(5));
 
         // ------------------------------------------------------------
-        // The End (Ourite / Hirolite - レア設定)
+        // The End
         // ------------------------------------------------------------
-        ORE_OURITE = Feature.ORE
+        ORE_OURITE = register("ore_ourite", Feature.ORE
             .withConfiguration(new OreFeatureConfig(BASE_END, ModMetals.OURITE_ORE.get().getDefaultState(), 2))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 70)))
-            .square().count(1); // エンド島でのかなりレアな生成設定
+            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 70)))
+            .square().count(1));
 
-        ORE_HIROLITE = Feature.ORE
+        ORE_HIROLITE = register("ore_hirolite", Feature.ORE
             .withConfiguration(new OreFeatureConfig(BASE_END, ModMetals.HIROLITE_ORE.get().getDefaultState(), 3))
-            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 70)))
-            .square().count(2);
+            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 0, 70)))
+            .square().count(2));
+    }
+
+    /**
+     * Java 8のジェネリクス型推論に対応したレジストリ登録ヘルパーメソッド
+     */
+    private static <FC extends IFeatureConfig> ConfiguredFeature<FC, ?> register(String key, ConfiguredFeature<FC, ?> configuredFeature) {
+        return Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, new ResourceLocation(ModMetals.MODID, key), configuredFeature);
     }
 
 
-    // === バイオームごとに生成する鉱石を振り分け ===
+    // === バイオームイベント（Java 8 ラムダ式による Supplier 渡し） ===
     @SubscribeEvent
     public static void onBiomeLoading(BiomeLoadingEvent event) {
 
-        // 1. ネザーバイオームの判定
-        if (event.getCategory() == net.minecraft.world.biome.Biome.Category.NETHER) {
-            event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_IGNIZ);
+        // 1. ネザーバイオーム
+        if (event.getCategory() == Biome.Category.NETHER) {
+            event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(new Supplier<ConfiguredFeature<?, ?>>() {
+                @Override
+                public ConfiguredFeature<?, ?> get() {
+                    return ORE_IGNIZ;
+                }
+            });
+            // 以下、Java 8 のラムダ省略形 ( () -> フィールド )
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_MOMONGAITE);
         }
-        // 2. エンドバイオームの判定
-        else if (event.getCategory() == net.minecraft.world.biome.Biome.Category.THEEND) {
+        // 2. エンドバイオーム
+        else if (event.getCategory() == Biome.Category.THEEND) {
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_OURITE);
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_HIROLITE);
         }
-        // 3. それ以外（オーバーワールド）
+        // 3. オーバーワールド
         else {
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_KANILITE);
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_CHIRITE);
