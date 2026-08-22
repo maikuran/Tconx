@@ -7,7 +7,7 @@
       "melee_damage": 0.001
     },
     "tconstruct:handle": {
-      "durability": 0.003,
+      "durability": 0.002,
       "melee_damage": 0.001,
       "melee_speed": 0.001,
       "mining_speed": 0.001
@@ -28,7 +28,7 @@
     "tconstruct:plating_boots": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.002
+      "toughness": 0.001
     },
     "tconstruct:plating_chestplate": {
       "armor": 0.001,
