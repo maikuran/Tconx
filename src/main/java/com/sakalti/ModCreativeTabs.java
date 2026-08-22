@@ -11,17 +11,17 @@ public final class ModCreativeTabs {
 
     public static final ItemGroup SAKALTI_TAB = new ItemGroup("sakalti") {
 
-        @Override
+        
         public ItemStack makeIcon() {
             return new ItemStack(ModMetals.SEIREN_INGOT.get());
         }
 
-        @Override
+        
         public ITextComponent getDisplayName() {
             return new TranslationTextComponent("itemGroup.sakalti");
         }
 
-        @Override
+        
         public void fillItemList(NonNullList<ItemStack> items) {
             // HACHILITE シリーズ
             items.add(new ItemStack(ModMetals.HACHILITE_ORE.get()));
