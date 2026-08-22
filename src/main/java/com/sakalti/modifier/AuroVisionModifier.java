@@ -19,7 +19,7 @@ public class AuroVisionModifier extends Modifier {
      * 近接攻撃がヒットした後の処理
      * @return ヒット時のクールダウンや耐久度消費への影響数値を返します（基本は 0）
      */
-    @Override
+    
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
 
@@ -42,7 +42,7 @@ public class AuroVisionModifier extends Modifier {
     /**
      * インベントリ内での毎Tick処理
      */
-    @Override
+    
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity entity, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         // ツールが壊れておらず、手に持っている時（サーバー側）
         if (!world.isClientSide() && !tool.isBroken() && isSelected) {
