@@ -12,9 +12,8 @@ import java.util.List;
 
 public class SuperMagnetModifier extends Modifier {
 
-    // コンストラクタ（1.16.5ではカラーコード等を指定する親コンストラクタが一般的です）
-    public SuperMagnetModifier(int color) {
-        super(color);
+    public SuperMagnetModifier() {
+        super(); // 1.16.5 では引数なしのコンストラクタ
     }
 
     private static final double RADIUS = 6.0D;
@@ -23,10 +22,10 @@ public class SuperMagnetModifier extends Modifier {
     /**
      * インベントリ内にある毎フレーム処理（1.16.5の引数仕様）
      */
-    
+    @Override
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity holder, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         // クライアント側、または手に持っていない（isSelected == false）場合はスキップ
-        if (world.isClientSide || holder == null || !isSelected) {
+        if (world.isClientSide() || holder == null || !isSelected) {
             return;
         }
 
@@ -43,7 +42,7 @@ public class SuperMagnetModifier extends Modifier {
 
             // 一定距離内のみ引き寄せ
             if (distance < RADIUS && distance > 0.5D) {
-                double scale = (PULL_STRENGTH * level) / distance; // レベルに応じて引き寄せ速度を変える場合は * level
+                double scale = (PULL_STRENGTH * level) / distance; // レベルに応じて引き寄せ速度調整
                 item.setDeltaMovement(item.getDeltaMovement().add(dx * scale, dy * scale, dz * scale));
             }
         }
