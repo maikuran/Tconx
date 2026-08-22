@@ -13,19 +13,20 @@ import java.util.List;
 public class SuperMagnetModifier extends Modifier {
 
     public SuperMagnetModifier() {
-        super(0xFF3300);
+        super(0xFF3300); // 磁石: レッド
     }
 
     private static final double RADIUS = 6.0D;
     private static final double PULL_STRENGTH = 0.5D;
 
     /**
-     * インベントリ内にある毎フレーム処理（1.16.5の引数仕様）
+     * インベントリ内にある毎フレーム処理 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity holder, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         // クライアント側、または手に持っていない（isSelected == false）場合はスキップ
-        if (world.isClientSide() || holder == null || !isSelected) {
+        // isClientSide はメソッドではなくフィールド
+        if (world == null || world.isClientSide || holder == null || !isSelected) {
             return;
         }
 
