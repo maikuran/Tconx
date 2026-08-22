@@ -27,9 +27,9 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.EnumSet;
 
@@ -46,7 +46,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
     public static final RegistryObject<EntityType<CrimsonFlyEntity>> CRIMSON_FLY =
             ENTITIES.register(
                     "crimson_fly",
-                    () -> EntityType.Builder.of(
+                    () -> EntityType.Builder.<CrimsonFlyEntity>of(
                                     CrimsonFlyEntity::new,
                                     EntityClassification.MONSTER
                             )
@@ -72,7 +72,6 @@ public class CrimsonFlyEntity extends FlyingEntity {
         this.setNoGravity(true);
     }
 
-    
     protected PathNavigator createNavigation(World world) {
         return new FlyingPathNavigator(this, world);
     }
@@ -85,7 +84,6 @@ public class CrimsonFlyEntity extends FlyingEntity {
                 .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
-    
     protected void registerGoals() {
 
         this.goalSelector.addGoal(
@@ -137,15 +135,11 @@ public class CrimsonFlyEntity extends FlyingEntity {
     }
 
     public float getCrimsonFlyAttackDamage() {
-
         switch (this.level.getDifficulty()) {
-
             case EASY:
                 return 4.0F;
-
             case HARD:
                 return 9.0F;
-
             case NORMAL:
             case PEACEFUL:
             default:
@@ -168,9 +162,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
             );
         }
 
-        
         public boolean canUse() {
-
             if (this.cooldown > 0) {
                 this.cooldown--;
                 return false;
@@ -181,7 +173,6 @@ public class CrimsonFlyEntity extends FlyingEntity {
             BlockPos current = this.fly.blockPosition();
 
             for (int i = 0; i < 16; i++) {
-
                 int x = current.getX()
                         + this.fly.getRandom().nextInt(21)
                         - 10;
@@ -200,7 +191,6 @@ public class CrimsonFlyEntity extends FlyingEntity {
                     continue;
                 }
 
-                // 1.16.5: ワールドの空気判定 (isEmptyBlock)
                 if (this.fly.level.isEmptyBlock(candidate)
                         && this.fly.level.isEmptyBlock(candidate.above())) {
 
@@ -212,9 +202,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
             return false;
         }
 
-        
         public boolean canContinueToUse() {
-
             if (this.targetPos == null) {
                 return false;
             }
@@ -228,9 +216,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
             return distance > 4.0D;
         }
 
-        
         public void start() {
-
             if (this.targetPos == null) {
                 return;
             }
@@ -243,7 +229,6 @@ public class CrimsonFlyEntity extends FlyingEntity {
             );
         }
 
-        
         public void stop() {
             this.targetPos = null;
             this.fly.getNavigation().stop();
@@ -267,26 +252,21 @@ public class CrimsonFlyEntity extends FlyingEntity {
             );
         }
 
-        
         public boolean canUse() {
             LivingEntity target = this.fly.getTarget();
             return target != null && target.isAlive();
         }
 
-        
         public boolean canContinueToUse() {
             LivingEntity target = this.fly.getTarget();
             return target != null && target.isAlive();
         }
 
-        
         public void start() {
             this.attackCooldown = 0;
         }
 
-        
         public void tick() {
-
             LivingEntity target = this.fly.getTarget();
 
             if (target == null) {
@@ -302,14 +282,11 @@ public class CrimsonFlyEntity extends FlyingEntity {
             double distance = this.fly.distanceToSqr(target);
 
             if (distance > 3.0D) {
-
                 this.fly.getNavigation().moveTo(
                         target,
                         1.2D
                 );
-
             } else {
-
                 this.fly.getNavigation().stop();
 
                 if (this.attackCooldown > 0) {
