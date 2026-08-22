@@ -3,7 +3,6 @@ package com.sakalti.modifier;
 import net.minecraft.entity.LivingEntity;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
-import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 import java.util.Random;
@@ -37,8 +36,9 @@ public class UnstableModifier extends Modifier {
             durabilityCost = 4;
         }
 
+        // サーバー側でのみ追加の耐久ダメージを直接加算
         if (!attacker.getCommandSenderWorld().isClientSide && durabilityCost > 0) {
-            ToolDamageUtil.damage(tool, durabilityCost, attacker, tool.asStack());
+            tool.setDamage(tool.getDamage() + durabilityCost);
         }
 
         return damage * multiplier;
