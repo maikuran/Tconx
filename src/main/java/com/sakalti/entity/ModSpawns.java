@@ -41,7 +41,7 @@ public class ModSpawns {
                     CrimsonFlyEntity.CRIMSON_FLY.get(),
                     EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
                     Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-                    MonsterEntity::checkMonsterSpawnRules
+                    (entityType, world, spawnType, pos, random) -> MonsterEntity.checkMonsterSpawnRules(entityType, world, spawnType, pos, random)
             );
         });
     }
