@@ -19,7 +19,7 @@ public class LureMeteorModifier extends Modifier {
     /**
      * 近接攻撃ヒット後にメテオシャワーを発動 (1.16.5 TCon 3.x 仕様)
      */
-    @Override
+    
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity target = context.getLivingTarget();
         LivingEntity attacker = context.getAttacker();
