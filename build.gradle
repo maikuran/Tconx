@@ -69,8 +69,8 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.42'
 
-    compileOnly fg.deobf('curse.maven:mantle-74924:3631982')
-    compileOnly fg.deobf('curse.maven:tinkers-construct-74072:3695126')
+    implementation fg.deobf('curse.maven:mantle-74924:3631982')
+    implementation fg.deobf('curse.maven:tinkers-construct-74072:3695126')
 }
 
 jar {
