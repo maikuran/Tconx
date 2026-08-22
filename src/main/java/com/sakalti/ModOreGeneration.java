@@ -21,13 +21,14 @@ public class ModOreGeneration {
     private static final RuleTest BASE_STONE = OreFeatureConfig.FillerBlockType.BASE_STONE_OVERWORLD;
     // ネザー（ネザーラック）
     private static final RuleTest BASE_NETHER = OreFeatureConfig.FillerBlockType.NETHERRACK;
-    // エンド（エンドストーン）※1.16.5には標準で用意されていないため直接指定
+    // エンド（エンドストーン）※1.16.5には標準ルールが無いため BlockMatcher で直接指定
     private static final RuleTest BASE_END = new BlockMatcher(Blocks.END_STONE);
 
 
     // === 1. Overworld 鉱石 ===
     public static ConfiguredFeature<?, ?> ORE_KANILITE;
     public static ConfiguredFeature<?, ?> ORE_HACHILITE;
+    public static ConfiguredFeature<?, ?> ORE_CHIRITE; // 修正点: 宣言漏れを追加！
 
     // === 2. Nether 鉱石 ===
     public static ConfiguredFeature<?, ?> ORE_IGNIZ;
@@ -41,7 +42,7 @@ public class ModOreGeneration {
     public static void registerConfiguredFeatures() {
 
         // ------------------------------------------------------------
-        // Overworld (Kanilite / Hachilite)
+        // Overworld (Kanilite / Hachilite / Chirite)
         // ------------------------------------------------------------
         ORE_KANILITE = Feature.ORE
             .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.KANILITE_ORE.get().getDefaultState(), 6))
