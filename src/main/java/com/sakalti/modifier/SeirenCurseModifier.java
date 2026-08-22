@@ -17,7 +17,7 @@ public class SeirenCurseModifier extends Modifier {
     /**
      * 近接攻撃がヒットした後に発動 (1.16.5 TCon 3.x 仕様)
      */
-    @Override
+    
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         // context.getLivingTarget() を使用、または Entity から安全にキャスト
         LivingEntity target = context.getLivingTarget();
