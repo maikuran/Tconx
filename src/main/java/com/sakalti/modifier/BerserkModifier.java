@@ -14,7 +14,7 @@ public class BerserkModifier extends Modifier {
     /**
      * 近接攻撃時の与ダメージ計算フック
      */
-    @Override
+    
     public float getEntityDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
