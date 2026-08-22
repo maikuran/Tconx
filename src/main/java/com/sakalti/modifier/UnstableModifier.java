@@ -14,7 +14,6 @@ public class UnstableModifier extends Modifier {
         super(0xCC00FF);
     }
 
-    
     public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
@@ -38,9 +37,9 @@ public class UnstableModifier extends Modifier {
             durabilityCost = 4;
         }
 
-        // サーバー側でのみ追加の耐久ダメージを適用 (tool.getStack() を使用)
+        // サーバー側でのみ追加の耐久ダメージを適用 (tool.createStack() を使用)
         if (!attacker.getCommandSenderWorld().isClientSide && durabilityCost > 0) {
-            ToolDamageUtil.damage(tool, durabilityCost, attacker, tool.getStack());
+            ToolDamageUtil.damage(tool, durabilityCost, attacker, tool.createStack());
         }
 
         return damage * multiplier;
