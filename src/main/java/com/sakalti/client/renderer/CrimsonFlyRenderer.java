@@ -18,13 +18,13 @@ public class CrimsonFlyRenderer extends MobRenderer<CrimsonFlyEntity, CrimsonFly
         super(renderManager, new CrimsonFlyModel(), 0.35F);
     }
 
-    @Override
+    
     public ResourceLocation getTextureLocation(CrimsonFlyEntity entity) {
         return TEXTURE;
     }
 
     // 必要に応じてサイズの微調整を行う場合（オプション）
-    @Override
+    
     protected void scale(CrimsonFlyEntity entity, MatrixStack matrixStack, float partialTicks) {
         // 例: 1.0F で標準サイズ（必要に応じてモデルの大きさを変更可能）
         matrixStack.scale(1.0F, 1.0F, 1.0F);
