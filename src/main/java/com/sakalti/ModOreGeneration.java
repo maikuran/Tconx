@@ -53,6 +53,11 @@ public class ModOreGeneration {
             .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 64)))
             .square().count(8);
 
+        ORE_CHIRITE = Feature.ORE
+            .withConfiguration(new OreFeatureConfig(BASE_STONE, ModMetals.CHIRITE_ORE.get().getDefaultState(), 6))
+            .withPlacement(Placement.RANGE.configure(new TopSolidRangeConfig(10, 10, 31)))
+            .square().count(9);
+
         // ------------------------------------------------------------
         // Nether (Igniz / Momongaite)
         // ------------------------------------------------------------
@@ -98,6 +103,7 @@ public class ModOreGeneration {
         // 3. それ以外（オーバーワールド）
         else {
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_KANILITE);
+            event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_CHIRITE);
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(() -> ORE_HACHILITE);
         }
     }
