@@ -112,7 +112,7 @@ public class ModOreGeneration {
         // 1. ネザーバイオーム
         if (event.getCategory() == Biome.Category.NETHER) {
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(new Supplier<ConfiguredFeature<?, ?>>() {
-                @Override
+                
                 public ConfiguredFeature<?, ?> get() {
                     return ORE_IGNIZ;
                 }
