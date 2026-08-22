@@ -209,11 +209,11 @@ public final class ModMetals {
             registerItem("ioxium_ingot");
 
 
-    public static final RegistryObject<Block> DILONITE_BLOCK =
-            registerBlock("dilonite_block", 9.0F);
-
     public static final RegistryObject<Item> DILONITE_INGOT =
             registerItem("dilonite_ingot");
+
+    public static final RegistryObject<Block> DILONITE_BLOCK =
+            registerBlock("dilonite_block", 9.0F);
 
 
     public static final RegistryObject<Block> TIBERIUM_BLOCK =
@@ -231,15 +231,15 @@ public final class ModMetals {
 
 
     // ============================================================
-    // Helper methods (1.16.5 Adapted)
+    // Helper methods (1.16.5 Mojmap Adapted)
     // ============================================================
 
     private static RegistryObject<Block> registerBlock(String name, float strength) {
         RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(
-                AbstractBlock.Properties.create(Material.METAL)
-                        .hardnessAndResistance(strength)
+                AbstractBlock.Properties.of(Material.METAL)
+                        .strength(strength)
                         .harvestTool(net.minecraftforge.common.ToolType.PICKAXE)
-                        .setRequiresTool()
+                        .requiresCorrectToolForDrops()
         ));
 
         ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
