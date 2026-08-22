@@ -1,8 +1,10 @@
 package com.sakalti.scaling;
 
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.entity.monster.CreeperEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -13,7 +15,8 @@ import net.minecraftforge.fml.common.Mod;
 )
 public final class CreeperRemoval {
 
-    private CreeperRemoval() {}
+    private CreeperRemoval() {
+    }
 
     /*
      * 何tickごとに確認するか
@@ -28,42 +31,44 @@ public final class CreeperRemoval {
     private static final double RANGE = 64.0D;
 
     @SubscribeEvent
-    public static void onServerTick(
-            TickEvent.ServerTickEvent event
-    ) {
+    public static void onServerTick(TickEvent.ServerTickEvent event) {
 
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
 
+        MinecraftServer server = event.getServer();
+
         /*
          * 5秒ごと
          */
-        if (event.getServer().getTickCount()
-                % CHECK_INTERVAL != 0) {
+        if (server.getTickCount() % CHECK_INTERVAL != 0) {
             return;
         }
 
         /*
          * 全Dimensionのプレイヤーを確認
          */
-        for (ServerLevel level :
-                event.getServer().getAllLevels()) {
+        for (ServerWorld world : server.getAllLevels()) {
 
-            for (ServerPlayer player :
-                    level.players()) {
+            for (ServerPlayerEntity player : world.players()) {
 
                 /*
-                 * プレイヤー周辺のクリーパーを取得
+                 * プレイヤー周辺64ブロックの範囲
                  */
-                level.getEntities(
-                        net.minecraft.world.level.entity.EntityTypeTest.forClass(
-                                Creeper.class
-                        ),
-                        player.getBoundingBox().inflate(RANGE),
+                AxisAlignedBB box = player
+                        .getBoundingBox()
+                        .inflate(RANGE);
+
+                /*
+                 * 範囲内のクリーパーを取得して削除
+                 */
+                world.getEntitiesOfClass(
+                        CreeperEntity.class,
+                        box,
                         creeper -> true
                 ).forEach(
-                        creeper -> creeper.discard()
+                        creeper -> creeper.remove()
                 );
             }
         }
