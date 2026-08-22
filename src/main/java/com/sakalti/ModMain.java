@@ -4,7 +4,7 @@ import com.sakalti.modifier.TconxModifiers;
 import com.sakalti.entity.*;
 import com.sakalti.scaling.HealthCrystals;
 
-import net.minecraft.world.item.Items;
+
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
