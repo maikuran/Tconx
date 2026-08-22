@@ -1,8 +1,8 @@
 package com.sakalti.modifier;
 
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import slimeknights.tconstruct.library.modifiers.util.ModifierDeferredRegister;
 import slimeknights.tconstruct.library.modifiers.util.StaticModifier;
+
 
 public final class TconxModifiers {
 
@@ -64,9 +64,5 @@ public final class TconxModifiers {
             MODIFIERS.register("auro_vision", AuroVisionModifier::new);
 
     private TconxModifiers() {
-    }
-
-    public static void register() {
-        MODIFIERS.register(FMLJavaModLoadingContext.get().getModEventBus());
     }
 }
