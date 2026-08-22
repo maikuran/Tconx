@@ -4,79 +4,30 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.sakalti.client.model.CrimsonFlyModel;
 import com.sakalti.entity.CrimsonFlyEntity;
 
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 
-public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
+public class CrimsonFlyRenderer extends MobRenderer<CrimsonFlyEntity, CrimsonFlyModel> {
 
     private static final ResourceLocation TEXTURE =
             new ResourceLocation("sakalti", "textures/entity/crimson_fly.png");
 
-    private final CrimsonFlyModel model;
-
     public CrimsonFlyRenderer(EntityRendererManager renderManager) {
-        super(renderManager);
-        this.model = new CrimsonFlyModel();
-        this.shadowSize = 0.35F;
+        // MobRenderer(RenderManager, Model, shadowSize)
+        super(renderManager, new CrimsonFlyModel(), 0.35F);
     }
 
-    
-    public void render(
-            CrimsonFlyEntity entity,
-            float entityYaw,
-            float partialTicks,
-            MatrixStack matrixStack,
-            IRenderTypeBuffer buffer,
-            int packedLight
-    ) {
-        matrixStack.push();
-
-        // 1.16.5 での回転補間とアニメーション値の正しい計算
-        float renderYaw = MathHelper.interpolateAngle(partialTicks, entity.prevRotationYaw, entity.rotationYaw);
-        float limbSwing = entity.limbSwing - entity.limbSwingAmount * (1.0F - partialTicks);
-        float limbSwingAmount = MathHelper.lerp(partialTicks, entity.prevLimbSwingAmount, entity.limbSwingAmount);
-        float ageInTicks = entity.ticksExisted + partialTicks;
-        float headPitch = MathHelper.lerp(partialTicks, entity.prevRotationPitch, entity.rotationPitch);
-
-        this.model.setupAnim(
-                entity,
-                limbSwing,
-                limbSwingAmount,
-                ageInTicks,
-                renderYaw,
-                headPitch
-        );
-
-        this.model.renderToBuffer(
-                matrixStack,
-                buffer.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE)),
-                packedLight,
-                OverlayTexture.NO_OVERLAY,
-                1.0F,
-                1.0F,
-                1.0F,
-                1.0F
-        );
-
-        matrixStack.pop();
-
-        super.render(
-                entity,
-                entityYaw,
-                partialTicks,
-                matrixStack,
-                buffer,
-                packedLight
-        );
-    }
-
-    
+    @Override
     public ResourceLocation getTextureLocation(CrimsonFlyEntity entity) {
         return TEXTURE;
+    }
+
+    // 必要に応じてサイズの微調整を行う場合（オプション）
+    @Override
+    protected void scale(CrimsonFlyEntity entity, MatrixStack matrixStack, float partialTicks) {
+        // 例: 1.0F で標準サイズ（必要に応じてモデルの大きさを変更可能）
+        matrixStack.scale(1.0F, 1.0F, 1.0F);
+        super.scale(entity, matrixStack, partialTicks);
     }
 }
