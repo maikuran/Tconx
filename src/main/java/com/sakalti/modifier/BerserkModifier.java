@@ -3,7 +3,6 @@ package com.sakalti.modifier;
 import net.minecraft.entity.LivingEntity;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
-import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 public class BerserkModifier extends Modifier {
@@ -21,7 +20,8 @@ public class BerserkModifier extends Modifier {
 
         if (RANDOM.nextFloat() < 0.33f) {
             if (!attacker.getCommandSenderWorld().isClientSide) {
-                ToolDamageUtil.damage(tool, 2, attacker, tool.asStack());
+                // 耐久値を直接加算
+                tool.setDamage(tool.getDamage() + 2);
             }
             return damage * 3.0f;
         }
