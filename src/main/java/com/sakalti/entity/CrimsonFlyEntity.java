@@ -1,6 +1,7 @@
 package com.sakalti.entity;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
@@ -30,23 +31,25 @@ import java.util.EnumSet;
 
 public class CrimsonFlyEntity extends PathfinderMob {
 
+    public static final String MODID = "sakalti";
+
     public static final DeferredRegister<EntityType<?>> ENTITIES =
             DeferredRegister.create(
-                    ForgeRegistries.ENTITY_TYPES,
-                    "sakalti"
+                    ForgeRegistries.ENTITIES,
+                    MODID
             );
 
     public static final RegistryObject<EntityType<CrimsonFlyEntity>> CRIMSON_FLY =
             ENTITIES.register(
                     "crimson_fly",
-                    () -> EntityType.Builder.of(
-                                    CrimsonFlyEntity::new,
-                                    MobCategory.MONSTER
-                            )
+                    new EntityType.Builder<CrimsonFlyEntity>(
+                            CrimsonFlyEntity::new,
+                            MobCategory.MONSTER
+                    )
                             .sized(0.8F, 0.8F)
                             .clientTrackingRange(8)
                             .updateInterval(3)
-                            .build("sakalti:crimson_fly")
+                            .build(MODID + ":crimson_fly")
             );
 
     public CrimsonFlyEntity(
@@ -66,7 +69,6 @@ public class CrimsonFlyEntity extends PathfinderMob {
                 .add(Attributes.MAX_HEALTH, 16.0D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.30D)
-                .add(Attributes.FLYING_SPEED, 0.40D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
@@ -104,7 +106,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
         this.targetSelector.addGoal(
                 2,
-                new NearestAttackableTargetGoal<>(
+                new NearestAttackableTargetGoal<LivingEntity>(
                         this,
                         Piglin.class,
                         true
@@ -113,7 +115,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
         this.targetSelector.addGoal(
                 3,
-                new NearestAttackableTargetGoal<>(
+                new NearestAttackableTargetGoal<LivingEntity>(
                         this,
                         Hoglin.class,
                         true
@@ -122,17 +124,28 @@ public class CrimsonFlyEntity extends PathfinderMob {
     }
 
     public float getCrimsonFlyAttackDamage() {
-        return switch (this.level().getDifficulty()) {
-            case EASY -> 4.0F;
-            case HARD -> 9.0F;
-            default -> 6.0F;
-        };
+
+        switch (this.level.getDifficulty()) {
+
+            case EASY:
+                return 4.0F;
+
+            case HARD:
+                return 9.0F;
+
+            case NORMAL:
+            case PEACEFUL:
+            default:
+                return 6.0F;
+        }
     }
 
     public static class SeekHigherGroundGoal extends Goal {
 
         private final CrimsonFlyEntity fly;
+
         private BlockPos targetPos;
+
         private int cooldown;
 
         public SeekHigherGroundGoal(
@@ -182,12 +195,13 @@ public class CrimsonFlyEntity extends PathfinderMob {
                     continue;
                 }
 
-                if (this.fly.level().isEmptyBlock(candidate)
-                        && this.fly.level().isEmptyBlock(
+                if (this.fly.level.isEmptyBlock(candidate)
+                        && this.fly.level.isEmptyBlock(
                                 candidate.above()
                         )) {
 
                     this.targetPos = candidate;
+
                     return true;
                 }
             }
@@ -231,6 +245,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
         public void stop() {
 
             this.targetPos = null;
+
             this.fly.getNavigation().stop();
         }
     }
@@ -238,6 +253,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
     public static class CrimsonFlyMeleeAttackGoal extends Goal {
 
         private final CrimsonFlyEntity fly;
+
         private int attackCooldown;
 
         public CrimsonFlyMeleeAttackGoal(
@@ -275,6 +291,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
         @Override
         public void start() {
+
             this.attackCooldown = 0;
         }
 
@@ -319,7 +336,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
                         this.fly.getCrimsonFlyAttackDamage();
 
                 target.hurt(
-                        this.fly.damageSources().mobAttack(this.fly),
+                        DamageSource.mobAttack(this.fly),
                         damage
                 );
 
@@ -331,7 +348,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
     }
 
     @Mod.EventBusSubscriber(
-            modid = "sakalti",
+            modid = MODID,
             bus = Mod.EventBusSubscriber.Bus.MOD
     )
     public static class AttributeHandler {
@@ -350,6 +367,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
     }
 
     public static void register(IEventBus eventBus) {
+
         ENTITIES.register(eventBus);
     }
 }
