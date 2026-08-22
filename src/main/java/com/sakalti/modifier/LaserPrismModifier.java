@@ -12,17 +12,19 @@ import java.util.List;
 public class LaserPrismModifier extends Modifier {
 
     public LaserPrismModifier() {
-        super(0x00FFFF);
+        super(0x00FFFF); // レーザー: シアン
     }
 
     /**
-     * 近接攻撃がヒットした後に発動 (1.16.5仕様)
+     * 近接攻撃がヒットした後に発動 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
+        
         if (attacker != null) {
-            applyLaserPrismEffect(attacker.level, attacker, level);
+            // attacker.level ではなく getCommandSenderWorld() を使用
+            applyLaserPrismEffect(attacker.getCommandSenderWorld(), attacker, level);
         }
         return 0; // 1.16.5 では int を返します
     }
@@ -34,7 +36,8 @@ public class LaserPrismModifier extends Modifier {
      * @param level Traitレベル
      */
     public static void applyLaserPrismEffect(World world, LivingEntity source, int level) {
-        if (world == null || world.isClientSide() || source == null || level <= 0) return;
+        // isClientSide() ではなく isClientSide (フィールド) を使用
+        if (world == null || world.isClientSide || source == null || level <= 0) return;
 
         double radius = 8.0D + level;
         float damage = 1.0F * level;
@@ -46,7 +49,7 @@ public class LaserPrismModifier extends Modifier {
         );
 
         for (LivingEntity target : nearbyEntities) {
-            // レーザー風ダメージとして魔法ダメージ(MAGIC)や火炎(ON_FIRE)を使用
+            // レーザー風ダメージとして魔法ダメージ(MAGIC)を使用
             target.hurt(DamageSource.MAGIC, damage);
         }
     }
