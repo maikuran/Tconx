@@ -11,48 +11,59 @@ public final class ModCreativeTabs {
 
     public static final ItemGroup SAKALTI_TAB = new ItemGroup("sakalti") {
 
-        
+        @Override
         public ItemStack makeIcon() {
             return new ItemStack(ModMetals.SEIREN_INGOT.get());
         }
 
-        
+        @Override
         public ITextComponent getDisplayName() {
             return new TranslationTextComponent("itemGroup.sakalti");
         }
 
-        // 1.16.5でのメソッド名は fillItemList です
-        // ※各アイテム定義側で .group(ModCreativeTabs.SAKALTI_TAB) を指定していれば、
-        // この fillItemList をオーバーライドして手動追加する必要は通常ありません。
-        
+        @Override
         public void fillItemList(NonNullList<ItemStack> items) {
+            // HACHILITE シリーズ
             items.add(new ItemStack(ModMetals.HACHILITE_ORE.get()));
             items.add(new ItemStack(ModMetals.HACHILITE_BLOCK.get()));
-            items.add(new ItemStack(ModMetals.HIROLITE_ORE.get()));
-            items.add(new ItemStack(ModMetals.OURITE_ORE.get()));
             items.add(new ItemStack(ModMetals.HACHILITE_RAW.get()));
             items.add(new ItemStack(ModMetals.HACHILITE_INGOT.get()));
 
+            // HIROLITE シリーズ（BLOCK / INGOT 追加）
+            items.add(new ItemStack(ModMetals.HIROLITE_ORE.get()));
+            items.add(new ItemStack(ModMetals.HIROLITE_BLOCK.get()));
+            items.add(new ItemStack(ModMetals.HIROLITE_INGOT.get()));
+
+            // OURITE シリーズ（BLOCK / INGOT 追加）
+            items.add(new ItemStack(ModMetals.OURITE_ORE.get()));
+            items.add(new ItemStack(ModMetals.OURITE_BLOCK.get()));
+            items.add(new ItemStack(ModMetals.OURITE_INGOT.get()));
+
+            // KANILITE シリーズ
             items.add(new ItemStack(ModMetals.KANILITE_ORE.get()));
             items.add(new ItemStack(ModMetals.KANILITE_BLOCK.get()));
             items.add(new ItemStack(ModMetals.KANILITE_RAW.get()));
             items.add(new ItemStack(ModMetals.KANILITE_INGOT.get()));
 
+            // IGNIZ シリーズ
             items.add(new ItemStack(ModMetals.IGNIZ_ORE.get()));
             items.add(new ItemStack(ModMetals.IGNIZ_BLOCK.get()));
             items.add(new ItemStack(ModMetals.IGNIZ_RAW.get()));
             items.add(new ItemStack(ModMetals.IGNIZ_INGOT.get()));
 
+            // CHIRITE シリーズ
             items.add(new ItemStack(ModMetals.CHIRITE_ORE.get()));
             items.add(new ItemStack(ModMetals.CHIRITE_BLOCK.get()));
             items.add(new ItemStack(ModMetals.CHIRITE_RAW.get()));
             items.add(new ItemStack(ModMetals.CHIRITE_INGOT.get()));
 
+            // MOMONGAITE シリーズ
             items.add(new ItemStack(ModMetals.MOMONGAITE_ORE.get()));
             items.add(new ItemStack(ModMetals.MOMONGAITE_BLOCK.get()));
             items.add(new ItemStack(ModMetals.MOMONGAITE_RAW.get()));
             items.add(new ItemStack(ModMetals.MOMONGAITE_INGOT.get()));
 
+            // その他
             items.add(new ItemStack(HealthCrystals.HEALTH_CRYSTAL.get()));
 
             items.add(new ItemStack(ModMetals.HERDYEEN_BLOCK.get()));
