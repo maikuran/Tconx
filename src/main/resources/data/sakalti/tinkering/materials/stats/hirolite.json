@@ -2,53 +2,53 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.024,
-      "durability": 0.024,
-      "melee_damage": 0.32
+      "accuracy": 0.018,
+      "durability": 0.018,
+      "melee_damage": 0.176
     },
     "tconstruct:handle": {
-      "durability": 0.071,
-      "melee_damage": 0.179,
-      "melee_speed": -0.025,
-      "mining_speed": -0.025
+      "durability": 0.053,
+      "melee_damage": 0.116,
+      "melee_speed": -0.017,
+      "mining_speed": -0.017
     },
     "tconstruct:head": {
-      "durability": 321.35,
-      "melee_attack": 1.032,
-      "mining_speed": 1.624,
+      "durability": 250,
+      "melee_attack": 0.568,
+      "mining_speed": 1.056,
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": -0.107,
-      "draw_speed": -0.178,
-      "durability": 321.35,
-      "velocity": 0.017
+      "accuracy": -0.08,
+      "draw_speed": -0.134,
+      "durability": 250,
+      "velocity": 0.012
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 0.467,
-      "durability": 158.154,
-      "toughness": 0.96
+      "armor": 0.28,
+      "durability": 110.708,
+      "toughness": 0.672
     },
     "tconstruct:plating_chestplate": {
-      "armor": 1.477,
-      "durability": 206.726,
-      "toughness": 0.96
+      "armor": 0.886,
+      "durability": 144.708,
+      "toughness": 0.672
     },
     "tconstruct:plating_helmet": {
-      "armor": 0.467,
-      "durability": 147.23,
-      "toughness": 0.96
+      "armor": 0.28,
+      "durability": 103.061,
+      "toughness": 0.672
     },
     "tconstruct:plating_leggings": {
-      "armor": 1.05,
-      "durability": 184.709,
-      "toughness": 0.96
+      "armor": 0.63,
+      "durability": 129.296,
+      "toughness": 0.672
     },
     "tconstruct:plating_shield": {
-      "durability": 216.09,
-      "toughness": 1.037,
-      "knockback_resistance": 0.004
+      "durability": 151.263,
+      "toughness": 0.622,
+      "knockback_resistance": 0.001
     }
   }
 }

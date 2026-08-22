@@ -2,54 +2,54 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.071,
-      "durability": 0.214,
-      "melee_damage": 0.201
+      "accuracy": 0.053,
+      "durability": 0.161,
+      "melee_damage": 0.111
     },
     "tconstruct:handle": {
-      "durability": 0.214,
-      "melee_damage": 0.014,
-      "melee_speed": 0.008,
-      "mining_speed": 0.008
+      "durability": 0.161,
+      "melee_damage": 0.009,
+      "melee_speed": 0.006,
+      "mining_speed": 0.006
     },
     "tconstruct:head": {
       "durability": 250,
-      "melee_attack": 0.931,
-      "mining_speed": 2.499,
+      "melee_attack": 0.512,
+      "mining_speed": 1.624,
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": 0.071,
-      "draw_speed": -0.024,
+      "accuracy": 0.053,
+      "draw_speed": -0.018,
       "durability": 250,
-      "velocity": 0.025
+      "velocity": 0.017
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 0.233,
-      "durability": 116.304,
-      "toughness": 0.96
+      "armor": 0.14,
+      "durability": 81.413,
+      "toughness": 0.672
     },
     "tconstruct:plating_chestplate": {
-      "armor": 0.7,
-      "durability": 167.229,
-      "toughness": 0.96,
+      "armor": 0.42,
+      "durability": 117.06,
+      "toughness": 0.672,
       "knockback_resistance": 10.5
     },
     "tconstruct:plating_helmet": {
-      "armor": 0.233,
-      "durability": 102.691,
-      "toughness": 0.96
+      "armor": 0.14,
+      "durability": 71.884,
+      "toughness": 0.672
     },
     "tconstruct:plating_leggings": {
-      "armor": 0.544,
-      "durability": 133.952,
-      "toughness": 0.96
+      "armor": 0.326,
+      "durability": 93.766,
+      "toughness": 0.672
     },
     "tconstruct:plating_shield": {
-      "durability": 168.07,
-      "toughness": 0.35,
-      "knockback_resistance": 0.004
+      "durability": 117.649,
+      "toughness": 0.21,
+      "knockback_resistance": 0.001
     }
   }
 }
