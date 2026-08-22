@@ -278,7 +278,7 @@ public final class ModOreGeneration {
                             GenerationStage.Decoration.UNDERGROUND_ORES
                     )
                     .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                        @Override
+                        
                         public ConfiguredFeature<?, ?> get() {
                             return createIgnizOre();
                         }
@@ -289,7 +289,7 @@ public final class ModOreGeneration {
                             GenerationStage.Decoration.UNDERGROUND_ORES
                     )
                     .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                        @Override
+                        
                         public ConfiguredFeature<?, ?> get() {
                             return createMomongaiteOre();
                         }
@@ -309,7 +309,7 @@ public final class ModOreGeneration {
                             GenerationStage.Decoration.UNDERGROUND_ORES
                     )
                     .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                        @Override
+                        
                         public ConfiguredFeature<?, ?> get() {
                             return createOuriteOre();
                         }
@@ -320,7 +320,7 @@ public final class ModOreGeneration {
                             GenerationStage.Decoration.UNDERGROUND_ORES
                     )
                     .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                        @Override
+                        
                         public ConfiguredFeature<?, ?> get() {
                             return createHiroliteOre();
                         }
@@ -338,7 +338,7 @@ public final class ModOreGeneration {
                         GenerationStage.Decoration.UNDERGROUND_ORES
                 )
                 .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                    @Override
+                    
                     public ConfiguredFeature<?, ?> get() {
                         return createKaniliteOre();
                     }
@@ -349,7 +349,7 @@ public final class ModOreGeneration {
                         GenerationStage.Decoration.UNDERGROUND_ORES
                 )
                 .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                    @Override
+                    
                     public ConfiguredFeature<?, ?> get() {
                         return createHachiliteOre();
                     }
@@ -360,7 +360,7 @@ public final class ModOreGeneration {
                         GenerationStage.Decoration.UNDERGROUND_ORES
                 )
                 .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                    @Override
+                    
                     public ConfiguredFeature<?, ?> get() {
                         return createChiriteOre();
                     }
