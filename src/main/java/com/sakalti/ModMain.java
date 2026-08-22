@@ -1,10 +1,10 @@
 package com.sakalti;
 
 import com.sakalti.entity.CrimsonFlyEntity;
-import com.sakalti.scaling.HealthCrystals;
+import com.sakalti.entity.ModSpawns;
 import com.sakalti.modifier.TconxModifiers;
+import com.sakalti.scaling.HealthCrystals;
 
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -38,13 +38,19 @@ public final class ModMain {
         CrimsonFlyEntity.register(modEventBus);
 
         // ============================================================
+        // Entity attributes / spawn
+        // ============================================================
+
+        // ModSpawns は @Mod.EventBusSubscriber で自動登録される
+
+        // ============================================================
         // Health Crystals
         // ============================================================
 
         HealthCrystals.register(modEventBus);
 
         // ============================================================
-        // TConX Modifiers
+        // TConX modifiers
         // ============================================================
 
         TconxModifiers.MODIFIERS.register(modEventBus);
@@ -56,19 +62,9 @@ public final class ModMain {
         ModTiers.SUPER.getUses();
 
         // ============================================================
-        // Ore Generation - Common Setup
+        // Ore generation
         // ============================================================
 
-        modEventBus.addListener(
-                ModOreGeneration::setup
-        );
-
-        // ============================================================
-        // Ore Generation - Biome Loading
-        // ============================================================
-
-        MinecraftForge.EVENT_BUS.register(
-                ModOreGeneration.class
-        );
+        ModOreGeneration.register();
     }
 }
