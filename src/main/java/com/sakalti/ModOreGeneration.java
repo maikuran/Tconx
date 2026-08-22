@@ -52,17 +52,20 @@ public class ModOreGeneration {
         ORE_KANILITE = register("ore_kanilite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_STONE, ModMetals.KANILITE_ORE.get().defaultBlockState(), 6))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 50)))
-            .square().count(6));
+            .decorated(Placement.SQUARE)
+            .count(6));
 
         ORE_HACHILITE = register("ore_hachilite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_STONE, ModMetals.HACHILITE_ORE.get().defaultBlockState(), 8))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 64)))
-            .square().count(8));
+            .decorated(Placement.SQUARE)
+            .count(8));
 
         ORE_CHIRITE = register("ore_chirite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_STONE, ModMetals.CHIRITE_ORE.get().defaultBlockState(), 6))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 31)))
-            .square().count(9));
+            .decorated(Placement.SQUARE)
+            .count(9));
 
         // ------------------------------------------------------------
         // Nether
@@ -70,12 +73,14 @@ public class ModOreGeneration {
         ORE_IGNIZ = register("ore_igniz", Feature.ORE
             .configured(new OreFeatureConfig(BASE_NETHER, ModMetals.IGNIZ_ORE.get().defaultBlockState(), 5))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 110)))
-            .square().count(4));
+            .decorated(Placement.SQUARE)
+            .count(4));
 
         ORE_MOMONGAITE = register("ore_momongaite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_NETHER, ModMetals.MOMONGAITE_ORE.get().defaultBlockState(), 6))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 110)))
-            .square().count(5));
+            .decorated(Placement.SQUARE)
+            .count(5));
 
         // ------------------------------------------------------------
         // The End
@@ -83,12 +88,14 @@ public class ModOreGeneration {
         ORE_OURITE = register("ore_ourite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_END, ModMetals.OURITE_ORE.get().defaultBlockState(), 2))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 70)))
-            .square().count(1));
+            .decorated(Placement.SQUARE)
+            .count(1));
 
         ORE_HIROLITE = register("ore_hirolite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_END, ModMetals.HIROLITE_ORE.get().defaultBlockState(), 3))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 70)))
-            .square().count(2));
+            .decorated(Placement.SQUARE)
+            .count(2));
     }
 
     /**
@@ -105,7 +112,7 @@ public class ModOreGeneration {
         // 1. ネザーバイオーム
         if (event.getCategory() == Biome.Category.NETHER) {
             event.getGeneration().getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES).add(new Supplier<ConfiguredFeature<?, ?>>() {
-                
+                @Override
                 public ConfiguredFeature<?, ?> get() {
                     return ORE_IGNIZ;
                 }
