@@ -16,15 +16,15 @@ import java.util.List;
 public class CelestiteResonanceModifier extends Modifier {
 
     public CelestiteResonanceModifier() {
-        super(0x9933FF);
+        super(0x9933FF); // 天青石: バイオレット
     }
 
     /**
-     * ダメージ計算時：対象の体力比例でボーナスダメージ（最大+50%）
+     * ダメージ計算時：対象の体力比例でボーナスダメージ（最大+50%） (1.16.5 TCon 3.x 仕様)
      */
-    
-    public float getEntityDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
-        LivingEntity target = context.getTarget();
+    @Override
+    public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
+        LivingEntity target = context.getLivingTarget();
         if (target != null) {
             // 対象の現在HPの割合に応じてダメージ倍率アップ（タフなボスほど強い）
             float healthRatio = target.getHealth() / target.getMaxHealth();
@@ -35,48 +35,50 @@ public class CelestiteResonanceModifier extends Modifier {
     }
 
     /**
-     * 攻撃ヒット後：青い衝撃波を周囲に放ち、範囲追撃
+     * 攻撃ヒット後：青い衝撃波を周囲に放ち、範囲追撃 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
-        LivingEntity target = context.getTarget();
+        LivingEntity target = context.getLivingTarget();
         LivingEntity attacker = context.getAttacker();
 
-        if (target != null && attacker != null && !target.level.isClientSide()) {
-            World world = target.level;
+        if (target != null && attacker != null) {
+            World world = attacker.getCommandSenderWorld();
 
-            // 青い炎・青い光の粒子エフェクトを周囲に展開
-            if (world instanceof ServerWorld) {
-                ServerWorld serverWorld = (ServerWorld) world;
-                
-                // 青い炎のリング演出
-                for (int i = 0; i < 16; i++) {
-                    double angle = i * Math.PI / 8;
-                    double x = target.getX() + Math.cos(angle) * 2.5D;
-                    double z = target.getZ() + Math.sin(angle) * 2.5D;
-                    serverWorld.sendParticles(
-                            ParticleTypes.SOUL_FIRE_FLAME,
-                            x, target.getY() + 0.5D, z,
-                            2, 0.1, 0.2, 0.1, 0.02
-                    );
+            if (!world.isClientSide) {
+                // 青い炎・青い光の粒子エフェクトを周囲に展開
+                if (world instanceof ServerWorld) {
+                    ServerWorld serverWorld = (ServerWorld) world;
+                    
+                    // 青い炎のリング演出
+                    for (int i = 0; i < 16; i++) {
+                        double angle = i * Math.PI / 8;
+                        double x = target.getX() + Math.cos(angle) * 2.5D;
+                        double z = target.getZ() + Math.sin(angle) * 2.5D;
+                        serverWorld.sendParticles(
+                                ParticleTypes.SOUL_FIRE_FLAME,
+                                x, target.getY() + 0.5D, z,
+                                2, 0.1, 0.2, 0.1, 0.02
+                        );
+                    }
                 }
-            }
 
-            // 周囲 3.5m 以内の敵に青い共鳴追撃（防御無視ダメージ）
-            double range = 3.5D;
-            AxisAlignedBB area = target.getBoundingBox().inflate(range);
-            List<LivingEntity> nearbyEnemies = world.getEntitiesOfClass(
-                    LivingEntity.class, area,
-                    e -> e != attacker && e != target && e.isAlive()
-            );
+                // 周囲 3.5m 以内の敵に青い共鳴追撃（防御無視ダメージ）
+                double range = 3.5D;
+                AxisAlignedBB area = target.getBoundingBox().inflate(range);
+                List<LivingEntity> nearbyEnemies = world.getEntitiesOfClass(
+                        LivingEntity.class, area,
+                        e -> e != attacker && e != target && e.isAlive()
+                );
 
-            float splashDamage = damageDealt * (0.20f * level); // 1回あたりの威力の20%*レベルを撒き散らす
-            DamageSource soulDamage = (attacker instanceof PlayerEntity) 
-                    ? DamageSource.playerAttack((PlayerEntity) attacker).bypassArmor() 
-                    : DamageSource.mobAttack(attacker).bypassArmor();
+                float splashDamage = damageDealt * (0.20f * level); // 1回あたりの威力の20%*レベルを撒き散らす
+                DamageSource soulDamage = (attacker instanceof PlayerEntity) 
+                        ? DamageSource.playerAttack((PlayerEntity) attacker).bypassArmor() 
+                        : DamageSource.mobAttack(attacker).bypassArmor();
 
-            for (LivingEntity enemy : nearbyEnemies) {
-                enemy.hurt(soulDamage, splashDamage);
+                for (LivingEntity enemy : nearbyEnemies) {
+                    enemy.hurt(soulDamage, splashDamage);
+                }
             }
         }
 
