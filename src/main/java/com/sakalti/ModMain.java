@@ -37,10 +37,5 @@ public final class ModMain {
         modEventBus.addListener(this::setup);
     } // <-- コンストラクタはここで閉じます！
 
-    // setup メソッドはコンストラクタの外側に配置します
-    private void setup(final FMLCommonSetupEvent event) {
-        event.enqueueWork(() -> {
-            ModOreGeneration.registerConfiguredFeatures();
-        });
     }
 }
