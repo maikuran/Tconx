@@ -11,12 +11,12 @@ public final class ModCreativeTabs {
 
     public static final ItemGroup SAKALTI_TAB = new ItemGroup("sakalti") {
 
-        @Override
+        
         public ItemStack makeIcon() {
             return new ItemStack(ModMetals.SEIREN_INGOT.get());
         }
 
-        @Override
+        
         public ITextComponent getDisplayName() {
             return new TranslationTextComponent("itemGroup.sakalti");
         }
@@ -24,7 +24,7 @@ public final class ModCreativeTabs {
         // 1.16.5でのメソッド名は fillItemList です
         // ※各アイテム定義側で .group(ModCreativeTabs.SAKALTI_TAB) を指定していれば、
         // この fillItemList をオーバーライドして手動追加する必要は通常ありません。
-        @Override
+        
         public void fillItemList(NonNullList<ItemStack> items) {
             items.add(new ItemStack(ModMetals.HACHILITE_ORE.get()));
             items.add(new ItemStack(ModMetals.HACHILITE_BLOCK.get()));
