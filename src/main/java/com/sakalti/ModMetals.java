@@ -30,10 +30,10 @@ public final class ModMetals {
     // ============================================================
 
     public static final RegistryObject<Block> HIROLITE_ORE =
-            registerBlock("hirolite_ore", 3.0F);
+            registerBlock("hirolite_ore", 41.0F);
 
     public static final RegistryObject<Block> OURITE_ORE =
-            registerBlock("ourite_ore", 3.0F);
+            registerBlock("ourite_ore", 44.0F);
 
     public static final RegistryObject<Block> HACHILITE_ORE =
             registerBlock("hachilite_ore", 3.0F);
