@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.TargetGoal;
 import net.minecraft.entity.ai.goal.LookAtGoal;
 import net.minecraft.entity.ai.goal.LookRandomlyGoal;
 import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
@@ -110,9 +110,21 @@ public class CrimsonFlyEntity extends FlyingEntity {
                 new LookRandomlyGoal(this)
         );
 
+        // 飛行モブに対応した被弾時反撃Goal（TargetGoalを継承）
         this.targetSelector.addGoal(
                 1,
-                new HurtByTargetGoal(this)
+                new TargetGoal(this, true) {
+                    {
+                        this.setFlags(EnumSet.of(Flag.TARGET));
+                    }
+                    public boolean canUse() {
+                        return this.mob.getLastHurtByMob() != null && this.canAttack(this.mob.getLastHurtByMob(), net.minecraft.entity.EntityPredicate.DEFAULT);
+                    }
+                    public void start() {
+                        this.mob.setTarget(this.mob.getLastHurtByMob());
+                        super.start();
+                    }
+                }
         );
 
         this.targetSelector.addGoal(
