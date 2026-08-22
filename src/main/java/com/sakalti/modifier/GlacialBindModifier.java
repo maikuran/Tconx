@@ -9,19 +9,19 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 public class GlacialBindModifier extends Modifier {
 
-    public GlacialBindModifier(int color) {
-        super(color);
+    public GlacialBindModifier() {
+        super(); // 1.16.5 では引数なしのコンストラクタ
     }
 
     /**
      * 近接攻撃がヒットした後に発動 (1.16.5仕様)
      */
-    
-    public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
+    @Override
+    public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity target = context.getTarget();
 
         // サーバー側かつ攻撃対象が存在する場合のみ処理
-        if (target != null && !target.level.isClientSide) {
+        if (target != null && !target.level.isClientSide()) {
 
             int fixedLevel = 3; // レベル固定
             int durationTicks = 20 * 3 * fixedLevel;  // 180 ticks (9秒)
@@ -31,5 +31,7 @@ public class GlacialBindModifier extends Modifier {
             EffectInstance slowness = new EffectInstance(Effects.MOVEMENT_SLOWDOWN, durationTicks, amplifier);
             target.addEffect(slowness);
         }
+
+        return 0; // 1.16.5 では int を返します
     }
 }
