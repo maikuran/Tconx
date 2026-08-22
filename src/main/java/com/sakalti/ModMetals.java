@@ -1,31 +1,25 @@
-
 package com.sakalti;
 
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 public final class ModMetals {
 
     public static final String MODID = "sakalti";
 
     public static final DeferredRegister<Block> BLOCKS =
-            DeferredRegister.create(
-                    ForgeRegistries.BLOCKS,
-                    MODID
-            );
+            DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 
     public static final DeferredRegister<Item> ITEMS =
-            DeferredRegister.create(
-                    ForgeRegistries.ITEMS,
-                    MODID
-            );
+            DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
 
     private ModMetals() {
     }
@@ -221,49 +215,26 @@ public final class ModMetals {
 
 
     // ============================================================
-    // Block registration helper
+    // Helper methods (1.16.5 Adapted)
     // ============================================================
 
-    private static RegistryObject<Block> registerBlock(
-            String name,
-            float strength
-    ) {
-        RegistryObject<Block> block =
-                BLOCKS.register(
-                        name,
-                        () -> new Block(
-                                BlockBehaviour.Properties
-                                        .of()
-                                        .strength(strength)
-                                        .requiresCorrectToolForDrops()
-                        )
-                );
+    private static RegistryObject<Block> registerBlock(String name, float strength) {
+        RegistryObject<Block> block = BLOCKS.register(name, () -> new Block(
+                AbstractBlock.Properties.create(Material.ROCK)
+                        .hardnessAndResistance(strength)
+                        .harvestTool(net.minecraftforge.common.ToolType.PICKAXE)
+                        .setRequiresTool()
+        ));
 
-        ITEMS.register(
-                name,
-                () -> new BlockItem(
-                        block.get(),
-                        new Item.Properties()
-                )
-        );
+        // BlockItem 登録時に Supplier（() -> block.get()）を使うことで
+        // NullPointerException（クラッシュ）を防ぎます
+        ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
 
         return block;
     }
 
-
-    // ============================================================
-    // Item registration helper
-    // ============================================================
-
-    private static RegistryObject<Item> registerItem(
-            String name
-    ) {
-        return ITEMS.register(
-                name,
-                () -> new Item(
-                        new Item.Properties()
-                )
-        );
+    private static RegistryObject<Item> registerItem(String name) {
+        return ITEMS.register(name, () -> new Item(new Item.Properties()));
     }
 
 
@@ -271,9 +242,7 @@ public final class ModMetals {
     // Register
     // ============================================================
 
-    public static void register(
-            IEventBus eventBus
-    ) {
+    public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
         ITEMS.register(eventBus);
     }
