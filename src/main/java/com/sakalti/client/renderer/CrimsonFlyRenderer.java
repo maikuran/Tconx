@@ -25,7 +25,7 @@ public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
         this.shadowSize = 0.35F;
     }
 
-    @Override
+    
     public void render(
             CrimsonFlyEntity entity,
             float entityYaw,
@@ -75,7 +75,7 @@ public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
         );
     }
 
-    @Override
+    
     public ResourceLocation getTextureLocation(CrimsonFlyEntity entity) {
         return TEXTURE;
     }
