@@ -25,7 +25,7 @@ public class BerserkModifier extends Modifier {
      * @param damage 現在計算中の与ダメージ
      * @return 修正後のダメージ
      */
-    
+    @Override
     public float getEntityDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 

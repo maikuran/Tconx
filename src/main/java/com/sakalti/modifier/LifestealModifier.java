@@ -14,7 +14,7 @@ public class LifestealModifier extends Modifier {
     /**
      * 近接攻撃がヒットした後に発動 (1.16.5仕様)
      */
-    
+    @Override
     public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
 

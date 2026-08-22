@@ -18,7 +18,7 @@ public class AuroVisionModifier extends Modifier {
     /**
      * 近接攻撃がヒットした後に発動（1.16.5のTCon仕様）
      */
-    
+    @Override
     public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
         
@@ -39,7 +39,7 @@ public class AuroVisionModifier extends Modifier {
     /**
      * 持っている間の毎tick処理
      */
-    
+    @Override
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity entity, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         // ツールが壊れておらず、手に持っている時
         if (!world.isClientSide && !tool.isBroken() && isSelected) {
