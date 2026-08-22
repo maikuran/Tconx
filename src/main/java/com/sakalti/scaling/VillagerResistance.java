@@ -1,10 +1,9 @@
 package com.sakalti.scaling;
 
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.npc.Villager;
-import net.minecraft.world.level.entity.EntityTypeTest;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.entity.merchant.villager.VillagerEntity;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Effects;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -15,32 +14,33 @@ import net.minecraftforge.fml.common.Mod;
 )
 public final class VillagerResistance {
 
-    private VillagerResistance() {}
+    private VillagerResistance() {
+    }
 
     @SubscribeEvent
     public static void onLevelTick(
-            TickEvent.LevelTickEvent event
+            TickEvent.WorldTickEvent event
     ) {
 
         if (event.phase != TickEvent.Phase.END) {
             return;
         }
 
-        if (event.level.isClientSide()) {
+        if (event.world.isClientSide()) {
             return;
         }
 
         /*
          * 1秒ごとに更新
          */
-        if (event.level.getGameTime() % 20 != 0) {
+        if (event.world.getGameTime() % 20 != 0) {
             return;
         }
 
         /*
          * 現在のDimension内の広範囲を検索
          */
-        AABB area = new AABB(
+        AxisAlignedBB area = new AxisAlignedBB(
                 -30000000,
                 -2048,
                 -30000000,
@@ -49,9 +49,9 @@ public final class VillagerResistance {
                 30000000
         );
 
-        for (Villager villager :
-                event.level.getEntities(
-                        EntityTypeTest.forClass(Villager.class),
+        for (VillagerEntity villager :
+                event.world.getEntitiesOfClass(
+                        VillagerEntity.class,
                         area,
                         villager -> true
                 )) {
@@ -63,8 +63,8 @@ public final class VillagerResistance {
              * 100tick = 5秒
              */
             villager.addEffect(
-                    new MobEffectInstance(
-                            MobEffects.DAMAGE_RESISTANCE,
+                    new EffectInstance(
+                            Effects.DAMAGE_RESISTANCE,
                             100,
                             4,
                             false,
