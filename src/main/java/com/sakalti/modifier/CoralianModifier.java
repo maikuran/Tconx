@@ -14,7 +14,7 @@ public class CoralianModifier extends Modifier {
         super(); // 1.16.5 では引数なしのコンストラクタを使用します
     }
 
-    @Override
+    
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity entity, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         // ツールが破損しておらず、メイン手またはオフ手に持っている場合（isSelected）
         if (!world.isClientSide() && !tool.isBroken() && isSelected) {
