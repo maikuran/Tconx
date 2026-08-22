@@ -4,9 +4,9 @@ import com.sakalti.modifier.TconxModifiers;
 import com.sakalti.entity.*;
 import com.sakalti.scaling.HealthCrystals;
 
-
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent; // インポート追加
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ModMain.MODID)
@@ -23,20 +23,23 @@ public final class ModMain {
 
         // 溶融液体
         ModFluids.register(modEventBus);
-        CrimsonFlyEntity.register(FMLJavaModLoadingContext.get().getModEventBus());
+        CrimsonFlyEntity.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         HealthCrystals.register(modEventBus);
-        // エンチャント
         
-
         // TConX modifier
         TconxModifiers.MODIFIERS.register(modEventBus);
 
         // ModTiers の static 初期化を確実に実行
         ModTiers.SUPER.getUses();
-        private void setup(final FMLCommonSetupEvent event) {
-        // Featureの登録を実行（スレッドセーフにするため enqueueWork 内で行うのが推奨されます）
-          event.enqueueWork(() -> {
+
+        // setup イベントリスナーを登録
+        modEventBus.addListener(this::setup);
+    } // <-- コンストラクタはここで閉じます！
+
+    // setup メソッドはコンストラクタの外側に配置します
+    private void setup(final FMLCommonSetupEvent event) {
+        event.enqueueWork(() -> {
             ModOreGeneration.registerConfiguredFeatures();
         });
     }
