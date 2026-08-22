@@ -1,7 +1,5 @@
 {
   "variants": {
-    "": {
-      "model": "sakalti:block/hachilite_block"
-    }
+    "": { "model": "sakalti:block/hachilite_block" }
   }
 }
