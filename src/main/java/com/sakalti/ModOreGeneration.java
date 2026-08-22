@@ -52,7 +52,7 @@ public final class ModOreGeneration {
     public static void setup(net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) {
 
         event.enqueueWork(new Runnable() {
-            @Override
+            
             public void run() {
 
                 ORE_KANILITE = register(
@@ -306,7 +306,7 @@ public final class ModOreGeneration {
                 )
                 .add(
                         new Supplier<ConfiguredFeature<?, ?>>() {
-                            @Override
+                            
                             public ConfiguredFeature<?, ?> get() {
                                 return feature;
                             }
