@@ -7,19 +7,19 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 public class LifestealModifier extends Modifier {
 
-    public LifestealModifier(int color) {
-        super(color);
+    public LifestealModifier() {
+        super(); // 1.16.5 では引数なしのコンストラクタ
     }
 
     /**
      * 近接攻撃がヒットした後に発動 (1.16.5仕様)
      */
-    
-    public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
+    @Override
+    public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
 
         // サーバー側かつ攻撃者が存在する場合のみ処理
-        if (attacker != null && !attacker.level.isClientSide && level > 0) {
+        if (attacker != null && !attacker.level.isClientSide() && level > 0) {
 
             float maxHealth = attacker.getMaxHealth();
             
@@ -28,5 +28,7 @@ public class LifestealModifier extends Modifier {
 
             attacker.heal(healAmount);
         }
+
+        return 0; // 1.16.5 では int を返します
     }
 }
