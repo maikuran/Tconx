@@ -18,7 +18,7 @@ public class FireWallModifier extends Modifier {
     /**
      * 攻撃ヒット時にFireWall効果を呼び出す場合（1.16.5仕様）
      */
-    @Override
+    
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
         if (attacker != null) {
