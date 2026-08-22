@@ -9,19 +9,19 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 public class FieldyModifier extends Modifier {
 
-    public FieldyModifier(int color) {
-        super(color);
+    public FieldyModifier() {
+        super(); // 1.16.5 では引数なしのコンストラクタ
     }
 
     /**
      * 近接攻撃がヒットした後に発動 (1.16.5仕様)
      */
-    
-    public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
+    @Override
+    public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
 
         // サーバー側かつ攻撃者が存在する場合のみ処理
-        if (attacker != null && !attacker.level.isClientSide) {
+        if (attacker != null && !attacker.level.isClientSide()) {
 
             int durationTicks = 20 * 1; // 1秒持続
 
@@ -33,5 +33,7 @@ public class FieldyModifier extends Modifier {
             attacker.addEffect(glow);
             attacker.addEffect(bar);
         }
+
+        return 0; // 1.16.5 では int を返します
     }
 }
