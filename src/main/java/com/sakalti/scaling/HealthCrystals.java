@@ -1,16 +1,16 @@
 package com.sakalti.scaling;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.ai.attributes.AttributeInstance;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -23,7 +23,8 @@ import java.util.UUID;
 
 public final class HealthCrystals {
 
-    private HealthCrystals() {}
+    private HealthCrystals() {
+    }
 
     public static final String MOD_ID = "sakalti";
 
@@ -58,10 +59,10 @@ public final class HealthCrystals {
                     ) {
 
                         @Override
-                        public InteractionResultHolder<ItemStack> use(
-                                Level level,
-                                Player player,
-                                InteractionHand hand
+                        public ActionResult<ItemStack> use(
+                                World world,
+                                PlayerEntity player,
+                                Hand hand
                         ) {
 
                             ItemStack stack =
@@ -70,9 +71,9 @@ public final class HealthCrystals {
                             /*
                              * クライアントでは処理しない
                              */
-                            if (!level.isClientSide()) {
+                            if (!world.isClientSide) {
 
-                                CompoundTag data =
+                                CompoundNBT data =
                                         player.getPersistentData();
 
                                 /*
@@ -118,21 +119,18 @@ public final class HealthCrystals {
                                 /*
                                  * クリスタルを1個消費
                                  */
-                                if (!player.getAbilities()
-                                        .instabuild) {
-
+                                if (!player.abilities.instabuild) {
                                     stack.shrink(1);
                                 }
                             }
 
-                            return InteractionResultHolder.sidedSuccess(
+                            return ActionResult.sidedSuccess(
                                     stack,
-                                    level.isClientSide()
+                                    world.isClientSide
                             );
                         }
                     }
             );
-
 
     /*
      * =========================================================
@@ -141,7 +139,7 @@ public final class HealthCrystals {
      */
 
     private static void applyHealthCrystalBonus(
-            Player player,
+            PlayerEntity player,
             double bonus
     ) {
 
@@ -184,7 +182,6 @@ public final class HealthCrystals {
         );
     }
 
-
     /*
      * =========================================================
      * ログイン時に復元
@@ -197,17 +194,18 @@ public final class HealthCrystals {
     )
     public static final class Events {
 
-        private Events() {}
+        private Events() {
+        }
 
         @SubscribeEvent
         public static void onPlayerLogin(
                 PlayerEvent.PlayerLoggedInEvent event
         ) {
 
-            Player player =
-                    event.getEntity();
+            PlayerEntity player =
+                    event.getPlayer();
 
-            CompoundTag data =
+            CompoundNBT data =
                     player.getPersistentData();
 
             double bonus =
@@ -224,7 +222,6 @@ public final class HealthCrystals {
             }
         }
     }
-
 
     /*
      * =========================================================
