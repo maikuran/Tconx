@@ -11,44 +11,47 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 public class AuroVisionModifier extends Modifier {
 
-    public AuroVisionModifier(int color) {
-        super(color);
+    public AuroVisionModifier() {
+        super(); // 1.16.5 では引数なし
     }
 
     /**
-     * 近接攻撃がヒットした後に発動（1.16.5のTCon仕様）
+     * 近接攻撃がヒットした後の処理
+     * @return ヒット時のクールダウンや耐久度消費への影響数値を返します（基本は 0）
      */
-    
-    public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
+    @Override
+    public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
         LivingEntity attacker = context.getAttacker();
-        
-        // サーバー側かつ攻撃者が存在する場合のみ処理
-        if (!attacker.level.isClientSide) {
+
+        // サーバー側かつ攻撃者が存在する場合
+        if (attacker != null && !attacker.level.isClientSide()) {
             int durationTicks = 20; // 1秒
 
-            // Glowing V (amplifier = 4)
+            // 発光 V (Glowing V)
             EffectInstance glow = new EffectInstance(Effects.GLOWING, durationTicks, 4);
-            // Resistance V
+            // 耐性 V (Resistance V)
             EffectInstance resistance = new EffectInstance(Effects.DAMAGE_RESISTANCE, durationTicks, 4);
 
             attacker.addEffect(glow);
             attacker.addEffect(resistance);
         }
+
+        return 0; // 1.16.5 では int を返す必要があります
     }
 
     /**
-     * 持っている間の毎tick処理
+     * インベントリ内での毎Tick処理
      */
-    
+    @Override
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity entity, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
-        // ツールが壊れておらず、手に持っている時
-        if (!world.isClientSide && !tool.isBroken() && isSelected) {
+        // ツールが壊れておらず、手に持っている時（サーバー側）
+        if (!world.isClientSide() && !tool.isBroken() && isSelected) {
             EffectInstance nightVision = new EffectInstance(
                     Effects.NIGHT_VISION,
                     220,    // ちらつき防止の長め設定
                     0,
-                    true,   // ambient
-                    false   // showParticles
+                    true,   // ambient (枠線表示を抑える)
+                    false   // showParticles (パーティクル非表示)
             );
             entity.addEffect(nightVision);
         }
