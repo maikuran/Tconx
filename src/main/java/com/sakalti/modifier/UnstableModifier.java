@@ -17,7 +17,7 @@ public class UnstableModifier extends Modifier {
     /**
      * 近接攻撃のダメージ計算＆耐久消費 (1.16.5 TCon 3.x 仕様)
      */
-    @Override
+    
     public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
