@@ -34,6 +34,10 @@ public final class ModMain {
 
         // ModTiers の static 初期化を確実に実行
         ModTiers.SUPER.getUses();
-        
+        private void setup(final FMLCommonSetupEvent event) {
+        // Featureの登録を実行（スレッドセーフにするため enqueueWork 内で行うのが推奨されます）
+          event.enqueueWork(() -> {
+            ModOreGeneration.registerConfiguredFeatures();
+        });
     }
 }
