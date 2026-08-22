@@ -41,7 +41,8 @@ public class ModSpawns {
                     CrimsonFlyEntity.CRIMSON_FLY.get(),
                     EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
                     Heightmap.Type.MOTION_BLOCKING_NO_LEAVES,
-                    (entityType, world, spawnType, pos, random) -> MonsterEntity.checkMonsterSpawnRules(entityType, world, spawnType, pos, random)
+                    (EntityType<CrimsonFlyEntity> entityType, net.minecraft.world.IServerWorld world, net.minecraft.entity.SpawnReason spawnType, net.minecraft.util.math.BlockPos pos, java.util.Random random) -> 
+                        MonsterEntity.checkMonsterSpawnRules(entityType, world, spawnType, pos, random)
             );
         });
     }
