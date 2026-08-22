@@ -1,19 +1,32 @@
 package com.sakalti.modifier;
 
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
 import slimeknights.tconstruct.library.modifiers.Modifier;
-import slimeknights.tconstruct.library.tools.nbt.ToolStack;
+import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
+import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 public class LifestealModifier extends Modifier {
 
-    public void afterEntityHit(ToolStack tool, int level, LivingEntity target, LivingEntity attacker, float damage, boolean isCritical) {
-        if (attacker == null || level <= 0) return;
+    public LifestealModifier(int color) {
+        super(color);
+    }
 
-        float maxHealth = attacker.getMaxHealth();
-        
-        // 回復量 = 最大体力の8% × レベル
-        float healAmount = maxHealth * 0.08f * level;
+    /**
+     * 近接攻撃がヒットした後に発動 (1.16.5仕様)
+     */
+    @Override
+    public void afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
+        LivingEntity attacker = context.getAttacker();
 
-        attacker.heal(healAmount);
+        // サーバー側かつ攻撃者が存在する場合のみ処理
+        if (attacker != null && !attacker.level.isClientSide && level > 0) {
+
+            float maxHealth = attacker.getMaxHealth();
+            
+            // 回復量 = 最大体力の8% × レベル
+            float healAmount = maxHealth * 0.08f * level;
+
+            attacker.heal(healAmount);
+        }
     }
 }
