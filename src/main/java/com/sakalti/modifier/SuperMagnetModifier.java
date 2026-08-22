@@ -1,38 +1,49 @@
 package com.sakalti.modifier;
 
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
-import net.minecraft.world.phys.AABB;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.World;
 import slimeknights.tconstruct.library.modifiers.Modifier;
-import slimeknights.tconstruct.library.tools.nbt.ToolStack;
-import net.minecraft.world.level.Level;
+import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 import java.util.List;
 
 public class SuperMagnetModifier extends Modifier {
 
-    // 半径（引き寄せ範囲）を決める
+    // コンストラクタ（1.16.5ではカラーコード等を指定する親コンストラクタが一般的です）
+    public SuperMagnetModifier(int color) {
+        super(color);
+    }
+
     private static final double RADIUS = 6.0D;
     private static final double PULL_STRENGTH = 0.5D;
-    
-    public void onInventoryTick(ToolStack tool, int level, LivingEntity holder, boolean isSelected, boolean isHeld) {
-        // 手に持っている場合のみ発動
-        if (holder == null || holder.level().isClientSide) return;
 
-        Level world = holder.level();
-        AABB area = holder.getBoundingBox().inflate(RADIUS);
+    /**
+     * インベントリ内にある毎フレーム処理（1.16.5の引数仕様）
+     */
+    @Override
+    public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity holder, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
+        // クライアント側、または手に持っていない（isSelected == false）場合はスキップ
+        if (world.isClientSide || holder == null || !isSelected) {
+            return;
+        }
 
+        AxisAlignedBB area = holder.getBoundingBox().inflate(RADIUS);
+
+        // 拾い上げクールタイム中でないドロップアイテムを取得
         List<ItemEntity> items = world.getEntitiesOfClass(ItemEntity.class, area, item -> !item.hasPickUpDelay());
 
         for (ItemEntity item : items) {
             double dx = holder.getX() - item.getX();
-            double dy = holder.getY() + holder.getEyeHeight() / 2.0 - item.getY();
+            double dy = (holder.getY() + holder.getEyeHeight() / 2.0D) - item.getY();
             double dz = holder.getZ() - item.getZ();
             double distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
 
             // 一定距離内のみ引き寄せ
-            if (distance < RADIUS && distance > 0.5) {
-                double scale = PULL_STRENGTH / distance;
+            if (distance < RADIUS && distance > 0.5D) {
+                double scale = (PULL_STRENGTH * level) / distance; // レベルに応じて引き寄せ速度を変える場合は * level
                 item.setDeltaMovement(item.getDeltaMovement().add(dx * scale, dy * scale, dz * scale));
             }
         }
