@@ -2,56 +2,56 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.018,
+      "accuracy": 0.013,
       "durability": 0.0,
-      "melee_damage": 0.069
+      "melee_damage": 0.038
     },
     "tconstruct:handle": {
-      "durability": 0.08,
-      "melee_damage": 0.034,
-      "melee_speed": 0.053,
-      "mining_speed": 0.135
+      "durability": 0.06,
+      "melee_damage": 0.022,
+      "melee_speed": 0.037,
+      "mining_speed": 0.095
     },
     "tconstruct:head": {
       "durability": 250,
-      "melee_attack": 0.373,
-      "mining_speed": 1.056,
+      "melee_attack": 0.205,
+      "mining_speed": 1.0,
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": -0.018,
-      "draw_speed": -0.08,
+      "accuracy": -0.013,
+      "draw_speed": -0.06,
       "durability": 250,
-      "velocity": 0.029
+      "velocity": 0.02
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 0.187,
-      "durability": 66.354,
-      "toughness": 0.529
+      "armor": 0.112,
+      "durability": 50,
+      "toughness": 0.37
     },
     "tconstruct:plating_chestplate": {
-      "armor": 0.514,
-      "durability": 117.06,
+      "armor": 0.308,
+      "durability": 81.942,
       "knockback_resistance": 0.5,
-      "toughness": 0.529
+      "toughness": 0.37
     },
     "tconstruct:plating_helmet": {
-      "armor": 0.187,
-      "durability": 82.119,
+      "armor": 0.112,
+      "durability": 57.483,
       "knockback_resistance": 0.5,
-      "toughness": 0.529
+      "toughness": 0.37
     },
     "tconstruct:plating_leggings": {
-      "armor": 0.42,
-      "durability": 93.884,
+      "armor": 0.252,
+      "durability": 65.719,
       "knockback_resistance": 0.5,
-      "toughness": 0.529
+      "toughness": 0.37
     },
     "tconstruct:plating_shield": {
-      "durability": 144.708,
+      "durability": 101.296,
       "knockback_resistance": 0.0,
-      "toughness": 0.514
+      "toughness": 0.308
     }
   }
 }

@@ -2,53 +2,53 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.018,
+      "accuracy": 0.013,
       "durability": 0.0,
-      "melee_damage": 0.069
+      "melee_damage": 0.038
     },
     "tconstruct:handle": {
-      "durability": 0.178,
-      "melee_damage": 0.031,
-      "melee_speed": 0.017,
-      "mining_speed": 0.017
+      "durability": 0.134,
+      "melee_damage": 0.02,
+      "melee_speed": 0.012,
+      "mining_speed": 0.012
     },
     "tconstruct:head": {
       "durability": 250,
-      "melee_attack": 0.18,
+      "melee_attack": 0.099,
       "mining_speed": 1.0,
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": -0.035,
-      "draw_speed": -0.115,
+      "accuracy": -0.026,
+      "draw_speed": -0.086,
       "durability": 250,
-      "velocity": 0.017
+      "velocity": 0.012
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 0.093,
-      "durability": 54.589,
-      "toughness": 0.353
+      "armor": 0.056,
+      "durability": 50,
+      "toughness": 0.247
     },
     "tconstruct:plating_chestplate": {
-      "armor": 0.373,
-      "durability": 81.766,
+      "armor": 0.224,
+      "durability": 57.236,
       "knockback_resistance": 0.7,
-      "toughness": 0.235
+      "toughness": 0.164
     },
     "tconstruct:plating_helmet": {
-      "armor": 0.093,
-      "durability": 58.589,
-      "toughness": 0.235
+      "armor": 0.056,
+      "durability": 50,
+      "toughness": 0.164
     },
     "tconstruct:plating_leggings": {
-      "armor": 0.28,
-      "durability": 70.001,
-      "toughness": 0.235
+      "armor": 0.168,
+      "durability": 50,
+      "toughness": 0.164
     },
     "tconstruct:plating_shield": {
-      "durability": 129.414,
-      "toughness": 0.42
+      "durability": 100,
+      "toughness": 0.252
     }
   }
 }
