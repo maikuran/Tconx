@@ -3,11 +3,11 @@
     "tconstruct:binding": {},
     "tconstruct:grip": {
       "accuracy": 0.002,
-      "durability": 0.004,
+      "durability": 0.003,
       "melee_damage": 0.001
     },
     "tconstruct:handle": {
-      "durability": 0.004,
+      "durability": 0.003,
       "melee_damage": 0.001,
       "melee_speed": 0.001,
       "mining_speed": 0.001
@@ -28,23 +28,23 @@
     "tconstruct:plating_boots": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.006
+      "toughness": 0.004
     },
     "tconstruct:plating_chestplate": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.006,
+      "toughness": 0.004,
       "knockback_resistance": 10.5
     },
     "tconstruct:plating_helmet": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.006
+      "toughness": 0.004
     },
     "tconstruct:plating_leggings": {
       "armor": 0.001,
       "durability": 50,
-      "toughness": 0.006
+      "toughness": 0.004
     },
     "tconstruct:plating_shield": {
       "durability": 100,
