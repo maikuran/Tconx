@@ -1,10 +1,14 @@
 package com.sakalti;
 
 import net.minecraft.block.Blocks;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.ConfiguredFeature;
 import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
 import net.minecraft.world.gen.feature.template.RuleTest;
@@ -13,10 +17,15 @@ import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidRangeConfig;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.function.Supplier;
 
+@Mod.EventBusSubscriber(
+        modid = ModMain.MODID,
+        bus = Mod.EventBusSubscriber.Bus.MOD
+)
 public final class ModOreGeneration {
 
     private ModOreGeneration() {
@@ -36,295 +45,306 @@ public final class ModOreGeneration {
             new BlockMatchRuleTest(Blocks.END_STONE);
 
     // ============================================================
-    // 登録
+    // ConfiguredFeature
+    //
+    // ここでは絶対に ModMetals.xxx.get() を実行しない。
+    // setup() の enqueueWork 内で初期化する。
     // ============================================================
 
-    public static void register() {
-        MinecraftForge.EVENT_BUS.register(ModOreGeneration.class);
-    }
+    private static ConfiguredFeature<?, ?> ORE_KANILITE;
+    private static ConfiguredFeature<?, ?> ORE_HACHILITE;
+    private static ConfiguredFeature<?, ?> ORE_CHIRITE;
+
+    private static ConfiguredFeature<?, ?> ORE_IGNIZ;
+    private static ConfiguredFeature<?, ?> ORE_MOMONGAITE;
+
+    private static ConfiguredFeature<?, ?> ORE_OURITE;
+    private static ConfiguredFeature<?, ?> ORE_HIROLITE;
 
     // ============================================================
-    // Overworld
-    // ============================================================
-
-    private static ConfiguredFeature<?, ?> createKaniliteOre() {
-
-        return Feature.ORE
-                .configured(
-                        new OreFeatureConfig(
-                                BASE_STONE,
-                                ModMetals.KANILITE_ORE
-                                        .get()
-                                        .defaultBlockState(),
-                                6
-                        )
-                )
-                .decorated(
-                        Placement.RANGE.configured(
-                                new TopSolidRangeConfig(
-                                        10,
-                                        0,
-                                        50
-                                )
-                        )
-                )
-                .decorated(
-                        Placement.SQUARE.configured(
-                                NoPlacementConfig.INSTANCE
-                        )
-                )
-                .count(6);
-    }
-
-    private static ConfiguredFeature<?, ?> createHachiliteOre() {
-
-        return Feature.ORE
-                .configured(
-                        new OreFeatureConfig(
-                                BASE_STONE,
-                                ModMetals.HACHILITE_ORE
-                                        .get()
-                                        .defaultBlockState(),
-                                8
-                        )
-                )
-                .decorated(
-                        Placement.RANGE.configured(
-                                new TopSolidRangeConfig(
-                                        10,
-                                        0,
-                                        64
-                                )
-                        )
-                )
-                .decorated(
-                        Placement.SQUARE.configured(
-                                NoPlacementConfig.INSTANCE
-                        )
-                )
-                .count(8);
-    }
-
-    private static ConfiguredFeature<?, ?> createChiriteOre() {
-
-        return Feature.ORE
-                .configured(
-                        new OreFeatureConfig(
-                                BASE_STONE,
-                                ModMetals.CHIRITE_ORE
-                                        .get()
-                                        .defaultBlockState(),
-                                6
-                        )
-                )
-                .decorated(
-                        Placement.RANGE.configured(
-                                new TopSolidRangeConfig(
-                                        10,
-                                        0,
-                                        31
-                                )
-                        )
-                )
-                .decorated(
-                        Placement.SQUARE.configured(
-                                NoPlacementConfig.INSTANCE
-                        )
-                )
-                .count(9);
-    }
-
-    // ============================================================
-    // Nether
-    // ============================================================
-
-    private static ConfiguredFeature<?, ?> createIgnizOre() {
-
-        return Feature.ORE
-                .configured(
-                        new OreFeatureConfig(
-                                BASE_NETHER,
-                                ModMetals.IGNIZ_ORE
-                                        .get()
-                                        .defaultBlockState(),
-                                5
-                        )
-                )
-                .decorated(
-                        Placement.RANGE.configured(
-                                new TopSolidRangeConfig(
-                                        10,
-                                        0,
-                                        110
-                                )
-                        )
-                )
-                .decorated(
-                        Placement.SQUARE.configured(
-                                NoPlacementConfig.INSTANCE
-                        )
-                )
-                .count(4);
-    }
-
-    private static ConfiguredFeature<?, ?> createMomongaiteOre() {
-
-        return Feature.ORE
-                .configured(
-                        new OreFeatureConfig(
-                                BASE_NETHER,
-                                ModMetals.MOMONGAITE_ORE
-                                        .get()
-                                        .defaultBlockState(),
-                                6
-                        )
-                )
-                .decorated(
-                        Placement.RANGE.configured(
-                                new TopSolidRangeConfig(
-                                        10,
-                                        0,
-                                        110
-                                )
-                        )
-                )
-                .decorated(
-                        Placement.SQUARE.configured(
-                                NoPlacementConfig.INSTANCE
-                        )
-                )
-                .count(5);
-    }
-
-    // ============================================================
-    // End
-    // ============================================================
-
-    private static ConfiguredFeature<?, ?> createOuriteOre() {
-
-        return Feature.ORE
-                .configured(
-                        new OreFeatureConfig(
-                                BASE_END,
-                                ModMetals.OURITE_ORE
-                                        .get()
-                                        .defaultBlockState(),
-                                2
-                        )
-                )
-                .decorated(
-                        Placement.RANGE.configured(
-                                new TopSolidRangeConfig(
-                                        10,
-                                        0,
-                                        70
-                                )
-                        )
-                )
-                .decorated(
-                        Placement.SQUARE.configured(
-                                NoPlacementConfig.INSTANCE
-                        )
-                )
-                .count(1);
-    }
-
-    private static ConfiguredFeature<?, ?> createHiroliteOre() {
-
-        return Feature.ORE
-                .configured(
-                        new OreFeatureConfig(
-                                BASE_END,
-                                ModMetals.HIROLITE_ORE
-                                        .get()
-                                        .defaultBlockState(),
-                                3
-                        )
-                )
-                .decorated(
-                        Placement.RANGE.configured(
-                                new TopSolidRangeConfig(
-                                        10,
-                                        0,
-                                        70
-                                )
-                        )
-                )
-                .decorated(
-                        Placement.SQUARE.configured(
-                                NoPlacementConfig.INSTANCE
-                        )
-                )
-                .count(2);
-    }
-
-    // ============================================================
-    // BiomeLoadingEvent
+    // Common Setup
     // ============================================================
 
     @SubscribeEvent
-    public static void onBiomeLoading(BiomeLoadingEvent event) {
+    public static void setup(final FMLCommonSetupEvent event) {
 
-        Biome.Category category = event.getCategory();
+        event.enqueueWork(new Runnable() {
 
-        // ========================================================
-        // Nether
-        // ========================================================
+            @Override
+            public void run() {
 
-        if (category == Biome.Category.NETHER) {
+                // ==================================================
+                // Overworld
+                // ==================================================
 
-            event.getGeneration()
-                    .getFeatures(
-                            GenerationStage.Decoration.UNDERGROUND_ORES
-                    )
-                    .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                        
-                        public ConfiguredFeature<?, ?> get() {
-                            return createIgnizOre();
-                        }
-                    });
+                ORE_KANILITE = register(
+                        "ore_kanilite",
+                        Feature.ORE
+                                .configured(
+                                        new OreFeatureConfig(
+                                                BASE_STONE,
+                                                ModMetals.KANILITE_ORE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                6
+                                        )
+                                )
+                                .decorated(
+                                        Placement.RANGE.configured(
+                                                new TopSolidRangeConfig(
+                                                        10,
+                                                        0,
+                                                        50
+                                                )
+                                        )
+                                )
+                                .decorated(
+                                        Placement.SQUARE.configured(
+                                                NoPlacementConfig.INSTANCE
+                                        )
+                                )
+                                .count(6)
+                );
 
-            event.getGeneration()
-                    .getFeatures(
-                            GenerationStage.Decoration.UNDERGROUND_ORES
-                    )
-                    .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                        
-                        public ConfiguredFeature<?, ?> get() {
-                            return createMomongaiteOre();
-                        }
-                    });
+                ORE_HACHILITE = register(
+                        "ore_hachilite",
+                        Feature.ORE
+                                .configured(
+                                        new OreFeatureConfig(
+                                                BASE_STONE,
+                                                ModMetals.HACHILITE_ORE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                8
+                                        )
+                                )
+                                .decorated(
+                                        Placement.RANGE.configured(
+                                                new TopSolidRangeConfig(
+                                                        10,
+                                                        0,
+                                                        64
+                                                )
+                                        )
+                                )
+                                .decorated(
+                                        Placement.SQUARE.configured(
+                                                NoPlacementConfig.INSTANCE
+                                        )
+                                )
+                                .count(8)
+                );
+
+                ORE_CHIRITE = register(
+                        "ore_chirite",
+                        Feature.ORE
+                                .configured(
+                                        new OreFeatureConfig(
+                                                BASE_STONE,
+                                                ModMetals.CHIRITE_ORE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                6
+                                        )
+                                )
+                                .decorated(
+                                        Placement.RANGE.configured(
+                                                new TopSolidRangeConfig(
+                                                        10,
+                                                        0,
+                                                        31
+                                                )
+                                        )
+                                )
+                                .decorated(
+                                        Placement.SQUARE.configured(
+                                                NoPlacementConfig.INSTANCE
+                                        )
+                                )
+                                .count(9)
+                );
+
+                // ==================================================
+                // Nether
+                // ==================================================
+
+                ORE_IGNIZ = register(
+                        "ore_igniz",
+                        Feature.ORE
+                                .configured(
+                                        new OreFeatureConfig(
+                                                BASE_NETHER,
+                                                ModMetals.IGNIZ_ORE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                5
+                                        )
+                                )
+                                .decorated(
+                                        Placement.RANGE.configured(
+                                                new TopSolidRangeConfig(
+                                                        10,
+                                                        0,
+                                                        110
+                                                )
+                                        )
+                                )
+                                .decorated(
+                                        Placement.SQUARE.configured(
+                                                NoPlacementConfig.INSTANCE
+                                        )
+                                )
+                                .count(4)
+                );
+
+                ORE_MOMONGAITE = register(
+                        "ore_momongaite",
+                        Feature.ORE
+                                .configured(
+                                        new OreFeatureConfig(
+                                                BASE_NETHER,
+                                                ModMetals.MOMONGAITE_ORE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                6
+                                        )
+                                )
+                                .decorated(
+                                        Placement.RANGE.configured(
+                                                new TopSolidRangeConfig(
+                                                        10,
+                                                        0,
+                                                        110
+                                                )
+                                        )
+                                )
+                                .decorated(
+                                        Placement.SQUARE.configured(
+                                                NoPlacementConfig.INSTANCE
+                                        )
+                                )
+                                .count(5)
+                );
+
+                // ==================================================
+                // The End
+                // ==================================================
+
+                ORE_OURITE = register(
+                        "ore_ourite",
+                        Feature.ORE
+                                .configured(
+                                        new OreFeatureConfig(
+                                                BASE_END,
+                                                ModMetals.OURITE_ORE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                2
+                                        )
+                                )
+                                .decorated(
+                                        Placement.RANGE.configured(
+                                                new TopSolidRangeConfig(
+                                                        10,
+                                                        0,
+                                                        70
+                                                )
+                                        )
+                                )
+                                .decorated(
+                                        Placement.SQUARE.configured(
+                                                NoPlacementConfig.INSTANCE
+                                        )
+                                )
+                                .count(1)
+                );
+
+                ORE_HIROLITE = register(
+                        "ore_hirolite",
+                        Feature.ORE
+                                .configured(
+                                        new OreFeatureConfig(
+                                                BASE_END,
+                                                ModMetals.HIROLITE_ORE
+                                                        .get()
+                                                        .defaultBlockState(),
+                                                3
+                                        )
+                                )
+                                .decorated(
+                                        Placement.RANGE.configured(
+                                                new TopSolidRangeConfig(
+                                                        10,
+                                                        0,
+                                                        70
+                                                )
+                                        )
+                                )
+                                .decorated(
+                                        Placement.SQUARE.configured(
+                                                NoPlacementConfig.INSTANCE
+                                        )
+                                )
+                                .count(2)
+                );
+            }
+        });
+    }
+
+    // ============================================================
+    // ConfiguredFeature 登録
+    // ============================================================
+
+    private static <FC extends IFeatureConfig>
+    ConfiguredFeature<FC, ?> register(
+            String name,
+            ConfiguredFeature<FC, ?> feature
+    ) {
+        return Registry.register(
+                WorldGenRegistries.CONFIGURED_FEATURE,
+                new ResourceLocation(
+                        ModMain.MODID,
+                        name
+                ),
+                feature
+        );
+    }
+
+    // ============================================================
+    // Biome Loading
+    // ============================================================
+
+    @SubscribeEvent
+    public static void onBiomeLoading(
+            BiomeLoadingEvent event
+    ) {
+
+        if (event.getCategory() == Biome.Category.NETHER) {
+
+            addFeature(
+                    event,
+                    ORE_IGNIZ
+            );
+
+            addFeature(
+                    event,
+                    ORE_MOMONGAITE
+            );
 
             return;
         }
 
-        // ========================================================
-        // End
-        // ========================================================
+        if (event.getCategory() == Biome.Category.THEEND) {
 
-        if (category == Biome.Category.THEEND) {
+            addFeature(
+                    event,
+                    ORE_OURITE
+            );
 
-            event.getGeneration()
-                    .getFeatures(
-                            GenerationStage.Decoration.UNDERGROUND_ORES
-                    )
-                    .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                        
-                        public ConfiguredFeature<?, ?> get() {
-                            return createOuriteOre();
-                        }
-                    });
-
-            event.getGeneration()
-                    .getFeatures(
-                            GenerationStage.Decoration.UNDERGROUND_ORES
-                    )
-                    .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                        
-                        public ConfiguredFeature<?, ?> get() {
-                            return createHiroliteOre();
-                        }
-                    });
+            addFeature(
+                    event,
+                    ORE_HIROLITE
+            );
 
             return;
         }
@@ -333,37 +353,47 @@ public final class ModOreGeneration {
         // Overworld
         // ========================================================
 
-        event.getGeneration()
-                .getFeatures(
-                        GenerationStage.Decoration.UNDERGROUND_ORES
-                )
-                .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                    
-                    public ConfiguredFeature<?, ?> get() {
-                        return createKaniliteOre();
-                    }
-                });
+        addFeature(
+                event,
+                ORE_KANILITE
+        );
+
+        addFeature(
+                event,
+                ORE_HACHILITE
+        );
+
+        addFeature(
+                event,
+                ORE_CHIRITE
+        );
+    }
+
+    // ============================================================
+    // Biomeへ安全に追加
+    // ============================================================
+
+    private static void addFeature(
+            BiomeLoadingEvent event,
+            final ConfiguredFeature<?, ?> feature
+    ) {
+
+        if (feature == null) {
+            return;
+        }
 
         event.getGeneration()
                 .getFeatures(
                         GenerationStage.Decoration.UNDERGROUND_ORES
                 )
-                .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                    
-                    public ConfiguredFeature<?, ?> get() {
-                        return createHachiliteOre();
-                    }
-                });
+                .add(
+                        new Supplier<ConfiguredFeature<?, ?>>() {
 
-        event.getGeneration()
-                .getFeatures(
-                        GenerationStage.Decoration.UNDERGROUND_ORES
-                )
-                .add(new Supplier<ConfiguredFeature<?, ?>>() {
-                    
-                    public ConfiguredFeature<?, ?> get() {
-                        return createChiriteOre();
-                    }
-                });
+                            @Override
+                            public ConfiguredFeature<?, ?> get() {
+                                return feature;
+                            }
+                        }
+                );
     }
 }
