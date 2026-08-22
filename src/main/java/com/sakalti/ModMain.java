@@ -24,7 +24,7 @@ public final class ModMain {
         // 溶融液体
         ModFluids.register(modEventBus);
         CrimsonFlyEntity.register(modEventBus);
-        ModCreativeTabs.register(modEventBus);
+        // ModCreativeTabs.register(modEventBus);
         HealthCrystals.register(modEventBus);
         
         // TConX modifier
