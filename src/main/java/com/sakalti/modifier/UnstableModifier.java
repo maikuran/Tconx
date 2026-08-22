@@ -37,9 +37,9 @@ public class UnstableModifier extends Modifier {
             durabilityCost = 4;
         }
 
-        // サーバー側でのみ追加の耐久ダメージを適用（第4引数を削除してシンプルに）
+        // サーバー側でのみ追加の耐久ダメージを適用 (tool.getStack() ではなく tool.getItem() を使用)
         if (!attacker.getCommandSenderWorld().isClientSide && durabilityCost > 0) {
-            ToolDamageUtil.damage(tool, durabilityCost, attacker);
+            ToolDamageUtil.damage(tool, durabilityCost, attacker, tool.getItem());
         }
 
         return damage * multiplier;
