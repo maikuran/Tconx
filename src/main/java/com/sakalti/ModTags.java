@@ -12,17 +12,13 @@ public final class ModTags {
 
     public static final class Blocks {
 
-        public static final ITag.INamed<Block> NEEDS_SUPER_TOOL =
-                tag("needs_super_tool");
-
-        private static ITag.INamed<Block> tag(String name) {
-            return BlockTags.makeWrapperTag(
-                    new ResourceLocation(
-                            "sakalti",
-                            name
-                    ).toString()
-            );
-        }
+        public static final ITag.INamedTag<Block> NEEDS_SUPER_TOOL =
+                BlockTags.bind(
+                        new ResourceLocation(
+                                "sakalti",
+                                "needs_super_tool"
+                        ).toString()
+                );
 
         private Blocks() {
         }
