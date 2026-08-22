@@ -10,18 +10,18 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class LightTouchModifier extends Modifier {
 
     public LightTouchModifier() {
-        super(0xFFFF99);
+        super(0xFFFF99); // ライトタッチ: イエロー
     }
 
     /**
-     * 近接攻撃がヒットした後に発動 (1.16.5仕様)
+     * 近接攻撃がヒットした後に発動 (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public int afterMeleeHit(IModifierToolStack tool, int level, ToolAttackContext context, float damageDealt) {
-        LivingEntity target = context.getTarget();
+        LivingEntity target = context.getLivingTarget();
 
         // サーバー側かつ対象が存在する場合のみ処理
-        if (target != null && !target.level.isClientSide()) {
+        if (target != null && !target.getCommandSenderWorld().isClientSide) {
 
             int fixedLevel = 1; // レベル固定
             int durationTicks = 180 * fixedLevel; // 180 ticks (9秒)
