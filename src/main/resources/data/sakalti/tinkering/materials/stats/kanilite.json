@@ -2,56 +2,56 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.1,
+      "accuracy": 0.075,
       "durability": 0.0,
-      "melee_damage": 1.5
+      "melee_damage": 0.825
     },
     "tconstruct:handle": {
-      "durability": 0.1,
-      "melee_damage": 0.2,
-      "melee_speed": 0.25,
-      "mining_speed": 0.15
+      "durability": 0.075,
+      "melee_damage": 0.13,
+      "melee_speed": 0.175,
+      "mining_speed": 0.105
     },
     "tconstruct:head": {
-      "durability": 800,
-      "melee_attack": 7.5,
-      "mining_speed": 8.0,
+      "durability": 560.0,
+      "melee_attack": 4.125,
+      "mining_speed": 5.2,
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": 0.1,
-      "draw_speed": -0.25,
-      "durability": 1520,
-      "velocity": 0.15
+      "accuracy": 0.075,
+      "draw_speed": -0.188,
+      "durability": 1064.0,
+      "velocity": 0.105
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 3.0,
-      "durability": 464,
-      "toughness": 2.5
+      "armor": 1.8,
+      "durability": 324.8,
+      "toughness": 1.75
     },
     "tconstruct:plating_chestplate": {
-      "armor": 9.0,
-      "durability": 695,
+      "armor": 5.4,
+      "durability": 486.5,
       "knockback_resistance": 0.5,
-      "toughness": 2.5
+      "toughness": 1.75
     },
     "tconstruct:plating_helmet": {
-      "armor": 3.0,
-      "durability": 498,
+      "armor": 1.8,
+      "durability": 348.6,
       "knockback_resistance": 0.5,
-      "toughness": 2.5
+      "toughness": 1.75
     },
     "tconstruct:plating_leggings": {
-      "armor": 7.0,
-      "durability": 545,
+      "armor": 4.2,
+      "durability": 381.5,
       "knockback_resistance": 0.5,
-      "toughness": 2.5
+      "toughness": 1.75
     },
     "tconstruct:plating_shield": {
-      "durability": 700,
-      "knockback_resistance": 0.5,
-      "toughness": 6.0
+      "durability": 490.0,
+      "knockback_resistance": 0.125,
+      "toughness": 3.6
     }
   }
 }

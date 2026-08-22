@@ -2,57 +2,57 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.1,
+      "accuracy": 0.075,
       "durability": 0.0,
-      "melee_damage": 1.8
+      "melee_damage": 0.99
     },
     "tconstruct:handle": {
-      "durability": 0.3,
-      "melee_damage": 0.3,
-      "melee_speed": 0.3,
-      "mining_speed": 0.3
+      "durability": 0.225,
+      "melee_damage": 0.195,
+      "melee_speed": 0.21,
+      "mining_speed": 0.21
     },
     "tconstruct:head": {
-      "durability": 1100,
-      "melee_attack": 9.5,
-      "mining_speed": 9.0,
+      "durability": 770.0,
+      "melee_attack": 5.225,
+      "mining_speed": 5.85,
       "mining_tier": "minecraft:netherite"
     },
     "tconstruct:limb": {
-      "accuracy": -0.1,
-      "draw_speed": -0.25,
-      "durability": 920,
-      "velocity": 0.25
+      "accuracy": -0.075,
+      "draw_speed": -0.188,
+      "durability": 644.0,
+      "velocity": 0.175
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 3.0,
-      "durability": 592,
+      "armor": 1.8,
+      "durability": 414.4,
       "knockback_resistance": 0.2,
-      "toughness": 2.0
+      "toughness": 1.4
     },
     "tconstruct:plating_chestplate": {
-      "armor": 7.0,
-      "durability": 795,
+      "armor": 4.2,
+      "durability": 556.5,
       "knockback_resistance": 0.2,
-      "toughness": 3.0
+      "toughness": 2.1
     },
     "tconstruct:plating_helmet": {
-      "armor": 3.0,
-      "durability": 638,
+      "armor": 1.8,
+      "durability": 446.6,
       "knockback_resistance": 0.2,
-      "toughness": 3.0
+      "toughness": 2.1
     },
     "tconstruct:plating_leggings": {
-      "armor": 6.0,
-      "durability": 645,
+      "armor": 3.6,
+      "durability": 451.5,
       "knockback_resistance": 0.2,
-      "toughness": 3.0
+      "toughness": 2.1
     },
     "tconstruct:plating_shield": {
-      "durability": 900,
-      "toughness": 6.0,
-      "knockback_resistance": 0.1
+      "durability": 630.0,
+      "toughness": 3.6,
+      "knockback_resistance": 0.025
     }
   }
 }
