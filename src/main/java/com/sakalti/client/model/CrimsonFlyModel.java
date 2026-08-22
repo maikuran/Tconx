@@ -163,7 +163,7 @@ public class CrimsonFlyModel extends EntityModel<CrimsonFlyEntity> {
                         * ((float) Math.PI / 180F);
     }
 
-    @Override
+    
     public void renderToBuffer(
             MatrixStack matrixStack,
             IVertexBuilder buffer,

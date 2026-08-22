@@ -71,7 +71,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
         this.setNoGravity(true);
     }
 
-    @Override
+    
     protected PathNavigator createNavigation(World world) {
         return new FlyingPathNavigator(this, world);
     }
@@ -84,7 +84,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
                 .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
-    @Override
+    
     protected void registerGoals() {
 
         this.goalSelector.addGoal(
@@ -170,7 +170,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
             );
         }
 
-        @Override
+        
         public boolean canUse() {
 
             if (this.cooldown > 0) {
@@ -219,7 +219,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
             return false;
         }
 
-        @Override
+        
         public boolean canContinueToUse() {
 
             if (this.targetPos == null) {
@@ -236,7 +236,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
             return distance > 4.0D;
         }
 
-        @Override
+        
         public void start() {
 
             if (this.targetPos == null) {
@@ -251,7 +251,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
             );
         }
 
-        @Override
+        
         public void stop() {
 
             this.targetPos = null;
@@ -279,7 +279,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
             );
         }
 
-        @Override
+        
         public boolean canUse() {
 
             LivingEntity target =
@@ -289,7 +289,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
                     && target.isAlive();
         }
 
-        @Override
+        
         public boolean canContinueToUse() {
 
             LivingEntity target =
@@ -299,12 +299,12 @@ public class CrimsonFlyEntity extends FlyingEntity {
                     && target.isAlive();
         }
 
-        @Override
+        
         public void start() {
             this.attackCooldown = 0;
         }
 
-        @Override
+        
         public void tick() {
 
             LivingEntity target =

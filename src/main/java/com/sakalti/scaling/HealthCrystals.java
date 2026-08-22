@@ -58,7 +58,7 @@ public final class HealthCrystals {
                             new Item.Properties()
                     ) {
 
-                        @Override
+                        
                         public ActionResult<ItemStack> use(
                                 World world,
                                 PlayerEntity player,

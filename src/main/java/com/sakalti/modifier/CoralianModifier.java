@@ -14,7 +14,7 @@ public class CoralianModifier extends Modifier {
         super(color);
     }
 
-    @Override
+    
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity entity, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         // ツールが破損しておらず、手に持っている（またはスロットにある）場合
         // 手に持っている時限定にする場合は `if (isSelected)` を条件に追加してください
