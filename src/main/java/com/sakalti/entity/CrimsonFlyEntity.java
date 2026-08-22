@@ -1,23 +1,26 @@
 package com.sakalti.entity;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.entity.PathfinderMob;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.entity.ai.control.FlyingMoveControl;
-import net.minecraft.world.entity.ai.goal.Goal;
-import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
-import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.hoglin.Hoglin;
-import net.minecraft.world.entity.monster.piglin.Piglin;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
+import net.minecraft.entity.EntitySize;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Pose;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.PassiveEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifierMap;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.ai.controller.FlyingMoveController;
+import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.entity.ai.goal.LookAtGoal;
+import net.minecraft.entity.ai.goal.LookRandomlyGoal;
+import net.minecraft.entity.ai.goal.HurtByTargetGoal;
+import net.minecraft.entity.ai.goal.NearestAttackableTargetGoal;
+import net.minecraft.entity.monster.HoglinEntity;
+import net.minecraft.entity.monster.piglin.PiglinEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -29,7 +32,7 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.EnumSet;
 
-public class CrimsonFlyEntity extends PathfinderMob {
+public class CrimsonFlyEntity extends PassiveEntity {
 
     public static final String MODID = "sakalti";
 
@@ -42,9 +45,9 @@ public class CrimsonFlyEntity extends PathfinderMob {
     public static final RegistryObject<EntityType<CrimsonFlyEntity>> CRIMSON_FLY =
             ENTITIES.register(
                     "crimson_fly",
-                    new EntityType.Builder<CrimsonFlyEntity>(
+                    () -> EntityType.Builder.of(
                             CrimsonFlyEntity::new,
-                            MobCategory.MONSTER
+                            EntityClassification.MONSTER
                     )
                             .sized(0.8F, 0.8F)
                             .clientTrackingRange(8)
@@ -54,18 +57,22 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
     public CrimsonFlyEntity(
             EntityType<? extends CrimsonFlyEntity> type,
-            Level level
+            World world
     ) {
-        super(type, level);
+        super(type, world);
 
-        this.moveControl =
-                new FlyingMoveControl(this, 20, true);
-
+        this.moveControl = new FlyingMoveController(this, 20, true);
         this.setNoGravity(true);
     }
 
-    public static AttributeSupplier.Builder createAttributes() {
-        return PathfinderMob.createMobAttributes()
+    // 1.16.5 での PassiveEntity 実装時に必要なメソッド（繁殖しない場合は null を返す）
+    @Override
+    public PassiveEntity getBreedOffspring(net.minecraft.world.server.ServerWorld world, PassiveEntity entity) {
+        return null;
+    }
+
+    public static AttributeModifierMap.MutableAttribute createAttributes() {
+        return MobEntity.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.30D)
@@ -87,16 +94,16 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
         this.goalSelector.addGoal(
                 8,
-                new LookAtPlayerGoal(
+                new LookAtGoal(
                         this,
-                        Player.class,
+                        PlayerEntity.class,
                         8.0F
                 )
         );
 
         this.goalSelector.addGoal(
                 9,
-                new RandomLookAroundGoal(this)
+                new LookRandomlyGoal(this)
         );
 
         this.targetSelector.addGoal(
@@ -106,18 +113,18 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
         this.targetSelector.addGoal(
                 2,
-                new NearestAttackableTargetGoal<LivingEntity>(
+                new NearestAttackableTargetGoal<>(
                         this,
-                        Piglin.class,
+                        PiglinEntity.class,
                         true
                 )
         );
 
         this.targetSelector.addGoal(
                 3,
-                new NearestAttackableTargetGoal<LivingEntity>(
+                new NearestAttackableTargetGoal<>(
                         this,
-                        Hoglin.class,
+                        HoglinEntity.class,
                         true
                 )
         );
@@ -143,16 +150,13 @@ public class CrimsonFlyEntity extends PathfinderMob {
     public static class SeekHigherGroundGoal extends Goal {
 
         private final CrimsonFlyEntity fly;
-
         private BlockPos targetPos;
-
         private int cooldown;
 
         public SeekHigherGroundGoal(
                 CrimsonFlyEntity fly
         ) {
             this.fly = fly;
-
             this.setFlags(
                     EnumSet.of(Flag.MOVE)
             );
@@ -168,40 +172,24 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
             this.cooldown = 20;
 
-            BlockPos current =
-                    this.fly.blockPosition();
+            BlockPos current = this.fly.blockPosition();
 
             for (int i = 0; i < 16; i++) {
 
-                int x =
-                        current.getX()
-                                + this.fly.getRandom().nextInt(21)
-                                - 10;
+                int x = current.getX() + this.fly.getRandom().nextInt(21) - 10;
+                int y = current.getY() + 3 + this.fly.getRandom().nextInt(12);
+                int z = current.getZ() + this.fly.getRandom().nextInt(21) - 10;
 
-                int y =
-                        current.getY()
-                                + 3
-                                + this.fly.getRandom().nextInt(12);
-
-                int z =
-                        current.getZ()
-                                + this.fly.getRandom().nextInt(21)
-                                - 10;
-
-                BlockPos candidate =
-                        new BlockPos(x, y, z);
+                BlockPos candidate = new BlockPos(x, y, z);
 
                 if (candidate.getY() <= current.getY()) {
                     continue;
                 }
 
                 if (this.fly.level.isEmptyBlock(candidate)
-                        && this.fly.level.isEmptyBlock(
-                                candidate.above()
-                        )) {
+                        && this.fly.level.isEmptyBlock(candidate.above())) {
 
                     this.targetPos = candidate;
-
                     return true;
                 }
             }
@@ -216,12 +204,11 @@ public class CrimsonFlyEntity extends PathfinderMob {
                 return false;
             }
 
-            double distance =
-                    this.fly.distanceToSqr(
-                            this.targetPos.getX() + 0.5D,
-                            this.targetPos.getY() + 0.5D,
-                            this.targetPos.getZ() + 0.5D
-                    );
+            double distance = this.fly.distanceToSqr(
+                    this.targetPos.getX() + 0.5D,
+                    this.targetPos.getY() + 0.5D,
+                    this.targetPos.getZ() + 0.5D
+            );
 
             return distance > 4.0D;
         }
@@ -243,9 +230,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
         @Override
         public void stop() {
-
             this.targetPos = null;
-
             this.fly.getNavigation().stop();
         }
     }
@@ -253,14 +238,12 @@ public class CrimsonFlyEntity extends PathfinderMob {
     public static class CrimsonFlyMeleeAttackGoal extends Goal {
 
         private final CrimsonFlyEntity fly;
-
         private int attackCooldown;
 
         public CrimsonFlyMeleeAttackGoal(
                 CrimsonFlyEntity fly
         ) {
             this.fly = fly;
-
             this.setFlags(
                     EnumSet.of(
                             Flag.MOVE,
@@ -271,35 +254,25 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
         @Override
         public boolean canUse() {
-
-            LivingEntity target =
-                    this.fly.getTarget();
-
-            return target != null
-                    && target.isAlive();
+            LivingEntity target = this.fly.getTarget();
+            return target != null && target.isAlive();
         }
 
         @Override
         public boolean canContinueToUse() {
-
-            LivingEntity target =
-                    this.fly.getTarget();
-
-            return target != null
-                    && target.isAlive();
+            LivingEntity target = this.fly.getTarget();
+            return target != null && target.isAlive();
         }
 
         @Override
         public void start() {
-
             this.attackCooldown = 0;
         }
 
         @Override
         public void tick() {
 
-            LivingEntity target =
-                    this.fly.getTarget();
+            LivingEntity target = this.fly.getTarget();
 
             if (target == null) {
                 return;
@@ -311,8 +284,7 @@ public class CrimsonFlyEntity extends PathfinderMob {
                     30.0F
             );
 
-            double distance =
-                    this.fly.distanceToSqr(target);
+            double distance = this.fly.distanceToSqr(target);
 
             if (distance > 3.0D) {
 
@@ -332,17 +304,14 @@ public class CrimsonFlyEntity extends PathfinderMob {
 
                 this.attackCooldown = 20;
 
-                float damage =
-                        this.fly.getCrimsonFlyAttackDamage();
+                float damage = this.fly.getCrimsonFlyAttackDamage();
 
                 target.hurt(
                         DamageSource.mobAttack(this.fly),
                         damage
                 );
 
-                this.fly.swing(
-                        net.minecraft.world.InteractionHand.MAIN_HAND
-                );
+                this.fly.swing(Hand.MAIN_HAND);
             }
         }
     }
@@ -359,15 +328,12 @@ public class CrimsonFlyEntity extends PathfinderMob {
         ) {
             event.put(
                     CRIMSON_FLY.get(),
-                    CrimsonFlyEntity
-                            .createAttributes()
-                            .build()
+                    CrimsonFlyEntity.createAttributes().build()
             );
         }
     }
 
     public static void register(IEventBus eventBus) {
-
         ENTITIES.register(eventBus);
     }
 }
