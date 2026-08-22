@@ -4,6 +4,7 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.FlyingEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.controller.FlyingMovementController;
@@ -46,9 +47,9 @@ public class CrimsonFlyEntity extends FlyingEntity {
             ENTITIES.register(
                     "crimson_fly",
                     () -> EntityType.Builder.of(
-                            CrimsonFlyEntity::new,
-                            EntityClassification.MONSTER
-                    )
+                                    CrimsonFlyEntity::new,
+                                    EntityClassification.MONSTER
+                            )
                             .sized(0.8F, 0.8F)
                             .clientTrackingRange(8)
                             .updateInterval(3)
@@ -71,20 +72,20 @@ public class CrimsonFlyEntity extends FlyingEntity {
         this.setNoGravity(true);
     }
 
-    
+    @Override
     protected PathNavigator createNavigation(World world) {
         return new FlyingPathNavigator(this, world);
     }
 
     public static AttributeModifierMap.MutableAttribute createAttributes() {
-        return FlyingEntity.createMobAttributes()
+        return MobEntity.createMobAttributes()
                 .add(Attributes.MAX_HEALTH, 16.0D)
                 .add(Attributes.ATTACK_DAMAGE, 6.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.30D)
                 .add(Attributes.FOLLOW_RANGE, 32.0D);
     }
 
-    
+    @Override
     protected void registerGoals() {
 
         this.goalSelector.addGoal(
@@ -155,22 +156,19 @@ public class CrimsonFlyEntity extends FlyingEntity {
     public static class SeekHigherGroundGoal extends Goal {
 
         private final CrimsonFlyEntity fly;
-
         private BlockPos targetPos;
-
         private int cooldown;
 
         public SeekHigherGroundGoal(
                 CrimsonFlyEntity fly
         ) {
             this.fly = fly;
-
             this.setFlags(
                     EnumSet.of(Flag.MOVE)
             );
         }
 
-        
+        @Override
         public boolean canUse() {
 
             if (this.cooldown > 0) {
@@ -180,38 +178,33 @@ public class CrimsonFlyEntity extends FlyingEntity {
 
             this.cooldown = 20;
 
-            BlockPos current =
-                    this.fly.blockPosition();
+            BlockPos current = this.fly.blockPosition();
 
             for (int i = 0; i < 16; i++) {
 
-                int x =
-                        current.getX()
-                                + this.fly.getRandom().nextInt(21)
-                                - 10;
+                int x = current.getX()
+                        + this.fly.getRandom().nextInt(21)
+                        - 10;
 
-                int y =
-                        current.getY()
-                                + 3
-                                + this.fly.getRandom().nextInt(12);
+                int y = current.getY()
+                        + 3
+                        + this.fly.getRandom().nextInt(12);
 
-                int z =
-                        current.getZ()
-                                + this.fly.getRandom().nextInt(21)
-                                - 10;
+                int z = current.getZ()
+                        + this.fly.getRandom().nextInt(21)
+                        - 10;
 
-                BlockPos candidate =
-                        new BlockPos(x, y, z);
+                BlockPos candidate = new BlockPos(x, y, z);
 
                 if (candidate.getY() <= current.getY()) {
                     continue;
                 }
 
+                // 1.16.5: ワールドの空気判定 (isEmptyBlock)
                 if (this.fly.level.isEmptyBlock(candidate)
                         && this.fly.level.isEmptyBlock(candidate.above())) {
 
                     this.targetPos = candidate;
-
                     return true;
                 }
             }
@@ -219,24 +212,23 @@ public class CrimsonFlyEntity extends FlyingEntity {
             return false;
         }
 
-        
+        @Override
         public boolean canContinueToUse() {
 
             if (this.targetPos == null) {
                 return false;
             }
 
-            double distance =
-                    this.fly.distanceToSqr(
-                            this.targetPos.getX() + 0.5D,
-                            this.targetPos.getY() + 0.5D,
-                            this.targetPos.getZ() + 0.5D
-                    );
+            double distance = this.fly.distanceToSqr(
+                    this.targetPos.getX() + 0.5D,
+                    this.targetPos.getY() + 0.5D,
+                    this.targetPos.getZ() + 0.5D
+            );
 
             return distance > 4.0D;
         }
 
-        
+        @Override
         public void start() {
 
             if (this.targetPos == null) {
@@ -251,11 +243,9 @@ public class CrimsonFlyEntity extends FlyingEntity {
             );
         }
 
-        
+        @Override
         public void stop() {
-
             this.targetPos = null;
-
             this.fly.getNavigation().stop();
         }
     }
@@ -263,14 +253,12 @@ public class CrimsonFlyEntity extends FlyingEntity {
     public static class CrimsonFlyMeleeAttackGoal extends Goal {
 
         private final CrimsonFlyEntity fly;
-
         private int attackCooldown;
 
         public CrimsonFlyMeleeAttackGoal(
                 CrimsonFlyEntity fly
         ) {
             this.fly = fly;
-
             this.setFlags(
                     EnumSet.of(
                             Flag.MOVE,
@@ -279,36 +267,27 @@ public class CrimsonFlyEntity extends FlyingEntity {
             );
         }
 
-        
+        @Override
         public boolean canUse() {
-
-            LivingEntity target =
-                    this.fly.getTarget();
-
-            return target != null
-                    && target.isAlive();
+            LivingEntity target = this.fly.getTarget();
+            return target != null && target.isAlive();
         }
 
-        
+        @Override
         public boolean canContinueToUse() {
-
-            LivingEntity target =
-                    this.fly.getTarget();
-
-            return target != null
-                    && target.isAlive();
+            LivingEntity target = this.fly.getTarget();
+            return target != null && target.isAlive();
         }
 
-        
+        @Override
         public void start() {
             this.attackCooldown = 0;
         }
 
-        
+        @Override
         public void tick() {
 
-            LivingEntity target =
-                    this.fly.getTarget();
+            LivingEntity target = this.fly.getTarget();
 
             if (target == null) {
                 return;
@@ -320,8 +299,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
                     30.0F
             );
 
-            double distance =
-                    this.fly.distanceToSqr(target);
+            double distance = this.fly.distanceToSqr(target);
 
             if (distance > 3.0D) {
 
@@ -341,8 +319,7 @@ public class CrimsonFlyEntity extends FlyingEntity {
 
                 this.attackCooldown = 20;
 
-                float damage =
-                        this.fly.getCrimsonFlyAttackDamage();
+                float damage = this.fly.getCrimsonFlyAttackDamage();
 
                 target.hurt(
                         DamageSource.mobAttack(this.fly),
@@ -366,12 +343,9 @@ public class CrimsonFlyEntity extends FlyingEntity {
         public static void registerAttributes(
                 EntityAttributeCreationEvent event
         ) {
-
             event.put(
                     CRIMSON_FLY.get(),
-                    CrimsonFlyEntity
-                            .createAttributes()
-                            .build()
+                    CrimsonFlyEntity.createAttributes().build()
             );
         }
     }
