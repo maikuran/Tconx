@@ -22,7 +22,7 @@ public class SuperMagnetModifier extends Modifier {
     /**
      * インベントリ内にある毎フレーム処理 (1.16.5 TCon 3.x 仕様)
      */
-    @Override
+    
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity holder, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         // クライアント側、または手に持っていない（isSelected == false）場合はスキップ
         // isClientSide はメソッドではなくフィールド
