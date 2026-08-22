@@ -70,7 +70,7 @@ public final class ModOreGeneration {
 
         event.enqueueWork(new Runnable() {
 
-            
+            @Override
             public void run() {
 
                 // ==================================================
@@ -389,7 +389,7 @@ public final class ModOreGeneration {
                 .add(
                         new Supplier<ConfiguredFeature<?, ?>>() {
 
-                            
+                            @Override
                             public ConfiguredFeature<?, ?> get() {
                                 return feature;
                             }
