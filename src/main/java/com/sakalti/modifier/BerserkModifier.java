@@ -15,7 +15,7 @@ public class BerserkModifier extends Modifier {
     /**
      * 近接攻撃時の与ダメージ計算フック (1.16.5 TCon 3.x 仕様)
      */
-    
+    @Override
     public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
@@ -28,9 +28,9 @@ public class BerserkModifier extends Modifier {
         if (RANDOM.nextFloat() < 0.33f) {
             
             // サーバー側の場合のみ追加で耐久値を 2 消費
-            if (!attacker.getCommandSenderWorld().isClientSide()) {
-                // 1.16.5 TCon 3.x での正しい耐久ダメージ処理
-                ToolDamageUtil.damage(tool, 2, attacker, context.getSlotType());
+            if (!attacker.getCommandSenderWorld().isClientSide) {
+                // 1.16.5 TCon 3.x での正しい耐久ダメージ処理 (第4引数には ToolStack 自体または手持ちの ItemStack を渡す)
+                ToolDamageUtil.damage(tool, 2, attacker, context.getItemInHand());
             }
 
             // 与ダメージを3倍にする
