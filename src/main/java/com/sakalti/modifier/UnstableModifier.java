@@ -14,7 +14,7 @@ public class UnstableModifier extends Modifier {
         super(0xCC00FF);
     }
 
-    @Override
+    
     public float getMeleeDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
