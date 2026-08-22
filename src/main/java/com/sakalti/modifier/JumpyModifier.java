@@ -17,7 +17,7 @@ public class JumpyModifier extends Modifier {
     /**
      * インベントリ/手持ちにある間の毎tick処理 (1.16.5仕様)
      */
-    @Override
+    
     public void onInventoryTick(IModifierToolStack tool, int level, World world, LivingEntity entity, int itemSlot, boolean isSelected, boolean isCorrectSlot, ItemStack stack) {
         // ツールが破損しておらず、メイン手/オフ手に持っている時
         if (!world.isClientSide && !tool.isBroken() && isSelected) {
