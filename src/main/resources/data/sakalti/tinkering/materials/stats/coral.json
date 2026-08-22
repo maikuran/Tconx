@@ -9,7 +9,7 @@
     "tconstruct:handle": {
       "durability": 0.002,
       "melee_damage": 0.001,
-      "melee_speed": 0.002,
+      "melee_speed": 0.001,
       "mining_speed": 0.001
     },
     "tconstruct:head": {
@@ -19,8 +19,8 @@
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": -0.005,
-      "draw_speed": -0.007,
+      "accuracy": -0.004,
+      "draw_speed": -0.005,
       "durability": 250,
       "velocity": 0.001
     },
