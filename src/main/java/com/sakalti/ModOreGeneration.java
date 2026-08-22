@@ -17,23 +17,13 @@ import net.minecraft.world.gen.placement.Placement;
 import net.minecraft.world.gen.placement.TopSolidRangeConfig;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 import java.util.function.Supplier;
 
-@Mod.EventBusSubscriber(
-        modid = ModMain.MODID,
-        bus = Mod.EventBusSubscriber.Bus.MOD
-)
 public final class ModOreGeneration {
 
     private ModOreGeneration() {
     }
-
-    // ============================================================
-    // RuleTest
-    // ============================================================
 
     private static final RuleTest BASE_STONE =
             OreFeatureConfig.FillerBlockType.NATURAL_STONE;
@@ -43,13 +33,6 @@ public final class ModOreGeneration {
 
     private static final RuleTest BASE_END =
             new BlockMatchRuleTest(Blocks.END_STONE);
-
-    // ============================================================
-    // ConfiguredFeature
-    //
-    // ここでは絶対に ModMetals.xxx.get() を実行しない。
-    // setup() の enqueueWork 内で初期化する。
-    // ============================================================
 
     private static ConfiguredFeature<?, ?> ORE_KANILITE;
     private static ConfiguredFeature<?, ?> ORE_HACHILITE;
@@ -61,21 +44,16 @@ public final class ModOreGeneration {
     private static ConfiguredFeature<?, ?> ORE_OURITE;
     private static ConfiguredFeature<?, ?> ORE_HIROLITE;
 
-    // ============================================================
-    // Common Setup
-    // ============================================================
-
-    @SubscribeEvent
-    public static void setup(final FMLCommonSetupEvent event) {
+    /*
+     * ModMainから呼ぶ。
+     *
+     * ここでは必ず enqueueWork を使用する。
+     */
+    public static void setup(net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) {
 
         event.enqueueWork(new Runnable() {
-
-            
+            @Override
             public void run() {
-
-                // ==================================================
-                // Overworld
-                // ==================================================
 
                 ORE_KANILITE = register(
                         "ore_kanilite",
@@ -83,9 +61,7 @@ public final class ModOreGeneration {
                                 .configured(
                                         new OreFeatureConfig(
                                                 BASE_STONE,
-                                                ModMetals.KANILITE_ORE
-                                                        .get()
-                                                        .defaultBlockState(),
+                                                ModMetals.KANILITE_ORE.get().defaultBlockState(),
                                                 6
                                         )
                                 )
@@ -112,9 +88,7 @@ public final class ModOreGeneration {
                                 .configured(
                                         new OreFeatureConfig(
                                                 BASE_STONE,
-                                                ModMetals.HACHILITE_ORE
-                                                        .get()
-                                                        .defaultBlockState(),
+                                                ModMetals.HACHILITE_ORE.get().defaultBlockState(),
                                                 8
                                         )
                                 )
@@ -141,9 +115,7 @@ public final class ModOreGeneration {
                                 .configured(
                                         new OreFeatureConfig(
                                                 BASE_STONE,
-                                                ModMetals.CHIRITE_ORE
-                                                        .get()
-                                                        .defaultBlockState(),
+                                                ModMetals.CHIRITE_ORE.get().defaultBlockState(),
                                                 6
                                         )
                                 )
@@ -164,19 +136,13 @@ public final class ModOreGeneration {
                                 .count(9)
                 );
 
-                // ==================================================
-                // Nether
-                // ==================================================
-
                 ORE_IGNIZ = register(
                         "ore_igniz",
                         Feature.ORE
                                 .configured(
                                         new OreFeatureConfig(
                                                 BASE_NETHER,
-                                                ModMetals.IGNIZ_ORE
-                                                        .get()
-                                                        .defaultBlockState(),
+                                                ModMetals.IGNIZ_ORE.get().defaultBlockState(),
                                                 5
                                         )
                                 )
@@ -203,9 +169,7 @@ public final class ModOreGeneration {
                                 .configured(
                                         new OreFeatureConfig(
                                                 BASE_NETHER,
-                                                ModMetals.MOMONGAITE_ORE
-                                                        .get()
-                                                        .defaultBlockState(),
+                                                ModMetals.MOMONGAITE_ORE.get().defaultBlockState(),
                                                 6
                                         )
                                 )
@@ -226,19 +190,13 @@ public final class ModOreGeneration {
                                 .count(5)
                 );
 
-                // ==================================================
-                // The End
-                // ==================================================
-
                 ORE_OURITE = register(
                         "ore_ourite",
                         Feature.ORE
                                 .configured(
                                         new OreFeatureConfig(
                                                 BASE_END,
-                                                ModMetals.OURITE_ORE
-                                                        .get()
-                                                        .defaultBlockState(),
+                                                ModMetals.OURITE_ORE.get().defaultBlockState(),
                                                 2
                                         )
                                 )
@@ -265,9 +223,7 @@ public final class ModOreGeneration {
                                 .configured(
                                         new OreFeatureConfig(
                                                 BASE_END,
-                                                ModMetals.HIROLITE_ORE
-                                                        .get()
-                                                        .defaultBlockState(),
+                                                ModMetals.HIROLITE_ORE.get().defaultBlockState(),
                                                 3
                                         )
                                 )
@@ -291,10 +247,6 @@ public final class ModOreGeneration {
         });
     }
 
-    // ============================================================
-    // ConfiguredFeature 登録
-    // ============================================================
-
     private static <FC extends IFeatureConfig>
     ConfiguredFeature<FC, ?> register(
             String name,
@@ -310,68 +262,34 @@ public final class ModOreGeneration {
         );
     }
 
-    // ============================================================
-    // Biome Loading
-    // ============================================================
-
+    /*
+     * これはForgeの通常イベントバスで呼ばれる。
+     */
     @SubscribeEvent
-    public static void onBiomeLoading(
-            BiomeLoadingEvent event
-    ) {
+    public static void onBiomeLoading(BiomeLoadingEvent event) {
 
-        if (event.getCategory() == Biome.Category.NETHER) {
+        Biome.Category category = event.getCategory();
 
-            addFeature(
-                    event,
-                    ORE_IGNIZ
-            );
+        if (category == Biome.Category.NETHER) {
 
-            addFeature(
-                    event,
-                    ORE_MOMONGAITE
-            );
+            addFeature(event, ORE_IGNIZ);
+            addFeature(event, ORE_MOMONGAITE);
 
             return;
         }
 
-        if (event.getCategory() == Biome.Category.THEEND) {
+        if (category == Biome.Category.THEEND) {
 
-            addFeature(
-                    event,
-                    ORE_OURITE
-            );
-
-            addFeature(
-                    event,
-                    ORE_HIROLITE
-            );
+            addFeature(event, ORE_OURITE);
+            addFeature(event, ORE_HIROLITE);
 
             return;
         }
 
-        // ========================================================
-        // Overworld
-        // ========================================================
-
-        addFeature(
-                event,
-                ORE_KANILITE
-        );
-
-        addFeature(
-                event,
-                ORE_HACHILITE
-        );
-
-        addFeature(
-                event,
-                ORE_CHIRITE
-        );
+        addFeature(event, ORE_KANILITE);
+        addFeature(event, ORE_HACHILITE);
+        addFeature(event, ORE_CHIRITE);
     }
-
-    // ============================================================
-    // Biomeへ安全に追加
-    // ============================================================
 
     private static void addFeature(
             BiomeLoadingEvent event,
@@ -388,8 +306,7 @@ public final class ModOreGeneration {
                 )
                 .add(
                         new Supplier<ConfiguredFeature<?, ?>>() {
-
-                            
+                            @Override
                             public ConfiguredFeature<?, ?> get() {
                                 return feature;
                             }
