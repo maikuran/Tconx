@@ -1,67 +1,55 @@
 package com.sakalti.client.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.sakalti.client.ModClient;
+import com.mojang.blaze3d.matrix.MatrixStack;
 import com.sakalti.client.model.CrimsonFlyModel;
 import com.sakalti.entity.CrimsonFlyEntity;
 
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
-public class CrimsonFlyRenderer
-        extends EntityRenderer<CrimsonFlyEntity> {
+public class CrimsonFlyRenderer extends EntityRenderer<CrimsonFlyEntity> {
 
     private static final ResourceLocation TEXTURE =
-            new ResourceLocation(
-                    "sakalti",
-                    "textures/entity/crimson_fly.png"
-            );
+            new ResourceLocation("sakalti", "textures/entity/crimson_fly.png");
 
     private final CrimsonFlyModel model;
 
-    public CrimsonFlyRenderer(
-            EntityRendererProvider.Context context
-    ) {
-        super(context);
+    public CrimsonFlyRenderer(EntityRendererManager renderManager) {
+        super(renderManager);
 
-        this.model = new CrimsonFlyModel(
-                context.bakeLayer(
-                        ModClient.CRIMSON_FLY_LAYER
-                )
-        );
-
-        this.shadowRadius = 0.35F;
+        // 1.16.5 では ModelLayerLocation を使わず直接インスタンス化します
+        this.model = new CrimsonFlyModel();
+        this.shadowSize = 0.35F; // 1.16.5 では shadowRadius ではなく shadowSize です
     }
 
     @Override
     public void render(
             CrimsonFlyEntity entity,
             float entityYaw,
-            float partialTick,
-            PoseStack poseStack,
-            MultiBufferSource buffer,
+            float partialTicks,
+            MatrixStack matrixStack,
+            IRenderTypeBuffer buffer,
             int packedLight
     ) {
-        poseStack.pushPose();
+        matrixStack.push();
 
-        this.model.setupAnim(
+        // 1.16.5 でのモデルアニメーション定義と描画呼び出し
+        this.model.setRotationAngles(
                 entity,
-                entity.tickCount,
-                partialTick,
-                entity.tickCount + partialTick,
+                entity.ticksExisted,
+                0.0F,
+                entity.ticksExisted + partialTicks,
                 entityYaw,
-                entity.getXRot()
+                entity.rotationPitch
         );
 
-        this.model.renderToBuffer(
-                poseStack,
-                buffer.getBuffer(
-                        RenderType.entityCutoutNoCull(TEXTURE)
-                ),
+        this.model.render(
+                matrixStack,
+                buffer.getBuffer(RenderType.getEntityCutoutNoCull(TEXTURE)),
                 packedLight,
                 OverlayTexture.NO_OVERLAY,
                 1.0F,
@@ -70,22 +58,20 @@ public class CrimsonFlyRenderer
                 1.0F
         );
 
-        poseStack.popPose();
+        matrixStack.pop();
 
         super.render(
                 entity,
                 entityYaw,
-                partialTick,
-                poseStack,
+                partialTicks,
+                matrixStack,
                 buffer,
                 packedLight
         );
     }
 
     @Override
-    public ResourceLocation getTextureLocation(
-            CrimsonFlyEntity entity
-    ) {
+    public ResourceLocation getEntityTexture(CrimsonFlyEntity entity) {
         return TEXTURE;
     }
 }
