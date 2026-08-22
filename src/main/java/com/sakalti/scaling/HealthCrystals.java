@@ -1,6 +1,6 @@
 package com.sakalti.scaling;
 
-import net.minecraft.entity.ai.attributes.AttributeInstance;
+import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
@@ -141,7 +141,7 @@ public final class HealthCrystals {
             double bonus
     ) {
 
-        AttributeInstance attribute =
+        ModifiableAttributeInstance attribute =
                 player.getAttribute(
                         Attributes.MAX_HEALTH
                 );
