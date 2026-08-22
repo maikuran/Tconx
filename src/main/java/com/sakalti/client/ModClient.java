@@ -1,45 +1,25 @@
 package com.sakalti.client;
 
-import com.sakalti.client.model.CrimsonFlyModel;
 import com.sakalti.client.renderer.CrimsonFlyRenderer;
 import com.sakalti.entity.CrimsonFlyEntity;
 
-import net.minecraft.client.model.geom.ModelLayerLocation;
-import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(
-        modid = "sakalti",
+        modid = CrimsonFlyEntity.MODID,
         bus = Mod.EventBusSubscriber.Bus.MOD,
         value = Dist.CLIENT
 )
 public class ModClient {
 
-    public static final ModelLayerLocation CRIMSON_FLY_LAYER =
-            new ModelLayerLocation(
-                    new ResourceLocation("sakalti", "crimson_fly"),
-                    "main"
-            );
-
     @SubscribeEvent
-    public static void registerLayerDefinitions(
-            EntityRenderersEvent.RegisterLayerDefinitions event
-    ) {
-        event.registerLayerDefinition(
-                CRIMSON_FLY_LAYER,
-                CrimsonFlyModel::createBodyLayer
-        );
-    }
-
-    @SubscribeEvent
-    public static void registerRenderers(
-            EntityRenderersEvent.RegisterRenderers event
-    ) {
-        event.registerEntityRenderer(
+    public static void onClientSetup(FMLClientSetupEvent event) {
+        // 1.16.5 でのエンティティレンダラー登録方法
+        RenderingRegistry.registerEntityRenderingHandler(
                 CrimsonFlyEntity.CRIMSON_FLY.get(),
                 CrimsonFlyRenderer::new
         );
