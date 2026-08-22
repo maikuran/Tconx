@@ -1,0 +1,191 @@
+name: Pure Python Auto Asset Generator
+
+on:
+  push:
+    paths:
+      - 'src/main/java/com/sakalti/material/hachilite/ModMaterials.java'
+      - 'src/main/resources/data/sakalti/tinkering/materials/definition/*.json'
+  workflow_dispatch:
+
+jobs:
+  generate-all-assets:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: python -m pip install pillow
+
+      - name: Generate Textures, Models, Blockstates, and Recipes
+        run: |
+          python - << 'EOF'
+          import os
+          import re
+          import json
+          from PIL import Image, ImageEnhance
+
+          # --- パス定義 ---
+          JAVA_PATH = "src/main/java/com/sakalti/material/hachilite/ModMaterials.java"
+          DEF_JSON_DIR = "src/main/resources/data/sakalti/tinkering/materials/definition"
+          
+          ASSETS_DIR = "src/main/resources/assets/sakalti"
+          RECIPES_DIR = "src/main/resources/data/sakalti/recipes"
+
+          # 1. ModMaterials.java から全マテリアルIDを抽出
+          with open(JAVA_PATH, "r", encoding="utf-8") as f:
+              content = f.read()
+
+          materials = re.findall(r'new MaterialId\("sakalti:([a-z0-9_]+)"\)', content)
+          print(f"Target Materials: {materials}")
+
+          # ディレクトリ生成
+          tex_item_dir = os.path.join(ASSETS_DIR, "textures/item")
+          tex_block_dir = os.path.join(ASSETS_DIR, "textures/block")
+          model_item_dir = os.path.join(ASSETS_DIR, "models/item")
+          model_block_dir = os.path.join(ASSETS_DIR, "models/block")
+          blockstate_dir = os.path.join(ASSETS_DIR, "blockstates")
+
+          for d in [tex_item_dir, tex_block_dir, model_item_dir, model_block_dir, blockstate_dir, RECIPES_DIR]:
+              os.makedirs(d, exist_ok=True)
+
+          # テクスチャ着色関数
+          def tint_metal(base_img, hex_color):
+              hex_color = hex_color.lstrip('#')
+              rgb = tuple(int(hex_color[i:i+2], 16) for i in (0, 2, 4))
+              
+              tinted = Image.new("RGBA", base_img.size)
+              pixels_base = base_img.convert("RGBA").load()
+              pixels_tint = tinted.load()
+
+              for x in range(base_img.width):
+                  for y in range(base_img.height):
+                      r, g, b, a = pixels_base[x, y]
+                      pixels_tint[x, y] = (
+                          int((r / 255.0) * rgb[0]),
+                          int((g / 255.0) * rgb[1]),
+                          int((b / 255.0) * rgb[2]),
+                          a
+                      )
+              return ImageEnhance.Contrast(tinted).enhance(1.4)
+
+          base_ingot = Image.open("template/base_ingot.png")
+          base_block = Image.open("template/base_block.png")
+
+          # 2. 全マテリアルの生成処理
+          for mat in materials:
+              def_file = os.path.join(DEF_JSON_DIR, f"{mat}.json")
+              color = "#FFFFFF"
+
+              # カラーコード取得
+              if os.path.exists(def_file):
+                  try:
+                      with open(def_file, "r", encoding="utf-8") as jf:
+                          data = json.load(jf)
+                          color = data.get("color", color)
+                          print(f"[{mat}] Read color: {color}")
+                  except Exception as e:
+                      print(f"[{mat}] Failed to read JSON: {e}")
+              else:
+                  print(f"[{mat}] Warning: {def_file} not found. Using fallback.")
+
+              # --- A. テクスチャ画像生成 ---
+              tint_metal(base_ingot, color).save(os.path.join(tex_item_dir, f"{mat}_ingot.png"))
+              tint_metal(base_block, color).save(os.path.join(tex_block_dir, f"{mat}_block.png"))
+
+              # --- B. モデル & ブロックステート JSON 生成 ---
+              # インゴット アイテムモデル
+              ingot_model = {
+                  "parent": "minecraft:item/generated",
+                  "textures": {
+                      "layer0": f"sakalti:item/{mat}_ingot"
+                  }
+              }
+              with open(os.path.join(model_item_dir, f"{mat}_ingot.json"), "w", encoding="utf-8") as f:
+                  json.dump(ingot_model, f, indent=2)
+
+              # ブロックモデル
+              block_model = {
+                  "parent": "minecraft:block/cube_all",
+                  "textures": {
+                      "all": f"sakalti:block/{mat}_block"
+                  }
+              }
+              with open(os.path.join(model_block_dir, f"{mat}_block.json"), "w", encoding="utf-8") as f:
+                  json.dump(block_model, f, indent=2)
+
+              # ブロックアイテムモデル
+              block_item_model = {
+                  "parent": f"sakalti:block/{mat}_block"
+              }
+              with open(os.path.join(model_item_dir, f"{mat}_block.json"), "w", encoding="utf-8") as f:
+                  json.dump(block_item_model, f, indent=2)
+
+              # ブロックステート
+              blockstate = {
+                  "variants": {
+                      "": { "model": f"sakalti:block/{mat}_block" }
+                  }
+              }
+              with open(os.path.join(blockstate_dir, f"{mat}_block.json"), "w", encoding="utf-8") as f:
+                  json.dump(blockstate, f, indent=2)
+
+              # --- C. クラフトレシピ JSON 生成 ---
+              # 1) インゴット 9個 -> ブロック 1個
+              recipe_to_block = {
+                  "type": "minecraft:crafting_shaped",
+                  "pattern": [
+                      "###",
+                      "###",
+                      "###"
+                  ],
+                  "key": {
+                      "#": { "item": f"sakalti:{mat}_ingot" }
+                  },
+                  "result": {
+                      "item": f"sakalti:{mat}_block",
+                      "count": 1
+                  }
+              }
+              with open(os.path.join(RECIPES_DIR, f"{mat}_block_from_ingot.json"), "w", encoding="utf-8") as f:
+                  json.dump(recipe_to_block, f, indent=2)
+
+              # 2) ブロック 1個 -> インゴット 9個
+              recipe_to_ingot = {
+                  "type": "minecraft:crafting_shapeless",
+                  "ingredients": [
+                      { "item": f"sakalti:{mat}_block" }
+                  ],
+                  "result": {
+                      "item": f"sakalti:{mat}_ingot",
+                      "count": 9
+                  }
+              }
+              with open(os.path.join(RECIPES_DIR, f"{mat}_ingot_from_block.json"), "w", encoding="utf-8") as f:
+                  json.dump(recipe_to_ingot, f, indent=2)
+
+          print("All assets successfully generated directly in src/main/resources!")
+          EOF
+
+      - name: Commit and Push Generated Assets
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/
+
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: auto-generate textures, models, and recipes [skip ci]"
+            git push
+          fi
