@@ -3,388 +3,93 @@ package com.sakalti.datagen;
 import com.sakalti.ModMain;
 import com.sakalti.ModMetals;
 
-import net.minecraft.core.HolderGetter;
-import net.minecraft.core.HolderSet;
-import net.minecraft.core.RegistrySetBuilder;
-import net.minecraft.core.registries.Registries;
-
-import net.minecraft.data.PackOutput;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.data.worldgen.BootstapContext;
-
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
-
-import net.minecraft.tags.BiomeTags;
-import net.minecraft.tags.BlockTags;
-
-import net.minecraft.world.level.biome.Biome;
-
-import net.minecraft.world.level.levelgen.GenerationStep;
-import net.minecraft.world.level.levelgen.VerticalAnchor;
-
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-
-import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
-
-import net.minecraft.world.level.levelgen.placement.BiomeFilter;
-import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
-import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraft.world.level.levelgen.placement.RarityFilter;
-
-import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ForgeBiomeModifiers;
-
-import net.minecraftforge.data.event.GatherDataEvent;
+import net.minecraft.block.Blocks;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
+import net.minecraft.world.gen.GenerationStage;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
+import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.gen.feature.OreFeatureConfig;
+import net.minecraft.world.gen.feature.template.BlockMatchRuleTest;
+import net.minecraft.world.gen.feature.template.RuleTest;
+import net.minecraft.world.gen.placement.Placement;
+import net.minecraft.world.gen.placement.TopSolidRangeConfig;
+import net.minecraftforge.event.world.BiomeLoadingEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.ForgeRegistries;
-
-import java.util.List;
-import java.util.Set;
-
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 
 @Mod.EventBusSubscriber(
         modid = ModMain.MODID,
-        bus = Mod.EventBusSubscriber.Bus.MOD
+        bus = Mod.EventBusSubscriber.Bus.FORGE // BiomeLoadingEventはFORGEバスです
 )
 public final class ModWorldGen {
 
-    private ModWorldGen() {
+    private ModWorldGen() {}
+
+    // 置換対象のブロック（オーバーワールドの石）
+    public static final RuleTest BASE_STONE_OVERWORLD = new BlockMatchRuleTest(Blocks.STONE);
+
+    public static ConfiguredFeature<?, ?> HIROLITE_ORE_CONFIGURED;
+    public static ConfiguredFeature<?, ?> OURITE_ORE_CONFIGURED;
+
+    // FMLCommonSetupEvent などで呼び出して登録します
+    public static void registerFeatures() {
+
+        /*
+         * Hirolite Ore の設定
+         * Vein Size (鉱脈サイズ): 4
+         * Height (高さ): Y = 0 ～ 80 (1.16.5ではマイナス高度がないため)
+         * Chance (頻度): 16
+         */
+        HIROLITE_ORE_CONFIGURED = Feature.ORE.configured(
+                new OreFeatureConfig(
+                        BASE_STONE_OVERWORLD,
+                        ModMetals.HIROLITE_ORE.get().defaultBlockState(),
+                        4 // 鉱脈サイズ
+                )
+        )
+        .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(0, 0, 80)))
+        .squared()
+        .count(16); // 1チャンクあたりの生成試行回数
+
+        /*
+         * Ourite Ore の設定
+         */
+        OURITE_ORE_CONFIGURED = Feature.ORE.configured(
+                new OreFeatureConfig(
+                        BASE_STONE_OVERWORLD,
+                        ModMetals.OURITE_ORE.get().defaultBlockState(),
+                        4
+                )
+        )
+        .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(0, 0, 80)))
+        .squared()
+        .count(16);
+
+        // レジストリに登録
+        Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, ModMain.MODID + ":hirolite_ore", HIROLITE_ORE_CONFIGURED);
+        Registry.register(WorldGenRegistries.CONFIGURED_FEATURE, ModMain.MODID + ":ourite_ore", OURITE_ORE_CONFIGURED);
     }
 
-
-    // ============================================================
-    // CONFIGURED FEATURES
-    // ============================================================
-
-    public static final ResourceKey<ConfiguredFeature<?, ?>> HIROLITE_ORE =
-            ResourceKey.create(
-                    Registries.CONFIGURED_FEATURE,
-                    new ResourceLocation(
-                            ModMain.MODID,
-                            "hirolite_ore"
-                    )
-            );
-
-    public static final ResourceKey<ConfiguredFeature<?, ?>> OURITE_ORE =
-            ResourceKey.create(
-                    Registries.CONFIGURED_FEATURE,
-                    new ResourceLocation(
-                            ModMain.MODID,
-                            "ourite_ore"
-                    )
-            );
-
-
-    // ============================================================
-    // PLACED FEATURES
-    // ============================================================
-
-    public static final ResourceKey<PlacedFeature> HIROLITE_ORE_PLACED =
-            ResourceKey.create(
-                    Registries.PLACED_FEATURE,
-                    new ResourceLocation(
-                            ModMain.MODID,
-                            "hirolite_ore"
-                    )
-            );
-
-    public static final ResourceKey<PlacedFeature> OURITE_ORE_PLACED =
-            ResourceKey.create(
-                    Registries.PLACED_FEATURE,
-                    new ResourceLocation(
-                            ModMain.MODID,
-                            "ourite_ore"
-                    )
-            );
-
-
-    // ============================================================
-    // BIOME MODIFIERS
-    // ============================================================
-
-    public static final ResourceKey<BiomeModifier> ADD_HIROLITE_ORE =
-            ResourceKey.create(
-                    ForgeRegistries.Keys.BIOME_MODIFIERS,
-                    new ResourceLocation(
-                            ModMain.MODID,
-                            "add_hirolite_ore"
-                    )
-            );
-
-    public static final ResourceKey<BiomeModifier> ADD_OURITE_ORE =
-            ResourceKey.create(
-                    ForgeRegistries.Keys.BIOME_MODIFIERS,
-                    new ResourceLocation(
-                            ModMain.MODID,
-                            "add_ourite_ore"
-                    )
-            );
-
-
-    // ============================================================
-    // CONFIGURED FEATURE BOOTSTRAP
-    // ============================================================
-
-    private static void bootstrapConfiguredFeatures(
-            BootstapContext<ConfiguredFeature<?, ?>> context
-    ) {
-
-        /*
-         * Hirolite Ore
-         *
-         * BASE_STONE_OVERWORLD に含まれるブロックを
-         * Hirolite Ore に置換する。
-         */
-
-        context.register(
-                HIROLITE_ORE,
-                new ConfiguredFeature<>(
-                        Feature.ORE,
-                        new OreConfiguration(
-                                List.of(
-                                        OreConfiguration.target(
-                                                new TagMatchTest(
-                                                        BlockTags.BASE_STONE_OVERWORLD
-                                                ),
-                                                ModMetals.HIROLITE_ORE
-                                                        .get()
-                                                        .defaultBlockState()
-                                        )
-                                ),
-                                4
-                        )
-                )
-        );
-
-
-        /*
-         * Ourite Ore
-         */
-
-        context.register(
-                OURITE_ORE,
-                new ConfiguredFeature<>(
-                        Feature.ORE,
-                        new OreConfiguration(
-                                List.of(
-                                        OreConfiguration.target(
-                                                new TagMatchTest(
-                                                        BlockTags.BASE_STONE_OVERWORLD
-                                                ),
-                                                ModMetals.OURITE_ORE
-                                                        .get()
-                                                        .defaultBlockState()
-                                        )
-                                ),
-                                4
-                        )
-                )
-        );
-    }
-
-
-    // ============================================================
-    // PLACED FEATURE BOOTSTRAP
-    // ============================================================
-
-    private static void bootstrapPlacedFeatures(
-            BootstapContext<PlacedFeature> context
-    ) {
-
-        HolderGetter<ConfiguredFeature<?, ?>> configuredFeatures =
-                context.lookup(
-                        Registries.CONFIGURED_FEATURE
-                );
-
-
-        /*
-         * Hirolite
-         *
-         * 平均16回に1回
-         * Y=-64 ～ Y=16
-         */
-
-        context.register(
-                HIROLITE_ORE_PLACED,
-                new PlacedFeature(
-                        configuredFeatures.getOrThrow(
-                                HIROLITE_ORE
-                        ),
-                        List.of(
-                                RarityFilter.onAverageOnceEvery(16),
-
-                                InSquarePlacement.spread(),
-
-                                HeightRangePlacement.uniform(
-                                        VerticalAnchor.absolute(-64),
-                                        VerticalAnchor.absolute(16)
-                                ),
-
-                                BiomeFilter.biome()
-                        )
-                )
-        );
-
-
-        /*
-         * Ourite
-         *
-         * 平均16回に1回
-         * Y=-64 ～ Y=16
-         */
-
-        context.register(
-                OURITE_ORE_PLACED,
-                new PlacedFeature(
-                        configuredFeatures.getOrThrow(
-                                OURITE_ORE
-                        ),
-                        List.of(
-                                RarityFilter.onAverageOnceEvery(16),
-
-                                InSquarePlacement.spread(),
-
-                                HeightRangePlacement.uniform(
-                                        VerticalAnchor.absolute(-64),
-                                        VerticalAnchor.absolute(16)
-                                ),
-
-                                BiomeFilter.biome()
-                        )
-                )
-        );
-    }
-
-
-    // ============================================================
-    // BIOME MODIFIER BOOTSTRAP
-    // ============================================================
-
-    private static void bootstrapBiomeModifiers(
-            BootstapContext<BiomeModifier> context
-    ) {
-
-        HolderGetter<PlacedFeature> placedFeatures =
-                context.lookup(
-                        Registries.PLACED_FEATURE
-                );
-
-
-        HolderGetter<Biome> biomes =
-                context.lookup(
-                        Registries.BIOME
-                );
-
-
-        /*
-         * オーバーワールドのBiomeタグを取得。
-         */
-
-        HolderSet.Named<Biome> overworldBiomes =
-                biomes.get(
-                        BiomeTags.IS_OVERWORLD
-                ).orElseThrow(
-                        () -> new IllegalStateException(
-                                "Missing biome tag: "
-                                        + BiomeTags.IS_OVERWORLD
-                        )
-                );
-
-
-        /*
-         * --------------------------------------------------------
-         * Hirolite
-         * --------------------------------------------------------
-         */
-
-        context.register(
-                ADD_HIROLITE_ORE,
-                new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
-                        overworldBiomes,
-
-                        HolderSet.direct(
-                                placedFeatures.getOrThrow(
-                                        HIROLITE_ORE_PLACED
-                                )
-                        ),
-
-                        GenerationStep.Decoration.UNDERGROUND_ORES
-                )
-        );
-
-
-        /*
-         * --------------------------------------------------------
-         * Ourite
-         * --------------------------------------------------------
-         */
-
-        context.register(
-                ADD_OURITE_ORE,
-                new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
-                        overworldBiomes,
-
-                        HolderSet.direct(
-                                placedFeatures.getOrThrow(
-                                        OURITE_ORE_PLACED
-                                )
-                        ),
-
-                        GenerationStep.Decoration.UNDERGROUND_ORES
-                )
-        );
-    }
-
-
-    // ============================================================
-    // REGISTRY SET BUILDER
-    // ============================================================
-
-    public static final RegistrySetBuilder BUILDER =
-            new RegistrySetBuilder()
-
-                    .add(
-                            Registries.CONFIGURED_FEATURE,
-                            ModWorldGen::bootstrapConfiguredFeatures
-                    )
-
-                    .add(
-                            Registries.PLACED_FEATURE,
-                            ModWorldGen::bootstrapPlacedFeatures
-                    )
-
-                    .add(
-                            ForgeRegistries.Keys.BIOME_MODIFIERS,
-                            ModWorldGen::bootstrapBiomeModifiers
-                    );
-
-
-    // ============================================================
-    // GATHER DATA
-    // ============================================================
-
+    /*
+     * バイオーム生成時に鉱石を追加するイベントリスナー
+     */
     @SubscribeEvent
-    public static void gatherData(
-            GatherDataEvent event
-    ) {
+    public static void onBiomeLoading(BiomeLoadingEvent event) {
+        // オーバーワールドのバイオーム（Nether / End 以外）にのみ生成
+        if (event.getCategory() != net.minecraft.world.biome.Biome.Category.NETHER 
+                && event.getCategory() != net.minecraft.world.biome.Biome.Category.THEEND) {
 
-        DatapackBuiltinEntriesProvider provider =
-                new DatapackBuiltinEntriesProvider(
-                        event.getGenerator().getPackOutput(),
-                        event.getLookupProvider(),
-                        BUILDER,
-                        Set.of(ModMain.MODID)
-                );
+            event.getGeneration().addFeature(
+                    GenerationStage.Decoration.UNDERGROUND_ORES,
+                    HIROLITE_ORE_CONFIGURED
+            );
 
-        event.getGenerator().addProvider(
-                event.includeServer(),
-                provider
-        );
+            event.getGeneration().addFeature(
+                    GenerationStage.Decoration.UNDERGROUND_ORES,
+                    OURITE_ORE_CONFIGURED
+            );
+        }
     }
 }
