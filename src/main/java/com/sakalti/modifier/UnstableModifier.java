@@ -11,7 +11,7 @@ import java.util.Random;
 public class UnstableModifier extends Modifier {
 
     public UnstableModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0xCC00FF);
     }
 
     /**

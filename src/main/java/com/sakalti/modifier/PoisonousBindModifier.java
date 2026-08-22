@@ -10,7 +10,7 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class PoisonousBindModifier extends Modifier {
 
     public PoisonousBindModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0x00FF33);
     }
 
     /**

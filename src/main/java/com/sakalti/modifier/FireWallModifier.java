@@ -12,7 +12,7 @@ import java.util.List;
 public class FireWallModifier extends Modifier {
 
     public FireWallModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0xFF0000);
     }
 
     /**

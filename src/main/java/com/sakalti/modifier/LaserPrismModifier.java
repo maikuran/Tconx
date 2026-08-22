@@ -12,7 +12,7 @@ import java.util.List;
 public class LaserPrismModifier extends Modifier {
 
     public LaserPrismModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0x00FFFF);
     }
 
     /**

@@ -10,7 +10,7 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class FieldyModifier extends Modifier {
 
     public FieldyModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0x996633);
     }
 
     /**

@@ -14,7 +14,7 @@ import java.util.List;
 public class IceBindModifier extends Modifier {
 
     public IceBindModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0x99FFFF);
     }
 
     // 正面方向の特定距離にいるエンティティを検知 (1.16.5仕様)

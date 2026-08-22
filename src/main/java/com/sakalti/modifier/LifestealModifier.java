@@ -8,7 +8,7 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class LifestealModifier extends Modifier {
 
     public LifestealModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0x990000);
     }
 
     /**

@@ -10,7 +10,7 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class WeakBurnModifier extends Modifier {
 
     public WeakBurnModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0xFF3333);
     }
 
     /**

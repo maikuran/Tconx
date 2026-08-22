@@ -14,7 +14,7 @@ import java.util.List;
 public class LongsparkModifier extends Modifier {
 
     public LongsparkModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0xFFFF00);
     }
 
     // 正面方向のみ検知 (1.16.5仕様)

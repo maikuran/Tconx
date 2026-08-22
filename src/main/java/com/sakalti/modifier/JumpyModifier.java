@@ -11,7 +11,7 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class JumpyModifier extends Modifier {
 
     public JumpyModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0x66FF66);
     }
 
     /**

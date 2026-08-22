@@ -8,7 +8,7 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class BerserkModifier extends Modifier {
 
     public BerserkModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタを使用します
+        super(0xCC0000);
     }
 
     /**

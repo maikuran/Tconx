@@ -12,7 +12,7 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class AuroVisionModifier extends Modifier {
 
     public AuroVisionModifier() {
-        super(); // 1.16.5 では引数なし
+        super(0x00FFCC);
     }
 
     /**

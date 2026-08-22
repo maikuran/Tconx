@@ -11,7 +11,7 @@ import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 public class CoralianModifier extends Modifier {
 
     public CoralianModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタを使用します
+        super(0x33FFCC);
     }
 
     

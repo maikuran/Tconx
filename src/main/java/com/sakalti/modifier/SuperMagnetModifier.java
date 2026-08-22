@@ -13,7 +13,7 @@ import java.util.List;
 public class SuperMagnetModifier extends Modifier {
 
     public SuperMagnetModifier() {
-        super(); // 1.16.5 では引数なしのコンストラクタ
+        super(0xFF3300);
     }
 
     private static final double RADIUS = 6.0D;

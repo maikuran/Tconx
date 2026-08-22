@@ -16,7 +16,7 @@ import java.util.List;
 public class CelestiteResonanceModifier extends Modifier {
 
     public CelestiteResonanceModifier() {
-        super(); // 1.16.5 仕様の無引数コンストラクタ
+        super(0x9933FF);
     }
 
     /**
