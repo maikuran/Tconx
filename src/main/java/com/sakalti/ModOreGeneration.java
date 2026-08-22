@@ -53,19 +53,19 @@ public class ModOreGeneration {
         ORE_KANILITE = register("ore_kanilite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_STONE, ModMetals.KANILITE_ORE.get().defaultBlockState(), 6))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 50)))
-            .square()
+            .decorated(Placement.SQUARE.configured(NoPlacementConfig.INSTANCE))
             .count(6));
 
         ORE_HACHILITE = register("ore_hachilite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_STONE, ModMetals.HACHILITE_ORE.get().defaultBlockState(), 8))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 64)))
-            .square()
+            .decorated(Placement.SQUARE.configured(NoPlacementConfig.INSTANCE))
             .count(8));
 
         ORE_CHIRITE = register("ore_chirite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_STONE, ModMetals.CHIRITE_ORE.get().defaultBlockState(), 6))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 31)))
-            .square()
+            .decorated(Placement.SQUARE.configured(NoPlacementConfig.INSTANCE))
             .count(9));
 
         // ------------------------------------------------------------
@@ -74,13 +74,13 @@ public class ModOreGeneration {
         ORE_IGNIZ = register("ore_igniz", Feature.ORE
             .configured(new OreFeatureConfig(BASE_NETHER, ModMetals.IGNIZ_ORE.get().defaultBlockState(), 5))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 110)))
-            .square()
+            .decorated(Placement.SQUARE.configured(NoPlacementConfig.INSTANCE))
             .count(4));
 
         ORE_MOMONGAITE = register("ore_momongaite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_NETHER, ModMetals.MOMONGAITE_ORE.get().defaultBlockState(), 6))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 110)))
-            .square()
+            .decorated(Placement.SQUARE.configured(NoPlacementConfig.INSTANCE))
             .count(5));
 
         // ------------------------------------------------------------
@@ -89,13 +89,13 @@ public class ModOreGeneration {
         ORE_OURITE = register("ore_ourite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_END, ModMetals.OURITE_ORE.get().defaultBlockState(), 2))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 70)))
-            .square()
+            .decorated(Placement.SQUARE.configured(NoPlacementConfig.INSTANCE))
             .count(1));
 
         ORE_HIROLITE = register("ore_hirolite", Feature.ORE
             .configured(new OreFeatureConfig(BASE_END, ModMetals.HIROLITE_ORE.get().defaultBlockState(), 3))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 70)))
-            .square()
+            .decorated(Placement.SQUARE.configured(NoPlacementConfig.INSTANCE))
             .count(2));
     }
 
