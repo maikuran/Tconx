@@ -1,29 +1,34 @@
 package com.sakalti.modifier;
 
-import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.entity.LivingEntity;
 import slimeknights.tconstruct.library.modifiers.Modifier;
-import slimeknights.tconstruct.library.tools.nbt.ToolStack;
+import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
+import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
+import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
 
 import java.util.Random;
 
 public class UnstableModifier extends Modifier {
-    private static final Random RANDOM = new Random();
+
+    public UnstableModifier(int color) {
+        super(color);
+    }
 
     /**
-     * 攻撃後に呼び出す不安定な効果。
-     * ダメージが毎回1.0〜4.4倍に変動し、倍率に応じて耐久を消費する。
-     *
-     * @param tool ツールスタック
-     * @param level Modifierレベル
-     * @param attacker 攻撃者
-     * @param baseDamage 元のダメージ
-     * @return 修正後のダメージ
+     * 近接攻撃のダメージ計算＆耐久消費 (1.16.5仕様)
      */
-    public float AfterEntityHit(ToolStack tool, int level, LivingEntity attacker, float baseDamage) {
-        if (tool.isBroken() || attacker == null || level <= 0) return baseDamage;
+    @Override
+    public float getEntityDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
+        LivingEntity attacker = context.getAttacker();
+
+        // ツールが破損している、または攻撃者が存在しない場合は変動なし
+        if (tool.isBroken() || attacker == null || level <= 0) {
+            return damage;
+        }
 
         // 1.0〜4.4の範囲でランダム倍率を決定
-        float multiplier = 1.0f + RANDOM.nextFloat() * 3.4f;
+        Random random = attacker.getRandom();
+        float multiplier = 1.0f + random.nextFloat() * 3.4f;
 
         // 耐久消費量を倍率に基づいて決定
         int durabilityCost;
@@ -39,12 +44,12 @@ public class UnstableModifier extends Modifier {
             durabilityCost = 4;
         }
 
-        // 壊れないようにチェック
-        int currentDamage = tool.getDamage();
-        if (currentDamage + durabilityCost < Integer.MAX_VALUE) {
-            tool.setDamage(currentDamage + durabilityCost);
+        // サーバー側でのみ追加の耐久ダメージを適用 (TCon標準ヘルパーを使用)
+        if (!attacker.level.isClientSide && durabilityCost > 0) {
+            ToolDamageUtil.damage(tool, durabilityCost, attacker, context.getSlotType());
         }
 
-        return baseDamage * multiplier;
+        // ダメージを倍率分増加させる（基本ダメージに対する加算値を返す）
+        return damage * multiplier;
     }
 }
