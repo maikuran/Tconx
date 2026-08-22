@@ -3,7 +3,7 @@ name: Pure Python Auto Asset Generator
 on:
   push:
     branches:
-     - main
+     - 1.16.5test
   workflow_dispatch:
 
 jobs:
