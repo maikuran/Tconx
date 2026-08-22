@@ -10,14 +10,14 @@ import java.util.Random;
 
 public class UnstableModifier extends Modifier {
 
-    public UnstableModifier(int color) {
-        super(color);
+    public UnstableModifier() {
+        super(); // 1.16.5 では引数なしのコンストラクタ
     }
 
     /**
      * 近接攻撃のダメージ計算＆耐久消費 (1.16.5仕様)
      */
-    
+    @Override
     public float getEntityDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
         LivingEntity attacker = context.getAttacker();
 
@@ -45,11 +45,11 @@ public class UnstableModifier extends Modifier {
         }
 
         // サーバー側でのみ追加の耐久ダメージを適用 (TCon標準ヘルパーを使用)
-        if (!attacker.level.isClientSide && durabilityCost > 0) {
+        if (!attacker.level.isClientSide() && durabilityCost > 0) {
             ToolDamageUtil.damage(tool, durabilityCost, attacker, context.getSlotType());
         }
 
-        // ダメージを倍率分増加させる（基本ダメージに対する加算値を返す）
+        // 倍率を掛けた最終ダメージを返す
         return damage * multiplier;
     }
 }
