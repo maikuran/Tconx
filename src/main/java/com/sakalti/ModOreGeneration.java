@@ -467,7 +467,7 @@ public final class ModOreGeneration {
                 .add(
                         new Supplier<ConfiguredFeature<?, ?>>() {
 
-                            @Override
+                            
                             public ConfiguredFeature<?, ?> get() {
                                 return feature;
                             }
