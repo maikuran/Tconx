@@ -1,0 +1,32 @@
+name: Restore material stats
+
+on:
+  workflow_dispatch:
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Restore only materials/stats
+        run: |
+          git restore --source=e1582305d56533bcacad7258e58a576f22f11075 -- src/main/resources/data/sakalti/materials/stats/
+
+      - name: Commit restored files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if git diff --quiet -- src/main/resources/data/sakalti/materials/stats/; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git add -- src/main/resources/data/sakalti/materials/stats/
+          git commit -m "Restore material stats to e1582305"
+          git push
