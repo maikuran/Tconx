@@ -24,7 +24,7 @@ jobs:
           from pathlib import Path
 
           root = Path(
-              "src/main/resources/data/sakalti/tinkering/materials/stats"
+              "src/main/resources/data/sakalti/tinkerin/materials/stats"
           )
 
           if not root.exists():
