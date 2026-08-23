@@ -59,12 +59,13 @@ public final class ModMain {
         // ModTiers
         // ============================================================
 
-        ModTiers.SUPER.getUses();
+        ModTiers.SUPER.getUses();  <-- クラッシュの原因になるため削除！
 
         // ============================================================
         // Ore generation
         // ============================================================
 
+        // ※ ModOreGeneration 側が Supplier で遅延評価される修正済みであること
         ModOreGeneration.register();
     }
 }
