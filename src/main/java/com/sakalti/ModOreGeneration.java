@@ -21,12 +21,13 @@ public final class ModOreGeneration {
 
     private ModOreGeneration() {}
 
-    // RuleTest
+    // 1. RuleTest
     private static final RuleTest BASE_STONE = OreFeatureConfig.FillerBlockType.NATURAL_STONE;
     private static final RuleTest BASE_NETHER = OreFeatureConfig.FillerBlockType.NETHERRACK;
     private static final RuleTest BASE_END = new BlockMatchRuleTest(Blocks.END_STONE);
 
-    // ConfiguredFeature は呼び出された時点（必要になった瞬間）で生成するように Supplier にする
+    // 2. ConfiguredFeature を「Supplier<ConfiguredFeature<?, ?>>」として宣言
+    // これにより null になることを完全に防ぎます
     public static final Supplier<ConfiguredFeature<?, ?>> KANILITE_ORE = () -> Feature.ORE
             .configured(new OreFeatureConfig(BASE_STONE, ModMetals.KANILITE_ORE.get().defaultBlockState(), 6))
             .decorated(Placement.RANGE.configured(new TopSolidRangeConfig(10, 0, 50)))
@@ -69,11 +70,12 @@ public final class ModOreGeneration {
             .decorated(Placement.SQUARE.configured(NoPlacementConfig.INSTANCE))
             .count(2);
 
-    // Main クラスの FMLCommonSetupEvent などから呼ぶ
+    // 3. EventBus登録
     public static void register() {
         MinecraftForge.EVENT_BUS.register(ModOreGeneration.class);
     }
 
+    // 4. イベントハンドラ
     @SubscribeEvent
     public static void onBiomeLoading(BiomeLoadingEvent event) {
         Biome.Category category = event.getCategory();
@@ -92,17 +94,18 @@ public final class ModOreGeneration {
             return;
         }
 
-        // Overworld (NONE や NETHER/THEEND 以外)
-        if (category != Biome.Category.NETHER && category != Biome.Category.THEEND) {
-            addFeature(event, KANILITE_ORE);
-            addFeature(event, HACHILITE_ORE);
-            addFeature(event, CHIRITE_ORE);
-        }
+        // Overworld (Nether/End以外)
+        addFeature(event, KANILITE_ORE);
+        addFeature(event, HACHILITE_ORE);
+        addFeature(event, CHIRITE_ORE);
     }
 
+    // 5. 安全に追加するメソッド
     private static void addFeature(BiomeLoadingEvent event, Supplier<ConfiguredFeature<?, ?>> supplier) {
-        event.getGeneration()
-                .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
-                .add(supplier);
+        if (supplier != null && supplier.get() != null) {
+            event.getGeneration()
+                    .getFeatures(GenerationStage.Decoration.UNDERGROUND_ORES)
+                    .add(supplier);
+        }
     }
 }
