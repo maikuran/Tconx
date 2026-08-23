@@ -1,0 +1,77 @@
+name: Generate Ore Block Loot Tables
+
+on:
+  push:
+    paths:
+      - 'src/main/java/com/sakalti/material/hachilite/ModMaterials.java'
+      - '.github/workflows/generate-loot-tables.yml'
+  workflow_dispatch:
+
+jobs:
+  generate-loot-tables:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract Material IDs and Generate Loot Tables
+        run: |
+          FILE_PATH="src/main/java/com/sakalti/material/hachilite/ModMaterials.java"
+          OUTPUT_DIR="src/main/resources/data/sakalti/loot_tables/blocks"
+
+          if [ ! -f "$FILE_PATH" ]; then
+            echo "Error: $FILE_PATH が見つかりません。"
+            exit 1
+          fi
+
+          # 保存先ディレクトリを作成
+          mkdir -p "$OUTPUT_DIR"
+
+          # Javaファイルから "sakalti:xxxxx" のパターンを取り出してループ処理
+          grep -oP 'new MaterialId\("sakalti:\K[a-z0-9_]+' "$FILE_PATH" | while read -r material; do
+            TARGET_JSON="$OUTPUT_DIR/${material}_block.json"
+
+            echo "Generating $TARGET_JSON..."
+
+            # 自分のブロックを1つ落とす基本のルートテーブルJSONを出力
+            cat <<EOF > "$TARGET_JSON"
+          {
+            "type": "minecraft:block",
+            "pools": [
+              {
+                "rolls": 1.0,
+                "bonus_rolls": 0.0,
+                "entries": [
+                  {
+                    "type": "minecraft:item",
+                    "name": "sakalti:${material}_block"
+                  }
+                ],
+                "conditions": [
+                  {
+                    "condition": "minecraft:survives_explosion"
+                  }
+                ]
+              }
+            ]
+          }
+          EOF
+          done
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/sakalti/loot_tables/blocks/*.json
+
+          if git diff --staged --quiet; then
+            echo "変更はありませんでした。"
+          else
+            git commit -m "auto: ModMaterialsから鉱石ブロックのルートテーブルを自動生成"
+            git push
+          fi
