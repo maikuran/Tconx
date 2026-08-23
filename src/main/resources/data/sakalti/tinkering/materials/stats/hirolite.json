@@ -2,53 +2,53 @@
   "stats": {
     "tconstruct:binding": {},
     "tconstruct:grip": {
-      "accuracy": 0.075,
-      "durability": 0.075,
-      "melee_damage": 3.5
+      "accuracy": 0.056,
+      "durability": 0.056,
+      "melee_damage": 1.925
     },
     "tconstruct:handle": {
-      "durability": 0.225,
-      "melee_damage": 1.0,
-      "melee_speed": -0.105,
-      "mining_speed": -0.105
+      "durability": 0.169,
+      "melee_damage": 0.65,
+      "melee_speed": -0.073,
+      "mining_speed": -0.073
     },
     "tconstruct:head": {
-      "durability": 1338.4,
-      "melee_attack": 11.275,
-      "mining_speed": 9.1,
+      "durability": 936.88,
+      "melee_attack": 6.201,
+      "mining_speed": 5.915,
       "mining_tier": "sakalti:super"
     },
     "tconstruct:limb": {
-      "accuracy": -0.338,
-      "draw_speed": -0.562,
-      "durability": 1338.4,
-      "velocity": 0.07
+      "accuracy": -0.254,
+      "draw_speed": -0.422,
+      "durability": 936.88,
+      "velocity": 0.049
     },
     "tconstruct:maille": {},
     "tconstruct:plating_boots": {
-      "armor": 3.6,
-      "durability": 658.7,
-      "toughness": 4.0
+      "armor": 2.16,
+      "durability": 461.09,
+      "toughness": 2.8
     },
     "tconstruct:plating_chestplate": {
-      "armor": 11.4,
-      "durability": 861.0,
-      "toughness": 4.0
+      "armor": 6.84,
+      "durability": 602.7,
+      "toughness": 2.8
     },
     "tconstruct:plating_helmet": {
-      "armor": 3.6,
-      "durability": 613.2,
-      "toughness": 4.0
+      "armor": 2.16,
+      "durability": 429.24,
+      "toughness": 2.8
     },
     "tconstruct:plating_leggings": {
-      "armor": 8.1,
-      "durability": 769.3,
-      "toughness": 4.0
+      "armor": 4.86,
+      "durability": 538.51,
+      "toughness": 2.8
     },
     "tconstruct:plating_shield": {
-      "durability": 900,
-      "toughness": 8.0,
-      "knockback_resistance": 1.0
+      "durability": 630.0,
+      "toughness": 4.8,
+      "knockback_resistance": 0.25
     }
   }
 }
