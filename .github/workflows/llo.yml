@@ -1,0 +1,57 @@
+name: Replace material fluid key
+
+on:
+  workflow_dispatch:
+
+jobs:
+  replace-fluid-key:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Replace "fluid" with "name"
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("src/main/resources/data/sakalti/recipes/material_fluid")
+
+          for path in root.rglob("*.json"):
+              try:
+                  data = json.loads(path.read_text(encoding="utf-8"))
+              except Exception as e:
+                  print(f"SKIP {path}: {e}")
+                  continue
+
+              fluid = data.get("fluid")
+
+              if isinstance(fluid, dict) and "fluid" in fluid:
+                  fluid["name"] = fluid.pop("fluid")
+
+                  path.write_text(
+                      json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                      encoding="utf-8"
+                  )
+
+                  print(f"UPDATED {path}")
+              else:
+                  print(f"SKIP {path}: no fluid.fluid")
+
+          PY
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/sakalti/recipes/material_fluid/
+
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "Replace material fluid key"
+            git push
+          fi
