@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:momongaite",
-    "amount": 100
+    "amount": 100,
+    "name": "sakalti:momongaite"
   },
   "temperature": 1000,
   "output": "sakalti:momongaite"

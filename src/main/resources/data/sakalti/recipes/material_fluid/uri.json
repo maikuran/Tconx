@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:molten_uri",
-    "amount": 100
+    "amount": 100,
+    "name": "sakalti:molten_uri"
   },
   "temperature": 1000,
   "output": "sakalti:uri"

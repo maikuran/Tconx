@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:tiberium",
-    "amount": 100
+    "amount": 100,
+    "name": "sakalti:tiberium"
   },
   "temperature": 1000,
   "output": "sakalti:tiberium"

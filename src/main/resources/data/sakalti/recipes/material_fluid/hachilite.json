@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:hachilite",
-    "amount": 100
+    "amount": 100,
+    "name": "sakalti:hachilite"
   },
   "temperature": 1000,
   "output": "sakalti:hachilite"

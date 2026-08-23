@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:herdyeen",
-    "amount": 100
+    "amount": 100,
+    "name": "sakalti:herdyeen"
   },
   "temperature": 1000,
   "output": "sakalti:herdyeen"

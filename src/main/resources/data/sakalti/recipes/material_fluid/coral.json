@@ -1,8 +1,8 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:coral",
-    "amount": 100
+    "amount": 100,
+    "name": "sakalti:coral"
   },
   "temperature": 1000,
   "output": "sakalti:coral"
