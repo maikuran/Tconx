@@ -1,6 +1,9 @@
 name: Replace material fluid key
 
 on:
+  push: 
+   branches: 
+     - 1.16.5test
   workflow_dispatch:
 
 jobs:
