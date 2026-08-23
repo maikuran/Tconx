@@ -86,8 +86,5 @@ public final class ModMain {
          * ========================================================
          */
 
-        modEventBus.addListener(
-                ModOreGeneration::setup
-        );
     }
 }
