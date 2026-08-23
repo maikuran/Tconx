@@ -1,12 +1,12 @@
 package com.sakalti;
 
 import com.sakalti.entity.CrimsonFlyEntity;
-import com.sakalti.entity.ModSpawns;
 import com.sakalti.modifier.TconxModifiers;
 import com.sakalti.scaling.HealthCrystals;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(ModMain.MODID)
@@ -17,7 +17,9 @@ public final class ModMain {
     public ModMain() {
 
         IEventBus modEventBus =
-                FMLJavaModLoadingContext.get().getModEventBus();
+                FMLJavaModLoadingContext
+                        .get()
+                        .getModEventBus();
 
         // ============================================================
         // Blocks / Items
@@ -38,12 +40,6 @@ public final class ModMain {
         CrimsonFlyEntity.register(modEventBus);
 
         // ============================================================
-        // Entity attributes / spawn
-        // ============================================================
-
-        // ModSpawns は @Mod.EventBusSubscriber で自動登録される
-
-        // ============================================================
         // Health Crystals
         // ============================================================
 
@@ -62,10 +58,11 @@ public final class ModMain {
         ModTiers.SUPER.getUses();
 
         // ============================================================
-        // Ore generation
+        // World Generation
         // ============================================================
 
-        // ※ ModOreGeneration 側が Supplier で遅延評価される修正済みであること
-        ModOreGeneration.register();
+        modEventBus.addListener(
+                ModOreGeneration::setup
+        );
     }
 }
