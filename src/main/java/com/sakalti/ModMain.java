@@ -59,7 +59,7 @@ public final class ModMain {
         // ModTiers
         // ============================================================
 
-        ModTiers.SUPER.getUses();  <-- クラッシュの原因になるため削除！
+        ModTiers.SUPER.getUses();
 
         // ============================================================
         // Ore generation
