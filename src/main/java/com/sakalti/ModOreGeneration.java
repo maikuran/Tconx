@@ -31,11 +31,9 @@ public final class ModOreGeneration {
     private ModOreGeneration() {
     }
 
-    /*
-     * ============================================================
-     * RuleTest
-     * ============================================================
-     */
+    // ============================================================
+    // RuleTest
+    // ============================================================
 
     private static final RuleTest OVERWORLD_STONE =
             OreFeatureConfig.FillerBlockType.NATURAL_STONE;
@@ -46,65 +44,70 @@ public final class ModOreGeneration {
     private static final RuleTest END_STONE =
             new BlockMatchRuleTest(Blocks.END_STONE);
 
-    /*
-     * ============================================================
-     * Common Setup
-     *
-     * 注意:
-     * FMLCommonSetupEvent は FORGE バスではなく MOD バス。
-     *
-     * そのため、このメソッドは ModMain 側から
-     * MODイベントバスへ登録する。
-     *
-     * ============================================================
-     */
+    // ============================================================
+    // ConfiguredFeature
+    //
+    // FMLCommonSetupEvent の enqueueWork 内で代入する。
+    // ============================================================
+
+    private static ConfiguredFeature<?, ?> KANILITE_ORE;
+    private static ConfiguredFeature<?, ?> HACHILITE_ORE;
+    private static ConfiguredFeature<?, ?> CHIRITE_ORE;
+
+    private static ConfiguredFeature<?, ?> IGNIZ_ORE;
+    private static ConfiguredFeature<?, ?> MOMONGAITE_ORE;
+
+    private static ConfiguredFeature<?, ?> OURITE_ORE;
+    private static ConfiguredFeature<?, ?> HIROLITE_ORE;
+
+    // ============================================================
+    // Common Setup
+    // ============================================================
 
     public static void setup(final FMLCommonSetupEvent event) {
 
         event.enqueueWork(() -> {
 
-            registerConfiguredFeature(
+            KANILITE_ORE = registerConfiguredFeature(
                     "kanilite_ore",
                     createKaniliteOre()
             );
 
-            registerConfiguredFeature(
+            HACHILITE_ORE = registerConfiguredFeature(
                     "hachilite_ore",
                     createHachiliteOre()
             );
 
-            registerConfiguredFeature(
+            CHIRITE_ORE = registerConfiguredFeature(
                     "chirite_ore",
                     createChiriteOre()
             );
 
-            registerConfiguredFeature(
+            IGNIZ_ORE = registerConfiguredFeature(
                     "igniz_ore",
                     createIgnizOre()
             );
 
-            registerConfiguredFeature(
+            MOMONGAITE_ORE = registerConfiguredFeature(
                     "momongaite_ore",
                     createMomongaiteOre()
             );
 
-            registerConfiguredFeature(
+            OURITE_ORE = registerConfiguredFeature(
                     "ourite_ore",
                     createOuriteOre()
             );
 
-            registerConfiguredFeature(
+            HIROLITE_ORE = registerConfiguredFeature(
                     "hirolite_ore",
                     createHiroliteOre()
             );
         });
     }
 
-    /*
-     * ============================================================
-     * ConfiguredFeature registration
-     * ============================================================
-     */
+    // ============================================================
+    // ConfiguredFeature registration
+    // ============================================================
 
     private static ConfiguredFeature<?, ?> registerConfiguredFeature(
             String name,
@@ -113,10 +116,7 @@ public final class ModOreGeneration {
 
         if (feature == null) {
             throw new IllegalStateException(
-                    "TConX: ConfiguredFeature is null: "
-                            + ModMain.MODID
-                            + ":"
-                            + name
+                    "TConX: ConfiguredFeature is null: " + name
             );
         }
 
@@ -140,11 +140,9 @@ public final class ModOreGeneration {
         );
     }
 
-    /*
-     * ============================================================
-     * Overworld
-     * ============================================================
-     */
+    // ============================================================
+    // Overworld
+    // ============================================================
 
     private static ConfiguredFeature<?, ?> createKaniliteOre() {
 
@@ -230,11 +228,9 @@ public final class ModOreGeneration {
         .count(9);
     }
 
-    /*
-     * ============================================================
-     * Nether
-     * ============================================================
-     */
+    // ============================================================
+    // Nether
+    // ============================================================
 
     private static ConfiguredFeature<?, ?> createIgnizOre() {
 
@@ -292,11 +288,9 @@ public final class ModOreGeneration {
         .count(5);
     }
 
-    /*
-     * ============================================================
-     * End
-     * ============================================================
-     */
+    // ============================================================
+    // End
+    // ============================================================
 
     private static ConfiguredFeature<?, ?> createOuriteOre() {
 
@@ -354,144 +348,87 @@ public final class ModOreGeneration {
         .count(2);
     }
 
-    /*
-     * ============================================================
-     * BiomeLoadingEvent
-     * ============================================================
-     *
-     * ここは FORGE EVENT BUS。
-     *
-     * ============================================================
-     */
+    // ============================================================
+    // BiomeLoadingEvent
+    // ============================================================
 
     @SubscribeEvent
-    public static void onBiomeLoading(
-            BiomeLoadingEvent event
-    ) {
+    public static void onBiomeLoading(BiomeLoadingEvent event) {
 
         Biome.Category category =
                 event.getCategory();
 
-        /*
-         * --------------------------------------------------------
-         * Nether
-         * --------------------------------------------------------
-         */
+        // --------------------------------------------------------
+        // Nether
+        // --------------------------------------------------------
 
         if (category == Biome.Category.NETHER) {
 
-            addRegisteredFeature(
+            addFeature(
                     event,
-                    "igniz_ore"
+                    () -> IGNIZ_ORE
             );
 
-            addRegisteredFeature(
+            addFeature(
                     event,
-                    "momongaite_ore"
+                    () -> MOMONGAITE_ORE
             );
 
             return;
         }
 
-        /*
-         * --------------------------------------------------------
-         * End
-         * --------------------------------------------------------
-         */
+        // --------------------------------------------------------
+        // End
+        // --------------------------------------------------------
 
         if (category == Biome.Category.THEEND) {
 
-            addRegisteredFeature(
+            addFeature(
                     event,
-                    "ourite_ore"
+                    () -> OURITE_ORE
             );
 
-            addRegisteredFeature(
+            addFeature(
                     event,
-                    "hirolite_ore"
+                    () -> HIROLITE_ORE
             );
 
             return;
         }
 
-        /*
-         * --------------------------------------------------------
-         * Overworld
-         * --------------------------------------------------------
-         */
+        // --------------------------------------------------------
+        // Overworld
+        // --------------------------------------------------------
 
-        addRegisteredFeature(
+        addFeature(
                 event,
-                "kanilite_ore"
+                () -> KANILITE_ORE
         );
 
-        addRegisteredFeature(
+        addFeature(
                 event,
-                "hachilite_ore"
+                () -> HACHILITE_ORE
         );
 
-        addRegisteredFeature(
+        addFeature(
                 event,
-                "chirite_ore"
+                () -> CHIRITE_ORE
         );
     }
 
-    /*
-     * ============================================================
-     * 登録済み ConfiguredFeature を取得してBiomeへ追加
-     * ============================================================
-     */
+    // ============================================================
+    // Feature追加
+    // ============================================================
 
-    private static void addRegisteredFeature(
+    private static void addFeature(
             BiomeLoadingEvent event,
-            String name
+            Supplier<ConfiguredFeature<?, ?>> supplier
     ) {
-
-        ResourceLocation id =
-                new ResourceLocation(
-                        ModMain.MODID,
-                        name
-                );
-
-        ConfiguredFeature<?, ?> feature =
-                WorldGenRegistries.CONFIGURED_FEATURE.get(id);
-
-        /*
-         * ========================================================
-         * 最重要:
-         *
-         * null の ConfiguredFeature を絶対に Supplier に入れない。
-         *
-         * ========================================================
-         */
-
-        if (feature == null) {
-            return;
-        }
-
-        /*
-         * ========================================================
-         * 登録済みオブジェクトをローカル変数に保持。
-         *
-         * get() が null を返す Supplier を作らない。
-         * ========================================================
-         */
-
-        final ConfiguredFeature<?, ?> registeredFeature =
-                feature;
 
         event.getGeneration()
                 .getFeatures(
                         GenerationStage.Decoration.UNDERGROUND_ORES
                 )
-                .add(
-                        new Supplier<ConfiguredFeature<?, ?>>() {
-
-                            
-                            public ConfiguredFeature<?, ?> get() {
-                                return registeredFeature;
-                            }
-                        }
-                );
+                .add(supplier);
     }
 }
