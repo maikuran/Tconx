@@ -50,8 +50,12 @@ public final class ModOreGeneration {
      * ============================================================
      * Common Setup
      *
-     * ConfiguredFeature はここで作成して登録する。
-     * BiomeLoadingEvent 側には static フィールドを渡さない。
+     * 注意:
+     * FMLCommonSetupEvent は FORGE バスではなく MOD バス。
+     *
+     * そのため、このメソッドは ModMain 側から
+     * MODイベントバスへ登録する。
+     *
      * ============================================================
      */
 
@@ -107,6 +111,15 @@ public final class ModOreGeneration {
             ConfiguredFeature<?, ?> feature
     ) {
 
+        if (feature == null) {
+            throw new IllegalStateException(
+                    "TConX: ConfiguredFeature is null: "
+                            + ModMain.MODID
+                            + ":"
+                            + name
+            );
+        }
+
         ResourceLocation id =
                 new ResourceLocation(
                         ModMain.MODID,
@@ -116,17 +129,8 @@ public final class ModOreGeneration {
         ConfiguredFeature<?, ?> existing =
                 WorldGenRegistries.CONFIGURED_FEATURE.get(id);
 
-        /*
-         * 二重登録を防止する。
-         */
         if (existing != null) {
             return existing;
-        }
-
-        if (feature == null) {
-            throw new IllegalStateException(
-                    "TConX: ConfiguredFeature is null: " + id
-            );
         }
 
         return Registry.register(
@@ -353,9 +357,10 @@ public final class ModOreGeneration {
     /*
      * ============================================================
      * BiomeLoadingEvent
+     * ============================================================
      *
-     * ここでは static Feature フィールドを一切参照しない。
-     * 必ず WorldGenRegistries から取得する。
+     * ここは FORGE EVENT BUS。
+     *
      * ============================================================
      */
 
@@ -442,23 +447,38 @@ public final class ModOreGeneration {
             String name
     ) {
 
-        final ResourceLocation id =
+        ResourceLocation id =
                 new ResourceLocation(
                         ModMain.MODID,
                         name
                 );
 
-        final ConfiguredFeature<?, ?> feature =
+        ConfiguredFeature<?, ?> feature =
                 WorldGenRegistries.CONFIGURED_FEATURE.get(id);
 
         /*
-         * null は絶対に Supplier に入れない。
+         * ========================================================
+         * 最重要:
          *
-         * これが今回のクラッシュ対策の重要部分。
+         * null の ConfiguredFeature を絶対に Supplier に入れない。
+         *
+         * ========================================================
          */
+
         if (feature == null) {
             return;
         }
+
+        /*
+         * ========================================================
+         * 登録済みオブジェクトをローカル変数に保持。
+         *
+         * get() が null を返す Supplier を作らない。
+         * ========================================================
+         */
+
+        final ConfiguredFeature<?, ?> registeredFeature =
+                feature;
 
         event.getGeneration()
                 .getFeatures(
@@ -467,9 +487,9 @@ public final class ModOreGeneration {
                 .add(
                         new Supplier<ConfiguredFeature<?, ?>>() {
 
-                            
+                            @Override
                             public ConfiguredFeature<?, ?> get() {
-                                return feature;
+                                return registeredFeature;
                             }
                         }
                 );
