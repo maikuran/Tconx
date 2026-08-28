@@ -1,9 +1,0 @@
-{
-  "type": "tconstruct:material_fluid",
-  "fluid": {
-    "amount": 100,
-    "name": "sakalti:traits"
-  },
-  "temperature": 1000,
-  "output": "sakalti:traits"
-}
