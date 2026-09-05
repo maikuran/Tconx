@@ -48,7 +48,6 @@ public final class ModMain {
          *
          * ModMaterials側で実際のMaterial登録を行う。
          */
-        ModMaterials.register(modEventBus);
 
         /*
          * TConX modifier
