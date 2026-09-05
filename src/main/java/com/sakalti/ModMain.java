@@ -4,7 +4,6 @@ import com.sakalti.modifier.TconxModifiers;
 import com.sakalti.entity.*;
 import com.sakalti.scaling.HealthCrystals;
 
-import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -15,25 +14,50 @@ public final class ModMain {
     public static final String MODID = "sakalti";
 
     public ModMain() {
+
         IEventBus modEventBus =
                 FMLJavaModLoadingContext.get().getModEventBus();
 
-        // アイテム・ブロック
+        /*
+         * アイテム・ブロック
+         */
         ModMetals.register(modEventBus);
 
-        // 溶融液体
+        /*
+         * 溶融液体
+         */
         ModFluids.register(modEventBus);
-        CrimsonFlyEntity.register(FMLJavaModLoadingContext.get().getModEventBus());
-        ModCreativeTabs.register(modEventBus);
-        HealthCrystals.register(modEventBus);
-        // エンチャント
-        
 
-        // TConX modifier
+        /*
+         * クリムゾンフライ
+         */
+        CrimsonFlyEntity.register(modEventBus);
+
+        /*
+         * クリエイティブタブ
+         */
+        ModCreativeTabs.register(modEventBus);
+
+        /*
+         * Health Crystal
+         */
+        HealthCrystals.register(modEventBus);
+
+        /*
+         * TConstruct Material
+         *
+         * ModMaterials側で実際のMaterial登録を行う。
+         */
+        ModMaterials.register(modEventBus);
+
+        /*
+         * TConX modifier
+         */
         TconxModifiers.MODIFIERS.register(modEventBus);
 
-        // ModTiers の static 初期化を確実に実行
+        /*
+         * ModTiersのstatic初期化を確実に実行
+         */
         ModTiers.SUPER.getUses();
-        
     }
 }
