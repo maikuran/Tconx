@@ -86,4 +86,12 @@ public final class ModMaterials {
 
     public static final MaterialId MOMONGAITE_ID =
             new MaterialId("sakalti:momongaite");
+
+    public static final MaterialId DEEPSTEEL_ID = new MaterialId("sakalti:deepsteel");
+    public static final MaterialId ITSULITE_ID = new MaterialId("sakalti:itsulite");
+    public static final MaterialId HOTALITE_ID = new MaterialId("sakalti:hotalite");
+    public static final MaterialId SORALITE_ID = new MaterialId("sakalti:soralite");
+    public static final MaterialId STANNOIDEA_ID = new MaterialId("sakalti:stannoidea");
+    public static final MaterialId SULPHUR_ID = new MaterialId("sakalti:sulphur");
+    public static final MaterialId YURU_ID = new MaterialId("sakalti:yuru");
 }

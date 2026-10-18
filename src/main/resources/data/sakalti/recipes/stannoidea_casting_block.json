@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:stannoidea",
+    "amount": 1080
+  },
+  "result": "sakalti:stannoidea_block",
+  "cooling_time": 225
+}

@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:hachilite_block"
+  },
+  "result": {
+    "fluid": "sakalti:hachilite",
+    "amount": 1080
+  },
+  "temperature": 900,
+  "time": 360
+}

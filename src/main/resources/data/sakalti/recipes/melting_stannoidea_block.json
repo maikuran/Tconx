@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:stannoidea_block"
+  },
+  "result": {
+    "fluid": "sakalti:stannoidea",
+    "amount": 1080
+  },
+  "temperature": 3200,
+  "time": 360
+}

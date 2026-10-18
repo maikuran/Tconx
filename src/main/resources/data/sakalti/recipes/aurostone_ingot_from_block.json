@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:aurostone_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:aurostone_ingot",
+    "count": 9
+  }
+}

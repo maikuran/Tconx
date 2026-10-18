@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_fluid",
+  "fluid": {
+    "amount": 100,
+    "name": "sakalti:molten_sulphur"
+  },
+  "temperature": 200,
+  "output": "sakalti:sulphur"
+}

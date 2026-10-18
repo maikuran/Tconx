@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:kanilite",
+  "temperature": 900,
+  "result": {
+    "fluid": "sakalti:kanilite",
+    "amount": 100
+  }
+}

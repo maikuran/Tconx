@@ -1,9 +1,10 @@
 {
-  "craftable": true,
+  "craftable": false,
   "tier": 5,
   "sortOrder": 5,
+  "textColor": "#F8DAC4",
   "hidden": false,
-  "color": "#f8dac4",
-  "fluid": "sakalti:chiisteel",
-  "translationKey": "material.sakalti.chiisteel"
+  "fluid": "sakalti:molten_chiisteel",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

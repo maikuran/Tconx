@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 7,
-  "sortOrder": 7,
+  "craftable": false,
+  "tier": 5,
+  "sortOrder": 5,
+  "textColor": "#66FF99",
   "hidden": false,
-  "color": "#66ff99",
-  "fluid": "sakalti:ostlum",
-  "translationKey": "material.sakalti.ostlum"
+  "fluid": "sakalti:molten_ostlum",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

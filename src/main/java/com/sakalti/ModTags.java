@@ -1,26 +1,21 @@
 package com.sakalti;
 
-import net.minecraft.block.Block;
-import net.minecraft.tags.BlockTags;
-import net.minecraft.tags.ITag;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.block.Block;
 
 public final class ModTags {
-
-    private ModTags() {
-    }
+    private ModTags() {}
 
     public static final class Blocks {
+        public static final TagKey<Block> NEEDS_SUPER_TOOL = tag("needs_super_tool");
+        public static final TagKey<Block> NEEDS_SUPER_2_TOOL = tag("needs_super_2_tool");
+        public static final TagKey<Block> NEEDS_SUPER_3_TOOL = tag("needs_super_3_tool");
 
-        public static final ITag.INamedTag<Block> NEEDS_SUPER_TOOL =
-                BlockTags.bind(
-                        new ResourceLocation(
-                                "sakalti",
-                                "needs_super_tool"
-                        ).toString()
-                );
-
-        private Blocks() {
+        private static TagKey<Block> tag(String name) {
+            return TagKey.create(Registries.BLOCK, new ResourceLocation(ModMain.MODID, name));
         }
+        private Blocks() {}
     }
 }

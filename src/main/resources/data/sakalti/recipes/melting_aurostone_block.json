@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:aurostone_block"
+  },
+  "result": {
+    "fluid": "sakalti:aurostone",
+    "amount": 1080
+  },
+  "temperature": 2300,
+  "time": 360
+}

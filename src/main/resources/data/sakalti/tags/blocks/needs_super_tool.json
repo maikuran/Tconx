@@ -1,12 +1,9 @@
 {
   "replace": false,
   "values": [
-    "sakalti:igniz_ore",
-    "sakalti:igniz_block",
-    "sakalti:chirite_ore",
-    "sakalti:chirite_block",
-    "sakalti:chiisteel_block",
     "sakalti:dilonite_block",
-    "sakalti:tiberium_block"
+    "sakalti:hirolite_block",
+    "sakalti:ouswari_block",
+    "sakalti:proxia_block"
   ]
 }

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:momongaite_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:momongaite_ingot",
+    "count": 9
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "sakalti:yuru_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:yuru_block"
+  }
+}

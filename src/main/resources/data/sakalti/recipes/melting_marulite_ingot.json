@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:marulite_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:marulite",
+    "amount": 120
+  },
+  "temperature": 1400,
+  "time": 57
+}

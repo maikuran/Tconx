@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:seiren_block"
+  },
+  "result": {
+    "fluid": "sakalti:seiren",
+    "amount": 1080
+  },
+  "temperature": 2700,
+  "time": 360
+}

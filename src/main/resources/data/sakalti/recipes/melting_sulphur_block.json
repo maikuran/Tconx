@@ -1,0 +1,11 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:sulphur_block"
+  },
+  "result": {
+    "fluid": "sakalti:molten_sulphur",
+    "amount": 810
+  },
+  "temperature": 200
+}

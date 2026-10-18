@@ -1,9 +1,10 @@
 {
   "craftable": true,
-  "tier": 3,
-  "sortOrder": 3,
+  "tier": 1,
+  "sortOrder": 1,
+  "textColor": "#56D8E8",
   "hidden": false,
-  "color": "#56d8e8",
-  "fluid": "sakalti:hachilite",
-  "translationKey": "material.sakalti.hachilite"
+  "fluid": "sakalti:molten_hachilite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

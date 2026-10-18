@@ -1,0 +1,10 @@
+{
+  "craftable": false,
+  "tier": 2,
+  "sortOrder": 28,
+  "textColor": "#FF00FF",
+  "hidden": false,
+  "fluid": "sakalti:molten_yuru",
+  "fluidPerUnit": 144,
+  "temperature": 1000
+}

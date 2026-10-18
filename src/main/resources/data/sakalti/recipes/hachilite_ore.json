@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:hachilite_ore"
+  },
+  "result": {
+    "fluid": "sakalti:hachilite",
+    "amount": 120
+  },
+  "temperature": 900,
+  "time": 120
+}

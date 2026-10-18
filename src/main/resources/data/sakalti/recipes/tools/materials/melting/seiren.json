@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:seiren",
+  "temperature": 2700,
+  "result": {
+    "fluid": "sakalti:seiren",
+    "amount": 100
+  }
+}

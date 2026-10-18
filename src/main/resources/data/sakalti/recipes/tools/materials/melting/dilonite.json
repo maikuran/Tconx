@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:dilonite",
+  "temperature": 1500,
+  "result": {
+    "fluid": "sakalti:dilonite",
+    "amount": 100
+  }
+}

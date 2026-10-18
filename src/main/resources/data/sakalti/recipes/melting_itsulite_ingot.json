@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:itsulite_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:itsulite",
+    "amount": 100
+  },
+  "temperature": 2300,
+  "time": 40
+}

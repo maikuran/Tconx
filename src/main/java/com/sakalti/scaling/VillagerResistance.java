@@ -26,7 +26,7 @@ public final class VillagerResistance {
             return;
         }
 
-        if (event.level.isClientSide()) {
+        if (event.level.isClientSide) {
             return;
         }
 

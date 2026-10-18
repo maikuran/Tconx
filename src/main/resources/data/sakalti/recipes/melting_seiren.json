@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:seiren_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:seiren",
+    "amount": 120
+  },
+  "temperature": 2700,
+  "time": 120
+}

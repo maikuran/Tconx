@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:stannoidea_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:stannoidea_ingot",
+    "count": 9
+  }
+}

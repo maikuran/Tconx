@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "ingredient": {
+    "item": "sakalti:sulphur_jewel"
+  },
+  "result": "sakalti:sulphur_jewel",
+  "experience": 0.0,
+  "cookingtime": 200
+}

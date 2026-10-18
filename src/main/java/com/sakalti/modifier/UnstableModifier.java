@@ -1,24 +1,35 @@
 package com.sakalti.modifier;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 import slimeknights.tconstruct.library.modifiers.Modifier;
+import slimeknights.tconstruct.library.modifiers.ModifierEntry;
+import slimeknights.tconstruct.library.modifiers.ModifierHooks;
+import slimeknights.tconstruct.library.module.ModuleHookMap;
+import slimeknights.tconstruct.library.modifiers.hook.combat.MeleeDamageModifierHook;
+import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
 import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
-import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
+import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 
 import java.util.Random;
 
-public class UnstableModifier extends Modifier {
+public class UnstableModifier extends Modifier implements MeleeDamageModifierHook {
 
-    public UnstableModifier(int color) {
-        super(color);
+    public UnstableModifier() {
+        super();
+    }
+
+    @Override
+    protected void registerHooks(ModuleHookMap.Builder builder) {
+        builder.addHook(ModifierHooks.MELEE_DAMAGE, this);
     }
 
     /**
      * 近接攻撃のダメージ計算＆耐久消費 (1.16.5仕様)
      */
     @Override
-    public float getEntityDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
+    public float getMeleeDamage(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float baseDamage, float damage) {
+        int level = modifier.getLevel();
         LivingEntity attacker = context.getAttacker();
 
         // ツールが破損している、または攻撃者が存在しない場合は変動なし
@@ -45,8 +56,8 @@ public class UnstableModifier extends Modifier {
         }
 
         // サーバー側でのみ追加の耐久ダメージを適用 (TCon標準ヘルパーを使用)
-        if (!attacker.level.isClientSide && durabilityCost > 0) {
-            ToolDamageUtil.damage(tool, durabilityCost, attacker, context.getSlotType());
+        if (!attacker.level().isClientSide && durabilityCost > 0) {
+            ToolDamageUtil.damage(tool, durabilityCost, attacker, attacker.getMainHandItem());
         }
 
         // ダメージを倍率分増加させる（基本ダメージに対する加算値を返す）

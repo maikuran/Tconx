@@ -3,6 +3,7 @@ package com.sakalti;
 import com.sakalti.modifier.TconxModifiers;
 import com.sakalti.entity.*;
 import com.sakalti.scaling.HealthCrystals;
+import com.sakalti.scaling.CreeperRemoval;
 
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -17,6 +18,7 @@ public final class ModMain {
 
         IEventBus modEventBus =
                 FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(CreeperRemoval::registerGameRule);
 
         /*
          * アイテム・ブロック
@@ -57,6 +59,6 @@ public final class ModMain {
         /*
          * ModTiersのstatic初期化を確実に実行
          */
-        ModTiers.SUPER.getUses();
+        ModTiers.SUPER_3.getUses();
     }
 }

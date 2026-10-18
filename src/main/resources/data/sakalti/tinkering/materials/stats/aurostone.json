@@ -1,54 +1,50 @@
 {
   "stats": {
     "tconstruct:binding": {},
-    "tconstruct:grip": {
-      "accuracy": 0.1,
-      "durability": 0.1,
-      "melee_damage": 5
-    },
+    "tconstruct:grip": {},
     "tconstruct:handle": {
-      "durability": 0.22,
-      "melee_damage": 0.22,
-      "melee_speed": 0.22,
-      "mining_speed": 0.44
+      "durability": 1.22,
+      "melee_damage": 1.18,
+      "melee_speed": 1.05,
+      "mining_speed": 1.18
     },
     "tconstruct:head": {
-      "durability": 1493,
-      "melee_attack": 9.5,
-      "mining_speed": 15.0,
-      "mining_tier": "sakalti:super"
+      "durability": 1100,
+      "melee_attack": 7.5,
+      "mining_speed": 9.5,
+      "mining_tier": "sakalti:super_2"
     },
     "tconstruct:limb": {
-      "accuracy": -0.45,
-      "draw_speed": -0.75,
-      "durability": 1493,
-      "velocity": 0.10
+      "accuracy": 1.18,
+      "draw_speed": 1.05,
+      "durability": 1100,
+      "velocity": 1.22
     },
-    "tconstruct:maille": {},
+    "tconstruct:maille": {
+      "durability": 0.921,
+      "armor": 1.335,
+      "movement_speed": 1.024
+    },
     "tconstruct:plating_boots": {
-      "armor": 4.0,
-      "durability": 792,
-      "toughness": 4.5
+      "armor": 4.1725,
+      "durability": 163.0775,
+      "toughness": 0.695
     },
     "tconstruct:plating_chestplate": {
-      "armor": 10.0,
-      "durability": 1195,
-      "toughness": 4.5
+      "armor": 4.1725,
+      "durability": 163.0775,
+      "toughness": 0.695
     },
     "tconstruct:plating_helmet": {
-      "armor": 4.0,
-      "durability": 1192,
-      "toughness": 4.5
+      "armor": 4.1725,
+      "durability": 163.0775,
+      "toughness": 0.695
     },
     "tconstruct:plating_leggings": {
-      "armor": 7.0,
-      "durability": 1112,
-      "toughness": 4.5
+      "armor": 4.1725,
+      "durability": 163.0775,
+      "toughness": 0.695
     },
-    "tconstruct:plating_shield": {
-      "durability": 1100,
-      "toughness": 8.5,
-      "knockback_resistance": 99
-    }
+    "tconstruct:plating_shield": {}
   }
 }

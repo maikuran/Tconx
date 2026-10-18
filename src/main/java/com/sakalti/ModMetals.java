@@ -36,10 +36,15 @@ public final class ModMetals {
     // ============================================================
 
     public static final RegistryObject<Block> HIROLITE_ORE =
-            registerBlock("hirolite_ore", 3.0F);
+            registerBlock("hirolite_ore", 41.0F);
 
     public static final RegistryObject<Block> OURITE_ORE =
-            registerBlock("ourite_ore", 3.0F);
+            registerBlock("ourite_ore", 44.0F);
+
+    public static final RegistryObject<Block> HIROLITE_BLOCK = registerBlock("hirolite_block", 45.0F);
+    public static final RegistryObject<Item> HIROLITE_INGOT = registerItem("hirolite_ingot");
+    public static final RegistryObject<Block> OURITE_BLOCK = registerBlock("ourite_block", 50.0F);
+    public static final RegistryObject<Item> OURITE_INGOT = registerItem("ourite_ingot");
 
     public static final RegistryObject<Block> HACHILITE_ORE =
             registerBlock("hachilite_ore", 3.0F);
@@ -219,6 +224,33 @@ public final class ModMetals {
     public static final RegistryObject<Item> OSTLUM_INGOT =
             registerItem("ostlum_ingot");
 
+
+    // ============================================================
+    // Additional 1.16.5 content restored for the 1.20.1 port
+    // ============================================================
+
+    public static final RegistryObject<Block> TIBERIUM_ORE = registerBlock("tiberium_ore", 5.0F);
+    public static final RegistryObject<Block> SEIREN_ORE = registerBlock("seiren_ore", 6.0F);
+    public static final RegistryObject<Block> OSTLUM_ORE = registerBlock("ostlum_ore", 7.0F);
+    public static final RegistryObject<Block> STANNOIDEA_ORE = registerBlock("stannoidea_ore", 1.0F);
+    public static final RegistryObject<Block> YURU_BLOCK = registerBlock("yuru_block", 16.0F);
+    public static final RegistryObject<Item> YURU_INGOT = registerItem("yuru_ingot");
+    public static final RegistryObject<Block> CORAL_BLOCK = registerBlock("coral_block", 5.0F);
+    public static final RegistryObject<Item> CORAL_INGOT = registerItem("coral_ingot");
+
+    public static final RegistryObject<Block> ITSULITE_BLOCK = registerBlock("itsulite_block", 23.0F);
+    public static final RegistryObject<Item> ITSULITE_INGOT = registerItem("itsulite_ingot");
+    public static final RegistryObject<Block> HOTALITE_BLOCK = registerBlock("hotalite_block", 50.0F);
+    public static final RegistryObject<Item> HOTALITE_INGOT = registerItem("hotalite_ingot");
+    public static final RegistryObject<Block> SORALITE_BLOCK = registerBlock("soralite_block", 80.0F);
+    public static final RegistryObject<Item> SORALITE_INGOT = registerItem("soralite_ingot");
+    public static final RegistryObject<Block> STANNOIDEA_BLOCK = registerBlock("stannoidea_block", 4.0F);
+    public static final RegistryObject<Item> STANNOIDEA_INGOT = registerItem("stannoidea_ingot");
+    public static final RegistryObject<Block> SULPHUR_BLOCK = registerBlock("sulphur_block", 5.0F);
+    public static final RegistryObject<Block> SULPHUR_CHUNK = registerBlock("sulphur_chunk", 3.0F);
+    public static final RegistryObject<Item> SULPHUR_JEWEL = registerItem("sulphur_jewel");
+    public static final RegistryObject<Item> SULPHUR_INGOT = registerItem("sulphur_ingot");
+    public static final RegistryObject<Block> SULPHUR_ORE = registerBlock("sulphur_ore", 3.0F);
 
     // ============================================================
     // Block registration helper

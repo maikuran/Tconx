@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:deepsteel",
+  "temperature": 2300,
+  "result": {
+    "fluid": "sakalti:deepsteel",
+    "amount": 100
+  }
+}

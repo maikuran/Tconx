@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:coral_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:coral",
+    "amount": 13
+  },
+  "temperature": 2200,
+  "time": 57
+}

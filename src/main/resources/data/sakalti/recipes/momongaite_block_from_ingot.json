@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:momongaite_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:momongaite_block",
+    "count": 1
+  }
+}

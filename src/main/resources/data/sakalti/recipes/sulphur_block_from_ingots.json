@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "sakalti:sulphur_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:sulphur_block"
+  }
+}

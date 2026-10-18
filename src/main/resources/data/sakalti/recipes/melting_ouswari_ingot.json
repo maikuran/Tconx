@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:ouswari_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:ouswari",
+    "amount": 120
+  },
+  "temperature": 1500,
+  "time": 57
+}

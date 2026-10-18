@@ -1,0 +1,14 @@
+{
+  "replace": false,
+  "values": [
+    "sakalti:aurostone_block",
+    "sakalti:chiisteel_block",
+    "sakalti:coral_block",
+    "sakalti:deepsteel_block",
+    "sakalti:ioxium_block",
+    "sakalti:ostlum_block",
+    "sakalti:ostlum_ore",
+    "sakalti:tiberium_block",
+    "sakalti:tiberium_ore"
+  ]
+}

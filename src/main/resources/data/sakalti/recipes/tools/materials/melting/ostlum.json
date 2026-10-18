@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:ostlum",
+  "temperature": 1800,
+  "result": {
+    "fluid": "sakalti:ostlum",
+    "amount": 100
+  }
+}

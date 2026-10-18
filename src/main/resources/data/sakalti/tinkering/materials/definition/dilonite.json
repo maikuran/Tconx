@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 6,
-  "sortOrder": 6,
+  "craftable": false,
+  "tier": 4,
+  "sortOrder": 4,
+  "textColor": "#FFAA00",
   "hidden": false,
-  "color": "#ffaa00",
-  "fluid": "sakalti:dilonite",
-  "translationKey": "material.sakalti.dilonite"
+  "fluid": "sakalti:molten_dilonite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

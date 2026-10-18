@@ -1,0 +1,8 @@
+{
+  "name": "sulphur",
+  "fluid": "sakalti:molten_sulphur",
+  "color": 16765231,
+  "craftable": true,
+  "castable": true,
+  "hidden": false
+}

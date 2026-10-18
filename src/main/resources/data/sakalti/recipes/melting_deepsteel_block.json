@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:deepsteel_block"
+  },
+  "result": {
+    "fluid": "sakalti:deepsteel",
+    "amount": 1080
+  },
+  "temperature": 2300,
+  "time": 360
+}

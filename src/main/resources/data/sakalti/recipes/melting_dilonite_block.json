@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:dilonite_block"
+  },
+  "result": {
+    "fluid": "sakalti:dilonite",
+    "amount": 1080
+  },
+  "temperature": 1500,
+  "time": 360
+}

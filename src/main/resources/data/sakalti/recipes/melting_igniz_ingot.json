@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:igniz_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:igniz",
+    "amount": 120
+  },
+  "temperature": 1300,
+  "time": 57
+}

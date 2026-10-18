@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:itsulite",
+  "temperature": 2300,
+  "result": {
+    "fluid": "sakalti:itsulite",
+    "amount": 100
+  }
+}

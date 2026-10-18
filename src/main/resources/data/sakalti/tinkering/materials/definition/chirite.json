@@ -1,9 +1,10 @@
 {
   "craftable": true,
-  "tier": 5,
-  "sortOrder": 5,
+  "tier": 1,
+  "sortOrder": 1,
+  "textColor": "#DDDD00",
   "hidden": false,
-  "color": "#dddd00",
-  "fluid": "sakalti:chirite",
-  "translationKey": "material.sakalti.chirite"
+  "fluid": "sakalti:molten_chirite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

@@ -1,54 +1,50 @@
 {
   "stats": {
     "tconstruct:binding": {},
-    "tconstruct:grip": {
-      "accuracy": 0.1,
-      "durability": 0.0,
-      "melee_damage": 2.5
-    },
+    "tconstruct:grip": {},
     "tconstruct:handle": {
-      "durability": 1.0,
-      "melee_damage": 0.4,
-      "melee_speed": 0.15,
-      "mining_speed": 0.15
+      "durability": 1.15,
+      "melee_damage": 1.04,
+      "melee_speed": 1.05,
+      "mining_speed": 1.08
     },
     "tconstruct:head": {
-      "durability": 1100,
-      "melee_attack": 6.5,
-      "mining_speed": 8.0,
-      "mining_tier": "sakalti:super"
+      "durability": 520,
+      "melee_attack": 3.4,
+      "mining_speed": 5.6,
+      "mining_tier": "minecraft:diamond"
     },
     "tconstruct:limb": {
-      "accuracy": -0.2,
-      "draw_speed": -0.65,
-      "durability": 1100,
-      "velocity": 0.15
+      "accuracy": 1.08,
+      "draw_speed": 1.05,
+      "durability": 520,
+      "velocity": 1.15
     },
-    "tconstruct:maille": {},
+    "tconstruct:maille": {
+      "durability": 0.85,
+      "armor": 1.2,
+      "movement_speed": 1.016
+    },
     "tconstruct:plating_boots": {
-      "armor": 2.0,
-      "durability": 464,
-      "toughness": 3.0
+      "armor": 3.75,
+      "durability": 120.15,
+      "toughness": 0.625
     },
     "tconstruct:plating_chestplate": {
-      "armor": 8.0,
-      "durability": 695,
-      "knockback_resistance": 0.7,
-      "toughness": 2.0
+      "armor": 3.75,
+      "durability": 120.15,
+      "toughness": 0.625
     },
     "tconstruct:plating_helmet": {
-      "armor": 2.0,
-      "durability": 498,
-      "toughness": 2.0
+      "armor": 3.75,
+      "durability": 120.15,
+      "toughness": 0.625
     },
     "tconstruct:plating_leggings": {
-      "armor": 6.0,
-      "durability": 595,
-      "toughness": 2.0
+      "armor": 3.75,
+      "durability": 120.15,
+      "toughness": 0.625
     },
-    "tconstruct:plating_shield": {
-      "durability": 1100,
-      "toughness": 9.0
-    }
+    "tconstruct:plating_shield": {}
   }
 }

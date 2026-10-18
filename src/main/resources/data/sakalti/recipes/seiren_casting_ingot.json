@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:casting_table",
+  "cast": {
+    "item": "tconstruct:ingot_cast"
+  },
+  "fluid": {
+    "name": "sakalti:seiren",
+    "amount": 120
+  },
+  "result": "sakalti:seiren_ingot",
+  "cooling_time": 57
+}

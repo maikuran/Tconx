@@ -1,9 +1,10 @@
 {
   "craftable": true,
-  "tier": 4,
-  "sortOrder": 4,
+  "tier": 1,
+  "sortOrder": 1,
+  "textColor": "#FF66FF",
   "hidden": false,
-  "color": "#ff66ff",
-  "fluid": "sakalti:kanilite",
-  "translationKey": "material.sakalti.kanilite"
+  "fluid": "sakalti:molten_kanilite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

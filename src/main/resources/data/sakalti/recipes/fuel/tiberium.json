@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:melting_fuel",
+  "fluid": {
+    "name": "sakalti:tiberium",
+    "amount": 50
+  },
+  "duration": 225,
+  "temperature": 2250
+}

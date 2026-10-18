@@ -1,16 +1,36 @@
 package com.sakalti.modifier;
 
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.level.Level;
 import slimeknights.tconstruct.library.modifiers.Modifier;
+import slimeknights.tconstruct.library.modifiers.ModifierEntry;
+import slimeknights.tconstruct.library.modifiers.ModifierHooks;
+import slimeknights.tconstruct.library.module.ModuleHookMap;
+import slimeknights.tconstruct.library.modifiers.hook.combat.MeleeHitModifierHook;
+import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
+import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
 
 import java.util.List;
 
-public class LaserPrismModifier extends Modifier {
+public class LaserPrismModifier extends Modifier implements MeleeHitModifierHook {
 
-    public LaserPrismModifier(int color) {
-        super(color);
+    public LaserPrismModifier() {
+        super();
+    }
+
+    @Override
+    protected void registerHooks(ModuleHookMap.Builder builder) {
+        builder.addHook(ModifierHooks.MELEE_HIT, this);
+    }
+
+    @Override
+    public void afterMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damageDealt) {
+        LivingEntity attacker = context.getAttacker();
+        if (attacker != null && !attacker.level().isClientSide) {
+            int level = modifier.getLevel();
+            applyLaserPrismEffect(attacker.level(), attacker, level);
+        }
     }
 
     /**
@@ -19,7 +39,7 @@ public class LaserPrismModifier extends Modifier {
      * @param source Traitを持つ対象エンティティ
      * @param level Traitレベル
      */
-    public static void applyLaserPrismEffect(World world, LivingEntity source, int level) {
+    public static void applyLaserPrismEffect(Level world, LivingEntity source, int level) {
         if (world == null || world.isClientSide || source == null || level <= 0) return;
 
         double radius = 8.0D + level;
@@ -33,7 +53,7 @@ public class LaserPrismModifier extends Modifier {
 
         for (LivingEntity target : nearbyEntities) {
             // 1.16.5 では DamageSource.ON_FIRE または DamageSource.MAGIC / DamageSource.GENERIC 等を利用
-            target.hurt(DamageSource.ON_FIRE, damage);
+            target.hurt(world.damageSources().onFire(), damage);
         }
     }
 }

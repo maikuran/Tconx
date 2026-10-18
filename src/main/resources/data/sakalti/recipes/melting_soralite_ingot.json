@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:soralite_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:soralite",
+    "amount": 120
+  },
+  "temperature": 1500,
+  "time": 57
+}

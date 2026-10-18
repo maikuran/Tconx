@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "targets": [
+      {
+        "target": "minecraft:stone_ore_replaceables",
+        "state": {
+          "Name": "sakalti:kanilite_ore"
+        }
+      }
+    ],
+    "size": 6
+  }
+}

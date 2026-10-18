@@ -1,0 +1,10 @@
+{
+  "craftable": true,
+  "tier": 1,
+  "sortOrder": 1,
+  "textColor": "#B6D84A",
+  "hidden": false,
+  "fluid": "sakalti:molten_hotalite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
+}

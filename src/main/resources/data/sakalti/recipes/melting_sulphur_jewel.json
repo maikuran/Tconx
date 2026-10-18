@@ -1,0 +1,11 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:sulphur_jewel"
+  },
+  "result": {
+    "fluid": "sakalti:molten_sulphur",
+    "amount": 90
+  },
+  "temperature": 200
+}

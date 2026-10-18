@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 6,
-  "sortOrder": 6,
+  "craftable": false,
+  "tier": 7,
+  "sortOrder": 7,
+  "textColor": "#F20000",
   "hidden": false,
-  "color": "#f20000",
-  "fluid": "sakalti:seiren",
-  "translationKey": "material.sakalti.seiren"
+  "fluid": "sakalti:molten_seiren",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

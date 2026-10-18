@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:yuru",
+    "amount": 1080
+  },
+  "result": "sakalti:yuru_block",
+  "cooling_time": 225
+}

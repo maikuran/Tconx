@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:hiroswari",
+  "temperature": 1400,
+  "result": {
+    "fluid": "sakalti:hiroswari",
+    "amount": 100
+  }
+}

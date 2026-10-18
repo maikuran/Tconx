@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 6,
-  "sortOrder": 6,
+  "craftable": false,
+  "tier": 5,
+  "sortOrder": 5,
+  "textColor": "#8200FF",
   "hidden": false,
-  "color": "#8200ff",
-  "fluid": "sakalti:tiberium",
-  "translationKey": "material.sakalti.tiberium"
+  "fluid": "sakalti:molten_tiberium",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

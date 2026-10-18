@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:tiberium_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:tiberium_block",
+    "count": 1
+  }
+}

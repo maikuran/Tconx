@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:yuru_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:yuru",
+    "amount": 120
+  },
+  "temperature": 1100,
+  "time": 57
+}

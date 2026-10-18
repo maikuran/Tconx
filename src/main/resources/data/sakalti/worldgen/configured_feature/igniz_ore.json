@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:ore",
+  "config": {
+    "targets": [
+      {
+        "target": "minecraft:nether_ore_replaceables",
+        "state": {
+          "Name": "sakalti:igniz_ore"
+        }
+      }
+    ],
+    "size": 5
+  }
+}

@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 5,
-  "sortOrder": 5,
+  "craftable": false,
+  "tier": 2,
+  "sortOrder": 2,
+  "textColor": "#996699",
   "hidden": false,
-  "color": "#996699",
-  "fluid": "sakalti:momongaite",
-  "translationKey": "material.sakalti.momongaite"
+  "fluid": "sakalti:molten_momongaite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

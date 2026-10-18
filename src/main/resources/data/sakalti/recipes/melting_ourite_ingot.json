@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:ourite_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:ourite",
+    "amount": 120
+  },
+  "temperature": 3500,
+  "time": 57
+}

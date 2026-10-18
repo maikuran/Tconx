@@ -1,0 +1,10 @@
+{
+  "craftable": true,
+  "tier": 6,
+  "sortOrder": 6,
+  "fluid": "sakalti:itsulite",
+  "fluidPerUnit": 100,
+  "textColor": "#A86BEA",
+  "temperature": 2300,
+  "hidden": false
+}

@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:casting_table",
+  "cast": {
+    "item": "tconstruct:ingot_cast"
+  },
+  "fluid": {
+    "name": "sakalti:ourite",
+    "amount": 120
+  },
+  "result": "sakalti:ourite_ingot",
+  "cooling_time": 57
+}

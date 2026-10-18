@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:ouswari_block"
+  },
+  "result": {
+    "fluid": "sakalti:ouswari",
+    "amount": 1080
+  },
+  "temperature": 1500,
+  "time": 360
+}

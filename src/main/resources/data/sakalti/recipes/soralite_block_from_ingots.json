@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "III",
+    "III",
+    "III"
+  ],
+  "key": {
+    "I": {
+      "item": "sakalti:soralite_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:soralite_block",
+    "count": 1
+  }
+}

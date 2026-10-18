@@ -70,7 +70,7 @@ public final class HealthCrystals {
                             /*
                              * クライアントでは処理しない
                              */
-                            if (!level.isClientSide()) {
+                            if (!level.isClientSide) {
 
                                 CompoundTag data =
                                         player.getPersistentData();
@@ -127,7 +127,7 @@ public final class HealthCrystals {
 
                             return InteractionResultHolder.sidedSuccess(
                                     stack,
-                                    level.isClientSide()
+                                    level.isClientSide
                             );
                         }
                     }

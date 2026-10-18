@@ -1,53 +1,50 @@
 {
   "stats": {
     "tconstruct:binding": {},
-    "tconstruct:grip": {
-      "accuracy": 0.1,
-      "durability": 0.1,
-      "melee_damage": 1.9
-    },
+    "tconstruct:grip": {},
     "tconstruct:handle": {
-      "durability": 0.1,
-      "melee_damage": 0.2,
-      "melee_speed": 0.2,
-      "mining_speed": 0.6
+      "durability": 1.28,
+      "melee_damage": 1.1400000000000001,
+      "melee_speed": 0.88,
+      "mining_speed": 1.08
     },
     "tconstruct:head": {
-      "durability": 1900,
-      "melee_attack": 13.2,
-      "mining_speed": 15.5,
-      "mining_tier": "minecraft:netherite"
+      "durability": 1150,
+      "melee_attack": 7.8,
+      "mining_speed": 9.0,
+      "mining_tier": "sakalti:super_2"
     },
     "tconstruct:limb": {
-      "accuracy": -0.1,
-      "draw_speed": -0.55,
-      "durability": 1900,
-      "velocity": 0.15
+      "accuracy": 1.08,
+      "draw_speed": 0.88,
+      "durability": 1150,
+      "velocity": 1.28
     },
-    "tconstruct:maille": {},
+    "tconstruct:maille": {
+      "durability": 0.992,
+      "armor": 1.453,
+      "movement_speed": 1.032
+    },
     "tconstruct:plating_boots": {
-      "armor": 3.0,
-      "durability": 523,
-      "toughness": 4.4
+      "armor": 4.54,
+      "durability": 207.5325,
+      "toughness": 0.7575
     },
     "tconstruct:plating_chestplate": {
-      "armor": 8.0,
-      "durability": 635,
-      "toughness": 4.4
+      "armor": 4.54,
+      "durability": 207.5325,
+      "toughness": 0.7575
     },
     "tconstruct:plating_helmet": {
-      "armor": 3.0,
-      "durability": 481,
-      "toughness": 4.4
+      "armor": 4.54,
+      "durability": 207.5325,
+      "toughness": 0.7575
     },
     "tconstruct:plating_leggings": {
-      "armor": 7.0,
-      "durability": 597,
-      "toughness": 4.4
+      "armor": 4.54,
+      "durability": 207.5325,
+      "toughness": 0.7575
     },
-    "tconstruct:plating_shield": {
-      "durability": 700,
-      "toughness": 6.6
-    }
+    "tconstruct:plating_shield": {}
   }
 }

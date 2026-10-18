@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:igniz",
+  "temperature": 1300,
+  "result": {
+    "fluid": "sakalti:igniz",
+    "amount": 100
+  }
+}

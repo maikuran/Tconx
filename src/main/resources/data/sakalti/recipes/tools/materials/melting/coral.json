@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:coral",
+  "temperature": 2200,
+  "result": {
+    "fluid": "sakalti:coral",
+    "amount": 100
+  }
+}

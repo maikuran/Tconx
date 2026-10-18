@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:yuru_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:yuru_ingot",
+    "count": 9
+  }
+}

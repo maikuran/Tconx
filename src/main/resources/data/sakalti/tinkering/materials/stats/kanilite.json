@@ -1,57 +1,50 @@
 {
   "stats": {
     "tconstruct:binding": {},
-    "tconstruct:grip": {
-      "accuracy": 0.1,
-      "durability": 0.0,
-      "melee_damage": 1.5
-    },
+    "tconstruct:grip": {},
     "tconstruct:handle": {
-      "durability": 0.1,
-      "melee_damage": 0.2,
-      "melee_speed": 0.25,
-      "mining_speed": 0.15
+      "durability": 1.12,
+      "melee_damage": 1.04,
+      "melee_speed": 1.06,
+      "mining_speed": 1.1
     },
     "tconstruct:head": {
-      "durability": 800,
-      "melee_attack": 7.5,
-      "mining_speed": 8.0,
-      "mining_tier": "sakalti:super"
+      "durability": 380,
+      "melee_attack": 2.7,
+      "mining_speed": 4.0,
+      "mining_tier": "minecraft:iron"
     },
     "tconstruct:limb": {
-      "accuracy": 0.1,
-      "draw_speed": -0.25,
-      "durability": 1520,
-      "velocity": 0.15
+      "accuracy": 1.1,
+      "draw_speed": 1.06,
+      "durability": 380,
+      "velocity": 1.12
     },
-    "tconstruct:maille": {},
+    "tconstruct:maille": {
+      "durability": 0.815,
+      "armor": 1.074,
+      "movement_speed": 1.012
+    },
     "tconstruct:plating_boots": {
-      "armor": 3.0,
-      "durability": 464,
-      "toughness": 2.5
+      "armor": 3.355,
+      "durability": 87.3825,
+      "toughness": 0.625
     },
     "tconstruct:plating_chestplate": {
-      "armor": 9.0,
-      "durability": 695,
-      "knockback_resistance": 0.5,
-      "toughness": 2.5
+      "armor": 3.355,
+      "durability": 87.3825,
+      "toughness": 0.625
     },
     "tconstruct:plating_helmet": {
-      "armor": 3.0,
-      "durability": 498,
-      "knockback_resistance": 0.5,
-      "toughness": 2.5
+      "armor": 3.355,
+      "durability": 87.3825,
+      "toughness": 0.625
     },
     "tconstruct:plating_leggings": {
-      "armor": 7.0,
-      "durability": 545,
-      "knockback_resistance": 0.5,
-      "toughness": 2.5
+      "armor": 3.355,
+      "durability": 87.3825,
+      "toughness": 0.625
     },
-    "tconstruct:plating_shield": {
-      "durability": 700,
-      "knockback_resistance": 0.5,
-      "toughness": 6.0
-    }
+    "tconstruct:plating_shield": {}
   }
 }

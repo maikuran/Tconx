@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:deepsteel",
+    "amount": 1080
+  },
+  "result": "sakalti:deepsteel_block",
+  "cooling_time": 225
+}

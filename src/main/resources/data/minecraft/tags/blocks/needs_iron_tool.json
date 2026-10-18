@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "sakalti:chirite_block",
+    "sakalti:chirite_ore",
+    "sakalti:hachilite_block",
+    "sakalti:hachilite_ore",
+    "sakalti:kanilite_block",
+    "sakalti:kanilite_ore",
+    "sakalti:sulphur_chunk"
+  ]
+}

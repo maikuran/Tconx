@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:herdyeen",
+    "amount": 1080
+  },
+  "result": "sakalti:herdyeen_block",
+  "cooling_time": 225
+}

@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 5,
-  "sortOrder": 5,
+  "craftable": false,
+  "tier": 6,
+  "sortOrder": 6,
+  "textColor": "#234156",
   "hidden": false,
-  "color": "#234156",
-  "fluid": "sakalti:deepsteel",
-  "translationKey": "material.sakalti.deepsteel"
+  "fluid": "sakalti:molten_deepsteel",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

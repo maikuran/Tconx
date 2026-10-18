@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:chirite_ore"
+  },
+  "result": {
+    "fluid": "sakalti:chirite",
+    "amount": 120
+  },
+  "temperature": 900,
+  "time": 120
+}

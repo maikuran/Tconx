@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:casting_table",
+  "cast": {
+    "item": "tconstruct:casts/single_use/gem"
+  },
+  "cast_consumed": true,
+  "fluid": {
+    "name": "sakalti:molten_sulphur",
+    "amount": 90
+  },
+  "result": "sakalti:sulphur_jewel"
+}

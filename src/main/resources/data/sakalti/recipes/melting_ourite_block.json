@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:ourite_block"
+  },
+  "result": {
+    "fluid": "sakalti:ourite",
+    "amount": 1080
+  },
+  "temperature": 3500,
+  "time": 360
+}

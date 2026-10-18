@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:chiisteel",
+  "temperature": 1800,
+  "result": {
+    "fluid": "sakalti:chiisteel",
+    "amount": 100
+  }
+}

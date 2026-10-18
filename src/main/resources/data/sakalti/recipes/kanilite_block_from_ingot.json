@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:kanilite_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:kanilite_block",
+    "count": 1
+  }
+}

@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 7,
-  "sortOrder": 7,
+  "craftable": false,
+  "tier": 2,
+  "sortOrder": 2,
+  "textColor": "#D3072C",
   "hidden": false,
-  "color": "#d3072c",
-  "fluid": "sakalti:igniz",
-  "translationKey": "material.sakalti.igniz"
+  "fluid": "sakalti:molten_igniz",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:seiren",
+    "amount": 1080
+  },
+  "result": "sakalti:seiren_block",
+  "cooling_time": 225
+}

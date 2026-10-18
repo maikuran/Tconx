@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:aurostone",
+    "amount": 1080
+  },
+  "result": "sakalti:aurostone_block",
+  "cooling_time": 225
+}

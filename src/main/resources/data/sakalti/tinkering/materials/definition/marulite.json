@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 6,
-  "sortOrder": 6,
+  "craftable": false,
+  "tier": 3,
+  "sortOrder": 3,
+  "textColor": "#DCCDC2",
   "hidden": false,
-  "color": "#dccdc2",
-  "fluid": "sakalti:marulite",
-  "translationKey": "material.sakalti.marulite"
+  "fluid": "sakalti:molten_marulite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

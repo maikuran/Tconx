@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:coral",
+    "amount": 1080
+  },
+  "result": "sakalti:coral_block",
+  "cooling_time": 225
+}

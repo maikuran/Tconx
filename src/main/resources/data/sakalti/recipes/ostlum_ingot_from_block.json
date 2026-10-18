@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:ostlum_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:ostlum_ingot",
+    "count": 9
+  }
+}

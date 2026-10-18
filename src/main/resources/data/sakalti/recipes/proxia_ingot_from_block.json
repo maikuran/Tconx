@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:proxia_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:proxia_ingot",
+    "count": 9
+  }
+}

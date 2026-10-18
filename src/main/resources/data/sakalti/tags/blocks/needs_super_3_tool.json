@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "sakalti:hirolite_ore",
+    "sakalti:ourite_block",
+    "sakalti:ourite_ore",
+    "sakalti:seiren_block",
+    "sakalti:seiren_ore",
+    "sakalti:stannoidea_block",
+    "sakalti:stannoidea_ore"
+  ]
+}

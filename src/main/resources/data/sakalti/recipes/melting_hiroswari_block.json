@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:hiroswari_block"
+  },
+  "result": {
+    "fluid": "sakalti:hiroswari",
+    "amount": 1080
+  },
+  "temperature": 1400,
+  "time": 360
+}

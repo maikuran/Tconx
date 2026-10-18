@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:hiroswari_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:hiroswari_ingot",
+    "count": 9
+  }
+}

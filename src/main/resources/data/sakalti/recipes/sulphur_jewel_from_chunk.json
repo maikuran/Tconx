@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:sulphur_chunk"
+    }
+  ],
+  "result": {
+    "item": "sakalti:sulphur_jewel",
+    "count": 1
+  }
+}

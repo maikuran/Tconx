@@ -1,18 +1,29 @@
 package com.sakalti.modifier;
 
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.world.entity.LivingEntity;
 import slimeknights.tconstruct.library.modifiers.Modifier;
+import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
+import slimeknights.tconstruct.library.modifiers.ModifierEntry;
+import slimeknights.tconstruct.library.modifiers.ModifierHooks;
+import slimeknights.tconstruct.library.module.ModuleHookMap;
+import slimeknights.tconstruct.library.modifiers.hook.combat.MeleeDamageModifierHook;
+import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
-import slimeknights.tconstruct.library.tools.nbt.IModifierToolStack;
+import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 
 import java.util.Random;
 
-public class BerserkModifier extends Modifier {
+public class BerserkModifier extends Modifier implements MeleeDamageModifierHook {
 
     private static final Random RANDOM = new Random();
 
-    public BerserkModifier(int color) {
-        super(color);
+    public BerserkModifier() {
+        super();
+    }
+
+    @Override
+    protected void registerHooks(ModuleHookMap.Builder builder) {
+        builder.addHook(ModifierHooks.MELEE_DAMAGE, this);
     }
 
     /**
@@ -26,7 +37,8 @@ public class BerserkModifier extends Modifier {
      * @return 修正後のダメージ
      */
     @Override
-    public float getEntityDamage(IModifierToolStack tool, int level, ToolAttackContext context, float baseDamage, float damage) {
+    public float getMeleeDamage(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float baseDamage, float damage) {
+        int level = modifier.getLevel();
         LivingEntity attacker = context.getAttacker();
 
         // ツールが壊れている、または攻撃者が存在しない場合は処理しない
@@ -38,8 +50,8 @@ public class BerserkModifier extends Modifier {
         if (RANDOM.nextFloat() < 0.33f) {
             
             // サーバー側の場合のみ追加で耐久値を 2 消費（壊れる直前の判定などもTCon側で内部処理されます）
-            if (!attacker.level.isClientSide) {
-                tool.damageItem(2, attacker, context.getSlotType());
+            if (!attacker.level().isClientSide) {
+                ToolDamageUtil.damage(tool, 2, attacker, attacker.getMainHandItem());
             }
 
             // 与ダメージを3倍にする

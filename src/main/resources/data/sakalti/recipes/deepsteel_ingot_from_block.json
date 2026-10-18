@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:deepsteel_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:deepsteel_ingot",
+    "count": 9
+  }
+}

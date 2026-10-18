@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:aurostone",
+  "temperature": 2300,
+  "result": {
+    "fluid": "sakalti:aurostone",
+    "amount": 100
+  }
+}

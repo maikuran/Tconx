@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 6,
-  "sortOrder": 6,
+  "craftable": false,
+  "tier": 3,
+  "sortOrder": 3,
+  "textColor": "#B90E3B",
   "hidden": false,
-  "color": "#b90e3b",
-  "fluid": "sakalti:hiroswari",
-  "translationKey": "material.sakalti.hiroswari"
+  "fluid": "sakalti:molten_hiroswari",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

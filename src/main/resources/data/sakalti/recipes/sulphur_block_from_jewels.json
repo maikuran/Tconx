@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "JJJ",
+    "JJJ",
+    "JJJ"
+  ],
+  "key": {
+    "J": {
+      "item": "sakalti:sulphur_jewel"
+    }
+  },
+  "result": {
+    "item": "sakalti:sulphur_block"
+  }
+}

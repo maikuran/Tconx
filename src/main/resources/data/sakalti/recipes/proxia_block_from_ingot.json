@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:proxia_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:proxia_block",
+    "count": 1
+  }
+}

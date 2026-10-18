@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:sulphur_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:molten_sulphur",
+    "amount": 120
+  },
+  "temperature": 200,
+  "time": 57
+}

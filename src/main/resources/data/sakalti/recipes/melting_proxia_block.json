@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:proxia_block"
+  },
+  "result": {
+    "fluid": "sakalti:proxia",
+    "amount": 1080
+  },
+  "temperature": 1500,
+  "time": 360
+}

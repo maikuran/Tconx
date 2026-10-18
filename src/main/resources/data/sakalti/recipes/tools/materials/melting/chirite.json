@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:chirite",
+  "temperature": 900,
+  "result": {
+    "fluid": "sakalti:chirite",
+    "amount": 100
+  }
+}

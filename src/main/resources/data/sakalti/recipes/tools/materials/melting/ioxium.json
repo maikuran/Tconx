@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:ioxium",
+  "temperature": 1800,
+  "result": {
+    "fluid": "sakalti:ioxium",
+    "amount": 100
+  }
+}

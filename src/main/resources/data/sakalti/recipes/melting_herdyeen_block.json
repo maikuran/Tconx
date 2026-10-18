@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:herdyeen_block"
+  },
+  "result": {
+    "fluid": "sakalti:herdyeen",
+    "amount": 1080
+  },
+  "temperature": 1400,
+  "time": 360
+}

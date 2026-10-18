@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 5,
-  "sortOrder": 5,
+  "craftable": false,
+  "tier": 8,
+  "sortOrder": 8,
+  "textColor": "#232DCE",
   "hidden": false,
-  "color": "#232dce",
-  "fluid": "sakalti:ourite",
-  "translationKey": "material.sakalti.ourite"
+  "fluid": "sakalti:molten_ourite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

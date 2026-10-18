@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:hirolite",
+  "temperature": 3200,
+  "result": {
+    "fluid": "sakalti:hirolite",
+    "amount": 100
+  }
+}

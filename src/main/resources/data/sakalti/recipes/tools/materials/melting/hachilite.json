@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:hachilite",
+  "temperature": 900,
+  "result": {
+    "fluid": "sakalti:hachilite",
+    "amount": 100
+  }
+}

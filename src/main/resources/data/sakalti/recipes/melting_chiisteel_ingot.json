@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:chiisteel_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:chiisteel",
+    "amount": 120
+  },
+  "temperature": 1800,
+  "time": 57
+}

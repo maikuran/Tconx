@@ -2,6 +2,9 @@ package com.sakalti;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,6 +26,9 @@ public final class ModFluids {
     // =========================================================
     // Registers
     // =========================================================
+
+    public static final DeferredRegister<Block> FLUID_BLOCKS =
+            DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
 
     public static final DeferredRegister<FluidType> FLUID_TYPES =
             DeferredRegister.create(
@@ -86,7 +92,7 @@ public final class ModFluids {
         // -----------------------------------------------------
 
         entry.flowing = FLUIDS.register(
-                name + "_flowing",
+                name + "_flow",
                 () -> new ForgeFlowingFluid.Flowing(
                         createProperties(entry)
                 )
@@ -101,23 +107,15 @@ public final class ModFluids {
 
     private static FluidType createFluidType(String name) {
 
-        ResourceLocation stillTexture =
-                new ResourceLocation(
-                        "sakalti",
-                        "fluid/" + name + "_still"
-                );
-
-        ResourceLocation flowingTexture =
-                new ResourceLocation(
-                        "sakalti",
-                        "fluid/" + name + "_flowing"
-                );
+        String textureName = name.equals("traits") ? "still" : (name.equals("urium") ? "uri" : name);
+        ResourceLocation stillTexture = new ResourceLocation("sakalti", "fluid/" + textureName + "_still");
+        ResourceLocation flowingTexture = new ResourceLocation("sakalti", "fluid/" + textureName + "_flow");
 
         return new FluidType(
                 FluidType.Properties.create()
                         .density(2000)
                         .viscosity(1000)
-                        .temperature(1900)
+                        .temperature(name.equals("molten_sulphur") ? 200 : 1900)
                         .canSwim(false)
                         .canDrown(false)
         ) {
@@ -149,13 +147,13 @@ public final class ModFluids {
     private static ForgeFlowingFluid.Properties createProperties(
             FluidEntry entry
     ) {
-        return new ForgeFlowingFluid.Properties(
+        ForgeFlowingFluid.Properties properties = new ForgeFlowingFluid.Properties(
                 entry.type,
                 entry.source,
                 entry.flowing
-        )
-                .slopeFindDistance(4)
-                .levelDecreasePerBlock(1);
+        ).slopeFindDistance(4).levelDecreasePerBlock(1);
+        if ("itsulite".equals(entry.name)) properties.block(ITSULITE_BLOCK);
+        return properties;
     }
 
     // =========================================================
@@ -479,14 +477,76 @@ public final class ModFluids {
     public static final RegistryObject<ForgeFlowingFluid> CORAL_FLOWING =
             CORAL_ENTRY.flowing;
 
-    // =========================================================
-    // Register
-    // =========================================================
-    // Register
-    // =========================================================
+    // Fluids referenced by alloy/material-fluid recipes retained from the 1.20.1 resource set.
+    private static final FluidEntry KERIUM_ENTRY = registerFluid("kerium");
+    private static final FluidEntry NEHILIUM_ENTRY = registerFluid("nehilium");
+    private static final FluidEntry URI_ENTRY = registerFluid("uri");
+    private static final FluidEntry URIUM_ENTRY = registerFluid("urium");
+    private static final FluidEntry TRAITS_ENTRY = registerFluid("traits");
+    private static final FluidEntry VIBERIUM_ENTRY = registerFluid("viberium");
+    private static final FluidEntry MOLTEN_KERIUM_ENTRY = registerFluid("molten_kerium");
+    private static final FluidEntry MOLTEN_NEHILIUM_ENTRY = registerFluid("molten_nehilium");
+    private static final FluidEntry MOLTEN_URI_ENTRY = registerFluid("molten_uri");
+    private static final FluidEntry MOLTEN_VIBERIUM_ENTRY = registerFluid("molten_viberium");
+    private static final FluidEntry MOLTEN_AUROSTONE_ENTRY = registerFluid("molten_aurostone");
+    private static final FluidEntry MOLTEN_CHIISTEEL_ENTRY = registerFluid("molten_chiisteel");
+    private static final FluidEntry MOLTEN_CHIRITE_ENTRY = registerFluid("molten_chirite");
+    private static final FluidEntry MOLTEN_CORAL_ENTRY = registerFluid("molten_coral");
+    private static final FluidEntry MOLTEN_DEEPSTEEL_ENTRY = registerFluid("molten_deepsteel");
+    private static final FluidEntry MOLTEN_DILONITE_ENTRY = registerFluid("molten_dilonite");
+    private static final FluidEntry MOLTEN_HACHILITE_ENTRY = registerFluid("molten_hachilite");
+    private static final FluidEntry MOLTEN_HERDYEEN_ENTRY = registerFluid("molten_herdyeen");
+    private static final FluidEntry MOLTEN_HIROLITE_ENTRY = registerFluid("molten_hirolite");
+    private static final FluidEntry MOLTEN_HIROSWARI_ENTRY = registerFluid("molten_hiroswari");
+    private static final FluidEntry MOLTEN_HOTALITE_ENTRY = registerFluid("molten_hotalite");
+    private static final FluidEntry MOLTEN_IGNIZ_ENTRY = registerFluid("molten_igniz");
+    private static final FluidEntry MOLTEN_IOXIUM_ENTRY = registerFluid("molten_ioxium");
+    private static final FluidEntry MOLTEN_KANILITE_ENTRY = registerFluid("molten_kanilite");
+    private static final FluidEntry MOLTEN_MARULITE_ENTRY = registerFluid("molten_marulite");
+    private static final FluidEntry MOLTEN_MOMONGAITE_ENTRY = registerFluid("molten_momongaite");
+    private static final FluidEntry MOLTEN_OSTLUM_ENTRY = registerFluid("molten_ostlum");
+    private static final FluidEntry MOLTEN_OURITE_ENTRY = registerFluid("molten_ourite");
+    private static final FluidEntry MOLTEN_OUSWARI_ENTRY = registerFluid("molten_ouswari");
+    private static final FluidEntry MOLTEN_PROXIA_ENTRY = registerFluid("molten_proxia");
+    private static final FluidEntry MOLTEN_SEIREN_ENTRY = registerFluid("molten_seiren");
+    private static final FluidEntry MOLTEN_SORALITE_ENTRY = registerFluid("molten_soralite");
+    private static final FluidEntry MOLTEN_STANNOIDEA_ENTRY = registerFluid("molten_stannoidea");
+    private static final FluidEntry MOLTEN_TIBERIUM_ENTRY = registerFluid("molten_tiberium");
+    private static final FluidEntry MOLTEN_YURU_ENTRY = registerFluid("molten_yuru");
 
+    // Restored 1.16.5 fluid registrations
+    private static final FluidEntry ITSULITE_ENTRY = registerFluid("itsulite");
+    public static final RegistryObject<FluidType> ITSULITE_TYPE = ITSULITE_ENTRY.type;
+    public static final RegistryObject<ForgeFlowingFluid> ITSULITE = ITSULITE_ENTRY.source;
+    public static final RegistryObject<ForgeFlowingFluid> ITSULITE_FLOWING = ITSULITE_ENTRY.flowing;
+    public static final RegistryObject<LiquidBlock> ITSULITE_BLOCK = FLUID_BLOCKS.register(
+            "itsulite", () -> new LiquidBlock(ITSULITE_ENTRY.source,
+                    BlockBehaviour.Properties.of().noCollission().strength(100.0F).noLootTable()));
+
+
+    private static final FluidEntry HOTALITE_ENTRY = registerFluid("hotalite");
+    public static final RegistryObject<FluidType> HOTALITE_TYPE = HOTALITE_ENTRY.type;
+    public static final RegistryObject<ForgeFlowingFluid> HOTALITE = HOTALITE_ENTRY.source;
+    public static final RegistryObject<ForgeFlowingFluid> HOTALITE_FLOWING = HOTALITE_ENTRY.flowing;
+
+    private static final FluidEntry SORALITE_ENTRY = registerFluid("soralite");
+    public static final RegistryObject<FluidType> SORALITE_TYPE = SORALITE_ENTRY.type;
+    public static final RegistryObject<ForgeFlowingFluid> SORALITE = SORALITE_ENTRY.source;
+    public static final RegistryObject<ForgeFlowingFluid> SORALITE_FLOWING = SORALITE_ENTRY.flowing;
+
+    private static final FluidEntry STANNOIDEA_ENTRY = registerFluid("stannoidea");
+    private static final FluidEntry YURU_ENTRY = registerFluid("yuru");
+    private static final FluidEntry SULPHUR_ENTRY = registerFluid("molten_sulphur");
+    public static final RegistryObject<FluidType> SULPHUR_TYPE = SULPHUR_ENTRY.type;
+    public static final RegistryObject<ForgeFlowingFluid> SULPHUR = SULPHUR_ENTRY.source;
+    public static final RegistryObject<ForgeFlowingFluid> SULPHUR_FLOWING = SULPHUR_ENTRY.flowing;
+
+    // =========================================================
+    // Register
+    // Fluids referenced by alloy/material-fluid recipes retained from the 1.20.1 resource set.
     public static void register(IEventBus eventBus) {
         FLUID_TYPES.register(eventBus);
         FLUIDS.register(eventBus);
+        FLUID_BLOCKS.register(eventBus);
     }
 }

@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:yuru",
+  "temperature": 1100,
+  "result": {
+    "fluid": "sakalti:yuru",
+    "amount": 100
+  }
+}

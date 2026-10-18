@@ -1,0 +1,22 @@
+{
+  "type": "tconstruct:alloy",
+  "inputs": [
+    {
+      "name": "sakalti:kanilite",
+      "amount": 300
+    },
+    {
+      "name": "sakalti:hachilite",
+      "amount": 200
+    },
+    {
+      "name": "sakalti:chirite",
+      "amount": 100
+    }
+  ],
+  "result": {
+    "fluid": "sakalti:yuru",
+    "amount": 500
+  },
+  "temperature": 1100
+}

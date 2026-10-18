@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:proxia",
+  "temperature": 1500,
+  "result": {
+    "fluid": "sakalti:proxia",
+    "amount": 100
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "yuru",
+  "fluid": "sakalti:yuru",
+  "color": 16711935,
+  "craftable": false,
+  "castable": true,
+  "hidden": false
+}

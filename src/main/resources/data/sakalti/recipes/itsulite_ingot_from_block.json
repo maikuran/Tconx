@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:itsulite_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:itsulite_ingot",
+    "count": 9
+  }
+}

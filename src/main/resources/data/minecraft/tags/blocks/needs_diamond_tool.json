@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values": [
+    "sakalti:igniz_block",
+    "sakalti:igniz_ore",
+    "sakalti:momongaite_block",
+    "sakalti:momongaite_ore"
+  ]
+}

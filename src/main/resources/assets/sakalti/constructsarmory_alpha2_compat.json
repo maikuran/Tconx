@@ -1,0 +1,30 @@
+{
+  "constructs_armory_version": "2.0.0-alpha.2+1.16.5",
+  "armor_render": "MaterialArmorModel dynamic texture",
+  "texture_pattern": "material_armor_{mail|plate}_layer_{1|2}_sakalti_{material}.png",
+  "plate_durability_multiplier_over_356_770_baseline": 1.35,
+  "materials": [
+    "aurostone",
+    "chiisteel",
+    "chirite",
+    "coral",
+    "deepsteel",
+    "dilonite",
+    "hachilite",
+    "herdyeen",
+    "hirolite",
+    "hiroswari",
+    "igniz",
+    "ioxium",
+    "kanilite",
+    "marulite",
+    "momongaite",
+    "ostlum",
+    "ourite",
+    "ouswari",
+    "proxia",
+    "seiren",
+    "sulphur",
+    "tiberium"
+  ]
+}

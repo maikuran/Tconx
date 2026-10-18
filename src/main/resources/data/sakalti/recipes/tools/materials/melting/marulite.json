@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:marulite",
+  "temperature": 1400,
+  "result": {
+    "fluid": "sakalti:marulite",
+    "amount": 100
+  }
+}

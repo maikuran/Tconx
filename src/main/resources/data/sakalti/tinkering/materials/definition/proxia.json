@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 6,
-  "sortOrder": 6,
+  "craftable": false,
+  "tier": 4,
+  "sortOrder": 4,
+  "textColor": "#593B67",
   "hidden": false,
-  "color": "#593b67",
-  "fluid": "sakalti:proxia",
-  "translationKey": "material.sakalti.proxia"
+  "fluid": "sakalti:molten_proxia",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

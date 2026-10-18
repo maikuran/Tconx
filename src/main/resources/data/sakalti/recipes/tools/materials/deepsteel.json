@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material",
+  "ingredient": {
+    "item": "sakalti:deepsteel_ingot"
+  },
+  "value": 1,
+  "needed": 1,
+  "material": "sakalti:deepsteel"
+}

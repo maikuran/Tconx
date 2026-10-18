@@ -1,0 +1,10 @@
+{
+  "craftable": true,
+  "tier": 4,
+  "sortOrder": 1,
+  "textColor": "#78DFFF",
+  "hidden": false,
+  "fluid": "sakalti:molten_soralite",
+  "fluidPerUnit": 144,
+  "temperature": 1000
+}

@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:ioxium_block"
+  },
+  "result": {
+    "fluid": "sakalti:ioxium",
+    "amount": 1080
+  },
+  "temperature": 1800,
+  "time": 360
+}

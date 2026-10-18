@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 6,
-  "sortOrder": 6,
+  "craftable": false,
+  "tier": 3,
+  "sortOrder": 3,
+  "textColor": "#66FFFF",
   "hidden": false,
-  "color": "#66ffff",
-  "fluid": "sakalti:herdyeen",
-  "translationKey": "material.sakalti.herdyeen"
+  "fluid": "sakalti:molten_herdyeen",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

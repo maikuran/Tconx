@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:herdyeen_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:herdyeen_block",
+    "count": 1
+  }
+}

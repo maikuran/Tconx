@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:itsulite_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:itsulite_block",
+    "count": 1
+  }
+}

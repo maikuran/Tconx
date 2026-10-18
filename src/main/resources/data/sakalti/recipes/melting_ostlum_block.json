@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:ostlum_block"
+  },
+  "result": {
+    "fluid": "sakalti:ostlum",
+    "amount": 1080
+  },
+  "temperature": 1800,
+  "time": 360
+}

@@ -1,0 +1,22 @@
+{
+  "type": "tconstruct:alloy",
+  "inputs": [
+    {
+      "name": "tconstruct:molten_cobalt",
+      "amount": 100
+    },
+    {
+      "name": "tconstruct:molten_netherite",
+      "amount": 100
+    },
+    {
+      "name": "sakalti:hachilite",
+      "amount": 100
+    }
+  ],
+  "result": {
+    "fluid": "sakalti:soralite",
+    "amount": 250
+  },
+  "temperature": 2000
+}

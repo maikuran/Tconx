@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:ourite",
+  "temperature": 3500,
+  "result": {
+    "fluid": "sakalti:ourite",
+    "amount": 100
+  }
+}

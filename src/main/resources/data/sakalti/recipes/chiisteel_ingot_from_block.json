@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "sakalti:chiisteel_block"
+    }
+  ],
+  "result": {
+    "item": "sakalti:chiisteel_ingot",
+    "count": 9
+  }
+}

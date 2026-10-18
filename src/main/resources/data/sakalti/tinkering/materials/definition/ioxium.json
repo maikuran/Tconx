@@ -1,9 +1,10 @@
 {
-  "craftable": true,
-  "tier": 4,
-  "sortOrder": 4,
+  "craftable": false,
+  "tier": 5,
+  "sortOrder": 5,
+  "textColor": "#9CD307",
   "hidden": false,
-  "color": "#9cd307",
-  "fluid": "sakalti:ioxium",
-  "translationKey": "material.sakalti.ioxium"
+  "fluid": "sakalti:molten_ioxium",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:tiberium",
+  "temperature": 2250,
+  "result": {
+    "fluid": "sakalti:tiberium",
+    "amount": 100
+  }
+}

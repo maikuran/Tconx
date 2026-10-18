@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:melting_fuel",
+  "fluid": {
+    "name": "sakalti:igniz",
+    "amount": 50
+  },
+  "duration": 130,
+  "temperature": 1300
+}

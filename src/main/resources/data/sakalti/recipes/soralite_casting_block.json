@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:soralite",
+    "amount": 1080
+  },
+  "result": "sakalti:soralite_block",
+  "cooling_time": 225
+}

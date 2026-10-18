@@ -1,0 +1,290 @@
+{
+  "title": "Sakalti alloy progression",
+  "stages": [
+    {
+      "tier": "I · 基礎合金",
+      "recipes": [
+        "sakalti:hotalite",
+        "sakalti:yuru"
+      ]
+    },
+    {
+      "tier": "II · 中級合金",
+      "recipes": [
+        "sakalti:hiroswari",
+        "sakalti:dilonite",
+        "sakalti:chiisteel",
+        "sakalti:proxia"
+      ]
+    },
+    {
+      "tier": "III · 上級合金",
+      "recipes": [
+        "sakalti:marulite",
+        "sakalti:herdyeen",
+        "sakalti:soralite",
+        "sakalti:ioxium"
+      ]
+    },
+    {
+      "tier": "IV · 高温・終盤合金",
+      "recipes": [
+        "sakalti:aurostone",
+        "sakalti:itsulite",
+        "sakalti:ouswari"
+      ]
+    }
+  ],
+  "recipes": {
+    "hotalite": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "sakalti:hachilite",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:chirite",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:hotalite",
+        "amount": 180
+      },
+      "temperature": 900
+    },
+    "itsulite": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "sakalti:igniz",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:tiberium",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:itsulite",
+        "amount": 180
+      },
+      "temperature": 2300
+    },
+    "chiisteel": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "sakalti:chirite",
+          "amount": 300
+        },
+        {
+          "name": "tconstruct:molten_iron",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:chiisteel",
+        "amount": 350
+      },
+      "temperature": 1600
+    },
+    "dilonite": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "tconstruct:molten_gold",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:igniz",
+          "amount": 50
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:dilonite",
+        "amount": 120
+      },
+      "temperature": 1500
+    },
+    "marulite": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "sakalti:deepsteel",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:igniz",
+          "amount": 100
+        },
+        {
+          "name": "tconstruct:molten_cobalt",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:marulite",
+        "amount": 250
+      },
+      "temperature": 1800
+    },
+    "soralite": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "tconstruct:molten_cobalt",
+          "amount": 100
+        },
+        {
+          "name": "tconstruct:molten_netherite",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:hachilite",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:soralite",
+        "amount": 250
+      },
+      "temperature": 2000
+    },
+    "proxia": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "tconstruct:molten_cobalt",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:chirite",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:proxia",
+        "amount": 160
+      },
+      "temperature": 1700
+    },
+    "herdyeen_alloy": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "tconstruct:molten_emerald",
+          "amount": 100
+        },
+        {
+          "name": "tconstruct:molten_diamond",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:herdyeen",
+        "amount": 150
+      },
+      "temperature": 1900
+    },
+    "aurostone": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "sakalti:chirite",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:igniz",
+          "amount": 50
+        },
+        {
+          "name": "tconstruct:molten_emerald",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:aurostone",
+        "amount": 200
+      },
+      "temperature": 2200
+    },
+    "hiroswari": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "sakalti:kanilite",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:igniz",
+          "amount": 75
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:hiroswari",
+        "amount": 150
+      },
+      "temperature": 1400
+    },
+    "ioxium": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "tconstruct:molten_hepatizon",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:kanilite",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:ioxium",
+        "amount": 180
+      },
+      "temperature": 2100
+    },
+    "yuru_alloy": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "sakalti:kanilite",
+          "amount": 300
+        },
+        {
+          "name": "sakalti:hachilite",
+          "amount": 200
+        },
+        {
+          "name": "sakalti:chirite",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:yuru",
+        "amount": 500
+      },
+      "temperature": 1100
+    },
+    "molten_ouswari": {
+      "type": "tconstruct:alloy",
+      "inputs": [
+        {
+          "name": "sakalti:kanilite",
+          "amount": 100
+        },
+        {
+          "name": "sakalti:ioxium",
+          "amount": 100
+        }
+      ],
+      "result": {
+        "fluid": "sakalti:ouswari",
+        "amount": 180
+      },
+      "temperature": 2400
+    }
+  }
+}

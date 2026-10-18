@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:stannoidea",
+  "temperature": 3200,
+  "result": {
+    "fluid": "sakalti:stannoidea",
+    "amount": 100
+  }
+}

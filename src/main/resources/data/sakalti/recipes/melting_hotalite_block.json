@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:hotalite_block"
+  },
+  "result": {
+    "fluid": "sakalti:hotalite",
+    "amount": 1080
+  },
+  "temperature": 900,
+  "time": 360
+}

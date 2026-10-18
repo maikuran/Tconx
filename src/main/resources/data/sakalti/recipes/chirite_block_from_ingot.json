@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "###",
+    "###"
+  ],
+  "key": {
+    "#": {
+      "item": "sakalti:chirite_ingot"
+    }
+  },
+  "result": {
+    "item": "sakalti:chirite_block",
+    "count": 1
+  }
+}

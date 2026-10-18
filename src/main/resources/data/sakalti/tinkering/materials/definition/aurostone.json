@@ -1,9 +1,10 @@
 {
-  "craftable": true,
+  "craftable": false,
   "tier": 6,
   "sortOrder": 6,
+  "textColor": "#00EE00",
   "hidden": false,
-  "color": "#00ee00",
-  "fluid": "sakalti:aurostone",
-  "translationKey": "material.sakalti.aurostone"
+  "fluid": "sakalti:molten_aurostone",
+  "fluidPerUnit": 144,
+  "temperature": 1000
 }

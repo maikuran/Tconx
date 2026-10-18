@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:melting",
+  "ingredient": {
+    "item": "sakalti:hiroswari_ingot"
+  },
+  "result": {
+    "fluid": "sakalti:hiroswari",
+    "amount": 120
+  },
+  "temperature": 1400,
+  "time": 57
+}

@@ -1,0 +1,12 @@
+{
+  "type": "tconstruct:casting_table",
+  "cast": {
+    "item": "tconstruct:ingot_cast"
+  },
+  "fluid": {
+    "name": "sakalti:proxia",
+    "amount": 120
+  },
+  "result": "sakalti:proxia_ingot",
+  "cooling_time": 57
+}

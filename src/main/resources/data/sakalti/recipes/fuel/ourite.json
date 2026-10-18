@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:melting_fuel",
+  "fluid": {
+    "name": "sakalti:ourite",
+    "amount": 50
+  },
+  "duration": 350,
+  "temperature": 3500
+}

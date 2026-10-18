@@ -1,0 +1,12 @@
+{
+  "default": [
+    {
+      "name": "sakalti:scorch",
+      "level": 1
+    },
+    {
+      "name": "sakalti:blast",
+      "level": 1
+    }
+  ]
+}

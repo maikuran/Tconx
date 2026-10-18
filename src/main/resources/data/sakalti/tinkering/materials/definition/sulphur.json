@@ -1,0 +1,10 @@
+{
+  "craftable": true,
+  "tier": 1,
+  "sortOrder": 70,
+  "textColor": "#D9B94D",
+  "hidden": false,
+  "fluid": "sakalti:molten_sulphur",
+  "fluidPerUnit": 144,
+  "temperature": 1000
+}

@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:material_melting",
+  "input": "sakalti:sulphur",
+  "temperature": 200,
+  "result": {
+    "fluid": "sakalti:molten_sulphur",
+    "amount": 100
+  }
+}

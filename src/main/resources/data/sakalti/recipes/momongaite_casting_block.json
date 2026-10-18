@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:momongaite",
+    "amount": 1080
+  },
+  "result": "sakalti:momongaite_block",
+  "cooling_time": 225
+}

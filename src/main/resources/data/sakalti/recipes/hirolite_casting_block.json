@@ -1,0 +1,9 @@
+{
+  "type": "tconstruct:casting_basin",
+  "fluid": {
+    "name": "sakalti:hirolite",
+    "amount": 1080
+  },
+  "result": "sakalti:hirolite_block",
+  "cooling_time": 225
+}

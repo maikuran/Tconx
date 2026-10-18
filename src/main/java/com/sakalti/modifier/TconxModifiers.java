@@ -63,6 +63,18 @@ public final class TconxModifiers {
     public static final StaticModifier<AuroVisionModifier> AURO_VISION =
             MODIFIERS.register("auro_vision", AuroVisionModifier::new);
 
+    // Restored modifiers present in the 1.16.5 JAR but absent from the initial 1.20.1 source.
+    public static final StaticModifier<CelestiteResonanceModifier> CELESTITE_RESONANCE = MODIFIERS.register("celestite_resonance", CelestiteResonanceModifier::new);
+    public static final StaticModifier<LureMeteorModifier> LURE_METEOR = MODIFIERS.register("lure_meteor", LureMeteorModifier::new);
+    public static final StaticModifier<BlastModifier> BLAST = MODIFIERS.register("blast", BlastModifier::new);
+    public static final StaticModifier<ScorchModifier> SCORCH = MODIFIERS.register("scorch", ScorchModifier::new);
+    public static final StaticModifier<SaturationModifier> SATURATION = MODIFIERS.register("saturation", SaturationModifier::new);
+    public static final StaticModifier<SlowrepairModifier> SLOW_REPAIR = MODIFIERS.register("slowrepair", SlowrepairModifier::new);
+    public static final StaticModifier<LuckyModifier> LUCKY = MODIFIERS.register("lucky", LuckyModifier::new);
+    public static final StaticModifier<ItsulicNihilismModifier> ITSULIC_NIHILISM = MODIFIERS.register("itsulic_nihilism", ItsulicNihilismModifier::new);
+    public static final StaticModifier<SoulEaterModifier> SOUL_EATER = MODIFIERS.register("soul_eater", SoulEaterModifier::new);
+    public static final StaticModifier<GraduallyModifier> GRADUALLY = MODIFIERS.register("gradually", GraduallyModifier::new);
+
     private TconxModifiers() {
     }
 }
