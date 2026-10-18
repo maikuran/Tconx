@@ -70,4 +70,5 @@ jobs:
           fi
 
           git commit -m "Extract Sakalti2 source"
+          git pull
           git push
