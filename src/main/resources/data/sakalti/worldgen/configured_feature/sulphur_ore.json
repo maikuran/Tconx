@@ -12,6 +12,7 @@
         }
       }
     ],
-    "size": 8
+    "size": 8,
+    "discard_chance_on_air_exposure": 0.0
   }
 }
