@@ -1,5 +1,5 @@
 
-name: Repair Sakalti Material Stats
+name: Repair Sakalti Tinkers' Construct Material Stats
 
 on:
   workflow_dispatch:
@@ -38,14 +38,11 @@ jobs:
           from decimal import Decimal, ROUND_HALF_UP
           from pathlib import Path
 
-          root = Path(
+          ROOT = Path(
               "src/main/resources/data/sakalti/tinkering/materials/stats"
           )
 
-          if not root.is_dir():
-              raise SystemExit(f"Directory not found: {root}")
-
-          plating_ids = (
+          PLATING_IDS = (
               "tconstruct:plating_helmet",
               "tconstruct:plating_chestplate",
               "tconstruct:plating_leggings",
@@ -53,76 +50,101 @@ jobs:
               "tconstruct:plating_shield",
           )
 
-          def as_integer(value, path, stat_id):
+          if not ROOT.is_dir():
+              raise SystemExit(f"Directory not found: {ROOT}")
+
+          def durability_integer(value, path, stat_id):
               if isinstance(value, bool) or not isinstance(value, (int, float)):
                   raise SystemExit(
-                      f"{path}: invalid durability in {stat_id}: {value!r}"
+                      f"{path}: invalid durability for {stat_id}: {value!r}"
                   )
 
               number = Decimal(str(value))
-              if number <= 0:
+
+              if not number.is_finite() or number <= 0:
                   raise SystemExit(
-                      f"{path}: durability must be positive in {stat_id}"
+                      f"{path}: durability must be finite and positive "
+                      f"for {stat_id}: {value!r}"
                   )
 
+              # Tinkers' Construct expects integer durability.
+              # Round fractional values to the nearest integer.
               return int(
                   number.quantize(Decimal("1"), rounding=ROUND_HALF_UP)
               )
 
-          files = sorted(root.rglob("*.json"))
+          files = sorted(ROOT.rglob("*.json"))
+
           if not files:
-              raise SystemExit(f"No JSON files found in {root}")
+              raise SystemExit(f"No JSON files found in {ROOT}")
 
           for path in files:
               try:
                   data = json.loads(path.read_text(encoding="utf-8"))
               except json.JSONDecodeError as exc:
-                  raise SystemExit(f"Invalid JSON: {path}: {exc}")
+                  raise SystemExit(f"Invalid JSON in {path}: {exc}")
 
               stats = data.get("stats")
+
               if not isinstance(stats, dict):
                   continue
 
               changed = False
 
-              # Rename the incorrect plural ID to the official singular ID.
+              # Correct the old plural ID to the official singular ID.
               old_id = "tconstruct:plating_boots"
               new_id = "tconstruct:plating_boot"
 
               if old_id in stats:
                   if new_id in stats:
                       raise SystemExit(
-                          f"{path}: both {old_id} and {new_id} exist; "
-                          "manual merge required."
+                          f"{path}: both {old_id} and {new_id} exist. "
+                          "Merge them manually to avoid losing data."
                       )
+
                   stats[new_id] = stats.pop(old_id)
                   changed = True
+                  print(f"{path}: renamed {old_id} to {new_id}")
 
-              # Convert existing plating durability values to integers.
-              for stat_id in plating_ids:
+              # Normalize existing plating durability values.
+              for stat_id in PLATING_IDS:
                   entry = stats.get(stat_id)
+
                   if entry is None:
                       continue
 
                   if not isinstance(entry, dict):
                       raise SystemExit(
-                          f"{path}: {stat_id} must be an object"
+                          f"{path}: {stat_id} must be a JSON object"
                       )
 
-                  if "durability" in entry:
-                      fixed = as_integer(
-                          entry["durability"], path, stat_id
-                      )
-                      if entry["durability"] != fixed:
-                          entry["durability"] = fixed
-                          changed = True
+                  if "durability" not in entry:
+                      continue
 
-              # Fill shield durability using this material's existing
-              # armor-plating durability as the reference.
+                  original = entry["durability"]
+                  fixed = durability_integer(original, path, stat_id)
+
+                  if type(original) is not int or original != fixed:
+                      entry["durability"] = fixed
+                      changed = True
+                      print(
+                          f"{path}: {stat_id}.durability "
+                          f"{original!r} -> {fixed}"
+                      )
+
+              # Infer shield durability from existing plating stats
+              # for this same material.
               if "tconstruct:plating_shield" in stats:
                   shield = stats["tconstruct:plating_shield"]
 
+                  if not isinstance(shield, dict):
+                      raise SystemExit(
+                          f"{path}: plating_shield must be a JSON object"
+                      )
+
                   reference = None
+                  reference_id = None
+
                   for stat_id in (
                       "tconstruct:plating_chestplate",
                       "tconstruct:plating_leggings",
@@ -130,8 +152,13 @@ jobs:
                       "tconstruct:plating_boot",
                   ):
                       entry = stats.get(stat_id)
-                      if isinstance(entry, dict) and "durability" in entry:
+
+                      if (
+                          isinstance(entry, dict)
+                          and "durability" in entry
+                      ):
                           reference = entry["durability"]
+                          reference_id = stat_id
                           break
 
                   if reference is None:
@@ -140,25 +167,38 @@ jobs:
                           "no existing plating durability found."
                       )
 
-                  shield_durability = as_integer(
-                      reference, path, "plating_shield reference"
+                  shield_durability = durability_integer(
+                      reference,
+                      path,
+                      f"{reference_id} reference",
                   )
 
                   if shield.get("durability") != shield_durability:
+                      previous = shield.get("durability", "<missing>")
                       shield["durability"] = shield_durability
                       changed = True
+                      print(
+                          f"{path}: plating_shield.durability "
+                          f"{previous!r} -> {shield_durability} "
+                          f"(reference: {reference_id})"
+                      )
 
               if changed:
                   path.write_text(
-                      json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                      json.dumps(
+                          data,
+                          ensure_ascii=False,
+                          indent=2,
+                          allow_nan=False,
+                      ) + "\n",
                       encoding="utf-8",
                   )
-                  print(f"Repaired: {path}")
+                  print(f"Updated: {path}")
 
           print(f"Processed {len(files)} material stat files.")
           PY
 
-      - name: Validate JSON and repaired stats
+      - name: Validate material stat JSON
         shell: bash
         run: |
           set -euo pipefail
@@ -167,49 +207,81 @@ jobs:
           import json
           from pathlib import Path
 
-          root = Path(
+          ROOT = Path(
               "src/main/resources/data/sakalti/tinkering/materials/stats"
           )
-          files = sorted(root.rglob("*.json"))
+
+          PLATING_IDS = (
+              "tconstruct:plating_helmet",
+              "tconstruct:plating_chestplate",
+              "tconstruct:plating_leggings",
+              "tconstruct:plating_boot",
+              "tconstruct:plating_shield",
+          )
+
+          files = sorted(ROOT.rglob("*.json"))
+
+          if not files:
+              raise SystemExit(f"No JSON files found in {ROOT}")
 
           for path in files:
-              data = json.loads(path.read_text(encoding="utf-8"))
+              try:
+                  data = json.loads(path.read_text(encoding="utf-8"))
+              except json.JSONDecodeError as exc:
+                  raise SystemExit(f"Invalid JSON in {path}: {exc}")
+
               stats = data.get("stats", {})
+
+              if not isinstance(stats, dict):
+                  raise SystemExit(
+                      f"{path}: 'stats' must be a JSON object"
+                  )
 
               if "tconstruct:plating_boots" in stats:
                   raise SystemExit(
                       f"{path}: obsolete plating_boots ID remains"
                   )
 
-              shield = stats.get("tconstruct:plating_shield")
-              if shield is not None:
-                  if not isinstance(shield, dict):
-                      raise SystemExit(
-                          f"{path}: plating_shield must be an object"
-                      )
-                  if "durability" not in shield:
-                      raise SystemExit(
-                          f"{path}: plating_shield durability is missing"
-                      )
-
-              for stat_id, entry in stats.items():
-                  if not stat_id.startswith("tconstruct:plating_"):
+              for stat_id in PLATING_IDS:
+                  if stat_id not in stats:
                       continue
+
+                  entry = stats[stat_id]
 
                   if not isinstance(entry, dict):
                       raise SystemExit(
-                          f"{path}: {stat_id} must be an object"
+                          f"{path}: {stat_id} must be a JSON object"
                       )
 
                   if "durability" in entry:
                       value = entry["durability"]
-                      if type(value) is not int or value <= 0:
+
+                      if (
+                          isinstance(value, bool)
+                          or not isinstance(value, (int, float))
+                          or value <= 0
+                          or int(value) != value
+                      ):
                           raise SystemExit(
                               f"{path}: invalid integer durability "
                               f"for {stat_id}: {value!r}"
                           )
 
-          print(f"Validated {len(files)} JSON files.")
+                      # JSON must contain an integer, not 125.0.
+                      if type(value) is not int:
+                          raise SystemExit(
+                              f"{path}: {stat_id}.durability "
+                              f"must be serialized as an integer: {value!r}"
+                          )
+
+              shield = stats.get("tconstruct:plating_shield")
+
+              if shield is not None and "durability" not in shield:
+                  raise SystemExit(
+                      f"{path}: plating_shield durability is missing"
+                  )
+
+          print(f"Validated {len(files)} JSON files successfully.")
           PY
 
       - name: Check patch formatting
@@ -232,5 +304,6 @@ jobs:
           fi
 
           git commit -m "Fix Sakalti material stat durability"
+
           git pull --rebase origin main
           git push origin HEAD:main
