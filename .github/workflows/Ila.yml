@@ -1,0 +1,136 @@
+
+name: Fix Sakalti World Generation JSON
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix-worldgen:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Fix world generation JSON
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          from pathlib import Path
+
+          roots = [
+              Path("src/main/resources/data/sakalti/worldgen"),
+              Path("src/main/resources/data/sakalti/worldgen/configured_feature"),
+          ]
+
+          tags = {
+              "minecraft:stone_ore_replaceables",
+              "minecraft:deepslate_ore_replaceables",
+              "minecraft:nether_ore_replaceables",
+          }
+
+          files = set()
+          for root in roots:
+              if root.exists():
+                  files.update(root.rglob("*.json"))
+
+          changed = []
+
+          def fix(value):
+              modified = False
+
+              if isinstance(value, dict):
+                  for key, child in list(value.items()):
+                      if key == "target" and isinstance(child, str):
+                          if child in tags:
+                              value[key] = {
+                                  "predicate_type": "minecraft:tag_match",
+                                  "tag": child,
+                              }
+                              modified = True
+                      else:
+                          if fix(child):
+                              modified = True
+
+              elif isinstance(value, list):
+                  for child in value:
+                      if fix(child):
+                          modified = True
+
+              return modified
+
+          for path in sorted(files):
+              try:
+                  original = path.read_text(encoding="utf-8")
+                  data = json.loads(original)
+
+                  if fix(data):
+                      path.write_text(
+                          json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                          encoding="utf-8",
+                      )
+                      changed.append(str(path))
+
+              except (json.JSONDecodeError, OSError) as exc:
+                  print(f"ERROR: {path}: {exc}")
+
+          print(f"Modified {len(changed)} JSON file(s)")
+          for path in changed:
+              print(f"FIXED: {path}")
+          PY
+
+      - name: Validate JSON files
+        shell: bash
+        run: |
+          python <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+
+          root = Path("src/main/resources/data/sakalti/worldgen")
+          errors = []
+
+          if root.exists():
+              for path in root.rglob("*.json"):
+                  try:
+                      json.loads(path.read_text(encoding="utf-8"))
+                  except (json.JSONDecodeError, OSError) as exc:
+                      errors.append(f"{path}: {exc}")
+
+          if errors:
+              print("\n".join(errors))
+              sys.exit(1)
+
+          print("All world generation JSON files are syntactically valid.")
+          PY
+
+      - name: Commit and push fixes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/sakalti/worldgen
+
+          if git diff --cached --quiet; then
+            echo "No fixes required."
+            exit 0
+          fi
+
+          git commit -m "Fix Sakalti world generation JSON"
+          git push origin HEAD:main
