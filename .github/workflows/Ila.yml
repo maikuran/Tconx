@@ -367,6 +367,6 @@ jobs:
           fi
 
           git commit -m "Fix Sakalti worldgen JSON"
-          git pull
+          git pull --rebase
 
           git push origin HEAD:main
