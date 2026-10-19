@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:yuru",
+    "fluid": "sakalti:molten_yuru",
     "amount": 100
   },
   "temperature": 1000,
