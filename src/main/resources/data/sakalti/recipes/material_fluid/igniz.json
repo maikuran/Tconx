@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:igniz",
+    "fluid": "sakalti:molten_igniz",
     "amount": 100
   },
   "temperature": 1000,
