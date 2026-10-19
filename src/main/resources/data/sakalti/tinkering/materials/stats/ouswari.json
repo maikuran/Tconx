@@ -3,10 +3,10 @@
     "tconstruct:binding": {},
     "tconstruct:grip": {},
     "tconstruct:handle": {
-      "durability": 1.18,
-      "melee_damage": 1.1,
-      "melee_speed": 1.01,
-      "mining_speed": 1.1
+      "durability": 0.18,
+      "melee_damage": 0.1,
+      "melee_speed": 0.01,
+      "mining_speed": 0.1
     },
     "tconstruct:head": {
       "durability": 760,
