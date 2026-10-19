@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:coral",
+    "fluid": "sakalti:molten_coral",
     "amount": 100
   },
   "temperature": 1000,
