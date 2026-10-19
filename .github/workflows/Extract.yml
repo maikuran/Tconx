@@ -22,7 +22,7 @@ jobs:
           set -e
 
           tmp_dir="$(mktemp -d)"
-          unzip -q "Sakalti-1.20.1-src (4).zip" -d "$tmp_dir"
+          unzip -q "Sakalti-1.20.1-src (5).zip" -d "$tmp_dir"
 
           # ZIP内の最上位ディレクトリを取得
           top_count="$(find "$tmp_dir" -mindepth 1 -maxdepth 1 | wc -l)"
