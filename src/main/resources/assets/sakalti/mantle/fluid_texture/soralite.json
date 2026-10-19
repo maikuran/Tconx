@@ -1,3 +1,5 @@
 {
-  "color": "78DFFF"
+  "still": "sakalti:fluid/soralite_still",
+  "flowing": "sakalti:fluid/soralite_flow",
+  "color": "FF78DFFF"
 }
