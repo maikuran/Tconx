@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:proxia",
+    "fluid": "sakalti:molten_proxia",
     "amount": 100
   },
   "temperature": 1000,

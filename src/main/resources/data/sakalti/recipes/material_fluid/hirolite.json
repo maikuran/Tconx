@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:hirolite",
+    "fluid": "sakalti:molten_hirolite",
     "amount": 100
   },
   "temperature": 1000,

@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:stannoidea",
+    "fluid": "sakalti:molten_stannoidea",
     "amount": 100
   },
   "temperature": 1000,
