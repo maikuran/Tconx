@@ -1,5 +1,5 @@
 
-name: Sync Sakalti Material Definitions
+name: Remove Molten Prefix
 
 on:
   workflow_dispatch:
@@ -11,120 +11,74 @@ permissions:
   contents: write
 
 jobs:
-  sync-materials:
+  remove-molten-prefix:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Extract molten material identifiers and sync definitions
+      - name: Remove molten_ from definition fluid values
         shell: bash
         run: |
           python3 <<'PY'
           import json
-          import re
           from pathlib import Path
 
-          definitions_dir = Path(
+          root = Path(
               "src/main/resources/data/sakalti/tinkering/materials/definition"
           )
-          materials_dir = Path(
-              "src/main/resources/assets/sakalti/tinkering/materials"
-          )
 
-          if not definitions_dir.is_dir():
-              raise SystemExit(
-                  f"Definition directory not found: {definitions_dir}"
-              )
-
-          if not materials_dir.is_dir():
-              raise SystemExit(
-                  f"Materials directory not found: {materials_dir}"
-              )
+          if not root.is_dir():
+              raise SystemExit(f"Directory not found: {root}")
 
           changed = 0
 
-          for definition_path in sorted(definitions_dir.glob("*.json")):
-              with definition_path.open("r", encoding="utf-8") as f:
-                  definition = json.load(f)
+          for path in sorted(root.glob("*.json")):
+              with path.open("r", encoding="utf-8") as f:
+                  data = json.load(f)
 
-              fluid = definition.get("fluid")
+              fluid = data.get("fluid")
+
               if not isinstance(fluid, str):
-                  print(f"Skipped: no fluid field in {definition_path.name}")
                   continue
 
-              # Extract the identifier after the "molten_" prefix.
-              match = re.fullmatch(r"sakalti:molten_([a-z0-9_]+)", fluid)
-              if not match:
-                  print(f"Skipped unsupported fluid: {fluid}")
+              # sakalti:molten_aurostone -> sakalti:aurostone
+              namespace, separator, identifier = fluid.partition(":")
+
+              if not separator or not identifier.startswith("molten_"):
                   continue
 
-              material_name = match.group(1)
-              asset_path = materials_dir / f"{material_name}.json"
-
-              if not asset_path.is_file():
-                  print(f"Skipped: matching asset not found: {asset_path.name}")
-                  continue
-
-              with asset_path.open("r", encoding="utf-8") as f:
-                  asset = json.load(f)
-
-              # Copy the definition's textColor to the asset's color.
-              text_color = definition.get("textColor")
-              if isinstance(text_color, str):
-                  color_match = re.fullmatch(
-                      r"#?([0-9a-fA-F]{6}|[0-9a-fA-F]{8})",
-                      text_color
-                  )
-
-                  if not color_match:
-                      raise SystemExit(
-                          f"Invalid textColor in {definition_path}: {text_color}"
-                      )
-
-                  color = color_match.group(1).upper()
-                  if len(color) == 6:
-                      color = "FF" + color
-
-                  if "color" in asset and asset["color"] != color:
-                      asset["color"] = color
-                      changed += 1
-
-                      with asset_path.open(
-                          "w", encoding="utf-8", newline="\n"
-                      ) as f:
-                          json.dump(asset, f, ensure_ascii=False, indent=2)
-                          f.write("\n")
-
-                      print(f"{material_name}: color -> {color}")
-
-              print(
-                  f"Extracted {fluid} -> {material_name} "
-                  f"(definition: {definition_path.name})"
+              data["fluid"] = (
+                  f"{namespace}:{identifier[len('molten_'):]}"
               )
 
-          print(f"Updated {changed} asset files.")
+              with path.open("w", encoding="utf-8", newline="\n") as f:
+                  json.dump(data, f, ensure_ascii=False, indent=2)
+                  f.write("\n")
+
+              changed += 1
+              print(f"{path.name}: {fluid} -> {data['fluid']}")
+
+          print(f"Updated {changed} definition files.")
           PY
 
-      - name: Validate JSON
+      - name: Validate JSON files
         shell: bash
         run: |
           python3 <<'PY'
           import json
           from pathlib import Path
 
-          directories = [
-              Path("src/main/resources/data/sakalti/tinkering/materials/definition"),
-              Path("src/main/resources/assets/sakalti/tinkering/materials"),
-          ]
+          root = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/definition"
+          )
 
-          for directory in directories:
-              for path in sorted(directory.glob("*.json")):
-                  with path.open("r", encoding="utf-8") as f:
-                      json.load(f)
+          for path in sorted(root.glob("*.json")):
+              with path.open("r", encoding="utf-8") as f:
+                  json.load(f)
 
           print("JSON validation passed.")
           PY
@@ -136,13 +90,13 @@ jobs:
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add src/main/resources/assets/sakalti/tinkering/materials
+          git add src/main/resources/data/sakalti/tinkering/materials/definition
 
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No molten_ prefixes to remove."
             exit 0
           fi
 
-          git commit -m "Sync material colors from definitions"
+          git commit -m "Remove molten prefix from material definitions"
           git pull --rebase
           git push
