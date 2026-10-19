@@ -22,14 +22,14 @@ import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
-import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
-import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 import net.minecraft.world.level.levelgen.placement.BiomeFilter;
 import net.minecraft.world.level.levelgen.placement.CountPlacement;
 import net.minecraft.world.level.levelgen.placement.HeightRangePlacement;
 import net.minecraft.world.level.levelgen.placement.InSquarePlacement;
 import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.RuleTest;
+import net.minecraft.world.level.levelgen.structure.templatesystem.TagMatchTest;
 
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.common.world.BiomeModifier;
@@ -40,17 +40,14 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 /**
- * Sakalti world generation for Minecraft 1.20.1 / Forge 47.x.
+ * Sakalti world generation for Minecraft 1.20.1 / Forge.
  *
- * Generates:
- * - Configured features
- * - Placed features
- * - Forge biome modifiers
+ * Configured features, placed features, and Forge biome modifiers
+ * are generated through RegistrySetBuilder.
  */
 @Mod.EventBusSubscriber(
     modid = ModMain.MODID,
@@ -103,8 +100,10 @@ public final class ModWorldGen {
     }
 
     /*
-     * Ore parameters:
-     * name, block, vein size, minimum Y, maximum Y, count, dimension.
+     * Keep all 12 ore definitions.
+     *
+     * Arguments:
+     * size, minimum Y, maximum Y, placement count, dimension.
      */
     private static final List<OreSpec> ORES = List.of(
         new OreSpec(
@@ -181,108 +180,63 @@ public final class ModWorldGen {
         )
     );
 
-    /*
-     * Configured features.
-     *
-     * IMPORTANT:
-     * Explicitly provide discardChanceOnAirExposure.
-     * The 1.20.1 JSON codec requires
-     * "discard_chance_on_air_exposure".
+    /**
+     * Register configured features.
      */
     private static void configured(
-        BootstapContext<ConfiguredFeature<?, ?>> ctx
+        BootstapContext<ConfiguredFeature<?, ?>> context
     ) {
         for (OreSpec ore : ORES) {
-            Block oreBlock = ore.block().get();
+            RuleTest rule = switch (ore.dimension()) {
+                case OVERWORLD ->
+                    new TagMatchTest(BlockTags.BASE_STONE_OVERWORLD);
 
-            List<OreConfiguration.TargetBlockState> targets =
-                new ArrayList<>();
+                case NETHER ->
+                    new TagMatchTest(BlockTags.BASE_STONE_NETHER);
 
-            switch (ore.dimension()) {
-                case OVERWORLD -> {
-                    RuleTest stoneRule =
-                        new TagMatchTest(
-                            BlockTags.STONE_ORE_REPLACEABLES
-                        );
+                case END ->
+                    new BlockMatchTest(Blocks.END_STONE);
+            };
 
-                    RuleTest deepslateRule =
-                        new TagMatchTest(
-                            BlockTags.DEEPSLATE_ORE_REPLACEABLES
-                        );
-
-                    targets.add(
-                        OreConfiguration.target(
-                            stoneRule,
-                            oreBlock.defaultBlockState()
-                        )
-                    );
-
-                    targets.add(
-                        OreConfiguration.target(
-                            deepslateRule,
-                            oreBlock.defaultBlockState()
-                        )
-                    );
-                }
-
-                case NETHER -> {
-                    RuleTest netherRule =
-                        new TagMatchTest(
-                            BlockTags.BASE_STONE_NETHER
-                        );
-
-                    targets.add(
-                        OreConfiguration.target(
-                            netherRule,
-                            oreBlock.defaultBlockState()
-                        )
-                    );
-                }
-
-                case END -> {
-                    RuleTest endRule =
-                        new BlockMatchTest(Blocks.END_STONE);
-
-                    targets.add(
-                        OreConfiguration.target(
-                            endRule,
-                            oreBlock.defaultBlockState()
-                        )
-                    );
-                }
-            }
-
-            OreConfiguration configuration =
-                new OreConfiguration(
-                    targets,
-                    ore.size(),
-                    0.0F
+            OreConfiguration.TargetBlockState target =
+                OreConfiguration.target(
+                    rule,
+                    ore.block().get().defaultBlockState()
                 );
 
-            ConfiguredFeature<?, ?> feature =
+            /*
+             * Explicitly set air-exposure discard chance to 0.0F.
+             * This avoids relying on a constructor default and ensures
+             * generated ore JSON contains the required field.
+             */
+            OreConfiguration configuration = new OreConfiguration(
+                List.of(target),
+                ore.size(),
+                0.0F
+            );
+
+            context.register(
+                ore.configured(),
                 new ConfiguredFeature<>(
                     Feature.ORE,
                     configuration
-                );
-
-            ctx.register(
-                ore.configured(),
-                feature
+                )
             );
         }
     }
 
-    /*
-     * Placed features.
+    /**
+     * Register placed features.
      */
     private static void placed(
-        BootstapContext<PlacedFeature> ctx
+        BootstapContext<PlacedFeature> context
     ) {
         HolderGetter<ConfiguredFeature<?, ?>> configured =
-            ctx.lookup(Registries.CONFIGURED_FEATURE);
+            context.lookup(Registries.CONFIGURED_FEATURE);
 
         for (OreSpec ore : ORES) {
-            PlacedFeature feature =
+            context.register(
+                ore.placed(),
                 new PlacedFeature(
                     configured.getOrThrow(ore.configured()),
                     List.of(
@@ -294,64 +248,51 @@ public final class ModWorldGen {
                         ),
                         BiomeFilter.biome()
                     )
-                );
-
-            ctx.register(
-                ore.placed(),
-                feature
+                )
             );
         }
     }
 
-    /*
-     * Forge biome modifiers.
+    /**
+     * Add the placed features to the appropriate biome groups.
      */
     private static void modifiers(
-        BootstapContext<BiomeModifier> ctx
+        BootstapContext<BiomeModifier> context
     ) {
         HolderGetter<PlacedFeature> placed =
-            ctx.lookup(Registries.PLACED_FEATURE);
+            context.lookup(Registries.PLACED_FEATURE);
 
         HolderGetter<Biome> biomes =
-            ctx.lookup(Registries.BIOME);
+            context.lookup(Registries.BIOME);
 
         for (OreSpec ore : ORES) {
             HolderSet.Named<Biome> targetBiomes =
                 switch (ore.dimension()) {
                     case OVERWORLD ->
-                        biomes.getOrThrow(
-                            BiomeTags.IS_OVERWORLD
-                        );
+                        biomes.getOrThrow(BiomeTags.IS_OVERWORLD);
 
                     case NETHER ->
-                        biomes.getOrThrow(
-                            BiomeTags.IS_NETHER
-                        );
+                        biomes.getOrThrow(BiomeTags.IS_NETHER);
 
                     case END ->
-                        biomes.getOrThrow(
-                            BiomeTags.IS_END
-                        );
+                        biomes.getOrThrow(BiomeTags.IS_END);
                 };
 
-            ForgeBiomeModifiers.AddFeaturesBiomeModifier modifier =
+            context.register(
+                ore.modifier(),
                 new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                     targetBiomes,
                     HolderSet.direct(
                         placed.getOrThrow(ore.placed())
                     ),
                     GenerationStep.Decoration.UNDERGROUND_ORES
-                );
-
-            ctx.register(
-                ore.modifier(),
-                modifier
+                )
             );
         }
     }
 
-    /*
-     * Dynamic datapack registry builder.
+    /**
+     * Build all datapack registry entries.
      */
     public static final RegistrySetBuilder BUILDER =
         new RegistrySetBuilder()
@@ -368,16 +309,16 @@ public final class ModWorldGen {
                 ModWorldGen::modifiers
             );
 
-    /*
+    /**
      * Register the datapack registry data generator.
      */
     @SubscribeEvent
-    public static void gatherData(
-        GatherDataEvent event
-    ) {
+    public static void gatherData(GatherDataEvent event) {
+        PackOutput output = event.getGenerator().getPackOutput();
+
         DatapackBuiltinEntriesProvider provider =
             new DatapackBuiltinEntriesProvider(
-                event.getGenerator().getPackOutput(),
+                output,
                 event.getLookupProvider(),
                 BUILDER,
                 Set.of(ModMain.MODID)
