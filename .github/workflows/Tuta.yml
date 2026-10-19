@@ -1,0 +1,134 @@
+
+name: Sync Sakalti Material Colors
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  sync-colors:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Copy definition textColor into asset color
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          definitions = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/definition"
+          )
+          assets = Path(
+              "src/main/resources/assets/sakalti/tinkering/materials"
+          )
+
+          if not definitions.is_dir():
+              raise SystemExit(f"Definition directory not found: {definitions}")
+
+          if not assets.is_dir():
+              raise SystemExit(f"Asset directory not found: {assets}")
+
+          changed = 0
+
+          for definition_path in sorted(definitions.glob("*.json")):
+              asset_path = assets / definition_path.name
+
+              if not asset_path.is_file():
+                  print(f"Skipped: no matching asset: {asset_path.name}")
+                  continue
+
+              with definition_path.open("r", encoding="utf-8") as f:
+                  definition = json.load(f)
+
+              text_color = definition.get("textColor")
+
+              if not isinstance(text_color, str):
+                  print(f"Skipped: no textColor: {definition_path.name}")
+                  continue
+
+              match = re.fullmatch(r"#?([0-9a-fA-F]{6}|[0-9a-fA-F]{8})", text_color)
+
+              if not match:
+                  raise SystemExit(
+                      f"Invalid textColor in {definition_path}: {text_color}"
+                  )
+
+              hex_color = match.group(1).upper()
+
+              # Six-digit RGB becomes eight-digit ARGB with full opacity.
+              if len(hex_color) == 6:
+                  hex_color = "FF" + hex_color
+
+              with asset_path.open("r", encoding="utf-8") as f:
+                  asset = json.load(f)
+
+              if "color" not in asset:
+                  print(f"Skipped: no color key: {asset_path.name}")
+                  continue
+
+              if asset["color"] == hex_color:
+                  continue
+
+              # Change only the color value; preserve all other JSON keys.
+              asset["color"] = hex_color
+
+              with asset_path.open("w", encoding="utf-8", newline="\n") as f:
+                  json.dump(asset, f, ensure_ascii=False, indent=2)
+                  f.write("\n")
+
+              changed += 1
+              print(f"{asset_path.name}: color -> {hex_color}")
+
+          print(f"Updated {changed} material color values.")
+          PY
+
+      - name: Validate material JSON files
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          directories = [
+              Path("src/main/resources/data/sakalti/tinkering/materials/definition"),
+              Path("src/main/resources/assets/sakalti/tinkering/materials"),
+          ]
+
+          for directory in directories:
+              for path in sorted(directory.glob("*.json")):
+                  with path.open("r", encoding="utf-8") as f:
+                      json.load(f)
+
+          print("Material JSON validation passed.")
+          PY
+
+      - name: Commit and push changes
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/assets/sakalti/tinkering/materials
+
+          if git diff --cached --quiet; then
+            echo "No color changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Sync material colors from definitions"
+          git pull --rebase
+          git push origin
