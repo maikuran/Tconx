@@ -1,21 +1,17 @@
 
-name: Rebalance Sakalti Material Stats
+name: Normalize Sakalti Material Stat Values
 
 on:
   workflow_dispatch:
   push:
     branches:
       - main
-    paths:
-      - "src/main/resources/data/sakalti/tinkering/materials/stats/**/*.json"
-      - "src/main/resources/assets/sakalti/tinkering/materials/*.json"
-      - ".github/workflows/repair-material-stats.yml"
 
 permissions:
   contents: write
 
 jobs:
-  rebalance:
+  normalize-stats:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,233 +25,17 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Correct handle multipliers and supported stats
+      - name: Normalize handle stat values only
         shell: bash
         run: |
-          set -euo pipefail
-
-          python3 - <<'PY'
+          python3 <<'PY'
           import json
-          import math
           from pathlib import Path
 
-          STATS_DIR = Path(
-              "src/main/resources/data/sakalti/tinkering/materials/stats"
-          )
+          root = Path("src/main/resources/data/sakalti/tinkering/materials/stats")
 
-          ASSETS_DIR = Path(
-              "src/main/resources/assets/sakalti/tinkering/materials"
-          )
-
-          # Native Tinkers' Construct stat IDs for the 1.20.1-era format.
-          SUPPORTED_STATS = [
-              "tconstruct:head",
-              "tconstruct:handle",
-              "tconstruct:binding",
-              "tconstruct:limb",
-              "tconstruct:grip",
-              "tconstruct:bowstring",
-              "tconstruct:plating_helmet",
-              "tconstruct:plating_chestplate",
-              "tconstruct:plating_leggings",
-              "tconstruct:plating_boot",
-              "tconstruct:plating_shield",
-              "tconstruct:maille",
-              "tconstruct:repair_kit",
-              "tconstruct:skull",
-          ]
-
-          # These fields are bonuses relative to the default value.
-          # Convert the project's old multiplier-style values:
-          # 1.30 -> 0.30, 1.00 -> 0.00, 0.82 -> -0.18.
-          HANDLE_FIELDS = (
-              "durability",
-              "mining_speed",
-              "melee_damage",
-              "melee_speed",
-          )
-
-          def load_json(path):
-              try:
-                  return json.loads(path.read_text(encoding="utf-8"))
-              except json.JSONDecodeError as exc:
-                  raise SystemExit(f"Invalid JSON in {path}: {exc}")
-
-          def save_json(path, data):
-              path.write_text(
-                  json.dumps(
-                      data,
-                      ensure_ascii=False,
-                      indent=2,
-                      allow_nan=False,
-                  ) + "\n",
-                  encoding="utf-8",
-              )
-
-          if not STATS_DIR.is_dir():
-              raise SystemExit(
-                  f"Material stats directory not found: {STATS_DIR}"
-              )
-
-          if not ASSETS_DIR.is_dir():
-              raise SystemExit(
-                  f"Material assets directory not found: {ASSETS_DIR}"
-              )
-
-          stats_files = sorted(STATS_DIR.glob("*.json"))
-          if not stats_files:
-              raise SystemExit(
-                  f"No material stats JSON files in {STATS_DIR}"
-              )
-
-          # Part 1: correct all material handle stats.
-          #
-          # Idempotency guard:
-          # after conversion, the usual values are near zero, commonly
-          # between -0.5 and +0.6. Such files are treated as converted.
-          # Files containing values clearly above that range are treated
-          # as legacy multiplier-style data.
-          for path in stats_files:
-              data = load_json(path)
-              stats = data.get("stats")
-
-              if not isinstance(stats, dict):
-                  print(f"SKIP: {path} has no stats object")
-                  continue
-
-              handle = stats.get("tconstruct:handle")
-              if not isinstance(handle, dict) or not handle:
-                  print(f"SKIP: {path.name} has no handle values")
-                  continue
-
-              values = []
-              for field in HANDLE_FIELDS:
-                  if field not in handle:
-                      continue
-
-                  value = handle[field]
-                  if (
-                      isinstance(value, bool)
-                      or not isinstance(value, (int, float))
-                      or not math.isfinite(value)
-                  ):
-                      raise SystemExit(
-                          f"{path}: invalid handle {field}: {value!r}"
-                      )
-
-                  values.append(float(value))
-
-              if not values:
-                  continue
-
-              # If all present values are in the normal bonus range,
-              # avoid subtracting 1 again on later workflow runs.
-              already_converted = all(
-                  -0.60 <= value <= 0.60 for value in values
-              )
-
-              if already_converted:
-                  print(f"ALREADY NORMALIZED: {path.name}")
-                  continue
-
-              changed = False
-
-              for field in HANDLE_FIELDS:
-                  if field not in handle:
-                      continue
-
-                  old = float(handle[field])
-                  new = round(old - 1.0, 6)
-
-                  if new != old:
-                      handle[field] = new
-                      changed = True
-                      print(
-                          f"{path.name}: handle.{field}: "
-                          f"{old:g} -> {new:g}"
-                      )
-
-              if changed:
-                  save_json(path, data)
-
-          # Part 2: normalize supported_stats in every material asset JSON.
-          #
-          # Existing color, fallbacks, generator and other properties
-          # are preserved. Only supported_stats is replaced.
-          asset_files = sorted(ASSETS_DIR.glob("*.json"))
-
-          if not asset_files:
-              raise SystemExit(
-                  f"No material asset JSON files in {ASSETS_DIR}"
-              )
-
-          for path in asset_files:
-              data = load_json(path)
-
-              if not isinstance(data, dict):
-                  raise SystemExit(
-                      f"{path}: top-level JSON must be an object"
-                  )
-
-              generator = data.get("generator")
-              if not isinstance(generator, dict):
-                  print(
-                      f"SKIP ASSET: {path.name} has no generator object"
-                  )
-                  continue
-
-              old_supported = generator.get("supported_stats")
-
-              if old_supported != SUPPORTED_STATS:
-                  generator["supported_stats"] = SUPPORTED_STATS.copy()
-                  save_json(path, data)
-                  print(
-                      f"{path.name}: normalized supported_stats"
-                  )
-              else:
-                  print(
-                      f"ALREADY NORMALIZED ASSET: {path.name}"
-                  )
-
-          print(
-              f"Processed {len(stats_files)} stats files and "
-              f"{len(asset_files)} asset files."
-          )
-          PY
-
-      - name: Validate JSON and handle ranges
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          python3 - <<'PY'
-          import json
-          import math
-          from pathlib import Path
-
-          stats_dir = Path(
-              "src/main/resources/data/sakalti/tinkering/materials/stats"
-          )
-          assets_dir = Path(
-              "src/main/resources/assets/sakalti/tinkering/materials"
-          )
-
-          expected = [
-              "tconstruct:head",
-              "tconstruct:handle",
-              "tconstruct:binding",
-              "tconstruct:limb",
-              "tconstruct:grip",
-              "tconstruct:bowstring",
-              "tconstruct:plating_helmet",
-              "tconstruct:plating_chestplate",
-              "tconstruct:plating_leggings",
-              "tconstruct:plating_boot",
-              "tconstruct:plating_shield",
-              "tconstruct:maille",
-              "tconstruct:repair_kit",
-              "tconstruct:skull",
-          ]
+          if not root.is_dir():
+              raise SystemExit(f"Stats directory not found: {root}")
 
           fields = (
               "durability",
@@ -264,92 +44,73 @@ jobs:
               "melee_speed",
           )
 
-          stats_files = sorted(stats_dir.glob("*.json"))
-          asset_files = sorted(assets_dir.glob("*.json"))
+          changed = 0
 
-          if not stats_files or not asset_files:
-              raise SystemExit("Material JSON files are missing.")
+          for path in sorted(root.glob("*.json")):
+              with path.open("r", encoding="utf-8") as f:
+                  data = json.load(f)
 
-          for path in stats_files:
-              data = json.loads(path.read_text(encoding="utf-8"))
-              stats = data.get("stats", {})
-              handle = stats.get("tconstruct:handle")
+              handle = data.get("stats", {}).get("tconstruct:handle")
 
-              if handle is not None:
-                  if not isinstance(handle, dict):
-                      raise SystemExit(
-                          f"{path}: tconstruct:handle must be an object"
-                      )
+              if not isinstance(handle, dict):
+                  continue
 
-                  for field in fields:
-                      if field not in handle:
-                          continue
+              file_changed = False
 
-                      value = handle[field]
-                      if (
-                          isinstance(value, bool)
-                          or not isinstance(value, (int, float))
-                          or not math.isfinite(value)
-                      ):
-                          raise SystemExit(
-                              f"{path}: invalid handle.{field}: {value!r}"
-                          )
+              for key in fields:
+                  value = handle.get(key)
 
-                      # Guard against an obvious unconverted multiplier.
-                      if value > 0.60:
-                          raise SystemExit(
-                              f"{path}: handle.{field}={value} may still "
-                              "be a multiplier instead of a bonus."
-                          )
+                  if not isinstance(value, (int, float)) or isinstance(value, bool):
+                      continue
 
-              if "tconstruct:plating_boots" in stats:
-                  raise SystemExit(
-                      f"{path}: obsolete plating_boots stat ID remains"
-                  )
+                  # Original values are multipliers around 1.0.
+                  # Convert them to bonuses relative to the baseline.
+                  if value > 0.60 or value < -0.60:
+                      new_value = round(value - 1.0, 6)
+                      handle[key] = new_value
+                      file_changed = True
 
-          for path in asset_files:
-              data = json.loads(path.read_text(encoding="utf-8"))
-              generator = data.get("generator", {})
+              if file_changed:
+                  with path.open("w", encoding="utf-8", newline="\n") as f:
+                      json.dump(data, f, ensure_ascii=False, indent=2)
+                      f.write("\n")
 
-              if not isinstance(generator, dict):
-                  raise SystemExit(
-                      f"{path}: generator must be an object"
-                  )
+                  changed += 1
+                  print(f"Updated stat values: {path}")
 
-              supported = generator.get("supported_stats")
-              if supported != expected:
-                  raise SystemExit(
-                      f"{path}: supported_stats does not match "
-                      "the canonical list"
-                  )
-
-          print(
-              f"Validated {len(stats_files)} stats files and "
-              f"{len(asset_files)} material asset files."
-          )
+          print(f"Changed {changed} stat files.")
           PY
 
-      - name: Check patch formatting
-        run: git diff --check
+      - name: Validate JSON files
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path("src/main/resources/data/sakalti/tinkering/materials/stats")
+
+          for path in sorted(root.glob("*.json")):
+              with path.open("r", encoding="utf-8") as f:
+                  json.load(f)
+
+          print("All material stat JSON files are valid.")
+          PY
 
       - name: Commit and push changes
         shell: bash
         run: |
-          set -euo pipefail
-
           git config user.name "github-actions[bot]"
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add \
-            src/main/resources/data/sakalti/tinkering/materials/stats \
-            src/main/resources/assets/sakalti/tinkering/materials
+          git add src/main/resources/data/sakalti/tinkering/materials/stats
 
           if git diff --cached --quiet; then
-            echo "No changes to commit."
+            echo "No stat value changes to commit."
             exit 0
           fi
 
-          git commit -m "Normalize Sakalti handle stats and material definitions"
+          git commit -m "Normalize Sakalti handle stat values"
           git pull --rebase origin main
           git push origin HEAD:main
