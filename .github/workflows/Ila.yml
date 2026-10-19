@@ -133,4 +133,5 @@ jobs:
           fi
 
           git commit -m "Fix Sakalti world generation JSON"
+          git pull
           git push origin HEAD:main
