@@ -3,7 +3,10 @@
   "config": {
     "targets": [
       {
-        "target": "minecraft:nether_ore_replaceables",
+        "target": {
+          "predicate_type": "minecraft:tag_match",
+          "tag": "minecraft:nether_ore_replaceables"
+        },
         "state": {
           "Name": "sakalti:tiberium_ore"
         }
