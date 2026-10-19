@@ -1,5 +1,5 @@
 
-name: Normalize Sakalti Material Stat Values
+name: Normalize Remaining Sakalti Stats
 
 on:
   workflow_dispatch:
@@ -15,89 +15,101 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Normalize handle stat values only
+      - name: Normalize remaining stat values
         shell: bash
         run: |
           python3 <<'PY'
           import json
           from pathlib import Path
 
-          root = Path("src/main/resources/data/sakalti/tinkering/materials/stats")
-
-          if not root.is_dir():
-              raise SystemExit(f"Stats directory not found: {root}")
-
-          fields = (
-              "durability",
-              "mining_speed",
-              "melee_damage",
-              "melee_speed",
+          root = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/stats"
           )
 
+          if not root.is_dir():
+              raise SystemExit(f"Directory not found: {root}")
+
+          # These fields store multipliers relative to a baseline of 1.0.
+          multiplier_fields = {
+              "tconstruct:limb": (
+                  "accuracy",
+                  "draw_speed",
+                  "velocity",
+              ),
+              "tconstruct:maille": (
+                  "durability",
+                  "armor",
+                  "movement_speed",
+              ),
+          }
+
+          # Armor values are absolute stats, not multipliers.
+          # Never subtract 1 from armor durability or toughness.
           changed = 0
 
           for path in sorted(root.glob("*.json")):
               with path.open("r", encoding="utf-8") as f:
                   data = json.load(f)
 
-              handle = data.get("stats", {}).get("tconstruct:handle")
-
-              if not isinstance(handle, dict):
+              stats = data.get("stats", {})
+              if not isinstance(stats, dict):
                   continue
 
               file_changed = False
 
-              for key in fields:
-                  value = handle.get(key)
-
-                  if not isinstance(value, (int, float)) or isinstance(value, bool):
+              for stat_name, fields in multiplier_fields.items():
+                  section = stats.get(stat_name)
+                  if not isinstance(section, dict):
                       continue
 
-                  # Original values are multipliers around 1.0.
-                  # Convert them to bonuses relative to the baseline.
-                  if value > 0.60 or value < -0.60:
-                      new_value = round(value - 1.0, 6)
-                      handle[key] = new_value
-                      file_changed = True
+                  for field in fields:
+                      value = section.get(field)
+
+                      if (
+                          isinstance(value, (int, float))
+                          and not isinstance(value, bool)
+                          and value > 0.60
+                      ):
+                          section[field] = round(value - 1.0, 6)
+                          file_changed = True
 
               if file_changed:
-                  with path.open("w", encoding="utf-8", newline="\n") as f:
+                  with path.open(
+                      "w", encoding="utf-8", newline="\n"
+                  ) as f:
                       json.dump(data, f, ensure_ascii=False, indent=2)
                       f.write("\n")
 
                   changed += 1
-                  print(f"Updated stat values: {path}")
+                  print(f"Updated: {path.name}")
 
-          print(f"Changed {changed} stat files.")
+          print(f"Updated {changed} files.")
           PY
 
-      - name: Validate JSON files
+      - name: Validate JSON
         shell: bash
         run: |
           python3 <<'PY'
           import json
           from pathlib import Path
 
-          root = Path("src/main/resources/data/sakalti/tinkering/materials/stats")
+          root = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/stats"
+          )
 
           for path in sorted(root.glob("*.json")):
               with path.open("r", encoding="utf-8") as f:
                   json.load(f)
 
-          print("All material stat JSON files are valid.")
+          print("All stat JSON files are valid.")
           PY
 
-      - name: Commit and push changes
+      - name: Commit and push
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
@@ -107,10 +119,10 @@ jobs:
           git add src/main/resources/data/sakalti/tinkering/materials/stats
 
           if git diff --cached --quiet; then
-            echo "No stat value changes to commit."
+            echo "No changes to commit."
             exit 0
           fi
 
-          git commit -m "Normalize Sakalti handle stat values"
+          git commit -m "Normalize remaining Sakalti stats"
           git pull --rebase
-          git push
+          git push origin
