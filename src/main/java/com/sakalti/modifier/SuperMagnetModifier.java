@@ -23,7 +23,7 @@ public class SuperMagnetModifier extends Modifier implements InventoryTickModifi
     
     @Override
     protected void registerHooks(ModuleHookMap.Builder builder) {
-        builder.addHook(ModifierHooks.INVENTORY_TICK, this);
+        builder.addHook(this, ModifierHooks.INVENTORY_TICK);
     }
 
     @Override

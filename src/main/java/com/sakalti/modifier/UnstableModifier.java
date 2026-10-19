@@ -1,6 +1,7 @@
 package com.sakalti.modifier;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.util.RandomSource;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
@@ -11,7 +12,6 @@ import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
 import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 
-import java.util.Random;
 
 public class UnstableModifier extends Modifier implements MeleeDamageModifierHook {
 
@@ -21,7 +21,7 @@ public class UnstableModifier extends Modifier implements MeleeDamageModifierHoo
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder builder) {
-        builder.addHook(ModifierHooks.MELEE_DAMAGE, this);
+        builder.addHook(this, ModifierHooks.MELEE_DAMAGE);
     }
 
     /**
@@ -38,7 +38,7 @@ public class UnstableModifier extends Modifier implements MeleeDamageModifierHoo
         }
 
         // 1.0〜4.4の範囲でランダム倍率を決定
-        Random random = attacker.getRandom();
+        RandomSource random = attacker.getRandom();
         float multiplier = 1.0f + random.nextFloat() * 3.4f;
 
         // 耐久消費量を倍率に基づいて決定

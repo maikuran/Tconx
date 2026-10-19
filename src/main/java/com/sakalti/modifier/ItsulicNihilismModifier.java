@@ -1,12 +1,14 @@
 package com.sakalti.modifier;
 
 import net.minecraft.network.chat.Component;
+import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import slimeknights.tconstruct.library.modifiers.ModifierId;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
@@ -20,14 +22,14 @@ import java.util.Random;
 @Mod.EventBusSubscriber(modid="sakalti", bus=Mod.EventBusSubscriber.Bus.FORGE)
 public class ItsulicNihilismModifier extends Modifier implements MeleeDamageModifierHook {
   private static final Random RANDOM = new Random();
-  public ItsulicNihilismModifier(){super(0xFF5555);}
-  @Override protected void registerHooks(ModuleHookMap.Builder b){b.addHook(ModifierHooks.MELEE_DAMAGE,this);}
+  public ItsulicNihilismModifier(){super();}
+  @Override protected void registerHooks(ModuleHookMap.Builder b){b.addHook(this, ModifierHooks.MELEE_DAMAGE);}
   @Override public float getMeleeDamage(IToolStackView tool,ModifierEntry entry,ToolAttackContext context,float baseDamage,float damage){return damage+SoulEaterData.read(tool.getPersistentData()).bonus;}
-  @Override public Component getDisplayName(IToolStackView tool,int level){SoulEaterData d=SoulEaterData.read(tool.getPersistentData());Component base=super.getDisplayName(tool,level);return d.killcount>0?base.copy().append(Component.literal(" [Killed: "+d.killcount+"] [Bonus: "+d.bonus+"]")):base;}
+  @Override public Component getDisplayName(IToolStackView tool,ModifierEntry entry,RegistryAccess access){SoulEaterData d=SoulEaterData.read(tool.getPersistentData());Component base=super.getDisplayName(tool,entry,access);return d.killcount>0?base.copy().append(Component.literal(" [Killed: "+d.killcount+"] [Bonus: "+d.bonus+"]")):base;}
   @SubscribeEvent public static void onTargetKilled(LivingDeathEvent event){
     Entity killer=event.getSource().getEntity(); if(!(killer instanceof Player player)||player.level().isClientSide)return;
     var stack=player.getMainHandItem();if(stack.isEmpty())return;ToolStack tool=ToolStack.from(stack);
-    if(tool.getModifierLevel(new ResourceLocation("sakalti","itsulic_nihilism"))<=0)return;
+    if(tool.getModifierLevel(new ModifierId("sakalti","itsulic_nihilism"))<=0)return;
     SoulEaterData d=SoulEaterData.read(tool.getPersistentData());float maxHealth=event.getEntity().getMaxHealth();d.killcount++;d.health=maxHealth;
     float increment=Math.round(RANDOM.nextFloat()*maxHealth*100.0f)/16666.666f;d.bonus=Math.round((d.bonus+increment)*100.0f)/100.0f;d.write(tool.getPersistentData());
   }

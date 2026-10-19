@@ -23,7 +23,7 @@ public class BerserkModifier extends Modifier implements MeleeDamageModifierHook
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder builder) {
-        builder.addHook(ModifierHooks.MELEE_DAMAGE, this);
+        builder.addHook(this, ModifierHooks.MELEE_DAMAGE);
     }
 
     /**

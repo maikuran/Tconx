@@ -23,8 +23,8 @@ public class AuroVisionModifier extends Modifier implements MeleeHitModifierHook
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder builder) {
-        builder.addHook(ModifierHooks.MELEE_HIT, this);
-        builder.addHook(ModifierHooks.INVENTORY_TICK, this);
+        builder.addHook(this, ModifierHooks.MELEE_HIT);
+        builder.addHook(this, ModifierHooks.INVENTORY_TICK);
     }
 
     /**

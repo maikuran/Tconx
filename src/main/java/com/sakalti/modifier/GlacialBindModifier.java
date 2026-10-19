@@ -20,7 +20,7 @@ public class GlacialBindModifier extends Modifier implements MeleeHitModifierHoo
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder builder) {
-        builder.addHook(ModifierHooks.MELEE_HIT, this);
+        builder.addHook(this, ModifierHooks.MELEE_HIT);
     }
 
     /**
@@ -29,7 +29,7 @@ public class GlacialBindModifier extends Modifier implements MeleeHitModifierHoo
     @Override
     public void afterMeleeHit(IToolStackView tool, ModifierEntry modifier, ToolAttackContext context, float damageDealt) {
         int level = modifier.getLevel();
-        LivingEntity target = context.getTarget();
+        if (!(context.getTarget() instanceof LivingEntity target)) return;
 
         // サーバー側かつ攻撃対象が存在する場合のみ処理
         if (target != null && !target.level().isClientSide) {

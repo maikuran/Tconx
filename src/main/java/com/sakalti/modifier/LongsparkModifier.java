@@ -24,7 +24,7 @@ public class LongsparkModifier extends Modifier implements MeleeHitModifierHook 
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder builder) {
-        builder.addHook(ModifierHooks.MELEE_HIT, this);
+        builder.addHook(this, ModifierHooks.MELEE_HIT);
     }
 
     // 正面方向のみ検知 (1.16.5仕様)

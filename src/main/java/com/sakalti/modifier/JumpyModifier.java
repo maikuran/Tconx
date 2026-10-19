@@ -21,7 +21,7 @@ public class JumpyModifier extends Modifier implements InventoryTickModifierHook
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder builder) {
-        builder.addHook(ModifierHooks.INVENTORY_TICK, this);
+        builder.addHook(this, ModifierHooks.INVENTORY_TICK);
     }
 
     /**

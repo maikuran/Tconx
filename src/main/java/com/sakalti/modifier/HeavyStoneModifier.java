@@ -20,7 +20,7 @@ public class HeavyStoneModifier extends Modifier implements MeleeHitModifierHook
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder builder) {
-        builder.addHook(ModifierHooks.MELEE_HIT, this);
+        builder.addHook(this, ModifierHooks.MELEE_HIT);
     }
 
     /**

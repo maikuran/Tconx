@@ -18,7 +18,6 @@ public final class ModMain {
 
         IEventBus modEventBus =
                 FMLJavaModLoadingContext.get().getModEventBus();
-        modEventBus.addListener(CreeperRemoval::registerGameRule);
 
         /*
          * アイテム・ブロック

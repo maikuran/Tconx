@@ -12,8 +12,8 @@ import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import java.util.Random;
 public class LuckyModifier extends Modifier implements InventoryTickModifierHook {
  private static final String TIMER="SakaltiLuckyTimer", LIMIT="SakaltiLuckyLimit"; private static final Random RANDOM=new Random();
- public LuckyModifier(){super(0xFFB81D);}
- @Override protected void registerHooks(ModuleHookMap.Builder b){b.addHook(ModifierHooks.INVENTORY_TICK,this);}
+ public LuckyModifier(){super();}
+ @Override protected void registerHooks(ModuleHookMap.Builder b){b.addHook(this, ModifierHooks.INVENTORY_TICK);}
  @Override public void onInventoryTick(IToolStackView tool,ModifierEntry entry,Level level,LivingEntity entity,int slot,boolean selected,boolean correct,ItemStack stack){
   if(level.isClientSide||tool.isBroken()||!selected||stack.isEmpty())return;
   CompoundTag tag=stack.getOrCreateTag(); int timer=tag.getInt(TIMER), limit=tag.getInt(LIMIT);

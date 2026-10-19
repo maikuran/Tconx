@@ -10,7 +10,7 @@ import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.modifiers.hook.interaction.InventoryTickModifierHook;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 public class SaturationModifier extends Modifier implements InventoryTickModifierHook {
- public SaturationModifier(){super(0xE0A020);}
- @Override protected void registerHooks(ModuleHookMap.Builder b){b.addHook(ModifierHooks.INVENTORY_TICK,this);}
+ public SaturationModifier(){super();}
+ @Override protected void registerHooks(ModuleHookMap.Builder b){b.addHook(this, ModifierHooks.INVENTORY_TICK);}
  @Override public void onInventoryTick(IToolStackView tool,ModifierEntry entry,Level level,LivingEntity entity,int slot,boolean selected,boolean correct,ItemStack stack){if(level.isClientSide||tool.isBroken()||!selected||entity.tickCount%20!=0||!(entity instanceof Player p))return;p.getFoodData().eat(entry.getLevel(),entry.getLevel()*0.5f);}
 }

@@ -7,6 +7,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import slimeknights.tconstruct.library.modifiers.ModifierId;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 import java.util.Map;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public final class GraduallyEvents {
   @SubscribeEvent
   public static void onBreakSpeed(PlayerEvent.BreakSpeed event) {
     ItemStack stack = event.getEntity().getMainHandItem();
-    if (!stack.isEmpty() && !ToolStack.from(stack).isBroken() && ToolStack.from(stack).getModifierLevel(GRADUALLY) > 0) {
+    if (!stack.isEmpty() && !ToolStack.from(stack).isBroken() && ToolStack.from(stack).getModifierLevel(new ModifierId(GRADUALLY)) > 0) {
       long count = BLOCKS.getOrDefault(event.getEntity().getUUID(), 0L);
       float bonus = (float)Math.min(3.0, Math.log1p(count) * 0.08);
       event.setNewSpeed(event.getNewSpeed() * (1.0f + bonus));
@@ -35,7 +36,7 @@ public final class GraduallyEvents {
     ItemStack stack = player.getMainHandItem();
     if (stack.isEmpty()) return;
     ToolStack tool = ToolStack.from(stack);
-    if (!tool.isBroken() && tool.getModifierLevel(GRADUALLY) > 0) {
+    if (!tool.isBroken() && tool.getModifierLevel(new ModifierId(GRADUALLY)) > 0) {
       BLOCKS.merge(player.getUUID(), 1L, Long::sum);
     }
   }

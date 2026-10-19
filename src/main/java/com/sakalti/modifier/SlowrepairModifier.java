@@ -9,7 +9,7 @@ import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.modifiers.hook.interaction.InventoryTickModifierHook;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 public class SlowrepairModifier extends Modifier implements InventoryTickModifierHook {
- public SlowrepairModifier(){super(0x5A2D83);}
- @Override protected void registerHooks(ModuleHookMap.Builder b){b.addHook(ModifierHooks.INVENTORY_TICK,this);}
+ public SlowrepairModifier(){super();}
+ @Override protected void registerHooks(ModuleHookMap.Builder b){b.addHook(this, ModifierHooks.INVENTORY_TICK);}
  @Override public void onInventoryTick(IToolStackView tool,ModifierEntry entry,Level level,LivingEntity entity,int slot,boolean selected,boolean correct,ItemStack stack){if(!level.isClientSide&&!tool.isBroken()&&stack.isDamaged()&&entity.tickCount%120==0)stack.setDamageValue(Math.max(0,stack.getDamageValue()-1));}
 }

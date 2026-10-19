@@ -12,10 +12,10 @@ import slimeknights.tconstruct.library.tools.context.ToolAttackContext;
 
 /** Port of the 1.16.5 20% non-block-breaking explosion trait. */
 public class BlastModifier extends Modifier implements MeleeHitModifierHook {
-  public BlastModifier() { super(0xFF5A26); }
-  @Override protected void registerHooks(ModuleHookMap.Builder builder) { builder.addHook(ModifierHooks.MELEE_HIT, this); }
+  public BlastModifier() { super(); }
+  @Override protected void registerHooks(ModuleHookMap.Builder builder) { builder.addHook(this, ModifierHooks.MELEE_HIT); }
   @Override public void afterMeleeHit(IToolStackView tool, ModifierEntry entry, ToolAttackContext context, float damageDealt) {
-    LivingEntity target = context.getTarget();
+    if (!(context.getTarget() instanceof LivingEntity target)) return;
     if (target == null || target.level().isClientSide || target.getRandom().nextFloat() >= 0.2f) return;
     target.level().explode(null, target.getX(), target.getY(), target.getZ(), 1.5f, Level.ExplosionInteraction.NONE);
   }
