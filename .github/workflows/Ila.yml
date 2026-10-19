@@ -1,5 +1,4 @@
-
-name: Fix Sakalti World Generation JSON
+name: Repair Sakalti Worldgen JSON
 
 on:
   push:
@@ -11,7 +10,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: fix-worldgen-main
+  group: sakalti-worldgen-repair-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -22,351 +21,153 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
-          persist-credentials: true
-
-      - name: Pull latest main
-        shell: bash
-        run: |
-          git fetch origin main
-          git switch -C main origin/main
-          git pull --rebase origin main
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.x"
 
-      - name: Repair known worldgen JSON issues
+      - name: Pull latest changes
+        run: |
+          git pull --rebase origin "$GITHUB_REF_NAME"
+
+      - name: Repair configured feature JSON
         shell: bash
         run: |
           python <<'PY'
           import json
           from pathlib import Path
 
-          root = Path("src/main/resources/data/sakalti")
-          worldgen = root / "worldgen"
-          modifiers = root / "forge/biome_modifier"
+          root = Path(
+              "src/main/resources/data/sakalti/worldgen/configured_feature"
+          )
 
-          valid_tags = {
-              "minecraft:stone_ore_replaceables",
-              "minecraft:deepslate_ore_replaceables",
-              "minecraft:base_stone_overworld",
-              "minecraft:base_stone_nether",
-          }
-
-          changed = []
-
-          def repair_targets(value):
-              count = 0
-
-              if isinstance(value, dict):
-                  for key, child in list(value.items()):
-                      if key == "target" and isinstance(child, str):
-                          if child in valid_tags:
-                              value[key] = {
-                                  "predicate_type": "minecraft:tag_match",
-                                  "tag": child,
-                              }
-                              count += 1
-                      else:
-                          count += repair_targets(child)
-
-              elif isinstance(value, list):
-                  for child in value:
-                      count += repair_targets(child)
-
-              return count
-
-          files = set()
-
-          for folder in (
-              worldgen / "configured_feature",
-              worldgen / "placed_feature",
-          ):
-              if folder.exists():
-                  files.update(folder.rglob("*.json"))
-
-          if modifiers.exists():
-              files.update(modifiers.rglob("*.json"))
-
-          if not files:
+          if not root.is_dir():
               raise SystemExit(
-                  "No Sakalti worldgen JSON files found. "
-                  "Check the resource directory."
+                  f"ERROR: Configured feature directory not found: {root}"
               )
 
-          for path in sorted(files):
+          # Minecraft 1.20.1 の有効なブロックタグに合わせる
+          tag_fixes = {
+              "minecraft:stone_ore_replaceables":
+                  "minecraft:stone_ore_replaceables",
+              "minecraft:nether_ore_replaceables":
+                  "minecraft:base_stone_nether",
+          }
+
+          changed_files = 0
+          changed_targets = 0
+
+          def repair(node, path):
+              global changed_targets
+
+              if isinstance(node, dict):
+                  for key, value in list(node.items()):
+                      if key == "target" and isinstance(value, str):
+                          if value not in tag_fixes:
+                              raise ValueError(
+                                  f"{path}: Unknown target string: {value}"
+                              )
+
+                          node[key] = {
+                              "predicate_type": "minecraft:tag_match",
+                              "tag": tag_fixes[value],
+                          }
+                          changed_targets += 1
+
+                      elif (
+                          key == "target"
+                          and isinstance(value, dict)
+                          and value.get("predicate_type")
+                              == "minecraft:tag_match"
+                          and value.get("tag")
+                              == "minecraft:nether_ore_replaceables"
+                      ):
+                          value["tag"] = "minecraft:base_stone_nether"
+                          changed_targets += 1
+
+                      else:
+                          repair(value, path)
+
+              elif isinstance(node, list):
+                  for item in node:
+                      repair(item, path)
+
+          for path in sorted(root.rglob("*.json")):
               try:
                   original = path.read_text(encoding="utf-8")
                   data = json.loads(original)
-              except (OSError, json.JSONDecodeError) as exc:
-                  raise SystemExit(f"Cannot read {path}: {exc}")
+              except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+                  raise SystemExit(
+                      f"ERROR: Cannot read JSON {path}: {exc}"
+                  ) from exc
 
-              count = 0
+              before = json.dumps(
+                  data, ensure_ascii=False, indent=2
+              ) + "\n"
 
-              # Forge 1.20.1 add_features expects a list of feature IDs.
-              if (
-                  path.is_relative_to(modifiers)
-                  and isinstance(data, dict)
-                  and data.get("type") == "forge:add_features"
-                  and isinstance(data.get("features"), str)
-              ):
-                  data["features"] = [data["features"]]
-                  count += 1
+              repair(data, path)
 
-              count += repair_targets(data)
+              after = json.dumps(
+                  data, ensure_ascii=False, indent=2
+              ) + "\n"
 
-              if count:
-                  path.write_text(
-                      json.dumps(
-                          data,
-                          ensure_ascii=False,
-                          indent=2,
-                      ) + "\n",
-                      encoding="utf-8",
-                  )
-                  changed.append((str(path), count))
+              if after != before:
+                  path.write_text(after, encoding="utf-8")
+                  changed_files += 1
+                  print(f"REPAIRED: {path}")
 
-          for path, count in changed:
-              print(f"REPAIRED: {path} ({count} change(s))")
-
-          print(f"Total files repaired: {len(changed)}")
+          print(f"Changed files: {changed_files}")
+          print(f"Changed targets: {changed_targets}")
           PY
 
-      - name: Validate JSON syntax and worldgen references
+      - name: Validate all resource JSON files
         shell: bash
         run: |
           python <<'PY'
           import json
-          import re
-          import sys
           from pathlib import Path
 
-          root = Path("src/main/resources/data/sakalti")
-          worldgen = root / "worldgen"
-          configured_dir = worldgen / "configured_feature"
-          placed_dir = worldgen / "placed_feature"
-          modifiers_dir = root / "forge/biome_modifier"
+          root = Path("src/main/resources")
+          files = sorted(root.rglob("*.json"))
+
+          if not files:
+              raise SystemExit("ERROR: No resource JSON files found.")
 
           errors = []
-          resource_id = re.compile(
-              r"^[a-z0-9_.-]+:[a-z0-9/._-]+$"
-          )
 
-          def read_json(path):
+          for path in files:
               try:
-                  return json.loads(
-                      path.read_text(encoding="utf-8")
-                  )
-              except (OSError, json.JSONDecodeError) as exc:
-                  errors.append(f"{path}: invalid JSON: {exc}")
-                  return None
-
-          def valid_id(value, location):
-              if not isinstance(value, str):
-                  errors.append(
-                      f"{location}: expected resource ID string, "
-                      f"got {type(value).__name__}"
-                  )
-                  return False
-
-              if not resource_id.fullmatch(value):
-                  errors.append(
-                      f"{location}: invalid resource ID {value!r}"
-                  )
-                  return False
-
-              return True
-
-          def json_ids(folder):
-              result = {}
-              if folder.exists():
-                  for path in folder.rglob("*.json"):
-                      key = path.relative_to(folder).with_suffix("").as_posix()
-                      result[key] = path
-              return result
-
-          configured_paths = json_ids(configured_dir)
-          placed_paths = json_ids(placed_dir)
-
-          for folder in (
-              root,
-              root / "forge",
-          ):
-              if folder.exists():
-                  for path in folder.rglob("*.json"):
-                      read_json(path)
-
-          configured = {}
-
-          for key, path in configured_paths.items():
-              data = read_json(path)
-              if data is None:
-                  continue
-
-              configured[key] = data
-
-              if not isinstance(data, dict):
-                  errors.append(f"{path}: root must be an object")
-                  continue
-
-              if data.get("type") == "minecraft:ore":
-                  config = data.get("config")
-
-                  if not isinstance(config, dict):
-                      errors.append(f"{path}: ore config must be an object")
-                      continue
-
-                  targets = config.get("targets")
-                  if not isinstance(targets, list) or not targets:
-                      errors.append(
-                          f"{path}: ore config.targets must be a non-empty array"
-                      )
-                      continue
-
-                  for index, entry in enumerate(targets):
-                      loc = f"{path}: targets[{index}]"
-
-                      if not isinstance(entry, dict):
-                          errors.append(f"{loc}: must be an object")
-                          continue
-
-                      target = entry.get("target")
-                      state = entry.get("state")
-
-                      if not isinstance(target, dict):
-                          errors.append(
-                              f"{loc}.target must be an object"
-                          )
-                      else:
-                          predicate = target.get("predicate_type")
-
-                          if not isinstance(predicate, str):
-                              errors.append(
-                                  f"{loc}.target.predicate_type is missing"
-                              )
-                          elif predicate == "minecraft:tag_match":
-                              valid_id(
-                                  target.get("tag"),
-                                  f"{loc}.target.tag",
-                              )
-                          elif predicate == "minecraft:block_match":
-                              valid_id(
-                                  target.get("block"),
-                                  f"{loc}.target.block",
-                              )
-                          elif predicate not in {
-                              "minecraft:blockstate_match",
-                              "minecraft:random_block_match",
-                              "minecraft:random_blockstate_match",
-                              "minecraft:always_true",
-                          }:
-                              errors.append(
-                                  f"{loc}: unrecognized predicate_type "
-                                  f"{predicate!r}"
-                              )
-
-                      if not isinstance(state, dict):
-                          errors.append(f"{loc}.state must be an object")
-                      else:
-                          valid_id(
-                              state.get("Name"),
-                              f"{loc}.state.Name",
-                          )
-
-          placed = {}
-
-          for key, path in placed_paths.items():
-              data = read_json(path)
-              if data is None:
-                  continue
-
-              placed[key] = data
-
-              if not isinstance(data, dict):
-                  errors.append(f"{path}: root must be an object")
-                  continue
-
-              feature = data.get("feature")
-
-              if valid_id(feature, f"{path}.feature"):
-                  namespace, name = feature.split(":", 1)
-
-                  if namespace == "sakalti" and name not in configured:
-                      errors.append(
-                          f"{path}: configured_feature reference "
-                          f"{feature} does not exist"
-                      )
-
-              if not isinstance(data.get("placement"), list):
-                  errors.append(
-                      f"{path}: placement must be an array"
-                  )
-
-          if modifiers_dir.exists():
-              for path in modifiers_dir.rglob("*.json"):
-                  data = read_json(path)
-
-                  if not isinstance(data, dict):
-                      errors.append(f"{path}: root must be an object")
-                      continue
-
-                  if data.get("type") != "forge:add_features":
-                      continue
-
-                  features = data.get("features")
-                  if not isinstance(features, list):
-                      errors.append(
-                          f"{path}: features must be an array"
-                      )
-                      continue
-
-                  if not isinstance(data.get("biomes"), (str, list)):
-                      errors.append(
-                          f"{path}: biomes must be a tag string or list"
-                      )
-
-                  if not isinstance(data.get("step"), str):
-                      errors.append(f"{path}: step must be a string")
-
-                  for feature in features:
-                      if not valid_id(feature, f"{path}.features"):
-                          continue
-
-                      namespace, name = feature.split(":", 1)
-
-                      if namespace == "sakalti" and name not in placed:
-                          errors.append(
-                              f"{path}: placed_feature reference "
-                              f"{feature} does not exist"
-                          )
+                  with path.open("r", encoding="utf-8") as file:
+                      json.load(file)
+              except (OSError, UnicodeError, json.JSONDecodeError) as exc:
+                  errors.append(f"{path}: {exc}")
 
           if errors:
-              print("Worldgen validation failed:")
-              for error in errors:
-                  print(f"::error::{error}")
-              sys.exit(1)
+              print("\n".join(errors))
+              raise SystemExit("JSON validation failed.")
 
-          print("JSON syntax and basic worldgen reference checks passed.")
+          print(f"JSON syntax OK: {len(files)} files")
           PY
+
+      - name: Check patch
+        run: git diff --check
 
       - name: Commit and push repairs
         shell: bash
         run: |
+          if git diff --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add src/main/resources/data/sakalti
-
-          if git diff --cached --quiet; then
-            echo "No automatic repairs were necessary."
-            exit 0
-          fi
-
-          git commit -m "Fix Sakalti worldgen JSON"
+          git add src/main/resources/data/sakalti/worldgen/configured_feature
+          git commit -m "Fix Sakalti world generation JSON"
           git pull
-
           git push
