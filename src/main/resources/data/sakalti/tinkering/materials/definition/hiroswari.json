@@ -4,7 +4,7 @@
   "sortOrder": 3,
   "textColor": "#B90E3B",
   "hidden": false,
-  "fluid": "sakalti:molten_hiroswari",
+  "fluid": "sakalti:hiroswari",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

@@ -4,7 +4,7 @@
   "sortOrder": 5,
   "textColor": "#F8DAC4",
   "hidden": false,
-  "fluid": "sakalti:molten_chiisteel",
+  "fluid": "sakalti:chiisteel",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

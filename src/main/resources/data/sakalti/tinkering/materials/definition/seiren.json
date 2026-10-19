@@ -4,7 +4,7 @@
   "sortOrder": 7,
   "textColor": "#F20000",
   "hidden": false,
-  "fluid": "sakalti:molten_seiren",
+  "fluid": "sakalti:seiren",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

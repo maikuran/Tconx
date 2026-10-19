@@ -4,7 +4,7 @@
   "sortOrder": 4,
   "textColor": "#593B67",
   "hidden": false,
-  "fluid": "sakalti:molten_proxia",
+  "fluid": "sakalti:proxia",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

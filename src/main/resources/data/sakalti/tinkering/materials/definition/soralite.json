@@ -4,7 +4,7 @@
   "sortOrder": 1,
   "textColor": "#78DFFF",
   "hidden": false,
-  "fluid": "sakalti:molten_soralite",
+  "fluid": "sakalti:soralite",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

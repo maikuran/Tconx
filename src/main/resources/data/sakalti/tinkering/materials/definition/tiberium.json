@@ -4,7 +4,7 @@
   "sortOrder": 5,
   "textColor": "#8200FF",
   "hidden": false,
-  "fluid": "sakalti:molten_tiberium",
+  "fluid": "sakalti:tiberium",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

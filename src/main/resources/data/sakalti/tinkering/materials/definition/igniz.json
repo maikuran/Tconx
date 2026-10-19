@@ -4,7 +4,7 @@
   "sortOrder": 2,
   "textColor": "#D3072C",
   "hidden": false,
-  "fluid": "sakalti:molten_igniz",
+  "fluid": "sakalti:igniz",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

@@ -4,7 +4,7 @@
   "sortOrder": 3,
   "textColor": "#66FFFF",
   "hidden": false,
-  "fluid": "sakalti:molten_herdyeen",
+  "fluid": "sakalti:herdyeen",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

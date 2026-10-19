@@ -4,7 +4,7 @@
   "sortOrder": 3,
   "textColor": "#DCCDC2",
   "hidden": false,
-  "fluid": "sakalti:molten_marulite",
+  "fluid": "sakalti:marulite",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

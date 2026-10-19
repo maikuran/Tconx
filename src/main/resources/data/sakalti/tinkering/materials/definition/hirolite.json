@@ -4,7 +4,7 @@
   "sortOrder": 8,
   "textColor": "#40414F",
   "hidden": false,
-  "fluid": "sakalti:molten_hirolite",
+  "fluid": "sakalti:hirolite",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

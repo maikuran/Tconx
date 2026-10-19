@@ -4,7 +4,7 @@
   "sortOrder": 4,
   "textColor": "#FFAA00",
   "hidden": false,
-  "fluid": "sakalti:molten_dilonite",
+  "fluid": "sakalti:dilonite",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

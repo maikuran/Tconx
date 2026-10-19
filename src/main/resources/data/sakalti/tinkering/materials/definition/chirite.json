@@ -4,7 +4,7 @@
   "sortOrder": 1,
   "textColor": "#DDDD00",
   "hidden": false,
-  "fluid": "sakalti:molten_chirite",
+  "fluid": "sakalti:chirite",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

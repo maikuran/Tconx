@@ -4,7 +4,7 @@
   "sortOrder": 1,
   "textColor": "#B6D84A",
   "hidden": false,
-  "fluid": "sakalti:molten_hotalite",
+  "fluid": "sakalti:hotalite",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

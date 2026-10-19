@@ -4,7 +4,7 @@
   "sortOrder": 5,
   "textColor": "#9CD307",
   "hidden": false,
-  "fluid": "sakalti:molten_ioxium",
+  "fluid": "sakalti:ioxium",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

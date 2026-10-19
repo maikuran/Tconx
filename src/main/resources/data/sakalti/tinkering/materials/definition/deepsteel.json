@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "textColor": "#234156",
   "hidden": false,
-  "fluid": "sakalti:molten_deepsteel",
+  "fluid": "sakalti:deepsteel",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

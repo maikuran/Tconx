@@ -4,7 +4,7 @@
   "sortOrder": 4,
   "textColor": "#FF66FF",
   "hidden": false,
-  "fluid": "sakalti:molten_ouswari",
+  "fluid": "sakalti:ouswari",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

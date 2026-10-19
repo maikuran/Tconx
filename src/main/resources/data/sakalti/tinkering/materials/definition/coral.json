@@ -4,7 +4,7 @@
   "sortOrder": 6,
   "textColor": "#9C988E",
   "hidden": false,
-  "fluid": "sakalti:molten_coral",
+  "fluid": "sakalti:coral",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

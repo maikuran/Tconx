@@ -4,7 +4,7 @@
   "sortOrder": 9,
   "textColor": "#B0C2CF",
   "hidden": false,
-  "fluid": "sakalti:molten_stannoidea",
+  "fluid": "sakalti:stannoidea",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

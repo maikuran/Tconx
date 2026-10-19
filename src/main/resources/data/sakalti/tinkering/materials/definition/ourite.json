@@ -4,7 +4,7 @@
   "sortOrder": 8,
   "textColor": "#232DCE",
   "hidden": false,
-  "fluid": "sakalti:molten_ourite",
+  "fluid": "sakalti:ourite",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

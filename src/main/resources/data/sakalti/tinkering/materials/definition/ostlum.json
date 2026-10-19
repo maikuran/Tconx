@@ -4,7 +4,7 @@
   "sortOrder": 5,
   "textColor": "#66FF99",
   "hidden": false,
-  "fluid": "sakalti:molten_ostlum",
+  "fluid": "sakalti:ostlum",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

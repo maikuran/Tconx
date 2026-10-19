@@ -4,7 +4,7 @@
   "sortOrder": 70,
   "textColor": "#D9B94D",
   "hidden": false,
-  "fluid": "sakalti:molten_sulphur",
+  "fluid": "sakalti:sulphur",
   "fluidPerUnit": 144,
   "temperature": 1000
 }

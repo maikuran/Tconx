@@ -4,7 +4,7 @@
   "sortOrder": 1,
   "textColor": "#56D8E8",
   "hidden": false,
-  "fluid": "sakalti:molten_hachilite",
+  "fluid": "sakalti:hachilite",
   "fluidPerUnit": 144,
   "temperature": 1000
 }
