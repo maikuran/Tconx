@@ -1,6 +1,8 @@
 {
   "type": "forge:add_features",
   "biomes": "#minecraft:is_overworld",
-  "features": "sakalti:hachilite_ore",
+  "features": [
+    "sakalti:hachilite_ore"
+  ],
   "step": "underground_ores"
 }

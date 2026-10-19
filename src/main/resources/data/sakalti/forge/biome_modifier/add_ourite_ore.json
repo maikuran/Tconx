@@ -1,6 +1,8 @@
 {
   "type": "forge:add_features",
   "biomes": "#minecraft:is_end",
-  "features": "sakalti:ourite_ore",
+  "features": [
+    "sakalti:ourite_ore"
+  ],
   "step": "underground_ores"
 }
