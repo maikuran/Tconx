@@ -26,27 +26,27 @@
       "movement_speed": 1.024
     },
     "tconstruct:plating_chestplate": {
-      "armor": 4.6225,
-      "durability": 218,
-      "toughness": 0.77
+      "armor": 9.0,
+      "durability": 887,
+      "toughness": 5.0
     },
     "tconstruct:plating_helmet": {
-      "armor": 4.6225,
-      "durability": 218,
-      "toughness": 0.77
+      "armor": 3.0,
+      "durability": 574,
+      "toughness": 5.0
     },
     "tconstruct:plating_leggings": {
-      "armor": 4.6225,
-      "durability": 218,
-      "toughness": 0.77
+      "armor": 7.0,
+      "durability": 783,
+      "toughness": 5.0
     },
     "tconstruct:plating_shield": {
-      "durability": 218
+      "durability": 887
     },
     "tconstruct:plating_boot": {
-      "armor": 4.6225,
-      "durability": 218,
-      "toughness": 0.77
+      "armor": 4.0,
+      "durability": 522,
+      "toughness": 5.0
     }
   }
 }
