@@ -16,14 +16,14 @@
     },
     "tconstruct:limb": {
       "accuracy": 0.55,
-      "draw_speed": 1.35,
+      "draw_speed": 0.35,
       "durability": 100,
-      "velocity": 1.15
+      "velocity": 0.15
     },
     "tconstruct:maille": {
-      "durability": 0.921,
-      "armor": 1.4,
-      "movement_speed": 1.024
+      "durability": -0.079,
+      "armor": 0.4,
+      "movement_speed": 0.024
     },
     "tconstruct:plating_chestplate": {
       "armor": 8.6,

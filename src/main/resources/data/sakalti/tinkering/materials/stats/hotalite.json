@@ -15,15 +15,15 @@
       "mining_tier": "minecraft:iron"
     },
     "tconstruct:limb": {
-      "accuracy": 1.1,
-      "draw_speed": 1.1,
+      "accuracy": 0.1,
+      "draw_speed": 0.1,
       "durability": 340,
-      "velocity": 1.13
+      "velocity": 0.13
     },
     "tconstruct:maille": {
-      "durability": 0.86,
-      "armor": 1.05,
-      "movement_speed": 1.02
+      "durability": -0.14,
+      "armor": 0.05,
+      "movement_speed": 0.02
     },
     "tconstruct:plating_chestplate": {
       "armor": 6.3,

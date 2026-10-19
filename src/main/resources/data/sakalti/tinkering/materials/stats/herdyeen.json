@@ -15,15 +15,15 @@
       "mining_tier": "minecraft:netherite"
     },
     "tconstruct:limb": {
-      "accuracy": 1.18,
-      "draw_speed": 1.06,
+      "accuracy": 0.18,
+      "draw_speed": 0.06,
       "durability": 560,
-      "velocity": 1.12
+      "velocity": 0.12
     },
     "tconstruct:maille": {
-      "durability": 0.815,
-      "armor": 1.161,
-      "movement_speed": 1.012
+      "durability": -0.185,
+      "armor": 0.161,
+      "movement_speed": 0.012
     },
     "tconstruct:plating_chestplate": {
       "armor": 7.0,

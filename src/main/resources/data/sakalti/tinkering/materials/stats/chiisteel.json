@@ -15,15 +15,15 @@
       "mining_tier": "sakalti:super_2"
     },
     "tconstruct:limb": {
-      "accuracy": 1.12,
-      "draw_speed": 1.02,
+      "accuracy": 0.12,
+      "draw_speed": 0.02,
       "durability": 900,
-      "velocity": 1.18
+      "velocity": 0.18
     },
     "tconstruct:maille": {
-      "durability": 0.85,
-      "armor": 1.115,
-      "movement_speed": 1.016
+      "durability": -0.15,
+      "armor": 0.115,
+      "movement_speed": 0.016
     },
     "tconstruct:plating_chestplate": {
       "armor": 7.0,
