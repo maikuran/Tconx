@@ -4,11 +4,11 @@ license="MIT"
 
 [[mods]]
 modId="sakalti"
-version="1.0.0"
-displayName="TConX"
-authors="お方"
+version="1.1.1"
+displayName="Sakalti"
+authors="Maikuran"
 description='''
-TConXはテスト用MODです。Forge 1.20.1対応。
+Made in Japan
 '''
 displayURL="https://github.com/maikuran/Tconx"
 
