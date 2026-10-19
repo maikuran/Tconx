@@ -1,4 +1,5 @@
-name: Repair Sakalti Worldgen JSON
+
+name: Repair Sakalti Worldgen
 
 on:
   push:
@@ -29,10 +30,6 @@ jobs:
         with:
           python-version: "3.x"
 
-      - name: Pull latest changes
-        run: |
-          git pull --rebase origin "$GITHUB_REF_NAME"
-
       - name: Repair configured feature JSON
         shell: bash
         run: |
@@ -46,36 +43,41 @@ jobs:
 
           if not root.is_dir():
               raise SystemExit(
-                  f"ERROR: Configured feature directory not found: {root}"
+                  f"ERROR: Directory not found: {root}"
               )
 
-          # Minecraft 1.20.1 の有効なブロックタグに合わせる
-          tag_fixes = {
-              "minecraft:stone_ore_replaceables":
-                  "minecraft:stone_ore_replaceables",
-              "minecraft:nether_ore_replaceables":
-                  "minecraft:base_stone_nether",
-          }
-
           changed_files = 0
-          changed_targets = 0
 
           def repair(node, path):
-              global changed_targets
+              changed = False
 
               if isinstance(node, dict):
+                  # OreConfiguration の必須設定を補完
+                  if "targets" in node and "size" in node:
+                      if "discard_chance_on_air_exposure" not in node:
+                          node["discard_chance_on_air_exposure"] = 0.0
+                          changed = True
+
+                  # 古い文字列形式の target を RuleTest 形式へ変換
                   for key, value in list(node.items()):
                       if key == "target" and isinstance(value, str):
-                          if value not in tag_fixes:
-                              raise ValueError(
-                                  f"{path}: Unknown target string: {value}"
+                          tag_map = {
+                              "minecraft:stone_ore_replaceables":
+                                  "minecraft:stone_ore_replaceables",
+                              "minecraft:nether_ore_replaceables":
+                                  "minecraft:base_stone_nether",
+                          }
+
+                          if value not in tag_map:
+                              raise SystemExit(
+                                  f"ERROR: Unknown target in {path}: {value}"
                               )
 
                           node[key] = {
                               "predicate_type": "minecraft:tag_match",
-                              "tag": tag_fixes[value],
+                              "tag": tag_map[value],
                           }
-                          changed_targets += 1
+                          changed = True
 
                       elif (
                           key == "target"
@@ -86,14 +88,18 @@ jobs:
                               == "minecraft:nether_ore_replaceables"
                       ):
                           value["tag"] = "minecraft:base_stone_nether"
-                          changed_targets += 1
+                          changed = True
 
                       else:
-                          repair(value, path)
+                          if repair(value, path):
+                              changed = True
 
               elif isinstance(node, list):
                   for item in node:
-                      repair(item, path)
+                      if repair(item, path):
+                          changed = True
+
+              return changed
 
           for path in sorted(root.rglob("*.json")):
               try:
@@ -101,29 +107,21 @@ jobs:
                   data = json.loads(original)
               except (OSError, UnicodeError, json.JSONDecodeError) as exc:
                   raise SystemExit(
-                      f"ERROR: Cannot read JSON {path}: {exc}"
+                      f"ERROR: Invalid JSON {path}: {exc}"
                   ) from exc
 
-              before = json.dumps(
-                  data, ensure_ascii=False, indent=2
-              ) + "\n"
-
-              repair(data, path)
-
-              after = json.dumps(
-                  data, ensure_ascii=False, indent=2
-              ) + "\n"
-
-              if after != before:
-                  path.write_text(after, encoding="utf-8")
+              if repair(data, path):
+                  path.write_text(
+                      json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+                      encoding="utf-8",
+                  )
                   changed_files += 1
                   print(f"REPAIRED: {path}")
 
-          print(f"Changed files: {changed_files}")
-          print(f"Changed targets: {changed_targets}")
+          print(f"Repaired files: {changed_files}")
           PY
 
-      - name: Validate all resource JSON files
+      - name: Validate resource JSON
         shell: bash
         run: |
           python <<'PY'
@@ -134,20 +132,20 @@ jobs:
           files = sorted(root.rglob("*.json"))
 
           if not files:
-              raise SystemExit("ERROR: No resource JSON files found.")
+              raise SystemExit("ERROR: No JSON resource files found")
 
           errors = []
 
           for path in files:
               try:
-                  with path.open("r", encoding="utf-8") as file:
+                  with path.open(encoding="utf-8") as file:
                       json.load(file)
               except (OSError, UnicodeError, json.JSONDecodeError) as exc:
                   errors.append(f"{path}: {exc}")
 
           if errors:
               print("\n".join(errors))
-              raise SystemExit("JSON validation failed.")
+              raise SystemExit("JSON validation failed")
 
           print(f"JSON syntax OK: {len(files)} files")
           PY
@@ -158,17 +156,18 @@ jobs:
       - name: Commit and push repairs
         shell: bash
         run: |
-          if git diff --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-
           git config user.name "github-actions[bot]"
           git config pull.rebase true
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
           git add src/main/resources/data/sakalti/worldgen/configured_feature
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
           git commit -m "Fix Sakalti world generation JSON"
           git pull
           git push
