@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:molten_ouswari",
+    "fluid": "sakalti:ouswari",
     "amount": 100
   },
   "temperature": 1000,
