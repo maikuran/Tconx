@@ -1,0 +1,498 @@
+
+name: Rebalance Sakalti Armor Material Stats
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - "src/main/resources/data/sakalti/tinkering/materials/stats/**/*.json"
+      - ".github/workflows/repair-material-stats.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  rebalance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rebalance all material armor stats
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          ROOT = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/stats"
+          )
+
+          # Hirolite is the requested reference material.
+          HIROLITE_CHEST_DURABILITY = 208.8425
+          HIROLITE_OLD_ARMOR = 4.55
+          HIROLITE_OLD_TOUGHNESS = 0.7575
+
+          # Hirolite target values.
+          HIROLITE_TOTAL_ARMOR = 23.0
+          HIROLITE_TOTAL_TOUGHNESS = 20.0
+          HIROLITE_DURABILITY = {
+              "helmet": 550,
+              "chestplate": 850,
+              "leggings": 750,
+              "boot": 500,
+          }
+
+          # Armor distribution: 3 + 9 + 7 + 4 = 23.
+          ARMOR_WEIGHTS = {
+              "helmet": 3.0,
+              "chestplate": 9.0,
+              "leggings": 7.0,
+              "boot": 4.0,
+          }
+
+          # Relative durability distribution based on Hirolite.
+          DURABILITY_RATIOS = {
+              "helmet": 550 / 850,
+              "chestplate": 1.0,
+              "leggings": 750 / 850,
+              "boot": 500 / 850,
+          }
+
+          ARMOR_IDS = {
+              "helmet": "tconstruct:plating_helmet",
+              "chestplate": "tconstruct:plating_chestplate",
+              "leggings": "tconstruct:plating_leggings",
+              "boot": "tconstruct:plating_boot",
+          }
+
+          def round_int(value):
+              return int(math.floor(value + 0.5))
+
+          def round_one(value):
+              return round(value + 1e-10, 1)
+
+          def read_number(value, default, description):
+              if value is None:
+                  return default
+
+              if isinstance(value, bool) or not isinstance(value, (int, float)):
+                  raise ValueError(
+                      f"Invalid number for {description}: {value!r}"
+                  )
+
+              if not math.isfinite(value):
+                  raise ValueError(
+                      f"Non-finite number for {description}: {value!r}"
+                  )
+
+              return float(value)
+
+          def allocate_armor(total):
+              # Keep all four values at one decimal place and preserve
+              # the exact total after rounding.
+              result = {}
+              used = 0.0
+              parts = ("helmet", "chestplate", "leggings", "boot")
+
+              for part in parts[:-1]:
+                  value = round_one(
+                      total * ARMOR_WEIGHTS[part] / 23.0
+                  )
+                  result[part] = value
+                  used += value
+
+              result[parts[-1]] = round_one(total - used)
+              return result
+
+          def calculate_total_armor(old_armor):
+              # Preserve the relative material ranking from the existing
+              # armor stats, while making the resulting values meaningful.
+              total = old_armor / HIROLITE_OLD_ARMOR * HIROLITE_TOTAL_ARMOR
+              total = max(8.0, min(24.0, total))
+              return float(round_int(total))
+
+          def calculate_total_toughness(old_toughness):
+              # Existing toughness 0.625 maps to 10 across the full set.
+              # Hirolite's 0.7575 maps to 20. Higher values are capped at 20.
+              if old_toughness <= 0:
+                  return 0.0
+
+              if old_toughness <= 0.625:
+                  return round_one(old_toughness / 0.625 * 10.0)
+
+              total = 10.0 + (
+                  (old_toughness - 0.625)
+                  / (HIROLITE_OLD_TOUGHNESS - 0.625)
+                  * 10.0
+              )
+
+              return round_one(max(0.0, min(20.0, total)))
+
+          def get_plating(stats, part):
+              stat_id = ARMOR_IDS[part]
+
+              if part == "boot":
+                  old_plural = "tconstruct:plating_boots"
+
+                  if old_plural in stats:
+                      if stat_id in stats:
+                          raise ValueError(
+                              "Both plating_boots and plating_boot exist; "
+                              "manual merge is required."
+                          )
+                      stats[stat_id] = stats.pop(old_plural)
+
+              entry = stats.get(stat_id)
+
+              if entry is None:
+                  entry = {}
+                  stats[stat_id] = entry
+
+              if not isinstance(entry, dict):
+                  raise ValueError(f"{stat_id} must be a JSON object")
+
+              return entry
+
+          if not ROOT.is_dir():
+              raise SystemExit(f"Missing directory: {ROOT}")
+
+          files = sorted(ROOT.rglob("*.json"))
+
+          if not files:
+              raise SystemExit(f"No material JSON files found in {ROOT}")
+
+          loaded = []
+          for path in files:
+              try:
+                  data = json.loads(path.read_text(encoding="utf-8"))
+              except json.JSONDecodeError as exc:
+                  raise SystemExit(f"Invalid JSON in {path}: {exc}")
+
+              stats = data.get("stats")
+              if not isinstance(stats, dict):
+                  print(f"SKIP: {path} has no stats object")
+                  continue
+
+              # Existing chestplate stats provide the material's baseline.
+              old_chest = stats.get("tconstruct:plating_chestplate", {})
+              if not isinstance(old_chest, dict):
+                  old_chest = {}
+
+              # Migrate the old plural boots ID before reading the baseline.
+              if "tconstruct:plating_boots" in stats:
+                  if "tconstruct:plating_boot" in stats:
+                      raise SystemExit(
+                          f"{path}: both boot stat IDs exist; "
+                          "refusing to discard either value."
+                      )
+                  stats["tconstruct:plating_boot"] = stats.pop(
+                      "tconstruct:plating_boots"
+                  )
+
+              old_chest = stats.get("tconstruct:plating_chestplate", {})
+              old_head = stats.get("tconstruct:head", {})
+
+              if not isinstance(old_chest, dict):
+                  old_chest = {}
+              if not isinstance(old_head, dict):
+                  old_head = {}
+
+              old_durability = read_number(
+                  old_chest.get("durability"),
+                  read_number(
+                      old_head.get("durability"),
+                      HIROLITE_CHEST_DURABILITY,
+                      f"{path} head durability",
+                  ) * HIROLITE_CHEST_DURABILITY / 1250.0,
+                  f"{path} chestplate durability",
+              )
+
+              old_armor = read_number(
+                  old_chest.get("armor"),
+                  HIROLITE_OLD_ARMOR,
+                  f"{path} chestplate armor",
+              )
+
+              old_toughness = read_number(
+                  old_chest.get("toughness"),
+                  0.0,
+                  f"{path} chestplate toughness",
+              )
+
+              if old_durability <= 0:
+                  raise SystemExit(
+                      f"{path}: chestplate durability must be positive"
+                  )
+
+              if old_armor < 0 or old_toughness < 0:
+                  raise SystemExit(
+                      f"{path}: armor and toughness cannot be negative"
+                  )
+
+              loaded.append({
+                  "path": path,
+                  "data": data,
+                  "stats": stats,
+                  "old_durability": old_durability,
+                  "old_armor": old_armor,
+                  "old_toughness": old_toughness,
+              })
+
+          if not loaded:
+              raise SystemExit("No valid material stat files were found.")
+
+          # Hirolite is identified by its filename, not by file order.
+          hirolite_found = any(
+              item["path"].stem.lower() == "hirolite"
+              for item in loaded
+          )
+
+          if not hirolite_found:
+              raise SystemExit(
+                  "hirolite.json was not found. "
+                  "Cannot apply the requested reference balance."
+              )
+
+          for item in loaded:
+              path = item["path"]
+              stats = item["stats"]
+              name = path.stem.lower()
+
+              old_durability = item["old_durability"]
+              old_armor = item["old_armor"]
+              old_toughness = item["old_toughness"]
+
+              if name == "hirolite":
+                  total_armor = HIROLITE_TOTAL_ARMOR
+                  total_toughness = HIROLITE_TOTAL_TOUGHNESS
+                  durability = dict(HIROLITE_DURABILITY)
+              else:
+                  total_armor = calculate_total_armor(old_armor)
+                  total_toughness = calculate_total_toughness(
+                      old_toughness
+                  )
+
+                  # Scale every material from its existing chestplate
+                  # durability relative to Hirolite's original value.
+                  scale = old_durability / HIROLITE_CHEST_DURABILITY
+
+                  durability = {
+                      part: max(
+                          1,
+                          round_int(
+                              HIROLITE_DURABILITY[part] * scale
+                          ),
+                      )
+                      for part in ARMOR_IDS
+                  }
+
+              armor_values = allocate_armor(total_armor)
+              toughness_per_piece = round_one(total_toughness / 4.0)
+
+              for part, stat_id in ARMOR_IDS.items():
+                  entry = get_plating(stats, part)
+
+                  entry["durability"] = durability[part]
+                  entry["armor"] = armor_values[part]
+                  entry["toughness"] = toughness_per_piece
+
+              # Shield does not use an armor value in Tinkers' Construct.
+              # Give it a usable durability based on the same material.
+              shield_id = "tconstruct:plating_shield"
+              shield = stats.get(shield_id)
+
+              if shield is None:
+                  shield = {}
+                  stats[shield_id] = shield
+
+              if not isinstance(shield, dict):
+                  raise SystemExit(
+                      f"{path}: {shield_id} must be a JSON object"
+                  )
+
+              shield["durability"] = durability["chestplate"]
+              shield.pop("armor", None)
+
+              path.write_text(
+                  json.dumps(
+                      item["data"],
+                      ensure_ascii=False,
+                      indent=2,
+                      allow_nan=False,
+                  ) + "\n",
+                  encoding="utf-8",
+              )
+
+              print(
+                  f"{path.name}: "
+                  f"armor={total_armor:g}, "
+                  f"toughness={total_toughness:g}, "
+                  f"durability H/C/L/B="
+                  f"{durability['helmet']}/"
+                  f"{durability['chestplate']}/"
+                  f"{durability['leggings']}/"
+                  f"{durability['boot']}"
+              )
+
+          print(f"Rebalanced {len(loaded)} material files.")
+          PY
+
+      - name: Validate every material and armor part
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          python3 - <<'PY'
+          import json
+          import math
+          from pathlib import Path
+
+          root = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/stats"
+          )
+
+          parts = {
+              "helmet": "tconstruct:plating_helmet",
+              "chestplate": "tconstruct:plating_chestplate",
+              "leggings": "tconstruct:plating_leggings",
+              "boot": "tconstruct:plating_boot",
+          }
+
+          files = sorted(root.rglob("*.json"))
+          if not files:
+              raise SystemExit("No material JSON files found.")
+
+          count = 0
+
+          for path in files:
+              data = json.loads(path.read_text(encoding="utf-8"))
+              stats = data.get("stats", {})
+
+              if not isinstance(stats, dict):
+                  continue
+
+              if "tconstruct:plating_boots" in stats:
+                  raise SystemExit(
+                      f"{path}: obsolete plating_boots ID remains"
+                  )
+
+              total_armor = 0.0
+              total_toughness = 0.0
+
+              for part, stat_id in parts.items():
+                  entry = stats.get(stat_id)
+
+                  if not isinstance(entry, dict):
+                      raise SystemExit(
+                          f"{path}: missing or invalid {stat_id}"
+                      )
+
+                  durability = entry.get("durability")
+                  armor = entry.get("armor")
+                  toughness = entry.get("toughness")
+
+                  if (
+                      isinstance(durability, bool)
+                      or not isinstance(durability, int)
+                      or durability <= 0
+                  ):
+                      raise SystemExit(
+                          f"{path}: {stat_id}.durability "
+                          f"must be a positive integer: {durability!r}"
+                      )
+
+                  for field, value in (
+                      ("armor", armor),
+                      ("toughness", toughness),
+                  ):
+                      if (
+                          isinstance(value, bool)
+                          or not isinstance(value, (int, float))
+                          or not math.isfinite(value)
+                          or value < 0
+                      ):
+                          raise SystemExit(
+                              f"{path}: invalid {stat_id}.{field}: "
+                              f"{value!r}"
+                          )
+
+                  total_armor += armor
+                  total_toughness += toughness
+
+              shield = stats.get("tconstruct:plating_shield")
+              if not isinstance(shield, dict):
+                  raise SystemExit(
+                      f"{path}: missing or invalid plating_shield"
+                  )
+
+              shield_durability = shield.get("durability")
+              if (
+                  isinstance(shield_durability, bool)
+                  or not isinstance(shield_durability, int)
+                  or shield_durability <= 0
+              ):
+                  raise SystemExit(
+                      f"{path}: invalid shield durability: "
+                      f"{shield_durability!r}"
+                  )
+
+              if path.stem.lower() == "hirolite":
+                  if abs(total_armor - 23.0) > 0.01:
+                      raise SystemExit(
+                          f"Hirolite armor total should be 23, "
+                          f"got {total_armor}"
+                      )
+
+                  if abs(total_toughness - 20.0) > 0.01:
+                      raise SystemExit(
+                          f"Hirolite toughness total should be 20, "
+                          f"got {total_toughness}"
+                      )
+
+                  if stats[parts["chestplate"]]["durability"] != 850:
+                      raise SystemExit(
+                          "Hirolite chestplate durability must be 850"
+                      )
+
+              count += 1
+
+          print(f"Validated all {count} material files.")
+          PY
+
+      - name: Check patch formatting
+        run: git diff --check
+
+      - name: Commit and push changes
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/sakalti/tinkering/materials/stats
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Rebalance all Sakalti armor material stats"
+          git pull --rebase origin main
+          git push origin HEAD:main
