@@ -1,5 +1,4 @@
-
-name: Fix Stat Boot Names
+name: Fix Stat and Lang Boot Names
 
 on:
   workflow_dispatch:
@@ -20,29 +19,30 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Replace boot with boots in stat JSON files
+      - name: Replace ss with s in all JSON files
         shell: bash
         run: |
           python3 <<'PY'
           import json
           from pathlib import Path
 
+          # sakaltiデータディレクトリ全体を対象にする (サブディレクトリも含む)
           root = Path(
-              "src/main/resources/data/sakalti/tinkering/materials/stats"
+              "src/main/resources/data/sakalti"
           )
 
           if not root.is_dir():
               raise SystemExit(f"Directory not found: {root}")
 
-          old = "tconstruct:plating_bootss"
-          new = "tconstruct:plating_boots"
           changed = 0
 
-          for path in sorted(root.glob("*.json")):
+          # rglobを使うことで配下のすべてのサブディレクトリのJSONを再帰的に検索・置換
+          for path in sorted(root.rglob("*.json")):
               with path.open("r", encoding="utf-8") as f:
                   content = f.read()
 
-              updated = content.replace(old, new)
+              # 文字列 "ss" をすべて "s" に強力に置換
+              updated = content.replace("ss", "s")
 
               if updated != content:
                   with path.open(
@@ -51,9 +51,9 @@ jobs:
                       f.write(updated)
 
                   changed += 1
-                  print(f"Updated: {path.name}")
+                  print(f"Updated: {path.relative_to(root)}")
 
-          print(f"Updated {changed} stat JSON files.")
+          print(f"Updated {changed} JSON files.")
           PY
 
       - name: Validate JSON files
@@ -64,14 +64,14 @@ jobs:
           from pathlib import Path
 
           root = Path(
-              "src/main/resources/data/sakalti/tinkering/materials/stats"
+              "src/main/resources/data/sakalti"
           )
 
-          for path in sorted(root.glob("*.json")):
+          for path in sorted(root.rglob("*.json")):
               with path.open("r", encoding="utf-8") as f:
                   json.load(f)
 
-          print("All stat JSON files are valid.")
+          print("All JSON files are valid.")
           PY
 
       - name: Commit and push
@@ -81,13 +81,13 @@ jobs:
           git config user.email \
             "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add src/main/resources/data/sakalti/tinkering/materials/stats
+          git add src/main/resources/data/sakalti
 
           if git diff --cached --quiet; then
             echo "No changes to commit."
             exit 0
           fi
 
-          git commit -m "Rename plating_boot to plating_boots in stat JSON"
+          git commit -m "Strongly replace ss with s in all sakalti JSON files"
           git pull --rebase
           git push
