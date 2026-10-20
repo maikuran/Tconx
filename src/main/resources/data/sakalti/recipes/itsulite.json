@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "name": "sakalti:igniz",
-      "amount": 100
+      "amount": 100,
+      "fluid": "sakalti:igniz"
     },
     {
-      "name": "sakalti:tiberium",
-      "amount": 100
+      "amount": 100,
+      "fluid": "sakalti:tiberium"
     }
   ],
   "result": {

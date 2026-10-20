@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 20,
-      "name": "tconstruct:molten_gold"
+      "fluid": "tconstruct:molten_gold"
     },
     {
       "amount": 10,
-      "name": "sakalti:igniz"
+      "fluid": "sakalti:igniz"
     }
   ],
   "result": {

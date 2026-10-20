@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 144,
-      "name": "tconstruct:molten_amethyst"
+      "fluid": "tconstruct:molten_amethyst"
     },
     {
       "amount": 50,
-      "name": "sakalti:chirite"
+      "fluid": "sakalti:chirite"
     }
   ],
   "result": {

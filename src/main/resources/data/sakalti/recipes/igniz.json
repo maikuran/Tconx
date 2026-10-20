@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 100,
-      "name": "sakalti:kanilite"
+      "fluid": "sakalti:kanilite"
     },
     {
       "amount": 60,
-      "name": "tconstruct:molten_hepatizon"
+      "fluid": "tconstruct:molten_hepatizon"
     }
   ],
   "result": {

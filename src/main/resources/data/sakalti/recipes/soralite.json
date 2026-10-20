@@ -2,16 +2,16 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "name": "tconstruct:molten_cobalt",
-      "amount": 100
+      "amount": 100,
+      "fluid": "tconstruct:molten_cobalt"
     },
     {
-      "name": "tconstruct:molten_netherite",
-      "amount": 100
+      "amount": 100,
+      "fluid": "tconstruct:molten_netherite"
     },
     {
-      "name": "sakalti:hachilite",
-      "amount": 100
+      "amount": 100,
+      "fluid": "sakalti:hachilite"
     }
   ],
   "result": {

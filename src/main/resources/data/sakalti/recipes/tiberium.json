@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 30,
-      "name": "tconstruct:molten_emerald"
+      "fluid": "tconstruct:molten_emerald"
     },
     {
       "amount": 30,
-      "name": "sakalti:kanilite"
+      "fluid": "sakalti:kanilite"
     },
     {
       "amount": 30,
-      "name": "tconstruct:molten_diamond"
+      "fluid": "tconstruct:molten_diamond"
     }
   ],
   "result": {

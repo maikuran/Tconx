@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 15,
-      "name": "sakalti:kanilite"
+      "fluid": "sakalti:kanilite"
     },
     {
       "amount": 50,
-      "name": "tconstruct:molten_iron"
+      "fluid": "tconstruct:molten_iron"
     }
   ],
   "result": {

@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 540,
-      "name": "sakalti:chirite"
+      "fluid": "sakalti:chirite"
     },
     {
       "amount": 40,
-      "name": "tconstruct:molten_iron"
+      "fluid": "tconstruct:molten_iron"
     }
   ],
   "result": {

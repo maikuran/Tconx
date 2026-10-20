@@ -2,12 +2,12 @@
   "type": "tconstruct:alloy",
   "inputs": [
     {
-      "name": "sakalti:hachilite",
-      "amount": 100
+      "amount": 100,
+      "fluid": "sakalti:hachilite"
     },
     {
-      "name": "sakalti:chirite",
-      "amount": 100
+      "amount": 100,
+      "fluid": "sakalti:chirite"
     }
   ],
   "result": {

@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 175,
-      "name": "tconstruct:molten_hepatizon"
+      "fluid": "tconstruct:molten_hepatizon"
     },
     {
       "amount": 100,
-      "name": "tconstruct:molten_iron"
+      "fluid": "tconstruct:molten_iron"
     }
   ],
   "result": {
