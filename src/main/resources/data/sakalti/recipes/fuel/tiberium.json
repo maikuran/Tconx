@@ -5,5 +5,6 @@
     "amount": 50
   },
   "duration": 225,
-  "temperature": 2250
+  "temperature": 2250,
+  "rate": 10
 }
