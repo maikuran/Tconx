@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeles",
+  "type": "minecraft:crafting_shapeless",
   "ingredients": [
     {
       "item": "sakalti:ouswari_block"
