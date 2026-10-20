@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:melting_fuel",
   "fluid": {
-    "name": "sakalti:dilonite",
+    "fluid": "sakalti:dilonite",
     "amount": 50
   },
   "duration": 150,
