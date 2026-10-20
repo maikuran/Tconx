@@ -34,7 +34,7 @@ jobs:
           if not root.is_dir():
               raise SystemExit(f"Directory not found: {root}")
 
-          old = "tconstruct:plating_boot"
+          old = "tconstruct:plating_bootss"
           new = "tconstruct:plating_boots"
           changed = 0
 
