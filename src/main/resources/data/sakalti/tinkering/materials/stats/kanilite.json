@@ -28,25 +28,25 @@
     "tconstruct:plating_chestplate": {
       "armor": 6.7,
       "durability": 354,
-      "toughness": 2.5
+      "toughnes": 2.5
     },
     "tconstruct:plating_helmet": {
       "armor": 2.2,
       "durability": 229,
-      "toughness": 2.5
+      "toughnes": 2.5
     },
     "tconstruct:plating_leggings": {
       "armor": 5.2,
       "durability": 312,
-      "toughness": 2.5
+      "toughnes": 2.5
     },
     "tconstruct:plating_shield": {
       "durability": 354
     },
-    "tconstruct:plating_bootss": {
+    "tconstruct:plating_boots": {
       "armor": 2.9,
       "durability": 208,
-      "toughness": 2.5
+      "toughnes": 2.5
     }
   }
 }

@@ -1,5 +1,5 @@
 {
-  "type": "minecraft:crafting_shapeless",
+  "type": "minecraft:crafting_shapeles",
   "ingredients": [
     {
       "item": "sakalti:itsulite_block"
