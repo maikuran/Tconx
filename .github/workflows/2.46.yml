@@ -10,7 +10,7 @@ jobs:
 
       - name: Replace typo in recipes
         run: |
-          find recipes -type f -exec sed -i 's/crafting_shapeles/crafting_shapeless/g' {} +
+          find src/main/resources/data/sakalti/recipes -type f -exec sed -i 's/crafting_shapeles/crafting_shapeless/g' {} +
 
       - name: Commit and push changes
         run: |
