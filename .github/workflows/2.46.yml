@@ -16,7 +16,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add recipes
+          git add src/main/resources/data/sakalti/recipes
           git diff --cached --quiet || git commit -m "Fix crafting_shapeless typo"
           git pull --rebase
           git push
