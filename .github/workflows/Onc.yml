@@ -1,9 +1,9 @@
-name: Generate TConstruct Material Renders
+name: Generate TConstruct Ma
 
 on:
   push:
     branches:
-      - main
+      - m
   workflow_dispatch:
 
 permissions:
