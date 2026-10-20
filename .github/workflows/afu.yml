@@ -1,0 +1,93 @@
+
+name: Fix Stat Boot Names
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  fix-boot-names:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Replace boot with boots in stat JSON files
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/stats"
+          )
+
+          if not root.is_dir():
+              raise SystemExit(f"Directory not found: {root}")
+
+          old = "tconstruct:plating_boot"
+          new = "tconstruct:plating_boots"
+          changed = 0
+
+          for path in sorted(root.glob("*.json")):
+              with path.open("r", encoding="utf-8") as f:
+                  content = f.read()
+
+              updated = content.replace(old, new)
+
+              if updated != content:
+                  with path.open(
+                      "w", encoding="utf-8", newline="\n"
+                  ) as f:
+                      f.write(updated)
+
+                  changed += 1
+                  print(f"Updated: {path.name}")
+
+          print(f"Updated {changed} stat JSON files.")
+          PY
+
+      - name: Validate JSON files
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+
+          root = Path(
+              "src/main/resources/data/sakalti/tinkering/materials/stats"
+          )
+
+          for path in sorted(root.glob("*.json")):
+              with path.open("r", encoding="utf-8") as f:
+                  json.load(f)
+
+          print("All stat JSON files are valid.")
+          PY
+
+      - name: Commit and push
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/sakalti/tinkering/materials/stats
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Rename plating_boot to plating_boots in stat JSON"
+          git pull --rebase
+          git push
