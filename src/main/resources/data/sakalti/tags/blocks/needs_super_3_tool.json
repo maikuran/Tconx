@@ -2,6 +2,7 @@
   "replace": false,
   "values": [
     "sakalti:hirolite_ore",
+    "sakalti:hirolite_block",
     "sakalti:ourite_block",
     "sakalti:ourite_ore",
     "sakalti:seiren_block",
