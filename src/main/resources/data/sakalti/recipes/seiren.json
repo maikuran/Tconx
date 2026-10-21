@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 120,
-      "fluid": "sakalti:deepsteel"
+      "name": "sakalti:deepsteel"
     },
     {
       "amount": 66,
-      "fluid": "tconstruct:molten_emerald"
+      "name": "tconstruct:molten_emerald"
     }
   ],
   "result": {

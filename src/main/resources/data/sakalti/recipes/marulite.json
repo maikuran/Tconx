@@ -3,15 +3,15 @@
   "inputs": [
     {
       "amount": 10,
-      "fluid": "sakalti:deepsteel"
+      "name": "sakalti:deepsteel"
     },
     {
       "amount": 40,
-      "fluid": "sakalti:igniz"
+      "name": "sakalti:igniz"
     },
     {
       "amount": 100,
-      "fluid": "sakalti:chirite"
+      "name": "sakalti:chirite"
     }
   ],
   "result": {

@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 100,
-      "fluid": "sakalti:kanilite"
+      "name": "sakalti:kanilite"
     },
     {
       "amount": 50,
-      "fluid": "sakalti:igniz"
+      "name": "sakalti:igniz"
     }
   ],
   "result": {

@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 100,
-      "fluid": "sakalti:igniz"
+      "name": "sakalti:igniz"
     },
     {
       "amount": 100,
-      "fluid": "sakalti:tiberium"
+      "name": "sakalti:tiberium"
     }
   ],
   "result": {

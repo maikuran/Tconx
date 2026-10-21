@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 100,
-      "fluid": "sakaltikanilite"
+      "name": "sakaltikanilite"
     },
     {
       "amount": 20,
-      "fluid": "sakalti:ioxium"
+      "name": "sakalti:ioxium"
     }
   ],
   "result": {

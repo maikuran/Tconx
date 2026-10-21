@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 80,
-      "fluid": "sakalti:viberium"
+      "name": "sakalti:viberium"
     },
     {
       "amount": 40,
-      "fluid": "sakalti:kerium"
+      "name": "sakalti:kerium"
     }
   ],
   "result": {

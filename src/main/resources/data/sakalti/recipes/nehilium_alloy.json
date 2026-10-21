@@ -3,11 +3,11 @@
   "inputs": [
     {
       "amount": 300,
-      "fluid": "tconstruct:cobalt"
+      "name": "tconstruct:cobalt"
     },
     {
       "amount": 150,
-      "fluid": "tconstruct:iron"
+      "name": "tconstruct:iron"
     }
   ],
   "result": {
