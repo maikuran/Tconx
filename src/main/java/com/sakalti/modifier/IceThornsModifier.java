@@ -1,5 +1,5 @@
 
-package com.sakalti.tconx.modifier;
+package com.sakalti.modifier;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
