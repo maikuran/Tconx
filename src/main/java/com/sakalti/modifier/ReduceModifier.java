@@ -10,7 +10,6 @@ public class ReduceModifier extends Modifier {
 
     private static final float DAMAGE_REDUCTION = 0.15f;
 
-    @Override
     public float onAttacked(
             ToolStack tool,
             int level,
