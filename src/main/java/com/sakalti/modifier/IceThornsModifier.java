@@ -13,8 +13,7 @@ public class IceThornsModifier extends Modifier {
     private static final int FIXED_LEVEL = 3;
     private static final int DURATION_TICKS = 20 * 3 * FIXED_LEVEL;
     private static final int AMPLIFIER = FIXED_LEVEL - 1;
-
-    @Override
+    
     public void onAttacked(
             ToolStack tool,
             int level,
