@@ -8,6 +8,7 @@ public class TconxModifiers {
     public static final Modifier GLACIAL_BIND = new GlacialBindModifier();
     public static final Modifier SUPERMAGNET = new SuperMagnetModifier();
     public static final Modifier ICE_BIND = new IceBindModifier();
+    public static final Modifier ICE_THORNS = new IceThornsModifier();
     public static final Modifier WEAK_BURN = new WeakBurnModifier();
     public static final Modifier LIGHT_TOUCH = new LightTouchModifier();
     public static final Modifier FIRE_WALL = new FireWallModifier();
