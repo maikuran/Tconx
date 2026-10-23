@@ -12,6 +12,9 @@ public final class TconxModifiers {
     public static final StaticModifier<GlacialBindModifier> GLACIAL_BIND =
             MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
 
+    public static final StaticModifier<ReduceModifier> REDUCE =
+            MODIFIERS.register("reduce", ReduceModifier::new);
+
     public static final StaticModifier<IceThornsModifier> ICE_THORNS =
             MODIFIERS.register("ice_thorns", IceThornsModifier::new);
 
