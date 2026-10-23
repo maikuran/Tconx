@@ -4,5 +4,19 @@
       "name": "sakalti:light_touch",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:reduce",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:reduce",
+        "level": 1
+      }
+    ]
+  }
 }
