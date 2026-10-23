@@ -1,20 +1,20 @@
 {
   "default": [
     {
-      "name": "sakaplus:glacial_bind",
+      "name": "sakalti:glacial_bind",
       "level": 1
     }
   ],
   "perStat": {
     "tconstruct:armor": [
       {
-        "name": "sakaplus:ice_thorns",
+        "name": "sakalti:ice_thorns",
         "level": 1
       }
     ],
     "tconstruct:maille": [
       {
-        "name": "sakaplus:ice_thorns",
+        "name": "sakalti:ice_thorns",
         "level": 1
       }
     ]
