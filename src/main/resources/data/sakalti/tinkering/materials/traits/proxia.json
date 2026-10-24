@@ -4,5 +4,19 @@
       "name": "sakalti:fieldy",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:vitality",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:vitality",
+        "level": 1
+      }
+    ]
+  }
 }
