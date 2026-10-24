@@ -20,6 +20,9 @@ public final class TconxModifiers {
     public static final StaticModifier<LaserPrismGuardModifier> LASERPRISM_GUARD =
             MODIFIERS.register("laserprism_guard", LaserPrismGuardModifier::new);
 
+    public static final StaticModifier<MagneticFieldModifier> MAGNETIC_FIELD =
+            MODIFIERS.register("magnetic_field", MagneticFieldModifier::new);
+
     public static final StaticModifier<LongSparkGuardModifier> LONGSPARK_GUARD =
             MODIFIERS.register("longspark_guard", LongSparkGuardModifier::new);
 
