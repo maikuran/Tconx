@@ -20,7 +20,7 @@ import slimeknights.tconstruct.library.tools.helper.ToolDamageUtil;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 import slimeknights.tconstruct.library.tools.stat.ToolStats;
 
-public class CrystallingModifier extends Modifier
+public class CrystallizeModifier extends Modifier
         implements InventoryTickModifierHook, DamageBlockModifierHook {
 
     private static final float HEALTH_THRESHOLD = 0.20F;
