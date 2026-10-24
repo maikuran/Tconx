@@ -15,6 +15,13 @@ public final class TconxModifiers {
     public static final StaticModifier<ReduceModifier> REDUCE =
             MODIFIERS.register("reduce", ReduceModifier::new);
 
+    public static final StaticModifier<CrimsonThornsModifier> CRIMSON_THORNS =
+            MODIFIERS.register("crimson_thorns", CrimsonThornsModifier::new);
+
+    public static final StaticModifier<HeavyModifier> HEAVY =
+            MODIFIERS.register("heavy", HeavyModifier::new);
+
+
     public static final StaticModifier<IceThornsModifier> ICE_THORNS =
             MODIFIERS.register("ice_thorns", IceThornsModifier::new);
 
