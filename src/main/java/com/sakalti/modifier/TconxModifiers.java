@@ -13,8 +13,8 @@ public final class TconxModifiers {
             MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
 
 
-    public static final StaticModifier<CryoFreezeModifier> CRYOFREEZE =
-            MODIFIERS.register("cryofreeze", CryoFreezeModifier::new);
+    public static final StaticModifier<CryofreezeModifier> CRYOFREEZE =
+            MODIFIERS.register("cryofreeze", CryofreezeModifier::new);
 
     public static final StaticModifier<SuperBlastModifier> SUPERBLAST =
             MODIFIERS.register("superblast", SuperBlastModifier::new);
