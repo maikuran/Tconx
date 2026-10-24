@@ -1,8 +1,22 @@
 {
   "default": [
     {
-      "name": "sakalti:supermagnet",
+      "name": "sakalti:super_magnet",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:magnetic_field",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:magnetic_field",
+        "level": 1
+      }
+    ]
+  }
 }
