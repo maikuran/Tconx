@@ -19,6 +19,8 @@ public final class TconxModifiers {
 
     public static final StaticModifier<LaserPrismGuardModifier> LASERPRISM_GUARD =
             MODIFIERS.register("laserprism_guard", LaserPrismGuardModifier::new);
+    public static final StaticModifier<ToughModifier> TOUGH =
+        MODIFIERS.register("tough", ToughModifier::new);
 
     public static final StaticModifier<MagneticFieldModifier> MAGNETIC_FIELD =
             MODIFIERS.register("magnetic_field", MagneticFieldModifier::new);
