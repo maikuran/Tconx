@@ -11,6 +11,8 @@ public final class TconxModifiers {
 
     public static final StaticModifier<GlacialBindModifier> GLACIAL_BIND =
             MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
+    public static final StaticModifier<AstralAegisModifier> ASTRAL_AEGIS =
+        MODIFIERS.register("astral_aegis", AstralAegisModifier::new);
 
     public static final StaticModifier<LaserPrismGuardModifier> LASERPRISM_GUARD =
             MODIFIERS.register("laserprism_guard", LaserPrismGuardModifier::new);
