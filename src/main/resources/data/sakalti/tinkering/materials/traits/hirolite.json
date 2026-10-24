@@ -4,5 +4,19 @@
       "name": "sakalti:lure_meteor",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:astral_aegis",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:astral_aegis",
+        "level": 1
+      }
+    ]
+  }
 }
