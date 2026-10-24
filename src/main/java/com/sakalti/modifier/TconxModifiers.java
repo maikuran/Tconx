@@ -15,6 +15,10 @@ public final class TconxModifiers {
     public static final StaticModifier<SuperBlastModifier> SUPERBLAST =
             MODIFIERS.register("superblast", SuperBlastModifier::new);
 
+    public static final StaticModifier<GravitasModifier> GRAVITAS =
+            MODIFIERS.register("gravitas", GravitasModifier::new);
+
+
     public static final StaticModifier<InfernoModifier> INFERNO =
             MODIFIERS.register("inferno", InfernoModifier::new);
 
