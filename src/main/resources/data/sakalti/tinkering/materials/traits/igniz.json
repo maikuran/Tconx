@@ -4,5 +4,19 @@
       "name": "sakalti:lifesteal",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:inferno",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:inferno",
+        "level": 1
+      }
+    ]
+  }
 }
