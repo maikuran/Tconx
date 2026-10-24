@@ -18,6 +18,9 @@ public final class TconxModifiers {
     public static final StaticModifier<LongSparkGuardModifier> LONGSPARK_GUARD =
             MODIFIERS.register("longspark_guard", LongSparkGuardModifier::new);
 
+    public static final StaticModifier<StarConnectModifier> STAR_CONNECT =
+            MODIFIERS.register("star_connect", StarConnectModifier::new);
+
 
     public static final StaticModifier<AbyssalRequiemModifier> ABYSSAL_REQUIEM =
             MODIFIERS.register("abyssal_requiem", AbyssalRequiemModifier::new);
