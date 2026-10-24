@@ -4,5 +4,19 @@
       "name": "sakalti:fire_wall",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:incendium",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:incendium",
+        "level": 1
+      }
+    ]
+  }
 }
