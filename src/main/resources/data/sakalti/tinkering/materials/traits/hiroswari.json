@@ -4,5 +4,19 @@
       "name": "sakalti:berserk",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:crimson_thorns",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:crimson_thorns",
+        "level": 1
+      }
+    ]
+  }
 }
