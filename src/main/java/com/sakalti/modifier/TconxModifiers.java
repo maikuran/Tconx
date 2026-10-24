@@ -24,6 +24,9 @@ public final class TconxModifiers {
     public static final StaticModifier<ReduceModifier> REDUCE =
             MODIFIERS.register("reduce", ReduceModifier::new);
 
+    public static final StaticModifier<IncendiumModifier> INCENDIUM =
+            MODIFIERS.register("incendium", IncendiumModifier::new);
+
     public static final StaticModifier<CrimsonThornsModifier> CRIMSON_THORNS =
             MODIFIERS.register("crimson_thorns", CrimsonThornsModifier::new);
 
