@@ -13,7 +13,7 @@ sourceSets {
 
 group = 'com.sakalti'
 archivesBaseName = 'sakalti'
-version = '1.2.0'
+version = '1.2.1'
 
 java {
     toolchain {
@@ -63,7 +63,7 @@ jar {
         attributes(
             'Specification-Title': 'sakalti',
             'Specification-Vendor': 'sakalti',
-            'Specification-Version': '1.2.0',
+            'Specification-Version': '1.2.1',
             'Implementation-Title': project.name,
             'Implementation-Version': project.version,
             'Implementation-Vendor': 'sakalti'
