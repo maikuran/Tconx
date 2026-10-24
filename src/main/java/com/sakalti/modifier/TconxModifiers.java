@@ -15,6 +15,9 @@ public final class TconxModifiers {
     public static final StaticModifier<SuperBlastModifier> SUPERBLAST =
             MODIFIERS.register("superblast", SuperBlastModifier::new);
 
+    public static final StaticModifier<InfernoModifier> INFERNO =
+            MODIFIERS.register("inferno", InfernoModifier::new);
+
     public static final StaticModifier<CrystallizeModifier> CRYSTALLIZE =
             MODIFIERS.register("crystallize", CrystallizeModifier::new);
 
