@@ -4,5 +4,19 @@
       "name": "sakalti:gradually",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:heavy",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:heavy",
+        "level": 1
+      }
+    ]
+  }
 }
