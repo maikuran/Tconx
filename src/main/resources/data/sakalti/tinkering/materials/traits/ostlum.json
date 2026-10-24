@@ -1,8 +1,22 @@
 {
   "default": [
     {
-      "name": "sakalti:glacial_bind",
+      "name": "sakalti:ice_bind",
       "level": 3
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:super_reduce",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:cryofreeze",
+        "level": 1
+      }
+    ]
+  }
 }
