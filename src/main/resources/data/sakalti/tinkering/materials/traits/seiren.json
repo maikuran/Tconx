@@ -4,5 +4,19 @@
       "name": "sakalti:seiren_curse",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:survive",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:survive",
+        "level": 1
+      }
+    ]
+  }
 }
