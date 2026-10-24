@@ -4,5 +4,19 @@
       "name": "sakalti:ice_bind",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:cryofreeze",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:cryofreeze",
+        "level": 1
+      }
+    ]
+  }
 }
