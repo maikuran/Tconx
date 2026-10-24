@@ -11,7 +11,8 @@ import net.minecraft.world.level.block.Blocks;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
-import slimeknights.tconstruct.library.modifiers.hook.inventory.InventoryTickModifierHook;
+import slimeknights.tconstruct.library.modifiers.hook.interaction.InventoryTickModifierHook;
+import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 
 public class SuperBlastModifier extends Modifier implements InventoryTickModifierHook {
@@ -22,12 +23,10 @@ public class SuperBlastModifier extends Modifier implements InventoryTickModifie
     private static final long CHARGE_TIME = 100L;
     private static final float EXPLOSION_POWER = 5.0F;
 
-    @Override
-    protected void registerHooks(ModifierHooks.Builder hookBuilder) {
+    protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
         hookBuilder.addHook(this, ModifierHooks.INVENTORY_TICK);
     }
 
-    @Override
     public void onInventoryTick(
             IToolStackView tool,
             ModifierEntry modifier,
@@ -39,7 +38,14 @@ public class SuperBlastModifier extends Modifier implements InventoryTickModifie
             ItemStack stack
     ) {
         if (world.isClientSide) return;
-        if (!isCorrectSlot) return;
+
+        var data = holder.getPersistentData();
+
+        if (!isCorrectSlot) {
+            data.remove(START_TIME);
+            data.remove(TRIGGERED);
+            return;
+        }
 
         BlockPos pos = holder.blockPosition();
 
@@ -52,8 +58,6 @@ public class SuperBlastModifier extends Modifier implements InventoryTickModifie
                 || world.getBlockState(pos.below()).is(Blocks.MAGMA_BLOCK)
                 || world.getBlockState(pos.below()).is(Blocks.FIRE)
                 || world.getBlockState(pos.below()).is(Blocks.SOUL_FIRE);
-
-        var data = holder.getPersistentData();
 
         if (!inHazard) {
             data.remove(START_TIME);
@@ -74,6 +78,8 @@ public class SuperBlastModifier extends Modifier implements InventoryTickModifie
 
         if (elapsed >= CHARGE_TIME) {
             if (world instanceof ServerLevel serverLevel) {
+                data.putBoolean(TRIGGERED, true);
+                data.remove(START_TIME);
 
                 serverLevel.explode(
                         holder,
@@ -84,9 +90,6 @@ public class SuperBlastModifier extends Modifier implements InventoryTickModifie
                         false,
                         Level.ExplosionInteraction.MOB
                 );
-
-                data.putBoolean(TRIGGERED, true);
-                data.remove(START_TIME);
             }
         }
     }
