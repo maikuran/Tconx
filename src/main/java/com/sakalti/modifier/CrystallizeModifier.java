@@ -31,7 +31,6 @@ public class CrystallizeModifier extends Modifier
     private static final String ACTIVE_UNTIL = "CrystallizeActiveUntil";
     private static final String TRIGGERED = "CrystallizeTriggered";
 
-    @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
         hookBuilder.addHook(
                 this,
@@ -41,7 +40,6 @@ public class CrystallizeModifier extends Modifier
     }
 
     // 結晶化の発動判定
-    @Override
     public void onInventoryTick(
             IToolStackView tool,
             ModifierEntry modifier,
@@ -109,7 +107,6 @@ public class CrystallizeModifier extends Modifier
     }
 
     // 結晶化中のダメージを遮断
-    @Override
     public boolean isDamageBlocked(
             IToolStackView tool,
             ModifierEntry modifier,
