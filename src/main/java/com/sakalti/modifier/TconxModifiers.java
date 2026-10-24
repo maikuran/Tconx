@@ -11,6 +11,8 @@ public final class TconxModifiers {
 
     public static final StaticModifier<CrawlingModifier> CRAWLING =
             MODIFIERS.register("crawling", CrawlingModifier::new);
+    public static final StaticModifier<SurviveModifier> SURVIVE =
+        MODIFIERS.register("survive", SurviveModifier::new);
 
     public static final StaticModifier<GlacialBindModifier> GLACIAL_BIND =
             MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
