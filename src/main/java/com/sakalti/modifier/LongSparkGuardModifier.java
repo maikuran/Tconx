@@ -18,7 +18,7 @@ import slimeknights.tconstruct.library.tools.context.EquipmentContext;
 
 import java.util.List;
 
-public class LongsparkGuardModifier extends Modifier
+public class LongSparkGuardModifier extends Modifier
         implements OnAttackedModifierHook {
 
     protected void registerHooks(ModuleHookMap.Builder builder) {
