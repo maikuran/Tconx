@@ -15,6 +15,7 @@ import slimeknights.tconstruct.library.modifiers.ModifierHooks;
 import slimeknights.tconstruct.library.modifiers.hook.armor.OnAttackedModifierHook;
 import slimeknights.tconstruct.library.modifiers.hook.interaction.InventoryTickModifierHook;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
+import slimeknights.tconstruct.library.tools.context.EquipmentContext;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 
 public class InfernoModifier extends Modifier
@@ -97,12 +98,14 @@ public class InfernoModifier extends Modifier
     public void onAttacked(
             IToolStackView tool,
             ModifierEntry modifier,
-            LivingEntity holder,
+            EquipmentContext context,
+            EquipmentSlot slotType,
             DamageSource source,
             float amount,
-            boolean isDirect,
-            boolean isBlocked
+            boolean isDirectDamage
     ) {
+        LivingEntity holder = context.getEntity();
+
         if (holder.level().isClientSide) return;
 
         // HP50%以上でのみ反撃
@@ -123,7 +126,7 @@ public class InfernoModifier extends Modifier
                 )
         );
 
-        // 相手に着火
+        // 相手に5秒間着火
         attacker.setSecondsOnFire(REFLECT_FIRE_SECONDS);
     }
 }
