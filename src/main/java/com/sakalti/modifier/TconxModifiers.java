@@ -12,6 +12,10 @@ public final class TconxModifiers {
     public static final StaticModifier<GlacialBindModifier> GLACIAL_BIND =
             MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
 
+    public static final StaticModifier<AbyssalRequiemModifier> ABYSSAL_REQUIEM =
+            MODIFIERS.register("abyssal_requiem", AbyssalRequiemModifier::new);
+
+
 
     public static final StaticModifier<CryofreezeModifier> CRYOFREEZE =
             MODIFIERS.register("cryofreeze", CryofreezeModifier::new);
