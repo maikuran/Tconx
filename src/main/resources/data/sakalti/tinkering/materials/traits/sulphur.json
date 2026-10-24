@@ -8,5 +8,19 @@
       "name": "sakalti:blast",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:superblast",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:superblast",
+        "level": 1
+      }
+    ]
+  }
 }
