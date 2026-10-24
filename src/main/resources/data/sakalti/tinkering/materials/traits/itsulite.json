@@ -4,5 +4,19 @@
       "name": "sakalti:itsulic_nihilism",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:abyssal_requiem",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:abyssal_requiem",
+        "level": 1
+      }
+    ]
+  }
 }
