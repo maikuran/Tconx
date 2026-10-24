@@ -11,7 +11,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierEntry;
 import slimeknights.tconstruct.library.modifiers.ModifierHooks;
-import slimeknights.tconstruct.library.modifiers.hook.AttributesModifierHook;
+import slimeknights.tconstruct.library.modifiers.hook.behavior.AttributesModifierHook;
 import slimeknights.tconstruct.library.module.ModuleHookMap;
 import slimeknights.tconstruct.library.tools.nbt.IToolStackView;
 
@@ -19,16 +19,19 @@ public class ToughModifier extends Modifier implements AttributesModifierHook {
 
     private static final double ARMOR_BONUS = 0.5D;
 
-    // 部位ごとに固有のUUID
+    // 頭
     private static final UUID HEAD_UUID =
             UUID.fromString("7c2a91e4-6f3b-4d85-9a12-8e5c3b7f1046");
 
+    // 胴
     private static final UUID CHEST_UUID =
             UUID.fromString("a83f5d21-9c47-4e6b-b812-3d7a6f905c24");
 
+    // 脚
     private static final UUID LEGS_UUID =
             UUID.fromString("d19b7e53-2a84-4c61-8f35-b6e9207a4d18");
 
+    // 足
     private static final UUID FEET_UUID =
             UUID.fromString("4e6c2a90-b153-47d8-a921-5f3b8c6d2074");
 
