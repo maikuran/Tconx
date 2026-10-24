@@ -4,5 +4,19 @@
       "name": "sakalti:long_spark",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:longspark_guard",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:longspark_guard",
+        "level": 1
+      }
+    ]
+  }
 }
