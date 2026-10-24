@@ -15,6 +15,10 @@ public final class TconxModifiers {
     public static final StaticModifier<LaserPrismGuardModifier> LASERPRISM_GUARD =
             MODIFIERS.register("laserprism_guard", LaserPrismGuardModifier::new);
 
+    public static final StaticModifier<LongSparkGuardModifier> LONGSPARK_GUARD =
+            MODIFIERS.register("longspark_guard", LongSparkGuardModifier::new);
+
+
     public static final StaticModifier<AbyssalRequiemModifier> ABYSSAL_REQUIEM =
             MODIFIERS.register("abyssal_requiem", AbyssalRequiemModifier::new);
 
