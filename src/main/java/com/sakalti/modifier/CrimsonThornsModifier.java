@@ -22,7 +22,6 @@ public class CrimsonThornsModifier extends Modifier
     private static final float DAMAGE_REDUCTION = 0.65f;
     private static final float REFLECT_DAMAGE = 0.50f;
 
-    @Override
     public List<ModuleHook<?>> getDefaultHooks() {
         return List.of(
                 ModifierHooks.MODIFY_DAMAGE,
@@ -31,7 +30,6 @@ public class CrimsonThornsModifier extends Modifier
     }
 
     // 被ダメージ65%軽減
-    @Override
     public float modifyDamageTaken(
             IToolStackView tool,
             ModifierEntry modifier,
@@ -45,7 +43,6 @@ public class CrimsonThornsModifier extends Modifier
     }
 
     // 攻撃者に50%のダメージを反射
-    @Override
     public void onAttacked(
             IToolStackView tool,
             ModifierEntry modifier,
