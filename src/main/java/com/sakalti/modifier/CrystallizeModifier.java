@@ -28,14 +28,16 @@ public class CrystallizeModifier extends Modifier
     private static final int DURATION = 20 * 20;
     private static final int SLOWNESS_AMPLIFIER = 7;
 
-    private static final String ACTIVE_UNTIL = "CrystallingActiveUntil";
-    private static final String TRIGGERED = "CrystallingTriggered";
+    private static final String ACTIVE_UNTIL = "CrystallizeActiveUntil";
+    private static final String TRIGGERED = "CrystallizeTriggered";
 
     @Override
     protected void registerHooks(ModuleHookMap.Builder hookBuilder) {
-        hookBuilder.addHook(this,
+        hookBuilder.addHook(
+                this,
                 ModifierHooks.INVENTORY_TICK,
-                ModifierHooks.DAMAGE_BLOCK);
+                ModifierHooks.DAMAGE_BLOCK
+        );
     }
 
     // 結晶化の発動判定
@@ -57,7 +59,7 @@ public class CrystallizeModifier extends Modifier
 
         long currentTime = world.getGameTime();
 
-        // HPが20%を超えたら次回発動可能
+        // HPが20%を超えたら再発動可能
         if (holder.getHealth() > holder.getMaxHealth() * HEALTH_THRESHOLD) {
             data.remove(TRIGGERED);
             return;
@@ -66,11 +68,12 @@ public class CrystallizeModifier extends Modifier
         // 発動済みなら再発動しない
         if (data.getBoolean(TRIGGERED)) return;
 
-        // 耐久値の5%を計算
+        // 最大耐久値を取得
         int maxDurability = tool.getStats().getInt(ToolStats.DURABILITY);
 
         if (maxDurability <= 0 || tool.isBroken()) return;
 
+        // 耐久値の5%
         int durabilityCost = Math.max(
                 1,
                 (int) Math.ceil(maxDurability * 0.05D)
@@ -80,11 +83,11 @@ public class CrystallizeModifier extends Modifier
 
         if (remainingDurability < durabilityCost) return;
 
-        // 発動状態を保存
+        // 結晶化開始
         data.putBoolean(TRIGGERED, true);
         data.putLong(ACTIVE_UNTIL, currentTime + DURATION);
 
-        // 防具の耐久値を5%消費
+        // 防具耐久値を5%消費
         ToolDamageUtil.damage(
                 tool,
                 durabilityCost,
@@ -105,7 +108,7 @@ public class CrystallizeModifier extends Modifier
         );
     }
 
-    // 結晶化中はダメージを完全遮断
+    // 結晶化中のダメージを遮断
     @Override
     public boolean isDamageBlocked(
             IToolStackView tool,
