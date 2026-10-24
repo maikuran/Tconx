@@ -32,6 +32,10 @@ public final class TconxModifiers {
     public static final StaticModifier<ReduceModifier> REDUCE =
             MODIFIERS.register("reduce", ReduceModifier::new);
 
+    public static final StaticModifier<SuperReduceModifier> SUPER_REDUCE =
+            MODIFIERS.register("super_reduce", SuperReduceModifier::new);
+
+
     public static final StaticModifier<IncendiumModifier> INCENDIUM =
             MODIFIERS.register("incendium", IncendiumModifier::new);
 
