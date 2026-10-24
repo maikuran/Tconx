@@ -125,6 +125,8 @@ public final class TconxModifiers {
 
     public static final StaticModifier<AuroVisionModifier> AURO_VISION =
             MODIFIERS.register("auro_vision", AuroVisionModifier::new);
+    public static final StaticModifier<VitalityModifier> VITALITY =
+        MODIFIERS.register("vitality", VitalityModifier::new);
 
     // Restored modifiers present in the 1.16.5 JAR but absent from the initial 1.20.1 source.
     public static final StaticModifier<CelestiteResonanceModifier> CELESTITE_RESONANCE = MODIFIERS.register("celestite_resonance", CelestiteResonanceModifier::new);
