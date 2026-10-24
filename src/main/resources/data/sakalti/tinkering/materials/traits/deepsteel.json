@@ -4,5 +4,19 @@
       "name": "sakalti:heavy_stone",
       "level": 1
     }
-  ]
+  ],
+  "perStat": {
+    "tconstruct:armor": [
+      {
+        "name": "sakalti:gravitas",
+        "level": 1
+      }
+    ],
+    "tconstruct:maille": [
+      {
+        "name": "sakalti:gravitas",
+        "level": 1
+      }
+    ]
+  }
 }
