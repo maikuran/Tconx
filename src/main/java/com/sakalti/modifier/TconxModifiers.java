@@ -9,6 +9,9 @@ public final class TconxModifiers {
     public static final ModifierDeferredRegister MODIFIERS =
             ModifierDeferredRegister.create("sakalti");
 
+    public static final StaticModifier<CrawlingModifier> CRAWLING =
+            MODIFIERS.register("crawling", CrawlingModifier::new);
+
     public static final StaticModifier<GlacialBindModifier> GLACIAL_BIND =
             MODIFIERS.register("glacial_bind", GlacialBindModifier::new);
     public static final StaticModifier<AstralAegisModifier> ASTRAL_AEGIS =
