@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import slimeknights.tconstruct.library.modifiers.Modifier;
 import slimeknights.tconstruct.library.modifiers.ModifierId;
 import slimeknights.tconstruct.library.tools.nbt.ToolStack;
 
@@ -19,7 +20,7 @@ import slimeknights.tconstruct.library.tools.nbt.ToolStack;
         modid = "sakalti",
         bus = Mod.EventBusSubscriber.Bus.FORGE
 )
-public class AbyssalRequiemModifier {
+public class AbyssalRequiemModifier extends Modifier {
 
     private static final ModifierId MODIFIER_ID =
             new ModifierId("sakalti", "abyssal_requiem");
@@ -27,6 +28,10 @@ public class AbyssalRequiemModifier {
     private static final float MAX_HEAL = 4.0F;
 
     private static final int ABSORPTION_DURATION = 20 * 4;
+
+    public AbyssalRequiemModifier() {
+        super();
+    }
 
     @SubscribeEvent
     public static void onTargetKilled(LivingDeathEvent event) {
@@ -37,7 +42,6 @@ public class AbyssalRequiemModifier {
 
         if (player.level().isClientSide) return;
 
-        // 防具4部位のModifierレベルを合算
         int totalLevel = 0;
 
         EquipmentSlot[] armorSlots = {
@@ -60,19 +64,19 @@ public class AbyssalRequiemModifier {
 
         if (totalLevel <= 0) return;
 
-        // 敵の最大HPを取得
         float enemyMaxHealth =
                 event.getEntity().getMaxHealth();
 
-        // 敵の生命力を防御エネルギーに変換
         float healAmount =
-                Math.min(MAX_HEAL, enemyMaxHealth * 0.1F * totalLevel);
+                Math.min(
+                        MAX_HEAL,
+                        enemyMaxHealth * 0.1F * totalLevel
+                );
 
         if (player.getHealth() < player.getMaxHealth()) {
             player.heal(healAmount);
         }
 
-        // 吸収効果
         player.addEffect(
                 new MobEffectInstance(
                         MobEffects.ABSORPTION,
