@@ -43,7 +43,7 @@
     "tconstruct:plating_shield": {
       "durability": 444
     },
-    "tconstruct:plating_boots": {
+    "tconstruct:plating_boot": {
       "armor": 3.2,
       "durability": 261,
       "toughnes": 2.5
