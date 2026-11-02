@@ -1,4 +1,3 @@
-
 package com.sakalti.modifier;
 
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,7 +32,6 @@ public class CrawlingModifier extends Modifier {
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-
         if (event.phase != TickEvent.Phase.END) return;
 
         Player player = event.player;
@@ -50,15 +48,11 @@ public class CrawlingModifier extends Modifier {
                 EquipmentSlot.FEET
         };
 
-        // 4部位の防具を確認
         for (EquipmentSlot slot : armorSlots) {
-
             ItemStack stack = player.getItemBySlot(slot);
-
             if (stack.isEmpty()) continue;
 
             ToolStack tool = ToolStack.from(stack);
-
             if (tool.getModifierLevel(MODIFIER_ID) > 0) {
                 hasCrawling = true;
                 break;
@@ -66,27 +60,23 @@ public class CrawlingModifier extends Modifier {
         }
 
         if (hasCrawling) {
-
-            // 匍匐姿勢を維持
+            // 見た目＋実際の Swimming 判定を強制
+            player.setSwimming(true);
             player.setPose(Pose.SWIMMING);
 
-            // 耐性Iを維持
-            player.addEffect(
-                    new MobEffectInstance(
-                            MobEffects.DAMAGE_RESISTANCE,
-                            EFFECT_DURATION,
-                            0,
-                            false,
-                            false,
-                            true
-                    )
-            );
-
+            player.addEffect(new MobEffectInstance(
+                    MobEffects.DAMAGE_RESISTANCE,
+                    EFFECT_DURATION,
+                    0,
+                    false,
+                    false,
+                    true
+            ));
         } else {
+            // 解除時は通常状態へ戻す
+            player.setSwimming(false);
 
-            // Modifierを外した場合は通常姿勢に戻す
-            if (player.getPose() == Pose.SWIMMING
-                    && !player.isSwimming()) {
+            if (player.getPose() == Pose.SWIMMING && !player.isSwimming()) {
                 player.setPose(Pose.STANDING);
             }
         }
