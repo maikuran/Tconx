@@ -1,0 +1,181 @@
+
+name: Rebalance All Material Stats
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  rebalance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Recalculate material stats
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE="src/main/resources/data"
+          REF="$BASE/sakalti/tinkering/materials/stats/ourite.json"
+
+          # Ourite reference values
+          REF_D=$(jq -r '.stats["tconstruct:head"].durability' "$REF")
+          REF_A=$(jq -r '.stats["tconstruct:head"].melee_attack' "$REF")
+          REF_M=$(jq -r '.stats["tconstruct:head"].mining_speed' "$REF")
+          REF_H=$(jq -r '.stats["tconstruct:handle"].durability' "$REF")
+          REF_MD=$(jq -r '.stats["tconstruct:handle"].melee_damage' "$REF")
+          REF_MS=$(jq -r '.stats["tconstruct:handle"].melee_speed' "$REF")
+          REF_MN=$(jq -r '.stats["tconstruct:handle"].mining_speed' "$REF")
+
+          while IFS= read -r -d '' FILE; do
+
+            echo "Processing $FILE"
+
+            if ! jq -e '
+              .stats["tconstruct:head"].durability > 0 and
+              .stats["tconstruct:head"].melee_attack > 0 and
+              .stats["tconstruct:head"].mining_speed > 0
+            ' "$FILE" >/dev/null; then
+              echo "Skipping invalid weapon stats"
+              continue
+            fi
+
+            # Calculate each material's weapon performance.
+            VALUES=$(jq -r \
+              --argjson rd "$REF_D" \
+              --argjson ra "$REF_A" \
+              --argjson rm "$REF_M" \
+              --argjson rh "$REF_H" \
+              --argjson rmd "$REF_MD" \
+              --argjson rms "$REF_MS" \
+              --argjson rmn "$REF_MN" '
+              .stats as $s |
+
+              ($s["tconstruct:head"].durability) as $d |
+              ($s["tconstruct:head"].melee_attack *
+                (1 + ($s["tconstruct:handle"].melee_damage // 0))) as $a |
+              ($s["tconstruct:head"].mining_speed *
+                (1 + ($s["tconstruct:handle"].mining_speed // 0))) as $m |
+              ($s["tconstruct:handle"].durability // 0) as $h |
+              ($s["tconstruct:handle"].melee_speed // 0) as $ms |
+
+              ((
+                (($a / ($ra * (1 + $rmd))) * 0.40) +
+                (($m / ($rm * (1 + $rmn))) * 0.20) +
+                (($d / $rd) * 0.25) +
+                ((1 + $ms) / (1 + $rms) * 0.15)
+              )) as $p |
+
+              ($d * (1 + $h)) as $effective_durability |
+
+              [
+                $p,
+                $effective_durability
+              ] | @tsv
+            ' "$FILE")
+
+            read -r POWER EFFECTIVE_DURABILITY <<< "$VALUES"
+
+            # Reference-based armor calculation.
+            VALUES=$(awk \
+              -v p="$POWER" \
+              -v d="$EFFECTIVE_DURABILITY" \
+              -v rd="$REF_D" \
+              -v h="$REF_H" '
+              BEGIN {
+                ratio = d / (rd * (1 + h))
+
+                chest = 9.4 * p
+                helmet = 3.1 * p
+                legs = 7.3 * p
+                boots = 4.2 * p
+
+                durability = 700 * sqrt(ratio)
+                toughness = 7 * p
+
+                maille_armor = 0.395 * p
+                maille_durability = -0.044 * sqrt(ratio)
+                maille_speed = 0.028 * p
+
+                printf "%.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f %.6f",
+                  chest, helmet, legs, boots,
+                  durability, toughness,
+                  maille_armor, maille_durability, maille_speed
+              }
+            ')
+
+            read -r CHEST HELMET LEGS BOOTS DURABILITY TOUGHNESS MAILLE_ARMOR MAILLE_DURABILITY MAILLE_SPEED <<< "$VALUES"
+
+            TMP=$(mktemp)
+
+            jq \
+              --argjson chest "$CHEST" \
+              --argjson helmet "$HELMET" \
+              --argjson legs "$LEGS" \
+              --argjson boots "$BOOTS" \
+              --argjson durability "$DURABILITY" \
+              --argjson toughness "$TOUGHNESS" \
+              --argjson ma "$MAILLE_ARMOR" \
+              --argjson md "$MAILLE_DURABILITY" \
+              --argjson ms "$MAILLE_SPEED" '
+              .stats["tconstruct:plating_chestplate"].armor = $chest |
+              .stats["tconstruct:plating_chestplate"].durability = $durability |
+              .stats["tconstruct:plating_chestplate"].toughnes = $toughness |
+              .stats["tconstruct:plating_chestplate"].toughness = 0.0 |
+
+              .stats["tconstruct:plating_helmet"].armor = $helmet |
+              .stats["tconstruct:plating_helmet"].durability = $durability |
+              .stats["tconstruct:plating_helmet"].toughnes = $toughness |
+              .stats["tconstruct:plating_helmet"].toughness = 0.0 |
+
+              .stats["tconstruct:plating_leggings"].armor = $legs |
+              .stats["tconstruct:plating_leggings"].durability = $durability |
+              .stats["tconstruct:plating_leggings"].toughnes = $toughness |
+              .stats["tconstruct:plating_leggings"].toughness = 0.0 |
+
+              .stats["tconstruct:plating_boot"].armor = $boots |
+              .stats["tconstruct:plating_boot"].durability = $durability |
+              .stats["tconstruct:plating_boot"].toughnes = $toughness |
+              .stats["tconstruct:plating_boot"].toughness = 0.0 |
+
+              .stats["tconstruct:plating_shield"].durability = $durability |
+
+              .stats["tconstruct:maille"].durability = $md |
+              .stats["tconstruct:maille"].armor = $ma |
+              .stats["tconstruct:maille"].movement_speed = $ms
+            ' "$FILE" > "$TMP"
+
+            jq empty "$TMP"
+            mv "$TMP" "$FILE"
+
+            echo "Power: $POWER"
+            echo "Armor durability: $DURABILITY"
+            echo "Toughness: $TOUGHNESS"
+
+          done < <(
+            find "$BASE" -type f \
+              -path '*/tinkering/materials/stats/*.json' \
+              -print0
+          )
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add src/main/resources/data/
+
+          if git diff --cached --quiet; then
+            echo "No changes"
+            exit 0
+          fi
+
+          git commit -m "Rebalance all material stats"
+          git push
