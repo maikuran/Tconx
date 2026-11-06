@@ -29,19 +29,19 @@
       "armor": 7.800031,
       "durability": 707.833358,
       "toughnes": 5.808534,
-      "toughness": 0.0
+      "toughness": 5.808534
     },
     "tconstruct:plating_helmet": {
       "armor": 2.572351,
       "durability": 707.833358,
       "toughnes": 5.808534,
-      "toughness": 0.0
+      "toughness": 5.808534
     },
     "tconstruct:plating_leggings": {
       "armor": 6.057471,
       "durability": 707.833358,
       "toughnes": 5.808534,
-      "toughness": 0.0
+      "toughness": 5.808534
     },
     "tconstruct:plating_shield": {
       "durability": 707.833358
@@ -51,6 +51,11 @@
       "durability": 707.833358,
       "toughnes": 5.808534,
       "toughness": 0.0
+    },
+    "tconstruct:plating_boots": {
+      "armor": 3.485120,
+      "durability": 707.833358,
+      "toughness": 5.808534
     }
   }
 }
