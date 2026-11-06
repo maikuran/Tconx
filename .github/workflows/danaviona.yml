@@ -1,4 +1,3 @@
-
 name: Rebalance All Material Stats
 
 on:
@@ -25,7 +24,6 @@ jobs:
           BASE="src/main/resources/data"
           REF="$BASE/sakalti/tinkering/materials/stats/ourite.json"
 
-          # Ourite reference values
           REF_D=$(jq -r '.stats["tconstruct:head"].durability' "$REF")
           REF_A=$(jq -r '.stats["tconstruct:head"].melee_attack' "$REF")
           REF_M=$(jq -r '.stats["tconstruct:head"].mining_speed' "$REF")
@@ -47,7 +45,6 @@ jobs:
               continue
             fi
 
-            # Calculate each material's weapon performance.
             VALUES=$(jq -r \
               --argjson rd "$REF_D" \
               --argjson ra "$REF_A" \
@@ -66,24 +63,20 @@ jobs:
               ($s["tconstruct:handle"].durability // 0) as $h |
               ($s["tconstruct:handle"].melee_speed // 0) as $ms |
 
-              ((
+              (
                 (($a / ($ra * (1 + $rmd))) * 0.40) +
                 (($m / ($rm * (1 + $rmn))) * 0.20) +
                 (($d / $rd) * 0.25) +
                 ((1 + $ms) / (1 + $rms) * 0.15)
-              )) as $p |
+              ) as $p |
 
               ($d * (1 + $h)) as $effective_durability |
 
-              [
-                $p,
-                $effective_durability
-              ] | @tsv
+              [$p, $effective_durability] | @tsv
             ' "$FILE")
 
             read -r POWER EFFECTIVE_DURABILITY <<< "$VALUES"
 
-            # Reference-based armor calculation.
             VALUES=$(awk \
               -v p="$POWER" \
               -v d="$EFFECTIVE_DURABILITY" \
@@ -127,23 +120,19 @@ jobs:
               --argjson ms "$MAILLE_SPEED" '
               .stats["tconstruct:plating_chestplate"].armor = $chest |
               .stats["tconstruct:plating_chestplate"].durability = $durability |
-              .stats["tconstruct:plating_chestplate"].toughnes = $toughness |
-              .stats["tconstruct:plating_chestplate"].toughness = 0.0 |
+              .stats["tconstruct:plating_chestplate"].toughness = $toughness |
 
               .stats["tconstruct:plating_helmet"].armor = $helmet |
               .stats["tconstruct:plating_helmet"].durability = $durability |
-              .stats["tconstruct:plating_helmet"].toughnes = $toughness |
-              .stats["tconstruct:plating_helmet"].toughness = 0.0 |
+              .stats["tconstruct:plating_helmet"].toughness = $toughness |
 
               .stats["tconstruct:plating_leggings"].armor = $legs |
               .stats["tconstruct:plating_leggings"].durability = $durability |
-              .stats["tconstruct:plating_leggings"].toughnes = $toughness |
-              .stats["tconstruct:plating_leggings"].toughness = 0.0 |
+              .stats["tconstruct:plating_leggings"].toughness = $toughness |
 
-              .stats["tconstruct:plating_boot"].armor = $boots |
-              .stats["tconstruct:plating_boot"].durability = $durability |
-              .stats["tconstruct:plating_boot"].toughnes = $toughness |
-              .stats["tconstruct:plating_boot"].toughness = 0.0 |
+              .stats["tconstruct:plating_boots"].armor = $boots |
+              .stats["tconstruct:plating_boots"].durability = $durability |
+              .stats["tconstruct:plating_boots"].toughness = $toughness |
 
               .stats["tconstruct:plating_shield"].durability = $durability |
 
