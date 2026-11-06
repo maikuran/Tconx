@@ -178,4 +178,5 @@ jobs:
           fi
 
           git commit -m "Rebalance all material stats"
+          git pull
           git push
