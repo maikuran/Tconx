@@ -50,9 +50,11 @@ public class CrawlingModifier extends Modifier {
 
         for (EquipmentSlot slot : armorSlots) {
             ItemStack stack = player.getItemBySlot(slot);
+
             if (stack.isEmpty()) continue;
 
             ToolStack tool = ToolStack.from(stack);
+
             if (tool.getModifierLevel(MODIFIER_ID) > 0) {
                 hasCrawling = true;
                 break;
@@ -60,10 +62,19 @@ public class CrawlingModifier extends Modifier {
         }
 
         if (hasCrawling) {
-            // 見た目＋実際の Swimming 判定を強制
-            player.setSwimming(true);
-            player.setPose(Pose.SWIMMING);
 
+            // 水中など、本来の姿勢制御を妨害しない
+            if (player.onGround()
+                    && !player.isPassenger()
+                    && !player.isFallFlying()
+                    && !player.isSleeping()
+                    && !player.isInWater()
+                    && !player.isInLava()) {
+
+                player.setPose(Pose.SWIMMING);
+            }
+
+            // ダメージ耐性
             player.addEffect(new MobEffectInstance(
                     MobEffects.DAMAGE_RESISTANCE,
                     EFFECT_DURATION,
@@ -72,11 +83,17 @@ public class CrawlingModifier extends Modifier {
                     false,
                     true
             ));
-        } else {
-            // 解除時は通常状態へ戻す
-            player.setSwimming(false);
 
-            if (player.getPose() == Pose.SWIMMING && !player.isSwimming()) {
+        } else {
+
+            // クロール解除
+            if (player.getPose() == Pose.SWIMMING
+                    && player.onGround()
+                    && !player.isInWater()
+                    && !player.isInLava()
+                    && !player.isSleeping()
+                    && !player.isFallFlying()) {
+
                 player.setPose(Pose.STANDING);
             }
         }
