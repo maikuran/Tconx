@@ -21,7 +21,7 @@ jobs:
           import json
           from pathlib import Path
 
-          locale_dir = Path("src/main/resources/assets/sakalti_lang/lang")
+          locale_dir = Path("src/main/resources/assets/sakalti/lang")
           entries = {
               "stat.tconstruct.harvest_tier.sakalti.super": "5",
               "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
