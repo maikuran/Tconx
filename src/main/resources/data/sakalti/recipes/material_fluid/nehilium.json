@@ -1,7 +1,7 @@
 {
   "type": "tconstruct:material_fluid",
   "fluid": {
-    "fluid": "sakalti:molten_nehilium",
+    "fluid": "sakalti:nehilium",
     "amount": 100
   },
   "temperature": 1000,
