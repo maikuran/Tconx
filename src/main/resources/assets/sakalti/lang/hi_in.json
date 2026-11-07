@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "उपकरण को सही स्लॉट में रखने तक पुनर्जनन II बनाए रखता है।",
   "modifier.sakalti.vitality.flavor": "धीरे-धीरे लगातार उपचार। किसी कागज़ी कार्रवाई की ज़रूरत नहीं।",
   "modifier.sakalti.soul_eater.flavor": "हर आत्मा एक निशान छोड़ती है। आपके क्षति आँकड़े उन यादगारों को सँभालकर रखते हैं।",
-  "modifier.sakalti.gradually.flavor": "धीमी प्रगति भी प्रगति है। कुदाल भी इस बात से सहमत है।"
+  "modifier.sakalti.gradually.flavor": "धीमी प्रगति भी प्रगति है। कुदाल भी इस बात से सहमत है।",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

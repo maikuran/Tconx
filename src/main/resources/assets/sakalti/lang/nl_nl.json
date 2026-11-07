@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "Geeft periodiek een gunstig vitaliteitseffect zolang het voorwerp in het vereiste vak actief is.",
   "modifier.sakalti.vitality.flavor": "Een beetje vitaliteit brengt je ver. Meestal.",
   "modifier.sakalti.soul_eater.flavor": "Elke ziel laat een spoor achter. Je schadestatistiek bewaart de aandenkens.",
-  "modifier.sakalti.gradually.flavor": "Langzame vooruitgang is ook vooruitgang. De houweel is het ermee eens."
+  "modifier.sakalti.gradually.flavor": "Langzame vooruitgang is ook vooruitgang. De houweel is het ermee eens.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

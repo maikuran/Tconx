@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "物品在指定欄位啟動期間，會定期賦予有益的活力效果。",
   "modifier.sakalti.vitality.flavor": "一點活力也能帶來很大幫助。通常如此。",
   "modifier.sakalti.soul_eater.flavor": "每個靈魂都會留下印記。你的傷害數值替你收藏了這些紀念品。",
-  "modifier.sakalti.gradually.flavor": "進展緩慢也是進展。鎬子也這麼認為。"
+  "modifier.sakalti.gradually.flavor": "進展緩慢也是進展。鎬子也這麼認為。",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

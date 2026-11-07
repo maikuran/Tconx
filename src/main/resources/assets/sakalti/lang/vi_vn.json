@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "Duy trì Tái tạo II khi công cụ được giữ trong đúng ô.",
   "modifier.sakalti.vitality.flavor": "Dòng hồi phục đều đặn. Không cần giấy tờ.",
   "modifier.sakalti.soul_eater.flavor": "Mỗi linh hồn đều để lại dấu ấn. Chỉ số sát thương của bạn lưu giữ những kỷ vật ấy.",
-  "modifier.sakalti.gradually.flavor": "Tiến triển chậm vẫn là tiến triển. Chiếc cuốc chim cũng đồng ý."
+  "modifier.sakalti.gradually.flavor": "Tiến triển chậm vẫn là tiến triển. Chiếc cuốc chim cũng đồng ý.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "ツールを正しいスロットに保持している間、再生IIを維持する。",
   "modifier.sakalti.vitality.flavor": "安定した回復。面倒な書類手続きは不要。",
   "modifier.sakalti.soul_eater.flavor": "魂はすべて痕跡を残す。ダメージの記録には、その思い出が刻まれる。",
-  "modifier.sakalti.gradually.flavor": "ゆっくりでも前進は前進。ツルハシもそう思っている。"
+  "modifier.sakalti.gradually.flavor": "ゆっくりでも前進は前進。ツルハシもそう思っている。",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

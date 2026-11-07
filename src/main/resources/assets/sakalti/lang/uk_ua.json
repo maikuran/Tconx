@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "Періодично надає корисний ефект життєвої сили, поки предмет активний у потрібному слоті.",
   "modifier.sakalti.vitality.flavor": "Трохи життєвої сили — і шлях стає легшим. Зазвичай.",
   "modifier.sakalti.soul_eater.flavor": "Кожна душа залишає слід. Твій показник шкоди зберігає ці сувеніри.",
-  "modifier.sakalti.gradually.flavor": "Повільний поступ — це теж поступ. Кайло з цим погоджується."
+  "modifier.sakalti.gradually.flavor": "Повільний поступ — це теж поступ. Кайло з цим погоджується.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

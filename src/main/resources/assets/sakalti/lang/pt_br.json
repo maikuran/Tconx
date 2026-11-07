@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "Concede periodicamente um efeito benéfico de vitalidade enquanto o item estiver ativo no espaço exigido.",
   "modifier.sakalti.vitality.flavor": "Um pouco de vitalidade faz muita diferença. Geralmente.",
   "modifier.sakalti.soul_eater.flavor": "Toda alma deixa uma marca. Seus atributos de dano guardam as lembranças.",
-  "modifier.sakalti.gradually.flavor": "Progresso lento ainda é progresso. A picareta concorda."
+  "modifier.sakalti.gradually.flavor": "Progresso lento ainda é progresso. A picareta concorda.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

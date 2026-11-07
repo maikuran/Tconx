@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "Maintient Régénération II tant que l’outil est tenu dans le bon emplacement.",
   "modifier.sakalti.vitality.flavor": "Un flux régulier de soins. Sans paperasse.",
   "modifier.sakalti.soul_eater.flavor": "Chaque âme laisse une trace. Vos statistiques de dégâts gardent les souvenirs.",
-  "modifier.sakalti.gradually.flavor": "Un progrès lent reste un progrès. La pioche est du même avis."
+  "modifier.sakalti.gradually.flavor": "Un progrès lent reste un progrès. La pioche est du même avis.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

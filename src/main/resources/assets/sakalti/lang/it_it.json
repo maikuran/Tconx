@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "Concede periodicamente un effetto benefico di vitalità mentre l’oggetto è attivo nello slot richiesto.",
   "modifier.sakalti.vitality.flavor": "Un po’ di vitalità fa molta strada. Di solito.",
   "modifier.sakalti.soul_eater.flavor": "Ogni anima lascia un segno. Le tue statistiche dei danni conservano i ricordi.",
-  "modifier.sakalti.gradually.flavor": "Anche i progressi lenti sono progressi. Il piccone è d’accordo."
+  "modifier.sakalti.gradually.flavor": "Anche i progressi lenti sono progressi. Il piccone è d’accordo.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

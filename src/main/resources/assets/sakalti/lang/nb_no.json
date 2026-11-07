@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "Gir med jevne mellomrom en gunstig vitalitetseffekt mens gjenstanden er aktiv i riktig plass.",
   "modifier.sakalti.vitality.flavor": "Litt vitalitet rekker langt. Som regel.",
   "modifier.sakalti.soul_eater.flavor": "Hver sjel etterlater et merke. Skadeverdien din tar vare på minnene.",
-  "modifier.sakalti.gradually.flavor": "Sakte fremgang er fortsatt fremgang. Hakken er enig."
+  "modifier.sakalti.gradually.flavor": "Sakte fremgang er fortsatt fremgang. Hakken er enig.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

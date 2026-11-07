@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "Hält Regeneration II aufrecht, solange das Werkzeug im richtigen Slot gehalten wird.",
   "modifier.sakalti.vitality.flavor": "Stetige Heilung in kleinen Schritten. Ganz ohne Papierkram.",
   "modifier.sakalti.soul_eater.flavor": "Jede Seele hinterlässt Spuren. Dein Schadenswert sammelt die Andenken.",
-  "modifier.sakalti.gradually.flavor": "Langsamer Fortschritt ist immer noch Fortschritt. Die Spitzhacke stimmt zu."
+  "modifier.sakalti.gradually.flavor": "Langsamer Fortschritt ist immer noch Fortschritt. Die Spitzhacke stimmt zu.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

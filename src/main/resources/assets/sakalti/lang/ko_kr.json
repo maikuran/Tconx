@@ -352,5 +352,8 @@
   "modifier.sakalti.vitality.description": "아이템이 지정된 슬롯에서 활성화되어 있는 동안 주기적으로 유익한 활력 효과를 부여합니다.",
   "modifier.sakalti.vitality.flavor": "약간의 활력도 큰 도움이 됩니다. 대체로는요.",
   "modifier.sakalti.soul_eater.flavor": "모든 영혼은 흔적을 남긴다. 피해 수치가 그 기념품을 간직한다.",
-  "modifier.sakalti.gradually.flavor": "느린 진전도 진전이다. 곡괭이도 그렇게 생각한다."
+  "modifier.sakalti.gradually.flavor": "느린 진전도 진전이다. 곡괭이도 그렇게 생각한다.",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }
