@@ -1,5 +1,8 @@
 {
   "harvest_tier.sakalti.super": "Unggul",
   "harvest_tier.sakalti.super_2": "Unggul II",
-  "harvest_tier.sakalti.super_3": "Unggul III"
+  "harvest_tier.sakalti.super_3": "Unggul III",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }

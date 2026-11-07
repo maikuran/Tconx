@@ -1,5 +1,8 @@
 {
   "harvest_tier.sakalti.super": "ระดับสูง",
   "harvest_tier.sakalti.super_2": "ระดับสูง II",
-  "harvest_tier.sakalti.super_3": "ระดับสูง III"
+  "harvest_tier.sakalti.super_3": "ระดับสูง III",
+  "stat.tconstruct.harvest_tier.sakalti.super": "5",
+  "stat.tconstruct.harvest_tier.sakalti.super_2": "6",
+  "stat.tconstruct.harvest_tier.sakalti.super_3": "7"
 }
